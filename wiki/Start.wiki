@@ -1,11 +1,9 @@
-#This is the start page.
-
 = Introduction =
 
-Add your content here.
+This is the project's wiki.
 
 
-= Details =
+= Table of contents =
 
 Add your content here.  Format your content with:
   * Text in *bold* or _italic_

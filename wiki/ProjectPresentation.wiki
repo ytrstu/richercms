@@ -1,5 +1,0 @@
-= Introduction =
-
-This project is a 20 percent time project, involving 4 students of the school of engineering ESIAL and the company Sfeir Benelux. Its main purpose is to develop an open-source CMS based on GWT and Google AppEngine.
-
-Required delivery date is March,18 2010.

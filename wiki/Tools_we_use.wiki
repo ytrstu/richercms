@@ -1,0 +1,3 @@
+= Time Tracking =
+
+Actitime is used as time-tracking tool. Each team member has got an account. For any problems concerning time-tracking, please refer to yannick.hertzog@esial.net !

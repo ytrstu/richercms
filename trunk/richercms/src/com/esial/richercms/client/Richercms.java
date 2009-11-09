@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.RichTextArea;
@@ -26,6 +25,7 @@ public class Richercms implements EntryPoint {
 	 * This is the entry point method.
 	 */
 	public void onModuleLoad() {
+		//Tabs creation and insertion
 		tabsContent=new HashMap<String, DockPanel>();
 		tabsContent.put("Site", new DockPanel());
 		tabsContent.put("Elements", new DockPanel());
@@ -37,10 +37,15 @@ public class Richercms implements EntryPoint {
 		while (it.hasNext()) {
 			String string = (String) it.next();
 			tabPanel.add(tabsContent.get(string), string);
+			
 		}
+		tabPanel.selectTab(0);
+		
 		verticalPanel=new VerticalPanel();
 		verticalPanel.add(tabPanel);
 		horizontalPanel=new HorizontalPanel();
+		
+		// Create a tree with a few items in it.
 		Tree tree=new Tree();
 		tree.addItem("elem1");
 		tree.addItem("elem2");

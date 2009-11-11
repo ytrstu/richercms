@@ -13,8 +13,17 @@ There is an easy solution.
 
 = Details =
 
-Add this to your VM argument in the Run As Configurations:
+Here's the fix: 
 
--javaagent:/Applications/eclipse/plugins/ 
-com.google.appengine.eclipse.sdkbundle_1.2.6.v200910131704/appengine- 
-java-sdk-1.2.6/lib/agent/appengine-agent.jar 
+1) Under your project properties, select "Run/Debug Settings" 
+
+2) Highlight the debug configuration you use and click the "edit" button
+
+3) Select the "arguments" tab, and add the following to the "VM Arguments" window: 
+
+-javaagent:C:\opt\eclipse-ganymede\plugins 
+\com.google.appengine.eclipse.sdkbundle_1.2.6.v200910130758\appengine- 
+java-sdk-1.2.6\lib\agent\appengine-agent.jar 
+
+NOTE: Of course modify the above path to fit your directory structure 
+and OS 

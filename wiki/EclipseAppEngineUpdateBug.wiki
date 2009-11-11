@@ -1,0 +1,20 @@
+#Broken project after updating appengine
+
+= Introduction =
+
+If you have the problem : 
+
+_Unable to start embedded HTTP server
+java.lang.RuntimeException: Unable to locate the App Engine agent. Please use dev_appserver, KickStart,  or set the jvm flag: "-javaagent:<sdk_root>/lib/agent/appengine-agent.jar"_
+
+
+There is an easy solution.
+
+
+= Details =
+
+Add this to your VM argument in the Run As Configurations:
+
+-javaagent:/Applications/eclipse/plugins/ 
+com.google.appengine.eclipse.sdkbundle_1.2.6.v200910131704/appengine- 
+java-sdk-1.2.6/lib/agent/appengine-agent.jar 

@@ -5,7 +5,7 @@
 If you have the problem : 
 
 _Unable to start embedded HTTP server
-java.lang.RuntimeException: Unable to locate the App Engine agent. Please use dev_appserver, KickStart,  or set the jvm flag: "-javaagent:<sdk_root>/lib/agent/appengine-agent.jar"_
+java.lang.RuntimeException: Unable to locate the App Engine agent..._
 
 
 There is an easy solution.

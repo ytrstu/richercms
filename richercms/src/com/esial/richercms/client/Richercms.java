@@ -26,19 +26,8 @@ public class Richercms implements EntryPoint {
 	 */
 	public void onModuleLoad() {
 		//Tabs creation and insertion
-		tabsContent=new HashMap<String, DockPanel>();
-		tabsContent.put("Site", new DockPanel());
-		tabsContent.put("Elements", new DockPanel());
-		tabsContent.put("Modules", new DockPanel());
-		tabsContent.put("Utilisateurs", new DockPanel());
-		tabsContent.put("Rapports", new DockPanel());
-		tabPanel=new TabPanel();
-		Iterator<String> it=tabsContent.keySet().iterator();
-		while (it.hasNext()) {
-			String string = (String) it.next();
-			tabPanel.add(tabsContent.get(string), string);
-			
-		}
+		tabsContent=createTabs();
+		tabPanel=insertTabsInPanel();
 		tabPanel.selectTab(0);
 		
 		verticalPanel=new VerticalPanel();
@@ -46,10 +35,7 @@ public class Richercms implements EntryPoint {
 		horizontalPanel=new HorizontalPanel();
 		
 		// Create and add a tree with a few items in it.
-		Tree tree=new Tree();
-		tree.addItem("elem1");
-		tree.addItem("elem2");
-		tree.addItem("elem3");
+		Tree tree = createTree();
 		horizontalPanel.add(tree);
 		
 		//Add a text area and set size
@@ -59,5 +45,33 @@ public class Richercms implements EntryPoint {
 		
 		verticalPanel.add(horizontalPanel);
 		RootPanel.get().add(verticalPanel);
+	}
+
+	protected Tree createTree() {
+		Tree tree=new Tree();
+		tree.addItem("elem1");
+		tree.addItem("elem2");
+		tree.addItem("elem3");
+		return tree;
+	}
+
+	private TabPanel insertTabsInPanel() {
+		TabPanel tPanel=new TabPanel();
+		Iterator<String> it=tabsContent.keySet().iterator();
+		while (it.hasNext()) {
+			String string = (String) it.next();
+			tabPanel.add(tabsContent.get(string), string);	
+		}
+		return tPanel;
+	}
+	
+	private  HashMap<String, DockPanel> createTabs() {
+		HashMap<String, DockPanel> tContent=new HashMap<String, DockPanel>();
+		tContent.put("Site", new DockPanel());
+		tContent.put("Elements", new DockPanel());
+		tContent.put("Modules", new DockPanel());
+		tContent.put("Utilisateurs", new DockPanel());
+		tContent.put("Rapports", new DockPanel());
+		return tContent;
 	}
 }

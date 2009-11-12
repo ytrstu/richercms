@@ -45,15 +45,18 @@ public class Richercms implements EntryPoint {
 		verticalPanel.add(tabPanel);
 		horizontalPanel=new HorizontalPanel();
 		
-		// Create a tree with a few items in it.
+		// Create and add a tree with a few items in it.
 		Tree tree=new Tree();
 		tree.addItem("elem1");
 		tree.addItem("elem2");
 		tree.addItem("elem3");
 		horizontalPanel.add(tree);
+		
+		//Add a text area and set size
 		RichTextArea richTextArea=new RichTextArea();
 		richTextArea.setSize("500px", "400px");
 		horizontalPanel.add(richTextArea);
+		
 		verticalPanel.add(horizontalPanel);
 		RootPanel.get().add(verticalPanel);
 	}

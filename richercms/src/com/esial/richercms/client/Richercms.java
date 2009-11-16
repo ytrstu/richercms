@@ -18,4 +18,8 @@ public class Richercms implements EntryPoint {
 		mainView=new MainView();
 		RootPanel.get().add(mainView.getContent());
 	}
+
+	public MainView getMainView() {
+		return mainView;
+	}
 }

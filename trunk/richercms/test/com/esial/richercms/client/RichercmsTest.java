@@ -1,19 +1,27 @@
 package com.esial.richercms.client;
 
+import com.esial.richercms.client.view.MainView;
 import com.google.gwt.junit.client.GWTTestCase;
-import com.google.gwt.user.client.ui.Tree;
 
 
 public class RichercmsTest extends GWTTestCase {
+	
+	private Richercms underTest;
 
 	@Override
 	public String getModuleName() {
 		return "com.esial.richercms.Richercms";
 	}
 	
-	public void testCreateTree(){
-		Tree tree=new Tree();
-		assertEquals(0, tree.getItemCount());
+	@Override
+	protected void gwtSetUp() throws Exception {
+		super.gwtSetUp();
+		underTest=new Richercms();
 	}
-
+	
+	public void testOnModuleLoad(){
+		underTest.onModuleLoad();
+		MainView mainView=underTest.getMainView();
+		assertNotNull(mainView);
+	}
 }

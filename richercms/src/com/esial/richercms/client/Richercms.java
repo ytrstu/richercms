@@ -1,6 +1,5 @@
 package com.esial.richercms.client;
 
-import com.esial.richercms.client.examples.view.MainExampleView;
 import com.esial.richercms.client.view.MainView;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -17,8 +16,8 @@ public class Richercms implements EntryPoint {
 	 */
 	public void onModuleLoad() {
 		mainView=new MainView();
-		MainExampleView mainExampleView = new MainExampleView();
-		RootPanel.get().add(mainExampleView.getPanel());
+		//MainExampleView mainExampleView = new MainExampleView();
+		RootPanel.get().add(mainView.getContent());
 	}
 
 	public MainView getMainView() {

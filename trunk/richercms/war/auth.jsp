@@ -19,7 +19,7 @@ Welcome,
 <A
 	HREF="<%=userService.createLogoutURL("/examples/authentication.jsp")%>">log
 out</A>
->)
+)
 <%
 	}
 %>

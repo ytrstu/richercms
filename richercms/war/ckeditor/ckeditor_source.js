@@ -13,11 +13,11 @@ if(!window.CKEDITOR)window.CKEDITOR=(function(){var a={timestamp:'',version:'3.0
 // CKEDITOR.timestamp = ( new Date() ).valueOf();
 
 if ( CKEDITOR.loader )
-	CKEDITOR.loader.load( 'core/ckeditor' );
+	CKEDITOR.loader.load( '_source/ckeditor' );
 else
 {
 	// Set the script name to be loaded by the loader.
-	CKEDITOR._autoLoad = 'core/ckeditor';
+	CKEDITOR._autoLoad = '_source/ckeditor';
 
 	// Include the loader script.
 	document.write(

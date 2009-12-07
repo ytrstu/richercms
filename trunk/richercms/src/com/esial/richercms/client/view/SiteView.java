@@ -7,6 +7,7 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.RichTextArea;
 import com.google.gwt.user.client.ui.Tree;
+import com.google.gwt.user.client.ui.TreeItem;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.RichTextArea.BasicFormatter;
 import com.google.gwt.user.client.ui.RichTextArea.ExtendedFormatter;
@@ -67,9 +68,14 @@ public class SiteView extends FlowPanel {
 
 	protected Tree createTree() {
 		Tree tree=new Tree();
-		tree.addItem("elem1");
-		tree.addItem("elem2");
-		tree.addItem("elem3");
+		TreeItem pere1=new TreeItem("Catégorie 1");
+		pere1.addItem("Sous-Catégorie 1.1");
+		pere1.addItem("Sous-Catégorie 1.2");
+		tree.addItem(pere1);
+		TreeItem pere2=new TreeItem("Catégorie 2");
+		pere2.addItem("Sous-Catégorie 2.1");
+		pere2.addItem("Sous-Catégorie 2.2");
+		tree.addItem(pere2);
 		return tree;
 	}
 

@@ -15,7 +15,6 @@ public class MainView {
 	private VerticalPanel content;
 	private TabPanel tabPanel;
 	private HashMap<String, FlowPanel> tabsContent;
-	private HorizontalPanel horizontalPanel;
 	
 	public MainView() {
 		super();
@@ -26,29 +25,9 @@ public class MainView {
 		
 		content=new VerticalPanel();
 		content.add(tabPanel);
-		horizontalPanel=new HorizontalPanel();
-		
-		// Create and add a tree with a few items in it.
-		Tree tree = createTree();
-		horizontalPanel.add(tree);
-		
-		//Add a text area and set size
-		RichTextArea richTextArea=new RichTextArea();
-		richTextArea.setSize("500px", "400px");
-		horizontalPanel.add(richTextArea);
 		
 		FlowPanel siteDock = tabsContent.get("Site");
-		siteDock.add(horizontalPanel);
-		
-		//content.add(horizontalPanel);
-	}
-	
-	protected Tree createTree() {
-		Tree tree=new Tree();
-		tree.addItem("elem1");
-		tree.addItem("elem2");
-		tree.addItem("elem3");
-		return tree;
+		siteDock.add(new SiteView());
 	}
 
 	private TabPanel insertTabsInPanel() {

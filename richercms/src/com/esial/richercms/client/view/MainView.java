@@ -25,6 +25,7 @@ public class MainView {
 		
 		FlowPanel siteDock = tabsContent.get("Site");
 		siteDock.add(new SiteView());
+		tabPanel.selectTab(0);
 	}
 
 	private TabPanel insertTabsInPanel() {
@@ -40,10 +41,7 @@ public class MainView {
 	private  HashMap<String, FlowPanel> createTabs() {
 		HashMap<String, FlowPanel> tContent=new HashMap<String, FlowPanel>();
 		tContent.put("Site", new FlowPanel());
-		tContent.put("Elements", new FlowPanel());
-		tContent.put("Modules", new FlowPanel());
-		tContent.put("Utilisateurs", new FlowPanel());
-		tContent.put("Rapports", new FlowPanel());
+		tContent.put("Administration", new FlowPanel());
 		return tContent;
 	}
 

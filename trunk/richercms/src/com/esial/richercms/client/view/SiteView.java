@@ -1,8 +1,11 @@
 package com.esial.richercms.client.view;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.RichTextArea;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -18,23 +21,31 @@ public class SiteView extends FlowPanel {
 		panel=new HorizontalPanel();
 		buttonPanel=new HorizontalPanel();
 		verticalPanel=new VerticalPanel();
+		verticalPanel.setSize("500px", "600px");
 		// Create and add a tree with a few items in it.
 		Tree tree = createTree();
+		tree.setSize("300px", "600px");
 		panel.add(tree);
 		
-		//Add a text area and set size
-		RichTextArea richTextArea=createRichTextArea();
+		//Add buttons
+		Button addPageButton=new Button("Créer Page");
+		addPageButton.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				verticalPanel.clear();
+				verticalPanel.add(new Label("Choix de la racine:"));
+			}
+		});
+		buttonPanel.add(addPageButton);
+		Button modifPageButton=new Button("Modifie Page");
+		buttonPanel.add(modifPageButton);
+		Button deletePageButton=new Button("Supprimer Page");
+		buttonPanel.add(deletePageButton);
 		verticalPanel.add(buttonPanel);
-		verticalPanel.add(richTextArea);
 		panel.add(verticalPanel);
 		
 		this.add(panel);
-	}
-	
-	protected RichTextArea createRichTextArea(){
-		RichTextArea richTextArea=new RichTextArea();
-		richTextArea.setSize("500px", "400px");
-		return richTextArea;
 	}
 
 	protected Tree createTree() {

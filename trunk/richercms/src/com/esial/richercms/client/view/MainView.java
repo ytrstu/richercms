@@ -25,6 +25,8 @@ public class MainView {
 		
 		FlowPanel siteDock = tabsContent.get("Site");
 		siteDock.add(new SiteView());
+		FlowPanel adminDock = tabsContent.get("Administration");
+		adminDock.add(new AdminView());
 		tabPanel.selectTab(0);
 	}
 

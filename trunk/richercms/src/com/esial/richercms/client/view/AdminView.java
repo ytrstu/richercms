@@ -31,7 +31,8 @@ public class AdminView extends FlowPanel {
 				panel.remove(adminPanel);
 				
 				addPanel=new VerticalPanel();
-							
+				addPanel.setSize("500px", "400px");
+				
 				Label lbllogin = new Label("Login (e-mail adress) :");
 				TextBox login = new TextBox();
 				Label lblpwd1 = new Label("Password :");
@@ -47,7 +48,7 @@ public class AdminView extends FlowPanel {
 				addPanel.add(pwd2);
 				
 				Button createUser =new Button("Create user");
-				Button cancelAction =new Button("Annuler");
+				Button cancelAction =new Button("Cancel");
 				cancelAction.addClickHandler(new ClickHandler() {
 					
 					@Override

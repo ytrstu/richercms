@@ -5,11 +5,10 @@ import java.util.Iterator;
 
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.TabPanel;
-import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class MainView {
 	
-	private VerticalPanel content;
+	private FlowPanel content;
 	private TabPanel tabPanel;
 	private HashMap<String, FlowPanel> tabsContent;
 	
@@ -20,7 +19,7 @@ public class MainView {
 		tabPanel=insertTabsInPanel();
 		tabPanel.selectTab(0);
 		
-		content=new VerticalPanel();
+		content=new FlowPanel();
 		content.add(tabPanel);
 		
 		FlowPanel siteDock = tabsContent.get("Site");
@@ -47,11 +46,11 @@ public class MainView {
 		return tContent;
 	}
 
-	public VerticalPanel getContent() {
+	public FlowPanel getContent() {
 		return content;
 	}
 
-	public void setContent(VerticalPanel content) {
+	public void setContent(FlowPanel content) {
 		this.content = content;
 	}
 

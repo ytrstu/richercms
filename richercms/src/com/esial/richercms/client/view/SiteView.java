@@ -8,18 +8,18 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.HorizontalSplitPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
-import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class SiteView extends FlowPanel {
 
 	private HorizontalPanel panel;
 	private HorizontalPanel buttonPanel;
-	private VerticalPanel verticalPanel;
+	private HorizontalSplitPanel splitPanel;
 	private Tree tree;
 	private TextBox nameBox;
 	private ListBox listBox;
@@ -28,8 +28,8 @@ public class SiteView extends FlowPanel {
 		super();
 		panel = new HorizontalPanel();
 		buttonPanel = new HorizontalPanel();
-		verticalPanel = new VerticalPanel();
-		verticalPanel.setSize("500px", "600px");
+		splitPanel = new HorizontalSplitPanel();
+		splitPanel.setSize("500px", "600px");
 		// Create and add a tree with a few items in it.
 		tree = createTree();
 		tree.setSize("300px", "600px");
@@ -41,7 +41,7 @@ public class SiteView extends FlowPanel {
 
 			@Override
 			public void onClick(ClickEvent event) {
-				verticalPanel.clear();
+				splitPanel.clear();
 				HorizontalPanel hChoicePanel = new HorizontalPanel();
 				hChoicePanel.add(new Label("Choix du noeud parent:"));
 				listBox = new ListBox(false);
@@ -53,20 +53,20 @@ public class SiteView extends FlowPanel {
 				}
 				listBox.addItem("Nouvelle catégorie");
 				hChoicePanel.add(listBox);
-				verticalPanel.add(hChoicePanel);
+				splitPanel.add(hChoicePanel);
 				HorizontalPanel hNamePanel = new HorizontalPanel();
 				hNamePanel.add(new Label("Nom de la page:"));
 				nameBox = new TextBox();
 				nameBox.setSize("100px", "25px");
 				hNamePanel.add(nameBox);
-				verticalPanel.add(hNamePanel);
+				splitPanel.add(hNamePanel);
 				Button createButton = new Button("Créer");
 				createButton.addClickHandler(new ClickHandler() {
 
 					@Override
 					public void onClick(ClickEvent event) {
-						verticalPanel.clear();
-						verticalPanel.add(new Label("Editeur html"));
+						splitPanel.clear();
+						splitPanel.add(new Label("Editeur html"));
 						addNewItemInTree(nameBox.getText(),listBox.getItemText(listBox.getSelectedIndex()));
 					}
 				});
@@ -74,7 +74,7 @@ public class SiteView extends FlowPanel {
 				buttonPanel.clear();
 				buttonPanel.add(createButton);
 				buttonPanel.add(cancelButton);
-				verticalPanel.add(buttonPanel);
+				splitPanel.add(buttonPanel);
 			}
 		});
 		buttonPanel.add(addPageButton);
@@ -82,8 +82,8 @@ public class SiteView extends FlowPanel {
 		buttonPanel.add(modifPageButton);
 		Button deletePageButton = new Button("Supprimer Page");
 		buttonPanel.add(deletePageButton);
-		verticalPanel.add(buttonPanel);
-		panel.add(verticalPanel);
+		splitPanel.setRightWidget(buttonPanel);
+		panel.add(splitPanel);
 
 		this.add(panel);
 	}

@@ -7,7 +7,7 @@
 %>
 Example page of authentication. No role is checked.
 <br/>
-Please 1
+Please
 <A
 	HREF="<%=userService.createLoginURL("/examples/authentication.jsp")%>">log
 in</A>

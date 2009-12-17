@@ -1,5 +1,6 @@
 package com.esial.richercms.client.view;
 
+import com.esial.richercms.client.CmsPageEdition;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
@@ -15,6 +16,7 @@ public class AdminView extends FlowPanel {
 	private VerticalPanel adminPanel;
 	private VerticalPanel addPanel;
 	//private FlowPanel editPanel;
+	private CmsPageEdition editor;
 
 	public AdminView() {
 		super();
@@ -67,6 +69,15 @@ public class AdminView extends FlowPanel {
 			
 		});
 		Button editUser = new Button("Edit an existing user");
+		editUser.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				panel.remove(adminPanel);
+				editor = new CmsPageEdition();
+				panel.add(editor);		
+			}
+		});
 		
 		adminPanel.add(addUser);
 		adminPanel.add(editUser);

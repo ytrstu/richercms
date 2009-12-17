@@ -24,7 +24,7 @@
 	<security-constraint>
         <web-resource-collection>
         	<web-resource-name>auth</web-resource-name>
-            <url-pattern>Richercms.html</url-pattern>
+            <url-pattern>*</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <role-name>*</role-name>

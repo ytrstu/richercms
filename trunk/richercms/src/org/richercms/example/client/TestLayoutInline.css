@@ -1,0 +1,10 @@
+/** Add css rules here for your application. */
+
+.testLabel {
+	font-size: 25px;
+}
+
+@external .gwt-Label {
+	font-size: 20px;
+}
+

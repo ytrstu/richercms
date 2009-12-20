@@ -15,7 +15,7 @@ public class AdminView extends FlowPanel {
 	private HorizontalPanel panel;
 	private VerticalPanel adminPanel;
 	private VerticalPanel addPanel;
-	//private FlowPanel editPanel;
+	private VerticalPanel editPanel;
 	private CmsPageEdition editor;
 
 	public AdminView() {
@@ -24,8 +24,7 @@ public class AdminView extends FlowPanel {
 		adminPanel = new VerticalPanel();
 		adminPanel.setSize("500px", "400px");
 		
-		Button addUser = new Button("Add a new user");
-		
+		Button addUser = new Button("Add a new user");		
 		addUser.addClickHandler(new ClickHandler() {
 			
 			@Override
@@ -35,52 +34,58 @@ public class AdminView extends FlowPanel {
 				addPanel=new VerticalPanel();
 				addPanel.setSize("500px", "400px");
 				
-				Label lbllogin = new Label("Login (e-mail adress) :");
+				Label lbllogin = new Label("Login - Gmail valid e-mail adress :");
 				TextBox login = new TextBox();
-				Label lblpwd1 = new Label("Password :");
-				PasswordTextBox pwd1 = new PasswordTextBox();
-				Label lblpwd2 = new Label("Type again your password :");
-				PasswordTextBox pwd2 = new PasswordTextBox();
-				
 				addPanel.add(lbllogin);
 				addPanel.add(login);
-				addPanel.add(lblpwd1);
-				addPanel.add(pwd1);
-				addPanel.add(lblpwd2);
-				addPanel.add(pwd2);
-				
-				Button createUser =new Button("Create user");
+						
+				Button bpAddUser =new Button("Add new user");
 				Button cancelAction =new Button("Cancel");
 				cancelAction.addClickHandler(new ClickHandler() {
-					
 					@Override
 					public void onClick(ClickEvent event) {
 						panel.remove(addPanel);
 						panel.add(adminPanel);				
 					}
 				});
-				
-			
-				addPanel.add(createUser);
+				addPanel.add(bpAddUser);
 				addPanel.add(cancelAction);
 				panel.add(addPanel);
-				
 			}
-			
 		});
-		Button editUser = new Button("Edit an existing user");
-		editUser.addClickHandler(new ClickHandler() {
+		
+		Button bpEditUser = new Button("Edit an existing user");
+		bpEditUser.addClickHandler(new ClickHandler() {
 			
 			@Override
 			public void onClick(ClickEvent event) {
 				panel.remove(adminPanel);
-				editor = new CmsPageEdition();
-				panel.add(editor);		
+				/*editor = new CmsPageEdition();
+				panel.add(editor);*/		
+				
+				editPanel = new VerticalPanel();
+				editPanel.setSize("500px", "400px");
+				
+										
+				Button cancelAction =new Button("Cancel");
+				cancelAction.addClickHandler(new ClickHandler() {
+					
+					@Override
+					public void onClick(ClickEvent event) {
+						panel.remove(editPanel);
+						panel.add(adminPanel);				
+					}
+				});
+				
+			
+				editPanel.add(cancelAction);
+				panel.add(editPanel);
+				
 			}
+			
 		});
-		
 		adminPanel.add(addUser);
-		adminPanel.add(editUser);
+		adminPanel.add(bpEditUser);
 		panel.add(adminPanel);
 		this.add(panel);
 	}

@@ -28,3 +28,13 @@
     box-shadow: 8px 8px 12px #555; 
 }
 
+.gwt-SplitLayoutPanel { 
+}
+
+.gwt-SplitLayoutPanel .gwt-SplitLayoutPanel-HDragger {
+	cursor: e-resize; 
+	border-top:1px solid #aaaaaa;  
+}
+.gwt-SplitLayoutPanel .gwt-SplitLayoutPanel-VDragger { 
+	cursor: n-resize; 
+} 

@@ -8,6 +8,7 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
+import com.google.gwt.user.client.ui.SplitLayoutPanel;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
 
 public class TestLayout implements EntryPoint {
@@ -27,10 +28,8 @@ public class TestLayout implements EntryPoint {
 		    p.add(layoutPanel1, "Persistence example");
 
 		    LayoutPanel layoutPanel2 = new LayoutPanel();
-		    layoutPanel2.setStyleName("tab-content");
-			int height = Window.getClientHeight()-50;
-		    TinyMCE tmce = new TinyMCE(height+"px");
-		    layoutPanel2.add(tmce);
+		    //layoutPanel2.setStyleName("tab-content");
+		    layoutPanel2.add(createTab2());
 		    p.add(layoutPanel2, "TinyMce with resize");
 		    
 		    Label other = new Label("Example of new CssResources");
@@ -51,4 +50,30 @@ public class TestLayout implements EntryPoint {
 		
 	}
 
+	private SplitLayoutPanel createTab2() {
+		SplitLayoutPanel p = new SplitLayoutPanel();
+		LayoutPanel navPanel = new LayoutPanel();
+		navPanel.setStyleName("tab-content");
+		navPanel.add(new HTML("navigation"));
+		p.addWest(navPanel, 168);
+		
+		int height = Window.getClientHeight()-30;
+		
+		LayoutPanel listPanel = new LayoutPanel();
+		listPanel.setStyleName("tab-content");
+		listPanel.add(new HTML("list"));
+		p.addNorth(listPanel, height/2);
+		
+		LayoutPanel tinyMcePanel = new LayoutPanel();
+		tinyMcePanel.setStyleName("tab-content");
+		// The real height is now calculated on onLoad method of TinyMCE
+		// On resize, the height is calculated on onResize method of ResizeTinyMCETextArea
+	    TinyMCE tmce = new TinyMCE((height/2-50)+"px");
+		tinyMcePanel.add(tmce);
+		
+		p.add(tinyMcePanel);
+		
+		return p;
+	}
+	
 }

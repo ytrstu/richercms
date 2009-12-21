@@ -93,7 +93,11 @@ public class TinyMCE extends ResizeComposite {
         DeferredCommand.addCommand(new Command() {
             public void execute() {
                 setWidth("100%");
-                initTinyMCE();
+        		LayoutPanel parent = (LayoutPanel) ta.getParent();
+        		int height = parent.getOffsetHeight() - 13;
+        		ta.setHeight(height+"px");
+        		
+               initTinyMCE();
             }
         });
     }

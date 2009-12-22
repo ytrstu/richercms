@@ -23,11 +23,17 @@
   
   	<script src='tiny_mce_3.2.7/tiny_mce_src.js' type='text/javascript'></script>
     <script language="javascript" type="text/javascript">
+    function richerCmsFileBrowser(field_name, url, type, win) {
+    	// Do custom browser logic
+    	win.document.forms[0].elements[field_name].value = 'Ma valeur sur le type : ' + type;
+    }
+
     tinyMCE.init({
         mode : "textareas",
         theme : "advanced",
         plugins : "table,advhr,advimage,advlink,emotions,insertdatetime,preview,searchreplace,"+
                   "print,contextmenu",
+        file_browser_callback : "richerCmsFileBrowser",
         theme_advanced_disable : "code",
         theme_advanced_buttons1_add_before : "save,separator",
         theme_advanced_buttons1_add : "fontselect,fontsizeselect",

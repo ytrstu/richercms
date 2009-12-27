@@ -2,7 +2,6 @@ package com.esial.richercms.client.view;
 
 import java.util.HashMap;
 import java.util.Iterator;
-
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.TabPanel;
 
@@ -11,6 +10,8 @@ public class MainView {
 	private FlowPanel content;
 	private TabPanel tabPanel;
 	private HashMap<String, FlowPanel> tabsContent;
+	
+	//private String email;
 	
 	public MainView() {
 		super();
@@ -26,6 +27,8 @@ public class MainView {
 		siteDock.add(new SiteView());
 		FlowPanel adminDock = tabsContent.get("Administration");
 		adminDock.add(new AdminView());
+		content.insert(new UserView(), 0);
+
 		tabPanel.selectTab(0);
 	}
 

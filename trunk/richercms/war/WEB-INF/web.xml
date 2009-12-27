@@ -15,6 +15,16 @@
 		<servlet-name>greetServlet</servlet-name>
 		<url-pattern>/richercms/greet</url-pattern>
 	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>userServlet</servlet-name>
+		<servlet-class>com.esial.richercms.server.UserInfoServiceImpl</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+ 		<servlet-name>userServlet</servlet-name>
+ 		<url-pattern>/richercms/user</url-pattern>
+	</servlet-mapping>
 
 	<!-- Default page to serve -->
 	<welcome-file-list>

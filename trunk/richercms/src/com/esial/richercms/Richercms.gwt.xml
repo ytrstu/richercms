@@ -13,6 +13,9 @@
 
   <!-- Other module inherits                                      -->
 
+  <!-- Available Services -->
+  <servlet path="/user" class="com.esial.richercms.server.UserInfoServiceImpl" />
+
   <!-- Specify the app entry point class.                         -->
   <entry-point class='com.esial.richercms.client.Richercms'/>
 </module>

@@ -14,6 +14,11 @@
   <!-- Other module inherits                                      -->
   <inherits name='com.google.gwt.i1n8.I1N8'/>
 
+  <!-- Languages properties -->
+  <extend-property name="locale" values="en"/>
+  <extend-property name="locale" values="fr"/>
+  <extend-property name="locale" values="de"/>
+  	
   <!-- Available Services -->
   <servlet path="/user" class="com.esial.richercms.server.UserInfoServiceImpl" />
 

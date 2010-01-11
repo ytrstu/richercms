@@ -1,36 +1,31 @@
 package com.esial.richercms.server;
 
+import com.esial.richercms.client.UserInfo;
 import com.esial.richercms.client.UserInfoService;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
-public class UserInfoServiceImpl extends RemoteServiceServlet implements
-		UserInfoService {
+public class UserInfoServiceImpl extends RemoteServiceServlet implements UserInfoService {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -8597003183050309756L;
-	
-	@Override
-	public String getEmail() {
-	  UserService userService = UserServiceFactory.getUserService(); 
-	  User user = userService.getCurrentUser(); 
-	  if(user!=null) {
-		  return user.getEmail();
-	  } else {
-		  return null;
-	  }
-	}
+  public UserInfo login(String requestUri) {
+    UserService userService = UserServiceFactory.getUserService();
+    User user = userService.getCurrentUser();
+    UserInfo loginInfo = new UserInfo();
 
-	@Override
-	public String logout() {
-		UserService userService = UserServiceFactory.getUserService(); 
-		String logout = userService.createLogoutURL("/Richercms.html");
-		System.out.println(logout);
-		return logout;
-	}
+    if (user != null) {
+      loginInfo.setLoggedIn(true);
+      loginInfo.setEmailAddress(user.getEmail());
+      loginInfo.setNickname(user.getNickname());
+      loginInfo.setLogoutUrl(userService.createLogoutURL(requestUri));
+      if(userService.isUserAdmin()) loginInfo.setAdmin(true);
+      else loginInfo.setAdmin(false);
+    } else {
+      loginInfo.setLoggedIn(false);
+      loginInfo.setLoginUrl(userService.createLoginURL(requestUri));
+    }
+    return loginInfo;
+  }
 
 }

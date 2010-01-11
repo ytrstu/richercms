@@ -6,38 +6,22 @@
 <web-app>
 
 	<!-- Servlets -->
-	<servlet>
-		<servlet-name>greetServlet</servlet-name>
-		<servlet-class>com.esial.richercms.server.GreetingServiceImpl</servlet-class>
-	</servlet>
+  <servlet>
+    <servlet-name>userService</servlet-name>
+    <servlet-class>com.esial.richercms.server.UserInfoServiceImpl</servlet-class>
+  </servlet>
 
-	<servlet-mapping>
-		<servlet-name>greetServlet</servlet-name>
-		<url-pattern>/richercms/greet</url-pattern>
-	</servlet-mapping>
-	
-	<servlet>
-		<servlet-name>userServlet</servlet-name>
-		<servlet-class>com.esial.richercms.server.UserInfoServiceImpl</servlet-class>
-	</servlet>
+  <servlet-mapping>
+  <servlet-name>userService</servlet-name>
+  <url-pattern>/richercms/user</url-pattern>
+</servlet-mapping>
 
-	<servlet-mapping>
- 		<servlet-name>userServlet</servlet-name>
- 		<url-pattern>/richercms/user</url-pattern>
-	</servlet-mapping>
+
 
 	<!-- Default page to serve -->
 	<welcome-file-list>
 		<welcome-file>Richercms.html</welcome-file>
 	</welcome-file-list>
 
-	<security-constraint>
-        <web-resource-collection>
-        	<web-resource-name>authentication</web-resource-name>
-            <url-pattern>/*</url-pattern>
-        </web-resource-collection>
-        <auth-constraint>
-            <role-name>*</role-name>
-        </auth-constraint>
-    </security-constraint>
+	
 </web-app>

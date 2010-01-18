@@ -3,14 +3,19 @@ package com.esial.richercms.client.view;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import com.esial.richercms.client.MyHTMLPageService;
+import com.esial.richercms.client.MyHTMLPageServiceAsync;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.HorizontalSplitPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
@@ -25,6 +30,7 @@ public class SiteView extends FlowPanel {
 	private TextBox titleBox;
 	private TextBox nameBox;
 	private ListBox listBox;
+	private final MyHTMLPageServiceAsync pageService=GWT.create(MyHTMLPageService.class);
 
 	public SiteView() {
 		super();
@@ -157,7 +163,23 @@ public class SiteView extends FlowPanel {
 			public void onClick(ClickEvent event) {
 				splitPanel.remove(splitPanel.getRightWidget());
 				splitPanel.setRightWidget(new Label("Editeur html"));
-				addNewItemInTree(titleBox.getText(),listBox.getItemText(listBox.getSelectedIndex()));
+				//addNewItemInTree(titleBox.getText(),listBox.getItemText(listBox.getSelectedIndex()));
+				pageService.addPage("titi", new AsyncCallback<Void>() {
+					
+					@Override
+					public void onSuccess(Void result) {
+						PopupPanel popup=new PopupPanel();
+						popup.setWidget(new Label("Victoire"));
+						popup.show();
+					}
+					
+					@Override
+					public void onFailure(Throwable caught) {
+						PopupPanel popup=new PopupPanel();
+						popup.setWidget(new Label(caught.getMessage()));
+						popup.show();
+					}
+				});
 			}
 		});
 		Button cancelButton = new Button("Annuler");

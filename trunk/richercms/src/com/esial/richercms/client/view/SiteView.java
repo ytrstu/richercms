@@ -3,8 +3,8 @@ package com.esial.richercms.client.view;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import com.esial.richercms.client.MyHTMLPageService;
-import com.esial.richercms.client.MyHTMLPageServiceAsync;
+import com.esial.richercms.client.PageService;
+import com.esial.richercms.client.PageServiceAsync;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -30,7 +30,7 @@ public class SiteView extends FlowPanel {
 	private TextBox titleBox;
 	private TextBox nameBox;
 	private ListBox listBox;
-	private final MyHTMLPageServiceAsync pageService=GWT.create(MyHTMLPageService.class);
+	private final PageServiceAsync pageService = GWT.create(PageService.class);
 
 	public SiteView() {
 		super();
@@ -63,7 +63,7 @@ public class SiteView extends FlowPanel {
 			@Override
 			public void onClick(ClickEvent event) {
 				splitPanel.remove(splitPanel.getRightWidget());
-				VerticalPanel vPanel=new VerticalPanel();
+				VerticalPanel vPanel = new VerticalPanel();
 				HorizontalPanel hChoicePanel = createChoicePanel();
 				vPanel.add(hChoicePanel);
 				HorizontalPanel hTitlePanel = createTitlePanel();
@@ -109,28 +109,33 @@ public class SiteView extends FlowPanel {
 		}
 		return result;
 	}
-	
-	protected void addNewItemInTree(String name, String parent){
-		if(parent.equals("Nouvelle catégorie")){
+
+	protected void addNewItemInTree(String name, String parent) {
+		if (parent.equals("Nouvelle catégorie")) {
 			tree.addItem(name);
 			return;
 		}
 		for (int i = 0; i < tree.getItemCount(); i++) {
-			String text=tree.getItem(i).getText();
-			if(text.equals(parent)) tree.getItem(i).addItem(name);
-			else lookupTreeItem(tree.getItem(i),parent,name);
+			String text = tree.getItem(i).getText();
+			if (text.equals(parent))
+				tree.getItem(i).addItem(name);
+			else
+				lookupTreeItem(tree.getItem(i), parent, name);
 		}
 	}
 
-	protected void lookupTreeItem(TreeItem item,String parent,String name) {
+	protected void lookupTreeItem(TreeItem item, String parent, String name) {
 		for (int i = 0; i < item.getChildCount(); i++) {
-			String text=item.getChild(i).getText();
-			if(text.equals(parent)) item.addItem(name);
-			else if(item.getChild(i).getChildCount()==0) return;
-			else lookupTreeItem(item.getChild(i), parent, name);
+			String text = item.getChild(i).getText();
+			if (text.equals(parent))
+				item.addItem(name);
+			else if (item.getChild(i).getChildCount() == 0)
+				return;
+			else
+				lookupTreeItem(item.getChild(i), parent, name);
 		}
 	}
-	
+
 	private HorizontalPanel createTitlePanel() {
 		HorizontalPanel hNamePanel = new HorizontalPanel();
 		hNamePanel.add(new Label("Titre de la page:"));
@@ -154,37 +159,34 @@ public class SiteView extends FlowPanel {
 		hChoicePanel.add(listBox);
 		return hChoicePanel;
 	}
-	
+
 	private void updateButtonPanel() {
 		Button createButton = new Button("Créer");
 		createButton.addClickHandler(new ClickHandler() {
 
 			@Override
 			public void onClick(ClickEvent event) {
-				splitPanel.remove(splitPanel.getRightWidget());
-				splitPanel.setRightWidget(new Label("Editeur html"));
-				//addNewItemInTree(titleBox.getText(),listBox.getItemText(listBox.getSelectedIndex()));
-				pageService.addPage("titi", new AsyncCallback<Void>() {
-					
+				pageService.addPage("test.test", new AsyncCallback<Void>() {
+
 					@Override
 					public void onSuccess(Void result) {
-						PopupPanel popup=new PopupPanel();
-						popup.setWidget(new Label("Victoire"));
-						popup.show();
+						splitPanel.remove(splitPanel.getRightWidget());
+						splitPanel.setRightWidget(new Label("Editeur html"));
+						addNewItemInTree(titleBox.getText(), listBox
+								.getItemText(listBox.getSelectedIndex()));
 					}
-					
+
 					@Override
 					public void onFailure(Throwable caught) {
-						PopupPanel popup=new PopupPanel();
-						popup.setWidget(new Label(caught.getMessage()));
-						popup.show();
+						splitPanel.remove(splitPanel.getRightWidget());
+						splitPanel.setRightWidget(new Label(caught.getMessage()));
 					}
 				});
 			}
 		});
 		Button cancelButton = new Button("Annuler");
 		cancelButton.addClickHandler(new ClickHandler() {
-			
+
 			@Override
 			public void onClick(ClickEvent event) {
 				splitPanel.remove(splitPanel.getRightWidget());
@@ -197,7 +199,7 @@ public class SiteView extends FlowPanel {
 		buttonPanel.add(createButton);
 		buttonPanel.add(cancelButton);
 	}
-	
+
 	private HorizontalPanel createNamePanel() {
 		HorizontalPanel hNamePanel = new HorizontalPanel();
 		hNamePanel.add(new Label("Nom du fichier HMTL: "));

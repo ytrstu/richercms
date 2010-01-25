@@ -10,21 +10,23 @@
     <servlet-name>userService</servlet-name>
     <servlet-class>com.esial.richercms.server.UserInfoServiceImpl</servlet-class>
   </servlet>
+  
+  <servlet>
+    <servlet-name>pageService</servlet-name>
+    <servlet-class>com.esial.richercms.server.PageServiceImpl</servlet-class>
+  </servlet>
+  
 
   <servlet-mapping>
   <servlet-name>userService</servlet-name>
   <url-pattern>/richercms/user</url-pattern>
 </servlet-mapping>
 
-<servlet>
-    <servlet-name>pageService</servlet-name>
-    <servlet-class>com.esial.richercms.server.MyHTMLPageServiceImpl</servlet-class>
-  </servlet>
-  
-  <servlet-mapping>
+<servlet-mapping>
     <servlet-name>pageService</servlet-name>
     <url-pattern>/richercms/pages</url-pattern>
   </servlet-mapping>
+
 
 
 	<!-- Default page to serve -->

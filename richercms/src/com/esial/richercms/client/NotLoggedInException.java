@@ -1,6 +1,8 @@
 package com.esial.richercms.client;
 
-public class NotLoggedInException extends Exception {
+import java.io.Serializable;
+
+public class NotLoggedInException extends Exception implements Serializable{
 
 	public NotLoggedInException() {
 	    super();

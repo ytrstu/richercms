@@ -24,8 +24,6 @@ public class Richercms implements EntryPoint {
 	}
 
 	public static Richercms getInstance() {
-		if (instance==null) 
-			instance = new Richercms();
 		return instance;
 	}
 
@@ -36,6 +34,7 @@ public class Richercms implements EntryPoint {
 	 */
 	public void onModuleLoad() {
 		// Check login status using login service.
+		instance = this;
 		UserInfoServiceAsync loginService = GWT.create(UserInfoService.class);
 		loginService.login(GWT.getHostPageBaseURL(), new AsyncCallback<UserInfo>() {
 			public void onFailure(Throwable error) {

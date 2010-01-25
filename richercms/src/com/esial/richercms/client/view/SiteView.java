@@ -1,43 +1,32 @@
 package com.esial.richercms.client.view;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
-import com.esial.richercms.client.PageService;
-import com.esial.richercms.client.PageServiceAsync;
-import com.google.gwt.core.client.GWT;
+import com.esial.richercms.client.CmsPageEdition;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.HorizontalSplitPanel;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.PopupPanel;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
-import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class SiteView extends FlowPanel {
 
 	private HorizontalPanel panel;
 	private HorizontalPanel buttonPanel;
 	private HorizontalSplitPanel splitPanel;
+
 	private Tree tree;
-	private TextBox titleBox;
-	private TextBox nameBox;
-	private ListBox listBox;
-	private final PageServiceAsync pageService = GWT.create(PageService.class);
+	private CmsPageEdition editor;
 
 	public SiteView() {
 		super();
 		panel = new HorizontalPanel();
 		buttonPanel = new HorizontalPanel();
 		splitPanel = new HorizontalSplitPanel();
-		splitPanel.setSize("900px", "600px");
+		splitPanel.setSize("1300px", "650px");
 		// Create and add a tree with a few items in it.
 		tree = createTree();
 		tree.setSize("300px", "600px");
@@ -63,16 +52,8 @@ public class SiteView extends FlowPanel {
 			@Override
 			public void onClick(ClickEvent event) {
 				splitPanel.remove(splitPanel.getRightWidget());
-				VerticalPanel vPanel = new VerticalPanel();
-				HorizontalPanel hChoicePanel = createChoicePanel();
-				vPanel.add(hChoicePanel);
-				HorizontalPanel hTitlePanel = createTitlePanel();
-				vPanel.add(hTitlePanel);
-				HorizontalPanel hNamePanel = createNamePanel();
-				vPanel.add(hNamePanel);
-				updateButtonPanel();
-				vPanel.add(buttonPanel);
-				splitPanel.setRightWidget(vPanel);
+				editor=new CmsPageEdition(splitPanel);
+				splitPanel.setRightWidget(editor);
 			}
 		});
 	}
@@ -134,79 +115,6 @@ public class SiteView extends FlowPanel {
 			else
 				lookupTreeItem(item.getChild(i), parent, name);
 		}
-	}
-
-	private HorizontalPanel createTitlePanel() {
-		HorizontalPanel hNamePanel = new HorizontalPanel();
-		hNamePanel.add(new Label("Titre de la page:"));
-		titleBox = new TextBox();
-		titleBox.setSize("100px", "25px");
-		hNamePanel.add(titleBox);
-		return hNamePanel;
-	}
-
-	private HorizontalPanel createChoicePanel() {
-		HorizontalPanel hChoicePanel = new HorizontalPanel();
-		hChoicePanel.add(new Label("Choix du noeud parent:"));
-		listBox = new ListBox(false);
-		ArrayList<String> names = getTreeElements(tree);
-		Iterator<String> it = names.iterator();
-		while (it.hasNext()) {
-			String string = (String) it.next();
-			listBox.addItem(string);
-		}
-		listBox.addItem("Nouvelle catégorie");
-		hChoicePanel.add(listBox);
-		return hChoicePanel;
-	}
-
-	private void updateButtonPanel() {
-		Button createButton = new Button("Créer");
-		createButton.addClickHandler(new ClickHandler() {
-
-			@Override
-			public void onClick(ClickEvent event) {
-				pageService.addPage("test.test", new AsyncCallback<Void>() {
-
-					@Override
-					public void onSuccess(Void result) {
-						splitPanel.remove(splitPanel.getRightWidget());
-						splitPanel.setRightWidget(new Label("Editeur html"));
-						addNewItemInTree(titleBox.getText(), listBox
-								.getItemText(listBox.getSelectedIndex()));
-					}
-
-					@Override
-					public void onFailure(Throwable caught) {
-						splitPanel.remove(splitPanel.getRightWidget());
-						splitPanel.setRightWidget(new Label(caught.getMessage()));
-					}
-				});
-			}
-		});
-		Button cancelButton = new Button("Annuler");
-		cancelButton.addClickHandler(new ClickHandler() {
-
-			@Override
-			public void onClick(ClickEvent event) {
-				splitPanel.remove(splitPanel.getRightWidget());
-				buttonPanel.clear();
-				createButtonsForStartScreen();
-				splitPanel.setRightWidget(buttonPanel);
-			}
-		});
-		buttonPanel.clear();
-		buttonPanel.add(createButton);
-		buttonPanel.add(cancelButton);
-	}
-
-	private HorizontalPanel createNamePanel() {
-		HorizontalPanel hNamePanel = new HorizontalPanel();
-		hNamePanel.add(new Label("Nom du fichier HMTL: "));
-		nameBox = new TextBox();
-		nameBox.setSize("100px", "25px");
-		hNamePanel.add(nameBox);
-		return hNamePanel;
 	}
 
 }

@@ -23,11 +23,12 @@ public class PageServiceImpl extends RemoteServiceServlet implements
 			.getPersistenceManagerFactory("transactions-optional");
 
 	@Override
-	public void addPage(String uniqueName) throws NotLoggedInException {
+	public void addPage(String browser_title,String page_title, String url_name,String 
+			description, String content) throws NotLoggedInException {
 		checkLoggedIn();
 		PersistenceManager pm = getPersistenceManager();
 		try{
-			pm.makePersistent(new Page("test.test"));
+			pm.makePersistent(new Page(browser_title,page_title,url_name,description,content));
 		}finally{
 			pm.close();
 		};

@@ -1,9 +1,15 @@
 package com.esial.richercms.client;
 
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.HorizontalSplitPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.datepicker.client.DateBox;
@@ -18,9 +24,14 @@ public class CmsPageEdition extends Composite {
 	//private String pageTitlePrec = null;
 	private VerticalPanel panel;
 	private TinyMCE htmlEditor;
+	private final PageServiceAsync pageService = GWT.create(PageService.class);
+
 	private FlexTable tbl;
 	
-	public CmsPageEdition() {
+	private final HorizontalSplitPanel splitPanel;
+	
+	public CmsPageEdition(HorizontalSplitPanel split) {
+		this.splitPanel=split;
 		panel = new VerticalPanel();
 		tbl = new FlexTable();
 		panel.add(tbl);
@@ -52,6 +63,28 @@ public class CmsPageEdition extends Composite {
 		HorizontalPanel panelButton = new HorizontalPanel();
 		panel.add(panelButton);
 		Button ok = new Button("OK");
+		ok.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				pageService.addPage(browserTitle.getText(), pageTitle.getText(),
+						urlName.getText(), description.getText(),
+						htmlEditor.getText(), new AsyncCallback<Void>() {
+					
+					@Override
+					public void onSuccess(Void result) {
+						splitPanel.remove(splitPanel.getRightWidget());
+						splitPanel.setRightWidget(new Label("Ok"));
+					}
+					
+					@Override
+					public void onFailure(Throwable caught) {
+						splitPanel.remove(splitPanel.getRightWidget());
+						splitPanel.setRightWidget(new Label("Echec"));
+					}
+				});
+			}
+		});
 		
 		Button cancel = new Button("Cancel");
 		panelButton.add(ok);
@@ -72,5 +105,9 @@ public class CmsPageEdition extends Composite {
 		htmlEditor.setText("TinyMCE");
 		tbl.setWidget(6, 2, htmlEditor);
 		panel.add(this);
+	}
+	
+	public TinyMCE getHtmlEditor() {
+		return htmlEditor;
 	}
 }

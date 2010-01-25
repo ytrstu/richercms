@@ -16,8 +16,20 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 public class Richercms implements EntryPoint {
 
 	private MainView mainView;
-	private UserInfo loginInfo = null;
+	private static Richercms instance;
+	private RicherConstants cmsConstants;
+	
+	public RicherConstants getCmsConstants() {
+		return cmsConstants;
+	}
 
+	public static Richercms getInstance() {
+		if (instance==null) 
+			instance = new Richercms();
+		return instance;
+	}
+
+	private UserInfo loginInfo = null;
 
 	/**
 	 * This is the entry point method.
@@ -43,7 +55,11 @@ public class Richercms implements EntryPoint {
 	}
 
 	public void loadRichercms(UserInfo loginInfo) {
+		cmsConstants = GWT.create(RicherConstants.class);	    
 		mainView = new MainView(loginInfo);
+		// Set the window title
+		//.setTitle(Richercms.getInstance().getCmsConstants().appTitle());
+
 		// MainExampleView mainExampleView = new MainExampleView();
 		RootLayoutPanel.get().add(mainView.getContent());
 	}

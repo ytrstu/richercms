@@ -7,4 +7,6 @@ public interface PageServiceAsync {
 			description, String content, AsyncCallback<Void> async);
 
 	public void getAllPages(AsyncCallback<String[]> callback);
+
+	public void removePage(String page_title, AsyncCallback<Void> callback);
 }

@@ -68,4 +68,19 @@ public class PageServiceImpl extends RemoteServiceServlet implements
 		return (String[]) symbols.toArray(new String[0]);
 	}
 
+	@Override
+	public void removePage(String pageTitle) throws NotLoggedInException {
+		checkLoggedIn();
+		PersistenceManager pm=getPersistenceManager();
+		Query query=pm.newQuery(Page.class);
+		query.setFilter("page_title == page_title_param");
+		query.declareParameters("String page_title_param");
+		try {
+			List<Page> pages=(List<Page>) query.execute(pageTitle);
+			pm.deletePersistent(pages.get(0));
+		} finally {
+			pm.close();
+		}
+	}
+
 }

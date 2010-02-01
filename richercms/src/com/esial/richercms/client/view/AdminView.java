@@ -20,7 +20,6 @@ public class AdminView extends FlowPanel {
 	private VerticalPanel languagePanel;
 	private VerticalPanel addPanel;
 	private VerticalPanel editPanel;
-	//private CmsPageEdition editor;
 	private Label test;
 
 	public AdminView() {
@@ -29,13 +28,14 @@ public class AdminView extends FlowPanel {
 		adminPanel = new VerticalPanel();
 		adminPanel.setSize("500px", "400px");
 
+/*To delete after testing*/
 		test = new Label("");
-		test.setText(Richercms.getInstance().getCmsConstants().bpedit());
+		test.setText(Richercms.getInstance().getCmsConstants().bpeditu());
 		panel.add(test);
-		
-		Button addUser = new Button("Add a new user");		
-		addUser.addClickHandler(new ClickHandler() {
+/* */
 
+		Button addUser = new Button(Richercms.getInstance().getCmsConstants().bpaddu());		
+		addUser.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
 				panel.remove(adminPanel);
@@ -48,8 +48,9 @@ public class AdminView extends FlowPanel {
 				addPanel.add(lbllogin);
 				addPanel.add(login);
 
-				Button bpAddUser =new Button("Add new user");
-				Button cancelAction =new Button("Cancel");
+				Button bpAddUser =new Button(Richercms.getInstance().getCmsConstants().bpaddu());
+				
+				Button cancelAction =new Button(Richercms.getInstance().getCmsConstants().bpcancel());
 				cancelAction.addClickHandler(new ClickHandler() {
 					@Override
 					public void onClick(ClickEvent event) {
@@ -64,26 +65,20 @@ public class AdminView extends FlowPanel {
 			}
 		});
 
-		//Button bpEditUser = new Button("Edit an existing user");
-		Button bpEditUser = new Button(Richercms.getInstance().getCmsConstants().bpedit());
+		Button bpEditUser = new Button(Richercms.getInstance().getCmsConstants().bpeditu());
 		bpEditUser.addClickHandler(new ClickHandler() {
-
 			@Override
 			public void onClick(ClickEvent event) {
 				panel.remove(adminPanel);
 				panel.remove(languagePanel);
-				/*editor = new CmsPageEdition();
-				panel.add(editor);*/		
-
+				
 				editPanel = new VerticalPanel();
 				editPanel.setSize("500px", "400px");
 
-				Label title = new Label("Edit user");
-				//Label title = new Label(Richercms.getInstance().getCmsConstants().bpedit());
-				
-				Button cancelAction =new Button("Cancel");
+				Label title = new Label(Richercms.getInstance().getCmsConstants().bpeditu());
+							
+				Button cancelAction =new Button(Richercms.getInstance().getCmsConstants().bpcancel());
 				cancelAction.addClickHandler(new ClickHandler() {
-
 					@Override
 					public void onClick(ClickEvent event) {
 						panel.remove(editPanel);
@@ -95,10 +90,9 @@ public class AdminView extends FlowPanel {
 				editPanel.add(title);
 				editPanel.add(cancelAction);
 				panel.add(editPanel);
-
 			}
-
 		});
+		
 		adminPanel.add(addUser);
 		adminPanel.add(bpEditUser);
 
@@ -106,7 +100,7 @@ public class AdminView extends FlowPanel {
 		languagePanel = new VerticalPanel();
 		languagePanel.setSize("500px", "400px");
 
-		Label lblCmsLg = new Label("Editor Language :");
+		Label lblCmsLg = new Label(Richercms.getInstance().getCmsConstants().lblCmslang());
 		final ListBox cmsLg = new ListBox();
 		cmsLg.addItem("English");
 		cmsLg.addItem("Francais");
@@ -114,14 +108,11 @@ public class AdminView extends FlowPanel {
 		cmsLg.setVisibleItemCount(1);
 			
 		cmsLg.addChangeHandler(new ChangeHandler() {
-			
 			@Override
 			public void onChange(ChangeEvent event) {
 				// Get the index of the selected item 
 			    int itemSelected = cmsLg.getSelectedIndex(); 
-			    
-			    //System.out.println("Numero : "+itemSelected);
-			    
+			   			    
 			    // Get the string value of the item that has been selected 
 			    String itemStringSelected = cmsLg.getValue(itemSelected); 
 			    
@@ -152,7 +143,7 @@ public class AdminView extends FlowPanel {
 		languagePanel.add(lblCmsLg);
 		languagePanel.add(cmsLg);
 		
-		Label lblSiteLg = new Label("Website Created default language :");
+		Label lblSiteLg = new Label(Richercms.getInstance().getCmsConstants().lblSitelang());
 		ListBox siteLg = new ListBox();
 		siteLg.addItem("English");
 		siteLg.addItem("Francais");
@@ -160,11 +151,9 @@ public class AdminView extends FlowPanel {
 		siteLg.setVisibleItemCount(1);
 		languagePanel.add(lblSiteLg);
 		languagePanel.add(siteLg);
-
 		
 		panel.add(adminPanel);
 		panel.add(languagePanel);
 		this.add(panel);
 	}
-
 }

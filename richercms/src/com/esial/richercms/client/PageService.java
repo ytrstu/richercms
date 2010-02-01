@@ -7,4 +7,5 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 public interface PageService extends RemoteService {
 	public void addPage(String browser_title,String page_title, String url_name,String 
 			description, String content) throws NotLoggedInException;
+	public String[] getAllPages() throws NotLoggedInException;
 }

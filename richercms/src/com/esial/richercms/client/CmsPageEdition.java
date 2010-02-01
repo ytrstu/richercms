@@ -11,6 +11,7 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.HorizontalSplitPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.datepicker.client.DateBox;
 
@@ -81,6 +82,24 @@ public class CmsPageEdition extends Composite {
 					public void onFailure(Throwable caught) {
 						splitPanel.remove(splitPanel.getRightWidget());
 						splitPanel.setRightWidget(new Label("Echec"));
+					}
+				});
+				pageService.getAllPages(new AsyncCallback<String[]>() {
+					
+					@Override
+					public void onSuccess(String[] result) {
+						splitPanel.remove(splitPanel.getLeftWidget());
+						Tree tree=new Tree();
+						for(String s : result){
+							tree.addItem(s);
+						}
+						splitPanel.setLeftWidget(tree);
+					}
+					
+					@Override
+					public void onFailure(Throwable caught) {
+						splitPanel.remove(splitPanel.getLeftWidget());
+						splitPanel.setLeftWidget(new Label("TreeUpdateError"));
 					}
 				});
 			}

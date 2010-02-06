@@ -105,6 +105,7 @@ public class TinyMCE extends ResizeComposite {
     public void initTinyMCE() {
         setTextAreaToTinyMCE(id);
         focusMCE(id);
+		FileManager.init();
     }
 
     /**

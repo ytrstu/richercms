@@ -20,20 +20,14 @@
     <!-- be added before this line.                -->
     <!--                                           -->
     <script type="text/javascript" language="javascript" src="testlayout/testlayout.nocache.js"></script>
-  
   	<script src='tiny_mce_3.2.7/tiny_mce_src.js' type='text/javascript'></script>
     <script language="javascript" type="text/javascript">
-    function richerCmsFileBrowser(field_name, url, type, win) {
-    	// Do custom browser logic
-    	win.document.forms[0].elements[field_name].value = 'Ma valeur sur le type : ' + type;
-    }
-
     tinyMCE.init({
         mode : "textareas",
         theme : "advanced",
         plugins : "table,advhr,advimage,advlink,emotions,insertdatetime,preview,searchreplace,"+
                   "print,contextmenu,inlinepopups",
-        file_browser_callback : "richerCmsFileBrowser",
+        file_browser_callback : "tinyMCE.org_richercms_call.loadFileName",
         theme_advanced_disable : "code",
         theme_advanced_buttons1_add_before : "save,separator",
         theme_advanced_buttons1_add : "fontselect,fontsizeselect",
@@ -50,6 +44,13 @@
                                   "|vspace|width|height|align|onmouseover|onmouseout|name],hr[class|width|size|"+
                                   "noshade],font[face|size|color|style],span[class|align|style]"
     });
+
+    function richerCmsFileBrowser(field_name, url, type, win) {
+    	// Do custom browser logic
+    	// win.document.forms[0].elements[field_name].value = 'Ma valeur sur le type : ' + type;
+    	//alert('ici' + tinyMCE.org_richercms_call.loadFileName);
+    	win.document.forms[0].elements[field_name].value = tinyMCE.org_richercms_call.loadFileName();
+    }
 
     </script>
   </head>

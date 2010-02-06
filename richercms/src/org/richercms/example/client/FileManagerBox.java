@@ -15,7 +15,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class FileManagerBox extends DialogBox {
 	
-	private TextBox url = null;
+	private final TextBox url = new TextBox();
 
 	public FileManagerBox(String urlName) {
         // Set the dialog box's caption.
@@ -30,7 +30,6 @@ public class FileManagerBox extends DialogBox {
 
         VerticalPanel panel = new VerticalPanel();
         
-        url = new TextBox();
         url.setText(urlName);
         panel.add(url);
         
@@ -67,6 +66,7 @@ public class FileManagerBox extends DialogBox {
         	// associé à la popup du FileManager n'est pas encore crée par GWT.
 			@Override
 			public void execute() {
+				url.setFocus(true);
 				// Récupération de l'id de la popup de tinymce pour ensuite retrouver son z-index
 		        Element eltBody = RootPanel.getBodyElement();
 		        com.google.gwt.dom.client.Element fils = eltBody.getFirstChildElement();

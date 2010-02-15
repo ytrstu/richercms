@@ -2,6 +2,8 @@ package org.richercms.example.client;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.user.client.Command;
+import com.google.gwt.user.client.DeferredCommand;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.HTML;
@@ -45,6 +47,8 @@ public class TestLayout implements EntryPoint {
 		    RootLayoutPanel rp = RootLayoutPanel.get();
 		    rp.setStyleName("testBody");
 		    
+		    p.selectTab(1);
+		    
 		    rp.add(p);
 		}
 		
@@ -57,17 +61,15 @@ public class TestLayout implements EntryPoint {
 		navPanel.add(new HTML("navigation"));
 		p.addWest(navPanel, 168);
 		
-		int height = Window.getClientHeight()-30;
+		final int height = Window.getClientHeight()-30;
 		
 		LayoutPanel listPanel = new LayoutPanel();
 		listPanel.setStyleName("tab-content");
 		listPanel.add(new HTML("list"));
 		p.addNorth(listPanel, height/2);
 		
-		LayoutPanel tinyMcePanel = new LayoutPanel();
+		final LayoutPanel tinyMcePanel = new LayoutPanel();
 		tinyMcePanel.setStyleName("tab-content");
-		// The real height is now calculated on onLoad method of TinyMCE
-		// On resize, the height is calculated on onResize method of ResizeTinyMCETextArea
 	    TinyMCE tmce = new TinyMCE((height/2-50)+"px");
 		tinyMcePanel.add(tmce);
 		

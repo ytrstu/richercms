@@ -3,6 +3,7 @@ package com.esial.richercms.client.view;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import com.esial.richercms.client.Richercms;
 import com.esial.richercms.client.UserInfo;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -16,9 +17,9 @@ public class MainView {
 	private TabPanel tabPanel;
 	private HashMap<String, FlowPanel> tabsContent;
 	private HorizontalPanel loginPanel = new HorizontalPanel();
-	private Label loginLabel = new Label("Please sign in to your Google Account to access the StockWatcher application.");
-	private Anchor signInLink = new Anchor("Sign In");
-	private Anchor signOutLink = new Anchor("Sign Out");
+	private Label loginLabel = new Label(Richercms.getInstance().getCmsConstants().signInto());
+	private Anchor signInLink = new Anchor(Richercms.getInstance().getCmsConstants().signIn());
+	private Anchor signOutLink = new Anchor(Richercms.getInstance().getCmsConstants().signOut());
 
 	//private String email;
 
@@ -33,9 +34,9 @@ public class MainView {
 			content=new FlowPanel();
 			content.add(tabPanel);
 
-			FlowPanel siteDock = tabsContent.get("Site");
+			FlowPanel siteDock = tabsContent.get(Richercms.getInstance().getCmsConstants().site());
 			siteDock.add(new SiteView());
-			FlowPanel adminDock = tabsContent.get("Administration");
+			FlowPanel adminDock = tabsContent.get(Richercms.getInstance().getCmsConstants().admin());
 			adminDock.add(new AdminView());
 			signOutLink.setHref(loginInfo.getLogoutUrl());
 			loginPanel.add(new Label(loginInfo.getEmailAddress()));
@@ -65,8 +66,8 @@ public class MainView {
 
 	private  HashMap<String, FlowPanel> createTabs() {
 		HashMap<String, FlowPanel> tContent=new HashMap<String, FlowPanel>();
-		tContent.put("Site", new FlowPanel());
-		tContent.put("Administration", new FlowPanel());
+		tContent.put(Richercms.getInstance().getCmsConstants().site(), new FlowPanel());
+		tContent.put(Richercms.getInstance().getCmsConstants().admin(), new FlowPanel());
 		return tContent;
 	}
 

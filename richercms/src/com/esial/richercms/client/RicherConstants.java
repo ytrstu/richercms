@@ -29,13 +29,13 @@ public interface RicherConstants extends Constants{
 	String lblSitelang();
 	
 	@DefaultStringValue("Create page")
-	String bpcreatepage();
+	String createpage();
 	
 	@DefaultStringValue("Edit page")
-	String bpeditpage();
+	String editpage();
 	
 	@DefaultStringValue("Delete page")
-	String bpdelpage();
+	String delpage();
 	
 	/*Editor part*/
 	
@@ -63,5 +63,10 @@ public interface RicherConstants extends Constants{
 	@DefaultStringValue("Picture name")
 	String picName();
 	
+	/*Error part*/
+	@DefaultStringValue("Delete error")
+	String delError();
 	
+	@DefaultStringValue("Delete Ok")
+	String delOk();
 }

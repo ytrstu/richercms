@@ -4,6 +4,7 @@ package com.esial.richercms.client.view;
 import com.esial.richercms.client.CmsPageEdition;
 import com.esial.richercms.client.PageService;
 import com.esial.richercms.client.PageServiceAsync;
+import com.esial.richercms.client.Richercms;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
@@ -43,18 +44,18 @@ public class SiteViewService {
 	}
 
 	private Button setUpDeletePageButton(HorizontalSplitPanel splitPanel) {
-		Button deletePageButton = new Button("Supprimer Page");
+		Button deletePageButton = new Button(Richercms.getInstance().getCmsConstants().delpage());
 		deletePageButton.addClickHandler(new DeletePageListener(splitPanel));
 		return deletePageButton;
 	}
 
 	private Button setUpModifPageButton() {
-		Button modifPageButton = new Button("Modifier Page");
+		Button modifPageButton = new Button(Richercms.getInstance().getCmsConstants().editpage());
 		return modifPageButton;
 	}
 
 	private Button setUpAddPageButton(HorizontalSplitPanel splitPanel) {
-		Button addPageButton = new Button("Créer Page");
+		Button addPageButton = new Button(Richercms.getInstance().getCmsConstants().createpage());
 		addPageButton.addClickHandler(new AddPageHandler(splitPanel));
 		return addPageButton;
 	}
@@ -102,7 +103,7 @@ public class SiteViewService {
 				@Override
 				public void onFailure(Throwable caught) {
 					splitPanel.remove(splitPanel.getRightWidget());
-					splitPanel.setRightWidget(new Label("Erreur delete"));
+					splitPanel.setRightWidget(new Label(Richercms.getInstance().getCmsConstants().delError()));
 				}
 			});
 		}
@@ -127,14 +128,14 @@ public class SiteViewService {
 						public void onSuccess(Void result) {
 							// TODO Auto-generated method stub
 							splitPanel.remove(splitPanel.getRightWidget());
-							splitPanel.setRightWidget(new Label("Delete Ok"));
+							splitPanel.setRightWidget(new Label(Richercms.getInstance().getCmsConstants().delOk()));
 						}
 						
 						@Override
 						public void onFailure(Throwable caught) {
 							// TODO Auto-generated method stub
 							splitPanel.remove(splitPanel.getRightWidget());
-							splitPanel.setRightWidget(new Label("Delete Erreur"));
+							splitPanel.setRightWidget(new Label(Richercms.getInstance().getCmsConstants().delError()));
 						}
 					});
 		}

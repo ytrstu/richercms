@@ -8,9 +8,24 @@ public interface RicherConstants extends Constants{
 	@DefaultStringValue("RicherCMS Project")
 	String appTitle();
 	
+	@DefaultStringValue("Please sign into your Google Account to access the RicherCMS application")
+	String signInto();
+	
+	@DefaultStringValue("Sign in")
+	String signIn();
+	
+	@DefaultStringValue("Sign out")
+	String signOut();
+	
+	@DefaultStringValue("Not logged in")
+	String notLogged();
+	
 	/*Generic parts*/
 	@DefaultStringValue("Cancel")
 	String bpcancel();
+	
+	@DefaultStringValue("Site")
+	String site();
 	
 	/*Administration part*/
 	@DefaultStringValue("Administration")
@@ -18,6 +33,9 @@ public interface RicherConstants extends Constants{
 	
 	@DefaultStringValue("Add new user")
 	String bpaddu();
+	
+	@DefaultStringValue("Login - Gmail valid e-mail adress :")
+	String login();
 	
 	@DefaultStringValue("Edit an existing user")
 	String bpeditu();

@@ -9,6 +9,7 @@ import javax.jdo.Query;
 
 import com.esial.richercms.client.NotLoggedInException;
 import com.esial.richercms.client.PageService;
+import com.esial.richercms.client.Richercms;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
@@ -37,7 +38,7 @@ public class PageServiceImpl extends RemoteServiceServlet implements
 
 	private void checkLoggedIn() throws NotLoggedInException {
 		if (getUser() == null) {
-			throw new NotLoggedInException("Not logged in.");
+			throw new NotLoggedInException(Richercms.getInstance().getCmsConstants().notLogged());
 		}
 	}
 

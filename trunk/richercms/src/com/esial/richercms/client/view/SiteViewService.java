@@ -16,7 +16,6 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.HorizontalSplitPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.VerticalPanel;
 
 
 public class SiteViewService {
@@ -126,7 +125,6 @@ public class SiteViewService {
 						
 						@Override
 						public void onSuccess(Void result) {
-							// TODO Auto-generated method stub
 							splitPanel.remove(splitPanel.getRightWidget());
 							splitPanel.setRightWidget(new Label(Richercms.getInstance().getCmsConstants().delOk()));
 						}

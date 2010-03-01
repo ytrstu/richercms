@@ -42,7 +42,7 @@ public class AdminView extends FlowPanel {
 				addPanel=new VerticalPanel();
 				addPanel.setSize("500px", "400px");
 
-				Label lbllogin = new Label("Login - Gmail valid e-mail adress :");
+				Label lbllogin = new Label(Richercms.getInstance().getCmsConstants().login());
 				TextBox login = new TextBox();
 				addPanel.add(lbllogin);
 				addPanel.add(login);

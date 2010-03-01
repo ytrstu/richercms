@@ -51,22 +51,22 @@ public class CmsPageEdition extends Composite {
 		tbl = new FlexTable();
 		panel.add(tbl);
 		
-		tbl.setHTML(1, 1, "Browser Title");
+		tbl.setHTML(1, 1, Richercms.getInstance().getCmsConstants().browserTitle());
 		tbl.setWidget(1, 2, browserTitle);
 
-		tbl.setHTML(2, 1, "Page Title");
+		tbl.setHTML(2, 1, Richercms.getInstance().getCmsConstants().pageTitle());
 		tbl.setWidget(2, 2, pageTitle);
 		
-		tbl.setHTML(3, 1, "URL name");
+		tbl.setHTML(3, 1, Richercms.getInstance().getCmsConstants().urlName());
 		tbl.setWidget(3, 2, urlName);
 
-		tbl.setHTML(4, 1, "Description");
+		tbl.setHTML(4, 1, Richercms.getInstance().getCmsConstants().description());
 		tbl.setWidget(4, 2, description);
 
-		tbl.setHTML(5, 1, "Publish date");
+		tbl.setHTML(5, 1, Richercms.getInstance().getCmsConstants().publishDate());
 		tbl.setWidget(5, 2, publishDate);
 		
-		tbl.setHTML(6, 1, "Content");
+		tbl.setHTML(6, 1, Richercms.getInstance().getCmsConstants().content());
 		htmlEditor = new TinyMCE(800,35);
 		tbl.setWidget(6, 2, htmlEditor);
 		
@@ -77,7 +77,7 @@ public class CmsPageEdition extends Composite {
 		
 		
 		  FileUpload upload = new FileUpload();
-		    upload.setName("Importer une image");
+		    upload.setName(Richercms.getInstance().getCmsConstants().uploadPic());
 		    panel.add(upload);
 
 		    
@@ -104,7 +104,7 @@ public class CmsPageEdition extends Composite {
 			// Creation d'un champ texte et ajout au panel
 			final TextBox tb = new TextBox();
 			tb.setName("textBoxFormElement");
-			tb.setText("Nom de l'image");
+			tb.setText(Richercms.getInstance().getCmsConstants().picName());
 			panel.add(tb);
 	 
 	
@@ -185,7 +185,7 @@ public class CmsPageEdition extends Composite {
 			}
 		});
 		
-		Button cancel = new Button("Cancel");
+		Button cancel = new Button(Richercms.getInstance().getCmsConstants().bpcancel());
 		panelButton.add(ok);
 		panelButton.add(cancel);
 		

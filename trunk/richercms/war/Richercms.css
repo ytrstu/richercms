@@ -11,8 +11,14 @@
  *      property: rule applies to all versions of IE
  *    }
  */
+body{
+	background : #4A4841; 
+	 font-family: Arial Unicode MS, Arial, sans-serif;
+  font-size: small;
+	}
 
-body, table td, select {
+
+table td, select {
   font-family: Arial Unicode MS, Arial, sans-serif;
   font-size: small;
 }
@@ -312,6 +318,7 @@ text-decoration:none;
   background: #ddddee;
   overflow: hidden;
 }
+
 .gwt-MenuBar-vertical .subMenuIcon {
   padding-right: 4px;
 }
@@ -1089,4 +1096,45 @@ td.datePickerMonth {
   cursor: hand;
   cursor: pointer;
   padding: 0px 4px;
+}
+
+.text-login{
+  align :center;
+  font-weight: bold;
+  font-size : 20px;
+  margin-left : 120px;
+  background : url(tab_images/login_fond.jpg);
+  padding : 200px 100px 200px 100px;
+	}
+
+.anchor-login{
+	 
+	align :center;
+  font-weight: bold;
+  	font-size : 20px;
+	padding : 500px 100px 200px 100px;
+}
+
+.anchor-login:hover{
+	color : #CCCFFF;
+}
+
+.login-menu{
+	margin-left : 20px;
+   align :center;
+   font-weight: bold;
+  	font-size : 20px;
+  	background : #4A4841;
+}
+
+.anchor-menu{
+	margin-left : 5px;
+align :center;
+   font-weight: bold;
+  	font-size : 20px;
+  	background : #4A4841; 
+}
+
+.anchor-menu:hover{
+color : #CCCFFF;
 }

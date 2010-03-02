@@ -27,34 +27,38 @@ public class AdminView extends FlowPanel {
 		adminPanel = new VerticalPanel();
 		adminPanel.setSize("500px", "400px");
 
-/*To delete after testing*/
+		/* To delete after testing */
 		test = new Label("");
 		test.setText(Richercms.getInstance().getCmsConstants().bpeditu());
 		panel.add(test);
-/* */
+		/* */
 
-		Button addUser = new Button(Richercms.getInstance().getCmsConstants().bpaddu());		
+		Button addUser = new Button(Richercms.getInstance().getCmsConstants()
+				.bpaddu());
 		addUser.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
 				panel.remove(adminPanel);
 				panel.remove(languagePanel);
-				addPanel=new VerticalPanel();
+				addPanel = new VerticalPanel();
 				addPanel.setSize("500px", "400px");
 
-				Label lbllogin = new Label(Richercms.getInstance().getCmsConstants().login());
+				Label lbllogin = new Label(Richercms.getInstance()
+						.getCmsConstants().login());
 				TextBox login = new TextBox();
 				addPanel.add(lbllogin);
 				addPanel.add(login);
 
-				Button bpAddUser =new Button(Richercms.getInstance().getCmsConstants().bpaddu());
-				
-				Button cancelAction =new Button(Richercms.getInstance().getCmsConstants().bpcancel());
+				Button bpAddUser = new Button(Richercms.getInstance()
+						.getCmsConstants().bpaddu());
+
+				Button cancelAction = new Button(Richercms.getInstance()
+						.getCmsConstants().bpcancel());
 				cancelAction.addClickHandler(new ClickHandler() {
 					@Override
 					public void onClick(ClickEvent event) {
 						panel.remove(addPanel);
-						panel.add(adminPanel);	
+						panel.add(adminPanel);
 						panel.add(languagePanel);
 					}
 				});
@@ -64,24 +68,27 @@ public class AdminView extends FlowPanel {
 			}
 		});
 
-		Button bpEditUser = new Button(Richercms.getInstance().getCmsConstants().bpeditu());
+		Button bpEditUser = new Button(Richercms.getInstance()
+				.getCmsConstants().bpeditu());
 		bpEditUser.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
 				panel.remove(adminPanel);
 				panel.remove(languagePanel);
-				
+
 				editPanel = new VerticalPanel();
 				editPanel.setSize("500px", "400px");
 
-				Label title = new Label(Richercms.getInstance().getCmsConstants().bpeditu());
-							
-				Button cancelAction =new Button(Richercms.getInstance().getCmsConstants().bpcancel());
+				Label title = new Label(Richercms.getInstance()
+						.getCmsConstants().bpeditu());
+
+				Button cancelAction = new Button(Richercms.getInstance()
+						.getCmsConstants().bpcancel());
 				cancelAction.addClickHandler(new ClickHandler() {
 					@Override
 					public void onClick(ClickEvent event) {
 						panel.remove(editPanel);
-						panel.add(adminPanel);		
+						panel.add(adminPanel);
 						panel.add(languagePanel);
 					}
 				});
@@ -91,58 +98,66 @@ public class AdminView extends FlowPanel {
 				panel.add(editPanel);
 			}
 		});
-		
+
 		adminPanel.add(addUser);
 		adminPanel.add(bpEditUser);
 
-		//Language Settings part
+		// Language Settings part
 		languagePanel = new VerticalPanel();
 		languagePanel.setSize("500px", "400px");
 
-		Label lblCmsLg = new Label(Richercms.getInstance().getCmsConstants().lblCmslang());
+		Label lblCmsLg = new Label(Richercms.getInstance().getCmsConstants()
+				.lblCmslang());
 		final ListBox cmsLg = new ListBox();
 		cmsLg.addItem("English");
 		cmsLg.addItem("Francais");
 		cmsLg.addItem("Deutsch");
 		cmsLg.setVisibleItemCount(1);
-			
+
 		cmsLg.addChangeHandler(new ChangeHandler() {
 			@Override
 			public void onChange(ChangeEvent event) {
-				// Get the index of the selected item 
-			    int itemSelected = cmsLg.getSelectedIndex(); 
-			   			    
-			    // Get the string value of the item that has been selected 
-			    String itemStringSelected = cmsLg.getValue(itemSelected); 
-			    
-			    switch(itemSelected){
-			    case 0: test.setText(itemStringSelected);//var currLocale = "?locale=en";
-			    	
-			    case 1: test.setText(itemStringSelected);//var currLocale = "?locale=fr";
-			    case 2: test.setText(itemStringSelected); //var currLocale = "?locale=de";
-			    
-			    }
-			    
-			   /* var currLocation = $wnd.location.toString().split("?");
-			    var currLocale = "?locale=en";
-			    $wnd.location.href = currLocation[0] + currLocale;
-			    $wnd.location.replace(currLocation[0] + currLocale);*/
+				// Get the index of the selected item
+				int itemSelected = cmsLg.getSelectedIndex();
+
+				// Get the string value of the item that has been selected
+				String itemStringSelected = cmsLg.getValue(itemSelected);
+
+				switch (itemSelected) {
+				/*case 0: {
+					test.setText(itemStringSelected);
+				}break;
+				case 1: {
+					test.setText(itemStringSelected);
+				}break;
+				case 2: {
+					test.setText(itemStringSelected);
+				}break;*/
+				default:{
+					myReload();
+				}break;
+				}
+
+				/*
+				 * var currLocation = $wnd.location.toString().split("?"); var
+				 * currLocale = "?locale=en"; $wnd.location.href =
+				 * currLocation[0] + currLocale;
+				 * $wnd.location.replace(currLocation[0] + currLocale);
+				 */
 			}
 		});
 
-		
-		
-	/*	cmsLg.add(new ClickListener() {
-			public native void onClick(Widget sender) /*-{
-		    var currLocation = $wnd.location.toString().split("?");
-		    var currLocale = "?locale=en";
-		    $wnd.location.href = currLocation[0] + currLocale;
-		    $wnd.location.replace(currLocation[0] + currLocale);
-		 }-*/;
+		/*
+		 * cmsLg.add(new ClickListener() { public native void onClick(Widget
+		 * sender) /*-{ var currLocation = $wnd.location.toString().split("?");
+		 * var currLocale = "?locale=en"; $wnd.location.href = currLocation[0] +
+		 * currLocale; $wnd.location.replace(currLocation[0] + currLocale); }-
+		 */;
 		languagePanel.add(lblCmsLg);
 		languagePanel.add(cmsLg);
-		
-		Label lblSiteLg = new Label(Richercms.getInstance().getCmsConstants().lblSitelang());
+
+		Label lblSiteLg = new Label(Richercms.getInstance().getCmsConstants()
+				.lblSitelang());
 		ListBox siteLg = new ListBox();
 		siteLg.addItem("English");
 		siteLg.addItem("Francais");
@@ -150,9 +165,16 @@ public class AdminView extends FlowPanel {
 		siteLg.setVisibleItemCount(1);
 		languagePanel.add(lblSiteLg);
 		languagePanel.add(siteLg);
-		
+
 		panel.add(adminPanel);
 		panel.add(languagePanel);
 		this.add(panel);
 	}
+
+	public static native void myReload() /*-{
+		//FIXME
+		$wnd.location.search = "?locale=fr";
+		$wnd.location.reload ( true );
+		
+	}-*/;
 }

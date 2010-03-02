@@ -1,9 +1,11 @@
 package com.esial.richercms.client;
 
+import com.esial.richercms.client.view.MyPopUpAnchor;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FileUpload;
@@ -171,7 +173,8 @@ public class CmsPageEdition extends Composite {
 						splitPanel.remove(splitPanel.getLeftWidget());
 						Tree tree=new Tree();
 						for(String s : result){
-							tree.addItem(s);
+							MyPopUpAnchor anchor=new MyPopUpAnchor(s);
+							tree.addItem(anchor);
 						}
 						splitPanel.setLeftWidget(tree);
 					}

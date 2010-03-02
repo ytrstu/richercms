@@ -7,9 +7,9 @@ import java.util.logging.Logger;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 
-import com.esial.richercms.client.NotLoggedInException;
 import com.esial.richercms.client.PageService;
 import com.esial.richercms.client.Richercms;
+import com.esial.richercms.client.exceptions.NotLoggedInException;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;

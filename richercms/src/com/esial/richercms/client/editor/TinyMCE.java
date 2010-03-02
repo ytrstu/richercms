@@ -1,4 +1,4 @@
-package com.esial.richercms.client;
+package com.esial.richercms.client.editor;
 /**
  * Created on 20/08/2007
  *

@@ -1,8 +1,5 @@
-package com.esial.richercms.client.editor;
+package com.esial.richercms.client;
 
-import com.esial.richercms.client.PageService;
-import com.esial.richercms.client.PageServiceAsync;
-import com.esial.richercms.client.Richercms;
 import com.esial.richercms.client.view.MyPopUpAnchor;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;

@@ -1,10 +1,10 @@
 package com.esial.richercms.client.view;
 
 
-import com.esial.richercms.client.CmsPageEdition;
 import com.esial.richercms.client.PageService;
 import com.esial.richercms.client.PageServiceAsync;
 import com.esial.richercms.client.Richercms;
+import com.esial.richercms.client.editor.CmsPageEdition;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;

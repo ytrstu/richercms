@@ -1,4 +1,4 @@
-package com.esial.richercms.client.exceptions;
+package com.esial.richercms.client;
 
 import java.io.Serializable;
 

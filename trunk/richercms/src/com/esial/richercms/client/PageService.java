@@ -1,6 +1,5 @@
 package com.esial.richercms.client;
 
-import com.esial.richercms.client.exceptions.NotLoggedInException;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 

@@ -32,7 +32,8 @@ public class SiteView extends FlowPanel {
 			public void onSuccess(String[] result) {
 				Tree tree=new Tree();
 				for(String s : result){
-					tree.addItem(s);
+					MyPopUpAnchor anchor=new MyPopUpAnchor(s);
+					tree.addItem(anchor);
 				}
 				if(tree.getItemCount()==0) splitPanel.setLeftWidget(new Label("Empty tree"));
 				else splitPanel.setLeftWidget(tree);
@@ -44,5 +45,4 @@ public class SiteView extends FlowPanel {
 			}
 		});
 	}
-
 }

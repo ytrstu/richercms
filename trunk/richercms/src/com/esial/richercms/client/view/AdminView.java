@@ -203,6 +203,7 @@ public class AdminView extends FlowPanel {
 	public String myLocale() {
 		String url = Window.Location.getHref();
 		String[] splitted = url.split("locale=");
+		if(splitted.length<2) return "en";
 		return splitted[1];
 	};
 }

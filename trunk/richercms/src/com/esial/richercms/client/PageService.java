@@ -9,4 +9,7 @@ public interface PageService extends RemoteService {
 			description, String content) throws NotLoggedInException;
 	public String[] getAllPages() throws NotLoggedInException;
 	public void removePage(String page_title) throws NotLoggedInException;
+	public String[] getPageData(String page_title) throws NotLoggedInException;
+	public void editPage(String browser_title,String page_title, String url_name,String 
+			description, String content, boolean hasTitleChanged) throws NotLoggedInException;
 }

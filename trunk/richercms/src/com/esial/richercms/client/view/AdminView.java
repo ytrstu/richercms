@@ -1,6 +1,7 @@
 package com.esial.richercms.client.view;
 
 import com.esial.richercms.client.Richercms;
+import com.esial.richercms.client.UserInfo;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -8,6 +9,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
@@ -29,15 +31,13 @@ public class AdminView extends FlowPanel {
 		adminPanel.setSize("500px", "400px");
 
 		/* To delete after testing */
-		test = new Label("");
-		test.setText(Richercms.getInstance().getCmsConstants().bpeditu());
+		test = new Label();
 		panel.add(test);
 		/* */
 
 		Button addUser = new Button(Richercms.getInstance().getCmsConstants()
 				.bpaddu());
 		addUser.addClickHandler(new ClickHandler() {
-			@Override
 			public void onClick(ClickEvent event) {
 				panel.remove(adminPanel);
 				panel.remove(languagePanel);
@@ -72,7 +72,6 @@ public class AdminView extends FlowPanel {
 		Button bpEditUser = new Button(Richercms.getInstance()
 				.getCmsConstants().bpeditu());
 		bpEditUser.addClickHandler(new ClickHandler() {
-			@Override
 			public void onClick(ClickEvent event) {
 				panel.remove(adminPanel);
 				panel.remove(languagePanel);
@@ -82,6 +81,26 @@ public class AdminView extends FlowPanel {
 
 				Label title = new Label(Richercms.getInstance()
 						.getCmsConstants().bpeditu());
+
+				// Create a grid
+				Grid grid = new Grid(2, 3);
+
+				/*int numRows = grid.getRowCount();
+				int numColumns = grid.getColumnCount();*/
+				UserInfo u = Richercms.getInstance().getLoginInfo();
+
+				grid.setHTML(0, 0, Richercms.getInstance().getCmsConstants()
+						.nickname());
+
+				grid.setHTML(0, 1, Richercms.getInstance().getCmsConstants()
+						.email());
+
+				grid.setHTML(0, 2, Richercms.getInstance().getCmsConstants()
+						.isadmin());
+
+				grid.setHTML(1, 0, u.getNickname());
+				grid.setHTML(1, 1, u.getEmailAddress());
+				grid.setHTML(1, 2, "" + u.isAdmin());
 
 				Button cancelAction = new Button(Richercms.getInstance()
 						.getCmsConstants().bpcancel());
@@ -95,6 +114,7 @@ public class AdminView extends FlowPanel {
 				});
 
 				editPanel.add(title);
+				editPanel.add(grid);
 				editPanel.add(cancelAction);
 				panel.add(editPanel);
 			}
@@ -107,6 +127,7 @@ public class AdminView extends FlowPanel {
 		languagePanel = new VerticalPanel();
 		languagePanel.setSize("500px", "400px");
 
+		/* Choice of the CMS language */
 		Label lblCmsLg = new Label(Richercms.getInstance().getCmsConstants()
 				.lblCmslang());
 		final ListBox cmsLg = new ListBox();
@@ -114,29 +135,38 @@ public class AdminView extends FlowPanel {
 		cmsLg.addItem("Francais");
 		cmsLg.addItem("Deutsch");
 		cmsLg.setVisibleItemCount(1);
+		String test = myLocale();
+		if (test.equalsIgnoreCase("fr")){
+			cmsLg.setSelectedIndex(1);	
+		}else if (test.equalsIgnoreCase("de")){
+			cmsLg.setSelectedIndex(2);			
+		}else {cmsLg.setSelectedIndex(0);}
 
 		cmsLg.addChangeHandler(new ChangeHandler() {
-			@Override
 			public void onChange(ChangeEvent event) {
 				// Get the index of the selected item
 				int itemSelected = cmsLg.getSelectedIndex();
 
 				// Get the string value of the item that has been selected
-				String itemStringSelected = cmsLg.getValue(itemSelected);
+				//String itemStringSelected = cmsLg.getValue(itemSelected);
 
 				switch (itemSelected) {
 				case 0: {
-					myReload("en");
-				}break;
+					myReload("en"); 
+				}
+					break;
 				case 1: {
 					myReload("fr");
-				}break;
+				}
+					break;
 				case 2: {
-					myReload("de");
-				}break;
-				default:{
+					myReload("de"); 
+				}
+					break;
+				default: {
 					myReload("en");
-				}break;
+				}
+					break;
 				}
 			}
 		});
@@ -144,7 +174,8 @@ public class AdminView extends FlowPanel {
 		languagePanel.add(lblCmsLg);
 		languagePanel.add(cmsLg);
 
-		Label lblSiteLg = new Label(Richercms.getInstance().getCmsConstants()
+		/* Choice of the generated website language */
+	/*	Label lblSiteLg = new Label(Richercms.getInstance().getCmsConstants()
 				.lblSitelang());
 		ListBox siteLg = new ListBox();
 		siteLg.addItem("English");
@@ -153,24 +184,29 @@ public class AdminView extends FlowPanel {
 		siteLg.setVisibleItemCount(1);
 		languagePanel.add(lblSiteLg);
 		languagePanel.add(siteLg);
-
+*/
 		panel.add(adminPanel);
 		panel.add(languagePanel);
 		this.add(panel);
 	}
 
 	public void myReload(String countryCode) {
-		//FIXME
-		String url=Window.Location.getHref();
-		System.out.println(url);
-		String[] splitted=url.split("locale");
-		for(String s:splitted){
+		String url = Window.Location.getHref();
+		//System.out.println(url);
+		String[] splitted = url.split("locale");
+		for (String s : splitted) {
 			System.out.println(s);
 		}
-		StringBuffer buf=new StringBuffer();
+		StringBuffer buf = new StringBuffer();
 		buf.append(splitted[0]);
 		buf.append("locale=");
 		buf.append(countryCode);
 		Window.Location.replace(buf.toString());
+	};
+	
+	public String myLocale() {
+		String url = Window.Location.getHref();
+		String[] splitted = url.split("locale=");
+		return splitted[1];
 	};
 }

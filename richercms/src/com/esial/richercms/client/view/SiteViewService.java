@@ -39,7 +39,6 @@ public class SiteViewService {
 			this.splitPanel=splitPanel;
 		}
 
-		@Override
 		public void onClick(ClickEvent event) {
 			splitPanel.remove(splitPanel.getRightWidget());
 			editor=new CmsPageEdition(splitPanel);
@@ -59,20 +58,25 @@ public class SiteViewService {
 		PushButton pushButton = new PushButton(new Image("tab_images/article-add.png"));
 		pushButton.addClickHandler(new AddPageHandler(splitPanel));
 		panel.add(pushButton);
+		
+	
 		statService.getPagesCount(new AsyncCallback<Integer>() {
 			
-			@Override
 			public void onSuccess(Integer result) {
 				// TODO Auto-generated method stub
 				panel.add(new Label("Page Count: "+result.toString()));
 			}
 			
-			@Override
 			public void onFailure(Throwable caught) {
 				// TODO Auto-generated method stub
 				
 			}
 		});
+		
+		final Image stat = new Image();
+		stat.setUrl("tab_images/stat.png");
+		panel.add(stat);
+		
 		return panel;
 	}
 

@@ -1120,7 +1120,7 @@ td.datePickerMonth {
 }
 
 .login-menu{
-	margin-left : 20px;
+	margin-left : 0px;
    align :center;
    font-weight: bold;
   	font-size : 20px;
@@ -1128,13 +1128,27 @@ td.datePickerMonth {
 }
 
 .anchor-menu{
-	margin-left : 5px;
-align :center;
+	margin-left : 8px;
+horizontal-align :right;
    font-weight: bold;
   	font-size : 20px;
-  	background : #4A4841; 
+color : #FFFFFF;
 }
 
 .anchor-menu:hover{
 color : #CCCFFF;
+}
+
+.text-langue{
+	margin-left : 760px;
+    align :right;
+    font-weight: bold;
+  	font-size : 20px;
+  	background : #4A4841;
+
+}
+
+.menu-langue{
+  cursor: pointer;
+  cursor: hand;
 }

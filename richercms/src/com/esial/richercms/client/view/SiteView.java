@@ -28,7 +28,6 @@ public class SiteView extends FlowPanel {
 	private void loadPages(){
 		pageService.getAllPages(new AsyncCallback<String[]>() {
 			
-			@Override
 			public void onSuccess(String[] result) {
 				Tree tree=new Tree();
 				for(String s : result){
@@ -39,7 +38,6 @@ public class SiteView extends FlowPanel {
 				else splitPanel.setLeftWidget(tree);
 			}
 			
-			@Override
 			public void onFailure(Throwable caught) {
 				splitPanel.setLeftWidget(new Label("TreeEchec"));
 			}

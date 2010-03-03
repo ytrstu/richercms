@@ -5,23 +5,23 @@ import com.esial.richercms.client.PageServiceAsync;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.HorizontalSplitPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Tree;
+import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class SiteView extends FlowPanel {
 
 	private HorizontalSplitPanel splitPanel;
-	private HorizontalPanel buttonPanel;
+	private VerticalPanel vPanel;
 	private final PageServiceAsync pageService = GWT.create(PageService.class);
 
 	public SiteView() {
 		super();
 		splitPanel = SiteViewService.getInstance().setUpSplitPanel();
 		loadPages();
-		buttonPanel = SiteViewService.getInstance().createButtonsForStartScreen(splitPanel);
-		splitPanel.setRightWidget(buttonPanel);
+		vPanel = SiteViewService.getInstance().setUpVPanel(splitPanel);
+		splitPanel.setRightWidget(vPanel);
 		this.add(splitPanel);
 	}
 	
@@ -32,10 +32,10 @@ public class SiteView extends FlowPanel {
 			public void onSuccess(String[] result) {
 				Tree tree=new Tree();
 				for(String s : result){
-					MyPopUpAnchor anchor=new MyPopUpAnchor(s);
+					MyPopUpAnchor anchor=new MyPopUpAnchor(s,splitPanel);
 					tree.addItem(anchor);
 				}
-				if(tree.getItemCount()==0) splitPanel.setLeftWidget(new Label("Empty tree"));
+				if(tree.getItemCount()==0) splitPanel.setLeftWidget(new Label("No Elements"));
 				else splitPanel.setLeftWidget(tree);
 			}
 			

@@ -38,7 +38,8 @@ public class PageServiceImpl extends RemoteServiceServlet implements
 
 	private void checkLoggedIn() throws NotLoggedInException {
 		if (getUser() == null) {
-			throw new NotLoggedInException(Richercms.getInstance().getCmsConstants().notLogged());
+			throw new NotLoggedInException(Richercms.getInstance()
+					.getCmsConstants().notLogged());
 		}
 	}
 
@@ -59,8 +60,8 @@ public class PageServiceImpl extends RemoteServiceServlet implements
 		try {
 			Query q = pm.newQuery(Page.class);
 			q.setOrdering("publish_date");
-			List<Page> pages=(List<Page>) q.execute();
-			for(Page page : pages){
+			List<Page> pages = (List<Page>) q.execute();
+			for (Page page : pages) {
 				symbols.add(page.getPage_title());
 			}
 		} finally {
@@ -72,15 +73,67 @@ public class PageServiceImpl extends RemoteServiceServlet implements
 	@Override
 	public void removePage(String pageTitle) throws NotLoggedInException {
 		checkLoggedIn();
-		PersistenceManager pm=getPersistenceManager();
-		Query query=pm.newQuery(Page.class);
+		PersistenceManager pm = getPersistenceManager();
+		Query query = pm.newQuery(Page.class);
 		query.setFilter("page_title == page_title_param");
 		query.declareParameters("String page_title_param");
 		try {
-			List<Page> pages=(List<Page>) query.execute(pageTitle);
+			List<Page> pages = (List<Page>) query.execute(pageTitle);
 			pm.deletePersistent(pages.get(0));
 		} finally {
 			pm.close();
+		}
+	}
+
+	@Override
+	public String[] getPageData(String pageTitle) throws NotLoggedInException {
+		checkLoggedIn();
+		PersistenceManager pm = getPersistenceManager();
+		Query query = pm.newQuery(Page.class);
+		query.setFilter("page_title == page_title_param");
+		query.declareParameters("String page_title_param");
+		ArrayList<String> aList = new ArrayList<String>();
+		try {
+			List<Page> pages = (List<Page>) query.execute(pageTitle);
+			Page page = pages.get(0);
+			aList.add(page.getBrowser_title());
+			aList.add(page.getPage_title());
+			aList.add(page.getUrl_name());
+			aList.add(page.getDescription());
+			aList.add(page.getPublish_date().toString());
+			aList.add(page.getContent());
+		} finally {
+			pm.close();
+		}
+		return aList.toArray(new String[6]);
+	}
+
+	@Override
+	public void editPage(String browserTitle, String pageTitle, String urlName,
+			String description, String content, boolean hasTitleChanged)
+			throws NotLoggedInException {
+		if (hasTitleChanged) {
+			//FIXME have to remove old page first
+			//have to get old page name
+			removePage(pageTitle);
+			addPage(browserTitle, pageTitle, urlName, description, content);
+		} else {
+			checkLoggedIn();
+			PersistenceManager pm = getPersistenceManager();
+			Query query = pm.newQuery(Page.class);
+			query.setFilter("page_title == page_title_param");
+			query.declareParameters("String page_title_param");
+			ArrayList<String> aList = new ArrayList<String>();
+			try {
+				List<Page> pages = (List<Page>) query.execute(pageTitle);
+				Page page = pages.get(0);
+				page.setBrowser_title(browserTitle);
+				page.setUrl_name(urlName);
+				page.setDescription(description);
+				page.setContent(content);
+			} finally {
+				pm.close();
+			}
 		}
 	}
 

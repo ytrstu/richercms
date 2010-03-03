@@ -56,7 +56,6 @@ public class AdminView extends FlowPanel {
 				Button cancelAction = new Button(Richercms.getInstance()
 						.getCmsConstants().bpcancel());
 				cancelAction.addClickHandler(new ClickHandler() {
-					@Override
 					public void onClick(ClickEvent event) {
 						panel.remove(addPanel);
 						panel.add(adminPanel);
@@ -105,7 +104,6 @@ public class AdminView extends FlowPanel {
 				Button cancelAction = new Button(Richercms.getInstance()
 						.getCmsConstants().bpcancel());
 				cancelAction.addClickHandler(new ClickHandler() {
-					@Override
 					public void onClick(ClickEvent event) {
 						panel.remove(editPanel);
 						panel.add(adminPanel);

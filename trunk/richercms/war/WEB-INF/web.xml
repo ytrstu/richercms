@@ -15,6 +15,10 @@
     <servlet-name>pageService</servlet-name>
     <servlet-class>com.esial.richercms.server.PageServiceImpl</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>uploadServlet</servlet-name>
+    <servlet-class>com.esial.richercms.server.FileUploadServlet</servlet-class>
+  </servlet>
   
 
   <servlet-mapping>
@@ -25,6 +29,11 @@
 <servlet-mapping>
     <servlet-name>pageService</servlet-name>
     <url-pattern>/richercms/pages</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>uploadServlet</servlet-name>
+    <url-pattern>/richercms/upload</url-pattern>
   </servlet-mapping>
 
 

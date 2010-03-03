@@ -5,6 +5,7 @@ import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -124,35 +125,22 @@ public class AdminView extends FlowPanel {
 				String itemStringSelected = cmsLg.getValue(itemSelected);
 
 				switch (itemSelected) {
-				/*case 0: {
-					test.setText(itemStringSelected);
+				case 0: {
+					myReload("en");
 				}break;
 				case 1: {
-					test.setText(itemStringSelected);
+					myReload("fr");
 				}break;
 				case 2: {
-					test.setText(itemStringSelected);
-				}break;*/
+					myReload("de");
+				}break;
 				default:{
-					myReload();
+					myReload("en");
 				}break;
 				}
-
-				/*
-				 * var currLocation = $wnd.location.toString().split("?"); var
-				 * currLocale = "?locale=en"; $wnd.location.href =
-				 * currLocation[0] + currLocale;
-				 * $wnd.location.replace(currLocation[0] + currLocale);
-				 */
 			}
 		});
 
-		/*
-		 * cmsLg.add(new ClickListener() { public native void onClick(Widget
-		 * sender) /*-{ var currLocation = $wnd.location.toString().split("?");
-		 * var currLocale = "?locale=en"; $wnd.location.href = currLocation[0] +
-		 * currLocale; $wnd.location.replace(currLocation[0] + currLocale); }-
-		 */;
 		languagePanel.add(lblCmsLg);
 		languagePanel.add(cmsLg);
 
@@ -171,10 +159,18 @@ public class AdminView extends FlowPanel {
 		this.add(panel);
 	}
 
-	public static native void myReload() /*-{
+	public void myReload(String countryCode) {
 		//FIXME
-		$wnd.location.search = "?locale=fr";
-		$wnd.location.reload ( true );
-		
-	}-*/;
+		String url=Window.Location.getHref();
+		System.out.println(url);
+		String[] splitted=url.split("locale");
+		for(String s:splitted){
+			System.out.println(s);
+		}
+		StringBuffer buf=new StringBuffer();
+		buf.append(splitted[0]);
+		buf.append("locale=");
+		buf.append(countryCode);
+		Window.Location.replace(buf.toString());
+	};
 }

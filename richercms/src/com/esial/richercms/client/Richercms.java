@@ -62,4 +62,8 @@ public class Richercms implements EntryPoint {
 		public MainView getMainView() {
 			return mainView;
 		}
+
+		public UserInfo getLoginInfo() {
+			return loginInfo;
+		}
 	}

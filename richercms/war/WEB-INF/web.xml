@@ -19,8 +19,11 @@
     <servlet-name>uploadServlet</servlet-name>
     <servlet-class>com.esial.richercms.server.FileUploadServlet</servlet-class>
   </servlet>
+  <servlet>
+  <servlet-name>statService</servlet-name>
+    <servlet-class>com.esial.richercms.server.StatServiceImpl</servlet-class>
+  </servlet>
   
-
   <servlet-mapping>
   <servlet-name>userService</servlet-name>
   <url-pattern>/richercms/user</url-pattern>
@@ -35,8 +38,11 @@
     <servlet-name>uploadServlet</servlet-name>
     <url-pattern>/richercms/upload</url-pattern>
   </servlet-mapping>
-
-
+  
+  <servlet-mapping>
+    <servlet-name>statService</servlet-name>
+    <url-pattern>/richercms/stats</url-pattern>
+  </servlet-mapping>
 
 	<!-- Default page to serve -->
 	<welcome-file-list>

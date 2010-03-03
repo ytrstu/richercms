@@ -55,6 +55,15 @@ public interface RicherConstants extends Constants{
 	@DefaultStringValue("Delete page")
 	String delpage();
 	
+	@DefaultStringValue("Nickname")
+	String nickname();
+	
+	@DefaultStringValue("Email")
+	String email();
+	
+	@DefaultStringValue("isAdmin")
+	String isadmin();
+	
 	/*Editor part*/
 	
 	@DefaultStringValue("Browser Title")

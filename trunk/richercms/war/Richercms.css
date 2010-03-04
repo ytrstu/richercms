@@ -1098,22 +1098,25 @@ td.datePickerMonth {
   padding: 0px 4px;
 }
 
+
+
+.anchor-login{
+	 margin-left : 750px;
+	align :center;
+  font-weight: bold;
+  	font-size : 20px;
+  	 background : url(tab_images/logo3.jpg);
+	padding : 100px 200px 100px 100px;
+}
+
 .text-login{
   align :center;
   font-weight: bold;
   font-size : 20px;
-  margin-left : 120px;
-  background : url(tab_images/login_fond.jpg);
-  padding : 200px 100px 200px 100px;
+  margin-left : 220px;
+  background : url(tab_images/logo1.png) no-repeat;
+  padding : 200px 400px 200px 300px;
 	}
-
-.anchor-login{
-	 
-	align :center;
-  font-weight: bold;
-  	font-size : 20px;
-	padding : 500px 100px 200px 100px;
-}
 
 .anchor-login:hover{
 	color : #CCCFFF;
@@ -1124,7 +1127,6 @@ td.datePickerMonth {
    align :center;
    font-weight: bold;
   	font-size : 20px;
-  	background : #4A4841;
 }
 
 .anchor-menu{
@@ -1140,12 +1142,10 @@ color : #CCCFFF;
 }
 
 .text-langue{
-	margin-left : 760px;
+	margin-top : 50px;
     align :right;
     font-weight: bold;
   	font-size : 20px;
-  	background : #4A4841;
-
 }
 
 .menu-langue{

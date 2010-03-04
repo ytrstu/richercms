@@ -11,11 +11,8 @@ import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
 import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -29,8 +26,6 @@ public class MainView {
 	private Label loginLabel = new Label("");
 	private Anchor signInLink = new Anchor();
 	private Anchor signOutLink = new Anchor(Richercms.getInstance().getCmsConstants().signOut());
-	private Image imageLogin = new Image("tab_images/article-add.png");
-	private PushButton buttonLogin= new PushButton(imageLogin);
 	//private String email;
 
 	public MainView(UserInfo loginInfo) {
@@ -40,10 +35,8 @@ public class MainView {
 			tabsContent=createTabs();
 			tabPanel=insertTabsInPanel();
 			tabPanel.selectTab(0);
-
 			content=new FlowPanel();
 			content.add(tabPanel);
-
 			FlowPanel siteDock = tabsContent.get(Richercms.getInstance().getCmsConstants().site());
 			siteDock.add(new SiteView());
 			FlowPanel adminDock = tabsContent.get(Richercms.getInstance().getCmsConstants().admin());
@@ -55,8 +48,6 @@ public class MainView {
 			if(loginInfo.isAdmin()) loginPanel.add(new Label(" (admin) "));
 			signOutLink.setStylePrimaryName("anchor-menu");
 			loginPanel.add(signOutLink);
-			
-			
 			
 			Label lblCmsLg = new Label(Richercms.getInstance().getCmsConstants()
 					.lblCmslang());
@@ -101,28 +92,17 @@ public class MainView {
 
 			loginPanel.add(lblCmsLg);
 			loginPanel.add(cmsLg);
-		
-		
-
 
 		content.insert(loginPanel, 0);
-			
-		
-
-	
-			
 			
 			tabPanel.selectTab(0);
 		} else {
 			content=new FlowPanel();
 	
 			signInLink.setHref(loginInfo.getLoginUrl());
-			signInLink.setLayoutData(buttonLogin);
-			
 			loginLabel.setStylePrimaryName("text-login");
 			loginPanel.add(loginLabel);
-			signInLink.setStylePrimaryName("anchor-login");
-			
+			signInLink.setStylePrimaryName("anchor-login");	
 			loginPanel.add(signInLink);
 			content.add(loginPanel);
 		}

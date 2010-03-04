@@ -84,8 +84,10 @@ public class AdminView extends FlowPanel {
 				// Create a grid
 				Grid grid = new Grid(2, 3);
 
-				/*int numRows = grid.getRowCount();
-				int numColumns = grid.getColumnCount();*/
+				/*
+				 * int numRows = grid.getRowCount(); int numColumns =
+				 * grid.getColumnCount();
+				 */
 				UserInfo u = Richercms.getInstance().getLoginInfo();
 
 				grid.setHTML(0, 0, Richercms.getInstance().getCmsConstants()
@@ -134,11 +136,13 @@ public class AdminView extends FlowPanel {
 		cmsLg.addItem("Deutsch");
 		cmsLg.setVisibleItemCount(1);
 		String test = myLocale();
-		if (test.equalsIgnoreCase("fr")){
-			cmsLg.setSelectedIndex(1);	
-		}else if (test.equalsIgnoreCase("de")){
-			cmsLg.setSelectedIndex(2);			
-		}else {cmsLg.setSelectedIndex(0);}
+		if (test.equalsIgnoreCase("fr")) {
+			cmsLg.setSelectedIndex(1);
+		} else if (test.equalsIgnoreCase("de")) {
+			cmsLg.setSelectedIndex(2);
+		} else {
+			cmsLg.setSelectedIndex(0);
+		}
 
 		cmsLg.addChangeHandler(new ChangeHandler() {
 			public void onChange(ChangeEvent event) {
@@ -146,11 +150,11 @@ public class AdminView extends FlowPanel {
 				int itemSelected = cmsLg.getSelectedIndex();
 
 				// Get the string value of the item that has been selected
-				//String itemStringSelected = cmsLg.getValue(itemSelected);
+				// String itemStringSelected = cmsLg.getValue(itemSelected);
 
 				switch (itemSelected) {
 				case 0: {
-					myReload("en"); 
+					myReload("en");
 				}
 					break;
 				case 1: {
@@ -158,7 +162,7 @@ public class AdminView extends FlowPanel {
 				}
 					break;
 				case 2: {
-					myReload("de"); 
+					myReload("de");
 				}
 					break;
 				default: {
@@ -173,35 +177,33 @@ public class AdminView extends FlowPanel {
 		languagePanel.add(cmsLg);
 
 		/* Choice of the generated website language */
-	/*	Label lblSiteLg = new Label(Richercms.getInstance().getCmsConstants()
-				.lblSitelang());
-		ListBox siteLg = new ListBox();
-		siteLg.addItem("English");
-		siteLg.addItem("Francais");
-		siteLg.addItem("Deutsch");
-		siteLg.setVisibleItemCount(1);
-		languagePanel.add(lblSiteLg);
-		languagePanel.add(siteLg);
-*/
+		/*
+		 * Label lblSiteLg = new Label(Richercms.getInstance().getCmsConstants()
+		 * .lblSitelang()); ListBox siteLg = new ListBox();
+		 * siteLg.addItem("English"); siteLg.addItem("Francais");
+		 * siteLg.addItem("Deutsch"); siteLg.setVisibleItemCount(1);
+		 * languagePanel.add(lblSiteLg); languagePanel.add(siteLg);
+		 */
 		panel.add(adminPanel);
 		panel.add(languagePanel);
 		this.add(panel);
 	}
 
 	public void myReload(String countryCode) {
-		String url=Window.Location.getHref();
-		String[] splitted=url.split("locale");
-		StringBuffer buf=new StringBuffer();
+		String url = Window.Location.getHref();
+		String[] splitted = url.split("locale");
+		StringBuffer buf = new StringBuffer();
 		buf.append(splitted[0]);
 		buf.append("locale=");
 		buf.append(countryCode);
 		Window.Location.replace(buf.toString());
 	};
-	
+
 	public String myLocale() {
 		String url = Window.Location.getHref();
 		String[] splitted = url.split("locale=");
-		if(splitted.length<2) return "en";
+		if (splitted.length < 2)
+			return "en";
 		return splitted[1];
 	};
 }

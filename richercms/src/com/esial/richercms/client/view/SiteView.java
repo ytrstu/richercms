@@ -2,6 +2,7 @@ package com.esial.richercms.client.view;
 
 import com.esial.richercms.client.PageService;
 import com.esial.richercms.client.PageServiceAsync;
+import com.esial.richercms.client.Richercms;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -24,22 +25,26 @@ public class SiteView extends FlowPanel {
 		splitPanel.setRightWidget(vPanel);
 		this.add(splitPanel);
 	}
-	
-	private void loadPages(){
+
+	private void loadPages() {
 		pageService.getAllPages(new AsyncCallback<String[]>() {
-			
+
 			public void onSuccess(String[] result) {
-				Tree tree=new Tree();
-				for(String s : result){
-					MyPopUpAnchor anchor=new MyPopUpAnchor(s,splitPanel);
+				Tree tree = new Tree();
+				for (String s : result) {
+					MyPopUpAnchor anchor = new MyPopUpAnchor(s, splitPanel);
 					tree.addItem(anchor);
 				}
-				if(tree.getItemCount()==0) splitPanel.setLeftWidget(new Label("No Elements"));
-				else splitPanel.setLeftWidget(tree);
+				if (tree.getItemCount() == 0)
+					splitPanel.setLeftWidget(new Label(Richercms.getInstance()
+							.getCmsConstants().emptyTree()));
+				else
+					splitPanel.setLeftWidget(tree);
 			}
-			
+
 			public void onFailure(Throwable caught) {
-				splitPanel.setLeftWidget(new Label("TreeEchec"));
+				splitPanel.setLeftWidget(new Label(Richercms.getInstance()
+						.getCmsConstants().treeEchec()));
 			}
 		});
 	}

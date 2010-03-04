@@ -99,4 +99,11 @@ public interface RicherConstants extends Constants{
 	
 	@DefaultStringValue("Is admin")
 	String isadmin();
+
+	@DefaultStringValue("No Element")
+	String emptyTree();
+	
+	@DefaultStringValue("TreeEchec")
+	String treeEchec();
+	
 }

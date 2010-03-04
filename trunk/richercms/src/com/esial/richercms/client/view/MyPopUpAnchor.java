@@ -3,6 +3,7 @@ package com.esial.richercms.client.view;
 import com.esial.richercms.client.CmsPageEdition;
 import com.esial.richercms.client.PageService;
 import com.esial.richercms.client.PageServiceAsync;
+import com.esial.richercms.client.Richercms;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -35,17 +36,15 @@ public class MyPopUpAnchor extends Anchor {
 			this.anchor = anchor;
 		}
 
-		@Override
 		public void onClick(ClickEvent event) {
 			final PopupPanel panel = new PopupPanel(true);
 			VerticalPanel vPanel=new VerticalPanel();
-			vPanel.add(new Label("Choose an action for element "
+			vPanel.add(new Label(Richercms.getInstance().getCmsConstants().action()
 					+ "\'"+this.anchor.getText()+ "\':"));
 			HorizontalPanel hPanel=new HorizontalPanel();
-			Button bEdit=new Button("Edit");
+			Button bEdit=new Button(Richercms.getInstance().getCmsConstants().editpage());
 			bEdit.addClickHandler(new ClickHandler() {
 				
-				@Override
 				public void onClick(ClickEvent event) {
 					sPanel.remove(sPanel.getRightWidget());
 					editor=new CmsPageEdition(sPanel,true,anchor.getText());
@@ -54,21 +53,17 @@ public class MyPopUpAnchor extends Anchor {
 				}
 			});
 			hPanel.add(bEdit);
-			Button bDelete=new Button("Delete");
+			Button bDelete=new Button(Richercms.getInstance().getCmsConstants().delpage());
 			bDelete.addClickHandler(new ClickHandler() {
 				
-				@Override
 				public void onClick(ClickEvent event) {
 					pageService.removePage(anchor.getText(),new AsyncCallback<Void>() {
 						
-						@Override
 						public void onSuccess(Void result) {
 							panel.hide();
 						}
 						
-						@Override
 						public void onFailure(Throwable caught) {
-							// TODO Auto-generated method stub
 							panel.hide();
 						}
 					});
@@ -79,6 +74,5 @@ public class MyPopUpAnchor extends Anchor {
 			panel.add(vPanel);
 			panel.showRelativeTo(anchor);
 		}
-
 	}
 }

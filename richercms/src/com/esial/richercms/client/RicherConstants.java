@@ -49,13 +49,15 @@ public interface RicherConstants extends Constants{
 	@DefaultStringValue("Create page")
 	String createpage();
 	
-	@DefaultStringValue("Edit page")
+	@DefaultStringValue("Choose an action for element :")
+	String action();
+	
+	@DefaultStringValue("Edit")
 	String editpage();
 	
-	@DefaultStringValue("Delete page")
+	@DefaultStringValue("Delete")
 	String delpage();
 	
-
 	/*Editor part*/
 	
 	@DefaultStringValue("Browser Title")

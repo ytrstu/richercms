@@ -12,23 +12,25 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
 import com.google.gwt.user.client.ui.TabPanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class MainView {
 
 	private FlowPanel content;
 	private TabPanel tabPanel;
 	private HashMap<String, FlowPanel> tabsContent;
-	private HorizontalPanel loginPanel = new HorizontalPanel();
-	private Label loginLabel = new Label(Richercms.getInstance().getCmsConstants().signInto());
-	private Anchor signInLink = new Anchor(Richercms.getInstance().getCmsConstants().signIn());
+	private VerticalPanel loginPanel = new VerticalPanel();
+	private Label loginLabel = new Label("");
+	private Anchor signInLink = new Anchor();
 	private Anchor signOutLink = new Anchor(Richercms.getInstance().getCmsConstants().signOut());
-
-	
-
+	private Image imageLogin = new Image("tab_images/article-add.png");
+	private PushButton buttonLogin= new PushButton(imageLogin);
 	//private String email;
 
 	public MainView(UserInfo loginInfo) {
@@ -113,10 +115,14 @@ public class MainView {
 			tabPanel.selectTab(0);
 		} else {
 			content=new FlowPanel();
+	
 			signInLink.setHref(loginInfo.getLoginUrl());
+			signInLink.setLayoutData(buttonLogin);
+			
 			loginLabel.setStylePrimaryName("text-login");
 			loginPanel.add(loginLabel);
 			signInLink.setStylePrimaryName("anchor-login");
+			
 			loginPanel.add(signInLink);
 			content.add(loginPanel);
 		}

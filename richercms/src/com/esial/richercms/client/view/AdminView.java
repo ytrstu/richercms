@@ -191,11 +191,21 @@ public class AdminView extends FlowPanel {
 
 	public void myReload(String countryCode) {
 		String url = Window.Location.getHref();
-		String[] splitted = url.split("locale");
+		System.out.println(url);
 		StringBuffer buf = new StringBuffer();
-		buf.append(splitted[0]);
-		buf.append("locale=");
-		buf.append(countryCode);
+		if (url.contains("locale")) {
+			String[] splitted = url.split("locale");
+			buf.append(splitted[0]);
+			buf.append("locale=");
+			buf.append(countryCode);
+			System.out.println("Avec locale : "+buf);
+		} else {
+			buf.append(url);
+			buf.append("?locale=");
+			buf.append(countryCode);
+			System.out.println("Sans locale : "+buf);
+		}
+
 		Window.Location.replace(buf.toString());
 	};
 

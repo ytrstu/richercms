@@ -13,13 +13,18 @@ import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
+import com.esial.richercms.client.NotLoggedInException;
+import com.google.appengine.api.datastore.Blob;
+
 public class FileUploadServlet extends HttpServlet {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 132039883431151234L;
-	//private static final String UPLOAD_DIRECTORY = "D:\\Mes images\\divers";
+
+	//	private final PictureServiceAsync pictureService;
+
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) 
@@ -55,9 +60,14 @@ public class FileUploadServlet extends HttpServlet {
 						int len;
 						byte[] buffer = new byte[8192];
 						while ((len = in.read(buffer, 0, buffer.length)) != -1) {
-							//resp.getOutputStream().write(buffer, 0, len);
+							resp.getOutputStream().write(buffer, 0, len);
 						}
-
+						Blob picture = new Blob(buffer);
+/*						try {
+							picture.add();
+						} catch (NotLoggedInException e) {
+							e.printStackTrace();
+						}*/
 					}
 				}
 			} catch (FileUploadException e) {

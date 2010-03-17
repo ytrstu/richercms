@@ -1,6 +1,10 @@
 package com.esial.richercms.client;
 
+import javax.jdo.PersistenceManager;
+
 import com.esial.richercms.client.view.MyPopUpAnchor;
+import com.esial.richercms.server.MemoryFileItem;
+import com.esial.richercms.server.PMF;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -25,9 +29,6 @@ import com.google.gwt.user.datepicker.client.DateBox;
 
 public class CmsPageEdition extends Composite {
 
-
-
-
 	private TextBox browserTitle = new TextBox();
 	private TextBox pageTitle = new TextBox();
 	private TextBox urlName = new TextBox();
@@ -36,13 +37,11 @@ public class CmsPageEdition extends Composite {
 	private VerticalPanel panel;
 	private TinyMCE htmlEditor;
 	private final PageServiceAsync pageService = GWT.create(PageService.class);
-	private final PictureServiceAsync pictureService = GWT.create(PictureService.class);
-
 	private FlexTable tbl;
 
 	private final HorizontalSplitPanel splitPanel;
 	private static final String urlAction = GWT.getModuleBaseURL() + "upload";
-	public CmsPageEdition(HorizontalSplitPanel split) {
+	public CmsPageEdition(final HorizontalSplitPanel split) {
 		this.splitPanel=split;
 		panel = new VerticalPanel();
 		tbl = new FlexTable();
@@ -85,23 +84,18 @@ public class CmsPageEdition extends Composite {
 		form.setWidget(panel);
 
 		final FileUpload upload = new FileUpload();
-		//upload.setName(Richercms.getInstance().getCmsConstants().uploadPic());
 		upload.setName("uploadFormElement");
 		form.setWidget(upload);
-		panel.add(form);
 
 		// Ajout d'un bouton de soumission pour le formulaire
 		panel.add(new Button("Submit", new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				System.out.println("form.toString() : " + form.toString());
 				String s = getHtmlEditor().getText();
-				System.out.println("chaine : "+s);
 				s = s + upload.getFilename();
-				//System.out.println("chaine : " +s );
-				//getHtmlEditor().getTa().setText("<p>plop</p>");
-				//System.out.println(getHtmlEditor().getTa().getText());
-				htmlEditor.setText("ola");
-				//form.submit();
+				htmlEditor = new TinyMCE(800, 35);
+				htmlEditor.setText(s);
+				tbl.setWidget(6, 2, htmlEditor);
 			}
 		}));
 
@@ -119,7 +113,7 @@ public class CmsPageEdition extends Composite {
 				Window.alert(event.getResults());
 			}
 		});
-
+		panel.add(form);
 		// ajout du panel à la page principale
 		RootPanel.get().add(panel);
 
@@ -164,7 +158,6 @@ public class CmsPageEdition extends Composite {
 						splitPanel.setLeftWidget(new Label("TreeUpdateError"));
 					}
 				});
-				//pictureService.getPictureData(fileName, callback)
 			}
 		});
 
@@ -179,7 +172,7 @@ public class CmsPageEdition extends Composite {
 
 	}
 
-	public CmsPageEdition(HorizontalSplitPanel split, boolean isEditOnly, String page_title){
+	public CmsPageEdition(final HorizontalSplitPanel split, boolean isEditOnly, String page_title){
 		this.splitPanel=split;
 		panel = new VerticalPanel();
 		tbl = new FlexTable();
@@ -251,11 +244,9 @@ public class CmsPageEdition extends Composite {
 				String s = getHtmlEditor().getText();
 				System.out.println("chaine : "+s);
 				s = s + upload.getFilename();
-				//System.out.println("chaine : " +s );
-				//getHtmlEditor().getTa().setText("<p>plop</p>");
-				//System.out.println(getHtmlEditor().getTa().getText());
-				htmlEditor.setText("ola");
-				//form.submit();
+				htmlEditor = new TinyMCE(800, 35);
+				htmlEditor.setText(s);
+				tbl.setWidget(6, 2, htmlEditor);
 			}
 		}));
 
@@ -327,6 +318,7 @@ public class CmsPageEdition extends Composite {
 
 		// All composites must call initWidget() in their constructors.
 		panel.setWidth("100%");
+		panel.add(form);
 		initWidget(panel);
 
 	}

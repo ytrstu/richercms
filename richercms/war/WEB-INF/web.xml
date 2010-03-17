@@ -43,7 +43,7 @@
     <servlet-name>statService</servlet-name>
     <url-pattern>/richercms/stats</url-pattern>
   </servlet-mapping>
-
+  
 	<!-- Default page to serve -->
 	<welcome-file-list>
 		<welcome-file>Richercms.html</welcome-file>

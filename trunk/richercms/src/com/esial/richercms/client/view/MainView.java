@@ -58,11 +58,14 @@ public class MainView {
 			cmsLg.addItem("Deutsch");
 			cmsLg.setVisibleItemCount(1);
 			String test = myLocale();
-			if (test.equalsIgnoreCase("fr")){
-				cmsLg.setSelectedIndex(1);	
-			}else if (test.equalsIgnoreCase("de")){
-				cmsLg.setSelectedIndex(2);			
-			}else {cmsLg.setSelectedIndex(0);}
+			if (test.equalsIgnoreCase("fr")) {
+				cmsLg.setSelectedIndex(1);
+			} else if (test.equalsIgnoreCase("de")) {
+				cmsLg.setSelectedIndex(2);
+			} else {
+				cmsLg.setSelectedIndex(0);
+			}
+			
 			cmsLg.setStylePrimaryName("menu-langue");
 
 			cmsLg.addChangeHandler(new ChangeHandler() {
@@ -136,24 +139,34 @@ public class MainView {
 	
 	
 	public void myReload(String countryCode) {
-		String url=Window.Location.getHref();
+		String url = Window.Location.getHref();
 		System.out.println(url);
-		String[] splitted=url.split("locale");
-		for(String s:splitted){
-			System.out.println(s);
+		StringBuffer buf = new StringBuffer();
+		if (url.contains("locale")) {
+			String[] splitted = url.split("locale");
+			buf.append(splitted[0]);
+			buf.append("locale=");
+			buf.append(countryCode);
+			System.out.println("Avec locale : "+buf);
+		} else {
+			buf.append(url);
+			buf.append("?locale=");
+			buf.append(countryCode);
+			System.out.println("Sans locale : "+buf);
 		}
-		StringBuffer buf=new StringBuffer();
-		buf.append(splitted[0]);
-		buf.append("locale=");
-		buf.append(countryCode);
+
 		Window.Location.replace(buf.toString());
-	}
-	
+	};
+
 	public String myLocale() {
 		String url = Window.Location.getHref();
-		String[] splitted = url.split("locale=");
-		if(splitted.length<2) return "en";
-		return splitted[1];
+		if (url.contains("locale")) {
+			String[] splitted = url.split("locale=");
+			if (splitted.length < 2)
+				return "en";
+			return splitted[1];
+		}
+		return "en";
 	};
  
 }

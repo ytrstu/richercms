@@ -72,7 +72,7 @@ public class Page2Presenter implements Presenter
 	        public void onClick(ClickEvent event) 
 	        {
 	          if(ajouteLangue())//ajoute la langue si possible
-	        	  display.hidePopUpAddLangue();// cache le popUp uniquement si une langue a bien été ajouté
+	        	  display.hidePopUpAddLangue();// cache le popUp uniquement si une langue a bien ï¿½tï¿½ ajoutï¿½
 	        }
 	      });
 	    
@@ -141,7 +141,7 @@ public class Page2Presenter implements Presenter
 	private void saveSelectedLanguage()
 	{
 		
-		this.rpcLangue.SelectionneLangue(this.display.getLangueSelectionner(), new AsyncCallback<Void>()
+		this.rpcLangue.selectionneLangue(this.display.getLangueSelectionner(), new AsyncCallback<Void>()
 				{
 						public void onSuccess(Void result){}
 						public void onFailure(Throwable caught) {
@@ -151,7 +151,7 @@ public class Page2Presenter implements Presenter
 
 	private void deleteLanguage()
 	{
-		this.rpcLangue.DeleteLanguage(this.display.getLangueSelectionner(), new AsyncCallback<Void>()
+		this.rpcLangue.deleteLanguage(this.display.getLangueSelectionner(), new AsyncCallback<Void>()
 				{
 						public void onSuccess(Void result)
 						{

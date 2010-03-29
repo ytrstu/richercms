@@ -18,6 +18,6 @@ public interface ServiceLangueAsync
 	public void getLangues(AsyncCallback<List<DetailsLangue>> callback);
 	public void ajoutLangueDeBase(AsyncCallback<Void> callback);
 	public void addLanguage(String language,AsyncCallback<Void> callback);
-	public void SelectionneLangue(List<Integer> lstID, AsyncCallback<Void> callback);
-	public void DeleteLanguage(List<Integer> lstID, AsyncCallback<Void> callback);
+	public void selectionneLangue(List<Integer> lstID, AsyncCallback<Void> callback);
+	public void deleteLanguage(List<Integer> lstID, AsyncCallback<Void> callback);
 }

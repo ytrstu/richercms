@@ -29,6 +29,11 @@
   <url-pattern>/richercms/user</url-pattern>
 </servlet-mapping>
 
+	<servlet>
+    	<servlet-name>ServiceLangueServlet</servlet-name>
+    	<servlet-class>wizardConfig.server.ServiceLangueImpl</servlet-class>
+ 	</servlet>
+
 <servlet-mapping>
     <servlet-name>pageService</servlet-name>
     <url-pattern>/richercms/pages</url-pattern>
@@ -44,10 +49,14 @@
     <url-pattern>/richercms/stats</url-pattern>
   </servlet-mapping>
   
+	<servlet-mapping>
+		<servlet-name>ServiceLangueServlet</servlet-name>
+		<url-pattern>/wizardconfig/serviceLangue</url-pattern>
+	</servlet-mapping>
+  
 	<!-- Default page to serve -->
 	<welcome-file-list>
 		<welcome-file>Richercms.html</welcome-file>
 	</welcome-file-list>
-
 	
 </web-app>

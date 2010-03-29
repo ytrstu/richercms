@@ -3,7 +3,7 @@ package wizardConfig.client;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.HandlerManager;
-import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.RootLayoutPanel;
 
 
 
@@ -22,7 +22,7 @@ public class WizardConfig implements EntryPoint
 	    HandlerManager eventBus = new HandlerManager(null);
 	    
 	    AppController appViewer = new AppController(rpcLangue, eventBus);
-	    appViewer.go(RootPanel.get());
+	    appViewer.go(RootLayoutPanel.get());
 	}
 	
 }

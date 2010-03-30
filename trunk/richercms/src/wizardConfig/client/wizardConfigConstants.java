@@ -2,8 +2,8 @@ package wizardConfig.client;
 
 import com.google.gwt.i18n.client.Constants;
 
-public interface wizardConfigConstants extends Constants
-{
+public interface wizardConfigConstants extends Constants {
+	
 	  @DefaultStringValue("Title")
 	  String titlePage1();
 	  

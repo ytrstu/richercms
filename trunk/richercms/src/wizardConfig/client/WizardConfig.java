@@ -10,15 +10,14 @@ import com.google.gwt.user.client.ui.RootLayoutPanel;
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
  */
-public class WizardConfig implements EntryPoint 
-{
+public class WizardConfig implements EntryPoint {
 
 	/**
 	 * This is the entry point method.
 	 */
-	public void onModuleLoad() 
-	{
-		ServiceLangueAsync rpcLangue = GWT.create(ServiceLangue.class);
+	public void onModuleLoad() {
+		
+		LanguageServiceAsync rpcLangue = GWT.create(LanguageService.class);
 	    HandlerManager eventBus = new HandlerManager(null);
 	    
 	    AppController appViewer = new AppController(rpcLangue, eventBus);

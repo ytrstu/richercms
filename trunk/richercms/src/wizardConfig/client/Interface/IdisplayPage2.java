@@ -11,8 +11,8 @@ import com.google.gwt.user.client.ui.Widget;
  * Page2View <=> Page2Presenter
  * @author homberg.g
  */
-public interface IdisplayPage2 
-{
+public interface IdisplayPage2 {
+	
 	/**
 	 * get the handler of the button Next
 	 * @return The handler of the button Next
@@ -44,28 +44,28 @@ public interface IdisplayPage2
 	HasClickHandlers getPopUpBtnCancel();
 	
 
-	void setListeLangue(ArrayList<String> langues);
-	void setTableLangue(ArrayList<String> langues);
+	void setLanguageList(ArrayList<String> langues);
+	void setLanguageTable(ArrayList<String> langues);
 	
 	/**
 	 * Add a Language in the table
 	 * @param langue 
 	 * @param checked true if the language is selected.
 	 */
-	void addLangue(String langue, boolean checked);
+	void addLanguage(String langue, boolean checked);
 	
 	/**
 	 * Get the List of selected IDs (id = position in the table)
 	 * @return List of selected IDs in the table
 	 */
-	List<Integer> getLangueSelectionner();
+	List<Integer> getSelectedLanguage();
 	
 	
 	/**
 	 * check the language with the ID
 	 * @param id position in the table
 	 */
-	void setLangueSelectionner(int id);
+	void setSelectedLanguage(int id);
 	
 	/**
 	 * Return the string entered by the user in the popup
@@ -77,12 +77,12 @@ public interface IdisplayPage2
 	/**
 	 * Show the Add Language PopUp
 	 */
-	void showPopUpAddLangue();
+	void showPopUpAddLanguage();
 	
 	/**
 	 * Hide the Add Language PopUp
 	 */
-	void hidePopUpAddLangue();
+	void hidePopUpAddLanguage();
 	
 	/**
 	 * Clear the table of languages

@@ -3,7 +3,7 @@ package wizardConfig.client;
 
 import java.util.List;
 
-import wizardConfig.shared.DetailsLangue;
+import wizardConfig.shared.DetailsLanguage;
 
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -13,11 +13,10 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  * @author homberg.g
  *
  */
-public interface ServiceLangueAsync 
-{
-	public void getLangues(AsyncCallback<List<DetailsLangue>> callback);
-	public void ajoutLangueDeBase(AsyncCallback<Void> callback);
+public interface LanguageServiceAsync {
+	public void getLangues(AsyncCallback<List<DetailsLanguage>> callback);
+	public void addBasesLanguage(AsyncCallback<Void> callback);
 	public void addLanguage(String language,AsyncCallback<Void> callback);
-	public void selectionneLangue(List<Integer> lstID, AsyncCallback<Void> callback);
+	public void selectLanguage(List<Integer> lstID, AsyncCallback<Void> callback);
 	public void deleteLanguage(List<Integer> lstID, AsyncCallback<Void> callback);
 }

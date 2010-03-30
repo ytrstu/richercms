@@ -9,8 +9,8 @@ import javax.jdo.annotations.PrimaryKey;
 
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class Langue 
-{
+public class Language {
+	
 	@PrimaryKey
 	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
 	private Long id;
@@ -20,12 +20,12 @@ public class Langue
 	private boolean selected;
 	
 	
-	public Langue() {
+	public Language() {
 		this.langue = "";
 		this.selected = false;
 	}
 
-	public Langue(String langue) {
+	public Language(String langue) {
 		this.langue = langue;
 		this.selected = false;
 	}

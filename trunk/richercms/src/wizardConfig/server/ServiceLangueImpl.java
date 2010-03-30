@@ -8,33 +8,33 @@ import javax.jdo.PersistenceManager;
 import javax.jdo.PersistenceManagerFactory;
 import javax.jdo.Query;
 
-import wizardConfig.client.ServiceLangue;
-import wizardConfig.server.businessObj.Langue;
-import wizardConfig.shared.DetailsLangue;
+import wizardConfig.client.LanguageService;
+import wizardConfig.server.businessObj.Language;
+import wizardConfig.shared.DetailsLanguage;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 @SuppressWarnings("serial")
-public class ServiceLangueImpl extends RemoteServiceServlet implements ServiceLangue{
+public class ServiceLangueImpl extends RemoteServiceServlet implements LanguageService{
 
 	private static final PersistenceManagerFactory PMF =
 	      JDOHelper.getPersistenceManagerFactory("transactions-optional");
-	private List<Langue> langues = null;
+	private List<Language> languages = null;
 
 	/**
 	 * Renvoi les langues disponibles
 	 */
 	@SuppressWarnings("unchecked")
-	public List<DetailsLangue> getLangues() {
+	public List<DetailsLanguage> getLangues() {
 		
 		PersistenceManager pm = getPersistenceManager();
-		ArrayList<DetailsLangue> lst = new ArrayList<DetailsLangue>();
+		ArrayList<DetailsLanguage> lst = new ArrayList<DetailsLanguage>();
 	    try {
-	        Query q = pm.newQuery(Langue.class);
-	        langues = (List<Langue>) q.execute();
+	        Query q = pm.newQuery(Language.class);
+	        languages = (List<Language>) q.execute();
 	        
-	        for (Langue langue : langues) {
-	            lst.add(new DetailsLangue(langue.getLangue(),langue.isSelected()));
+	        for (Language language : languages) {
+	            lst.add(new DetailsLanguage(language.getLangue(),language.isSelected()));
 	          }
         } finally {
         	pm.close();
@@ -42,27 +42,26 @@ public class ServiceLangueImpl extends RemoteServiceServlet implements ServiceLa
 		return lst;
 	}
 	
-	public void ajoutLangueDeBase()
-	{
+	public void addBasesLanguage() {
+		
 	    PersistenceManager pm = getPersistenceManager();
 	    try {
-	      pm.makePersistent(new Langue("Fran�ais"));
-	      pm.makePersistent(new Langue("Anglais"));
-	      pm.makePersistent(new Langue("Allemand"));
-	      pm.makePersistent(new Langue("Italien"));
+	      pm.makePersistent(new Language("Fran�ais"));
+	      pm.makePersistent(new Language("Anglais"));
+	      pm.makePersistent(new Language("Allemand"));
+	      pm.makePersistent(new Language("Italien"));
 	    } finally {
 	      pm.close();
 	    }
 	}
 	
-	public void addLanguage(String language)
-	{
-		Langue lg = new Langue(language);
+	public void addLanguage(String language) {
+		
+		Language lg = new Language(language);
 		PersistenceManager pm = getPersistenceManager();
 	    try {
 	    	// on ajoute dans le dataStore uniquement s'il n'existe pas d�j�
-	    	if(!this.existingLanguage(language))
-	    	{
+	    	if(!this.existingLanguage(language)){
 	    		pm.makePersistent(lg);
 	    	}
 	    } finally {
@@ -70,16 +69,15 @@ public class ServiceLangueImpl extends RemoteServiceServlet implements ServiceLa
 	    }
 	}
 	
-	public void selectionneLangue(List<Integer> lstID)
-	{
+	public void selectLanguage(List<Integer> lstID) {
+		
 		PersistenceManager pm = getPersistenceManager();
 		
 		 try
 		 {
 			//On d�-selectionne toute les langues
-			 for (Langue objLangue : this.langues)
-			 {
-				Langue lg = pm.getObjectById(Langue.class, objLangue.getId());
+			 for (Language objLanguage : this.languages) {
+				Language lg = pm.getObjectById(Language.class, objLanguage.getId());
 				lg.setSelected(false);
 			 }
 	
@@ -87,7 +85,7 @@ public class ServiceLangueImpl extends RemoteServiceServlet implements ServiceLa
 			 // On selectionne uniquement les bonnes langues
 			 for (Integer IDlangue : lstID)
 			 {	
-				 Langue lg = pm.getObjectById(Langue.class, this.langues.get(IDlangue.intValue()).getId());
+				 Language lg = pm.getObjectById(Language.class, this.languages.get(IDlangue.intValue()).getId());
 				 lg.setSelected(true);
 			 }
 			 
@@ -96,15 +94,13 @@ public class ServiceLangueImpl extends RemoteServiceServlet implements ServiceLa
 		 }
 	}
 	
-	public void deleteLanguage(List<Integer> lstID)
-	{
+	public void deleteLanguage(List<Integer> lstID) {
+		
 		PersistenceManager pm = getPersistenceManager();
-		 try
-		 {
+		 try {
 			 
-			 for (Integer id : lstID)
-			 {
-				 Langue lg = pm.getObjectById(Langue.class, this.langues.get(id).getId());
+			 for (Integer id : lstID) {
+				 Language lg = pm.getObjectById(Language.class, this.languages.get(id).getId());
 				 pm.deletePersistent(lg);
 			 }
 
@@ -113,12 +109,11 @@ public class ServiceLangueImpl extends RemoteServiceServlet implements ServiceLa
 		 }
 	}
 	
-	private boolean existingLanguage(String lg)
-	{
+	private boolean existingLanguage(String lg) {
+		
 		//ArrayList<String> lst = getLangues();
-		 for (Langue langue : this.langues)
-		 {
-			 if(lg.equals(langue.getLangue()))
+		 for (Language language : this.languages) {
+			 if(lg.equals(language.getLangue()))
 				 return true;
 		 }
 		 return false;

@@ -22,50 +22,50 @@ import com.google.gwt.user.client.ui.Widget;
  * @author homberg.g
  *
  */
-public class Page1View  extends DockLayoutPanel implements IdisplayPage1
-{
+public class Page1View  extends DockLayoutPanel implements IdisplayPage1 {
+	
 	//gestion des langues
 	private wizardConfigConstants constants = GWT.create(wizardConfigConstants.class);
 	
 	//widget de la fenetre
-	private Button btnSuivant = new Button(constants.buttonNext());
-	private Label langue = new Label(constants.LabelLangue());
-	private ListBox listeLangue = new ListBox();
+	private Button btnNext = new Button(constants.buttonNext());
+	private Label language = new Label(constants.LabelLangue());
+	private ListBox languageList = new ListBox();
 	
 	// panel de la fenetre
-	private HorizontalPanel panelLangue = new HorizontalPanel();
-	private LayoutPanel panelCentral = new LayoutPanel();
+	private HorizontalPanel languagePanel = new HorizontalPanel();
+	private LayoutPanel centralPanel = new LayoutPanel();
 	//private DockLayoutPanel panelPrincipal = new DockLayoutPanel(Unit.PX); // layout principal
 	
 	/**
 	 * build the view and place widgets
 	 */
-	public Page1View()
-	{
+	public Page1View() {
+		
 		super(Unit.PX);
-		this.listeLangue.addItem("English");
-		this.listeLangue.addItem("Francais");
-		this.listeLangue.addItem("Deutsch");
-		this.listeLangue.setVisibleItemCount(1);
-		panelLangue.setBorderWidth(3);
+		this.languageList.addItem("English");
+		this.languageList.addItem("Francais");
+		this.languageList.addItem("Deutsch");
+		this.languageList.setVisibleItemCount(1);
+		languagePanel.setBorderWidth(3);
 
 
-		this.panelLangue.add(langue);
-		this.panelLangue.add(listeLangue);
+		this.languagePanel.add(language);
+		this.languagePanel.add(languageList);
 		
 
-		panelCentral.add(panelLangue);
+		centralPanel.add(languagePanel);
 		HTML news = new HTML(constants.summary());
-		panelCentral.add(news);
-		panelCentral.setWidgetTopHeight(panelLangue, 0, Style.Unit.PCT, 20, Style.Unit.PCT);
-		panelCentral.setWidgetTopHeight(news, 25, Style.Unit.PCT, 80, Style.Unit.PCT);
-		panelCentral.setWidth("80%");
+		centralPanel.add(news);
+		centralPanel.setWidgetTopHeight(languagePanel, 5, Style.Unit.PCT, 4, Style.Unit.PCT);
+		centralPanel.setWidgetTopHeight(news, 25, Style.Unit.PCT, 80, Style.Unit.PCT);
+		centralPanel.setWidth("80%");
 		
-		btnSuivant.setWidth("10%");
+		btnNext.setWidth("10%");
 		//Layout principal
 	    this.addNorth(new HTML(constants.titlePage1()), 50);
-	    this.addSouth(btnSuivant, 30);
-	    this.add(panelCentral);
+	    this.addSouth(btnNext, 30);
+	    this.add(centralPanel);
 
 	    //hauteur de la page
 	    //this.setHeight("300px");
@@ -76,41 +76,41 @@ public class Page1View  extends DockLayoutPanel implements IdisplayPage1
 
 	}
 	
-	public Widget asWidget() 
-	{
+	public Widget asWidget() {
+		
 		return this;
 	}
 
 	/**
 	 * evt when the button next is clicked
 	 */
-	public HasClickHandlers getNextButton() 
-	{
-		return this.btnSuivant;
+	public HasClickHandlers getNextButton() {
+		
+		return this.btnNext;
 	}
 
 	/**
 	 * evt when the list change
 	 */
-	public HasChangeHandlers getSelectedLanguage() 
-	{
-		return this.listeLangue;
+	public HasChangeHandlers getSelectedLanguage() {
+		
+		return this.languageList;
 	}
 
 	/**
 	 * set the current language
 	 */
-	public void setSelectedLanguage(int idLanguage) 
-	{
-		this.listeLangue.setItemSelected(idLanguage, true);
+	public void setSelectedLanguage(int idLanguage) {
+		
+		this.languageList.setItemSelected(idLanguage, true);
 	}
 
 
 	/**
 	 * get the index of the current language
 	 */
-	public int getIndexLanguage() 
-	{
-		return this.listeLangue.getSelectedIndex();
+	public int getIndexLanguage() {
+		
+		return this.languageList.getSelectedIndex();
 	}
 }

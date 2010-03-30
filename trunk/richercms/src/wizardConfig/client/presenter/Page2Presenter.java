@@ -4,9 +4,9 @@ package wizardConfig.client.presenter;
 
 import java.util.List;
 
-import wizardConfig.client.ServiceLangueAsync;
+import wizardConfig.client.LanguageServiceAsync;
 import wizardConfig.client.Interface.IdisplayPage2;
-import wizardConfig.shared.DetailsLangue;
+import wizardConfig.shared.DetailsLanguage;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -20,10 +20,9 @@ import com.google.gwt.user.client.ui.HasWidgets;
  * @author homberg.g
  *
  */
-public class Page2Presenter implements Presenter
-{
+public class Page2Presenter implements Presenter {
   
-	private final ServiceLangueAsync rpcLangue;
+	private final LanguageServiceAsync rpcLangue;
 	@SuppressWarnings("unused")
 	private final HandlerManager eventBus;
 	private final IdisplayPage2 display;
@@ -33,8 +32,8 @@ public class Page2Presenter implements Presenter
 	* @param eventBus
 	* @param view
 	*/
-	public Page2Presenter(ServiceLangueAsync rpcService, HandlerManager eventBus, IdisplayPage2 view) 
-	{
+	public Page2Presenter(LanguageServiceAsync rpcService, HandlerManager eventBus, IdisplayPage2 view) {
+		
 		this.rpcLangue= rpcService;
 		this.eventBus = eventBus;
 		this.display = view;
@@ -44,8 +43,8 @@ public class Page2Presenter implements Presenter
 	 * Bind the different evt
 	 * (lien entre l'evt d'un widget de la vue et soit le presenter, soit le controller)
 	 */	  
-	private void bind() 
-	{
+	private void bind() {
+		
 		// Sauvegarde des langue choisi + changement de view (page2 -> MainView)
 	    display.getNextButton().addClickHandler(new ClickHandler() {   
 	        public void onClick(ClickEvent event) {
@@ -56,7 +55,7 @@ public class Page2Presenter implements Presenter
 		// lancement de la popUp d'ajout d'une langue
 	    display.getAddButton().addClickHandler(new ClickHandler() {   
 	        public void onClick(ClickEvent event) {
-	          display.showPopUpAddLangue();
+	          display.showPopUpAddLanguage();
 	        }
 	      });
 	    
@@ -72,14 +71,14 @@ public class Page2Presenter implements Presenter
 	        public void onClick(ClickEvent event) 
 	        {
 	          if(ajouteLangue())//ajoute la langue si possible
-	        	  display.hidePopUpAddLangue();// cache le popUp uniquement si une langue a bien �t� ajout�
+	        	  display.hidePopUpAddLanguage();// cache le popUp uniquement si une langue a bien �t� ajout�
 	        }
 	      });
 	    
 		// Annulation du PopUp
 	    display.getPopUpBtnCancel().addClickHandler(new ClickHandler() {   
 	        public void onClick(ClickEvent event) {
-	          display.hidePopUpAddLangue();
+	          display.hidePopUpAddLanguage();
 	        }
 	      });
 	}
@@ -87,8 +86,8 @@ public class Page2Presenter implements Presenter
 	/**
 	 * Start the view
 	 */
-	public void go(HasWidgets container) 
-	{
+	public void go(HasWidgets container) {
+		
 	    bind();
 	    container.clear();
 	    fetchLanguageTable();
@@ -98,15 +97,13 @@ public class Page2Presenter implements Presenter
 	/**
 	 * fill the LanguageArray
 	 */
-	private void fetchLanguageTable()
-	{
-	    this.rpcLangue.getLangues( new AsyncCallback<List<DetailsLangue>>()
-	    {
-	    	public void onSuccess(List<DetailsLangue> result)
-	    	{
+	private void fetchLanguageTable() {
+		
+	    this.rpcLangue.getLangues( new AsyncCallback<List<DetailsLanguage>>() {
+	    	public void onSuccess(List<DetailsLanguage> result) {
 	    		display.clearTableLanguage();	    		
-	    		for(DetailsLangue dLg : result)
-	    			display.addLangue(dLg.getLangue(),dLg.getSelectionner());
+	    		for(DetailsLanguage dLg : result)
+	    			display.addLanguage(dLg.getLangue(),dLg.getSelectionner());
 	    	}
 	        public void onFailure(Throwable caught) {
 	            Window.alert("Error retrieving language");}
@@ -117,17 +114,14 @@ public class Page2Presenter implements Presenter
 	 * Add a new language if all conditions are verify
 	 * @return true : new language Added ; false else
 	 */
-	private boolean ajouteLangue()
-	{
-		if(this.display.getPopUpNewLanguage().length() == 0)
-		{
+	private boolean ajouteLangue() {
+		
+		if(this.display.getPopUpNewLanguage().length() == 0) {
 			Window.alert("No Language Entered");
 			return false;
 		}
-		else
-		{
-			this.rpcLangue.addLanguage(this.display.getPopUpNewLanguage(),new AsyncCallback<Void>()
-				    {
+		else {
+			this.rpcLangue.addLanguage(this.display.getPopUpNewLanguage(),new AsyncCallback<Void>() {
 				    	public void onSuccess(Void result){
 				    		fetchLanguageTable();}
 				        public void onFailure(Throwable caught) {
@@ -138,23 +132,19 @@ public class Page2Presenter implements Presenter
 			
 	}
 	
-	private void saveSelectedLanguage()
-	{
+	private void saveSelectedLanguage() {
 		
-		this.rpcLangue.selectionneLangue(this.display.getLangueSelectionner(), new AsyncCallback<Void>()
-				{
+		this.rpcLangue.selectLanguage(this.display.getSelectedLanguage(), new AsyncCallback<Void>() {
 						public void onSuccess(Void result){}
 						public void onFailure(Throwable caught) {
 							Window.alert("Error : SelectLanguage");}
 				});
 	}
 
-	private void deleteLanguage()
-	{
-		this.rpcLangue.deleteLanguage(this.display.getLangueSelectionner(), new AsyncCallback<Void>()
-				{
-						public void onSuccess(Void result)
-						{
+	private void deleteLanguage() {
+		
+		this.rpcLangue.deleteLanguage(this.display.getSelectedLanguage(), new AsyncCallback<Void>() {
+						public void onSuccess(Void result) {
 							fetchLanguageTable();
 						}
 						public void onFailure(Throwable caught) {

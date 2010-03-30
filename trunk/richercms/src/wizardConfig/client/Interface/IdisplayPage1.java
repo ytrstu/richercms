@@ -9,8 +9,8 @@ import com.google.gwt.user.client.ui.Widget;
  * Page1View <=> Page1Presenter
  * @author homberg.g
  */
-public interface IdisplayPage1 
-{
+public interface IdisplayPage1 {
+	
 	/**
 	 * get the handler of the button Next
 	 * @return The handler of the button Next

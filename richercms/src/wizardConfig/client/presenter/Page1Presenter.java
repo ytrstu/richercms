@@ -18,8 +18,8 @@ import com.google.gwt.user.client.ui.HasWidgets;
  * @author homberg.g
  *
  */
-public class Page1Presenter implements Presenter
-{
+public class Page1Presenter implements Presenter {
+	
 	  private final HandlerManager eventBus;
 	  private final IdisplayPage1 display;
 	  
@@ -28,8 +28,8 @@ public class Page1Presenter implements Presenter
 	   * @param eventBus
 	   * @param view
 	   */
-	  public Page1Presenter(HandlerManager eventBus, IdisplayPage1 view) 
-	  {
+	  public Page1Presenter(HandlerManager eventBus, IdisplayPage1 view) {
+		  
 	    //this.rpcLangue= rpcService;
 	    this.eventBus = eventBus;
 	    this.display = view;
@@ -38,8 +38,8 @@ public class Page1Presenter implements Presenter
 	  /**
 	   * Initialize the view
 	   */
-	  public void go(final HasWidgets container) 
-	  {
+	  public void go(final HasWidgets container) {
+		  
 		    bind();
 		    String test = this.myLocale();
 		    
@@ -59,8 +59,8 @@ public class Page1Presenter implements Presenter
 	 * Bind the different evt
 	 * (lien entre l'evt d'un widget de la vue et soit le presenter, soit le controller)
 	 */
-	private void bind() 
-	{
+	private void bind() {
+		
 		// changement de page (page1 -> page2)
 	    display.getNextButton().addClickHandler(new ClickHandler() {   
 	        public void onClick(ClickEvent event) {
@@ -78,8 +78,7 @@ public class Page1Presenter implements Presenter
 	/**
 	 * change the UI language with language selected in the list
 	 */
-	public void changeLangueUI()
-	{
+	public void changeLangueUI() {
 		
 		switch (this.display.getIndexLanguage()) {
 		case 0: {
@@ -102,8 +101,8 @@ public class Page1Presenter implements Presenter
 	 * use the URL to take the language identifier
 	 * @return the language identifier : en,fr,de,...
 	 */
-	 public String myLocale() 
-	{
+	 public String myLocale() {
+		 
 		String url = Window.Location.getHref();
 		if (url.contains("locale")) 
 		{
@@ -121,8 +120,8 @@ public class Page1Presenter implements Presenter
 	  * Modify the "Locale" variable with the new countryCode
 	  * @param countryCode
 	  */
-	public void myReload(String countryCode) 
-	{
+	public void myReload(String countryCode) {
+		
 		String url = Window.Location.getHref();
 		System.out.println(url);
 		StringBuffer buf = new StringBuffer();

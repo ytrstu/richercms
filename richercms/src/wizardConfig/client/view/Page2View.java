@@ -24,28 +24,27 @@ import com.google.gwt.user.client.ui.Widget;
  * @author homberg.g
  *
  */
-public class Page2View extends DockLayoutPanel implements IdisplayPage2
-{
+public class Page2View extends DockLayoutPanel implements IdisplayPage2 {
+	
 	//gestion des langues
 	private wizardConfigConstants constants = GWT.create(wizardConfigConstants.class);
 	
 	//widget de la fenetre
-	private Button btnSuivant = new Button(constants.buttonNext());
-	private Button btnAjoutLangue = new Button(constants.buttonAddLanguage());
-	private Button btnDeleteLangue = new Button(constants.buttonDelLanguage());
-	private ListBox listeLangue = new ListBox();
+	private Button btnNext = new Button(constants.buttonNext());
+	private Button btnAddLanguage = new Button(constants.buttonAddLanguage());
+	private Button btnDeleteLanguage = new Button(constants.buttonDelLanguage());
+	private ListBox languageList = new ListBox();
 	private FlexTable LanguageTable;
-	private VerticalPanel PanelLangue = new VerticalPanel();
-	private HorizontalPanel PanelAdd_Del = new HorizontalPanel();
-	private PopUpAddLangue popUpAddLangue = new PopUpAddLangue();
+	private VerticalPanel languagePanel = new VerticalPanel();
+	private HorizontalPanel add_DelPanel = new HorizontalPanel();
+	private PopUpAddLangue popUpAddLanguage = new PopUpAddLangue();
 	
 	
-	public Page2View()
-	{
-
+	public Page2View() {
+		
 		super(Unit.PX);
 		
-	    this.popUpAddLangue.hide();
+	    this.popUpAddLanguage.hide();
 	    
 	    this.LanguageTable = new FlexTable();
 	    this.LanguageTable.setCellSpacing(0);
@@ -54,123 +53,109 @@ public class Page2View extends DockLayoutPanel implements IdisplayPage2
 	    this.LanguageTable.addStyleName("contacts-ListContents");
 	    this.LanguageTable.getColumnFormatter().setWidth(0, "15px");
 	    
-	    this.PanelAdd_Del.add(this.btnAjoutLangue);
-	    this.PanelAdd_Del.add(this.btnDeleteLangue);
+	    this.add_DelPanel.add(this.btnAddLanguage);
+	    this.add_DelPanel.add(this.btnDeleteLanguage);
 	    
-	    this.PanelLangue.add(this.LanguageTable);
-	    this.PanelLangue.add(this.PanelAdd_Del);
+	    this.languagePanel.add(this.LanguageTable);
+	    this.languagePanel.add(this.add_DelPanel);
 
-	    this.addSouth(this.btnSuivant, 30);
+	    this.addSouth(this.btnNext, 30);
 	    this.addNorth(new HTML(this.constants.titlePage2()),30);
-	    this.add(this.PanelLangue);
+	    this.add(this.languagePanel);
 
 	    //hauteur de la page
 	    this.setHeight("200px");
 	}
 	
 
-	public Widget asWidget() 
-	{
+	public Widget asWidget() {	
 		return this;
 	}
 
-	public HasClickHandlers getNextButton() 
-	{
-		return this.btnSuivant;
+	public HasClickHandlers getNextButton() {	
+		return this.btnNext;
 	}
 	
-	public HasClickHandlers getAddButton() 
-	{
-		return this.btnAjoutLangue;
+	public HasClickHandlers getAddButton() {	
+		return this.btnAddLanguage;
 	}
 	
-	public HasClickHandlers getDelButton() 
-	{
-		return this.btnDeleteLangue;
+	public HasClickHandlers getDelButton() {
+		return this.btnDeleteLanguage;
 	}
 	
-	public HasClickHandlers getPopUpBtnOk() 
-	{
-		return this.popUpAddLangue.ok;
+	public HasClickHandlers getPopUpBtnOk() {
+		return this.popUpAddLanguage.ok;
 	}
 	
-	public HasClickHandlers getPopUpBtnCancel() 
-	{
-		return this.popUpAddLangue.cancel;
+	public HasClickHandlers getPopUpBtnCancel() {
+		return this.popUpAddLanguage.cancel;
 	}
 
-	public void showPopUpAddLangue() 
-	{
+	public void showPopUpAddLanguage() {
 		// on vide les champs avant de re-afficher
-		this.popUpAddLangue.clearField();
-		this.popUpAddLangue.show();
+		this.popUpAddLanguage.clearField();
+		this.popUpAddLanguage.show();
 	}
 	
 
-	public void hidePopUpAddLangue() 
-	{
-		this.popUpAddLangue.hide();
+	public void hidePopUpAddLanguage() {
+		this.popUpAddLanguage.hide();
 	}
 
-	public void setListeLangue(ArrayList<String> langues) 
-	{
-		this.listeLangue.clear();
-		for (int i = 0; i < langues.size(); ++i) 
+	public void setLanguageList(ArrayList<String> languages) {
+		this.languageList.clear();
+		for (int i = 0; i < languages.size(); ++i) 
 		{
-			this.listeLangue.addItem(langues.get(i));
+			this.languageList.addItem(languages.get(i));
 		}
 	}
 	
-	public String getPopUpNewLanguage()
-	{
-		return this.popUpAddLangue.textbox.getText();
+	public String getPopUpNewLanguage(){
+		return this.popUpAddLanguage.textbox.getText();
 	}
 	
-	public void setTableLangue(ArrayList<String> langues) 
-	{
+	public void setLanguageTable(ArrayList<String> languages) {
+		
 		this.LanguageTable.removeAllRows();
 		
-		for (int i = 0; i < langues.size(); ++i) 
-		{
+		for (int i = 0; i < languages.size(); ++i) {
 			this.LanguageTable.setWidget(i, 0, new CheckBox());
-			this.LanguageTable.setText(i, 1, langues.get(i));
+			this.LanguageTable.setText(i, 1, languages.get(i));
 		}
 	}
 	
-	public List<Integer> getLangueSelectionner() 
-	{
+	public List<Integer> getSelectedLanguage() {
+		
 		List<Integer> selectedRows = new ArrayList<Integer>();
 		   
-		for (int i = 0; i < this.LanguageTable.getRowCount(); ++i) 
-		{
+		for (int i = 0; i < this.LanguageTable.getRowCount(); ++i) {
 			CheckBox checkBox = (CheckBox)this.LanguageTable.getWidget(i, 0);
 			
-			if (checkBox.getValue())
-			{
+			if (checkBox.getValue()){
 				selectedRows.add(i);
 			}
 		}
 		return selectedRows;
 	}
 
-	public void setLangueSelectionner(int id) 
-	{
+	public void setSelectedLanguage(int id) {
+		
 		CheckBox checkBox = (CheckBox)this.LanguageTable.getWidget(id, 0);
 		checkBox.setValue(true);
 	}
 
 
-	public void addLangue(String langue, boolean checked) 
-	{
+	public void addLanguage(String language, boolean checked) {
+		
 		CheckBox box = new CheckBox();
 		box.setValue(checked);
 		this.LanguageTable.setWidget(this.LanguageTable.getRowCount(), 0, box);
-		// on doit faire this.LanguageTable.getRowCount()-1 car la ligne a été créer juste au dessus
-		this.LanguageTable.setText(this.LanguageTable.getRowCount()-1, 1, langue);
+		// on doit faire this.LanguageTable.getRowCount()-1 car la ligne a ï¿½tï¿½ crï¿½er juste au dessus
+		this.LanguageTable.setText(this.LanguageTable.getRowCount()-1, 1, language);
 	}
 
-	public void clearTableLanguage()
-	{
+	public void clearTableLanguage() {
 		this.LanguageTable.removeAllRows();
 	}
 	

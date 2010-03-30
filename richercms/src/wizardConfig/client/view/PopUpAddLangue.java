@@ -16,23 +16,22 @@ public class PopUpAddLangue extends DialogBox {
 	public final Button cancel = new Button("Cancel"); // public pour le passage des evt au presenter
 	private final Label label = new Label("Langue : ");
 	public final TextBox textbox = new TextBox(); // public pour le passage des evt au presenter
-	private VerticalPanel panelPrincipal = new VerticalPanel();
-	private HorizontalPanel panelValeur = new HorizontalPanel();
-	private HorizontalPanel panelButton = new HorizontalPanel();
+	private VerticalPanel mainPanel = new VerticalPanel();
+	private HorizontalPanel valuePanel = new HorizontalPanel();
+	private HorizontalPanel buttonPanel = new HorizontalPanel();
 	
 	//gestion des langues
 	private wizardConfigConstants constants = GWT.create(wizardConfigConstants.class);
 	
-    public PopUpAddLangue() 
-    {
-    	this.panelValeur.add(this.label);
-    	this.panelValeur.add(this.textbox);
+    public PopUpAddLangue() {
+    	this.valuePanel.add(this.label);
+    	this.valuePanel.add(this.textbox);
     	
-    	this.panelButton.add(this.ok);
-    	this.panelButton.add(this.cancel);
+    	this.buttonPanel.add(this.ok);
+    	this.buttonPanel.add(this.cancel);
     	
-    	this.panelPrincipal.add(this.panelValeur);
-    	this.panelPrincipal.add(this.panelButton);
+    	this.mainPanel.add(this.valuePanel);
+    	this.mainPanel.add(this.buttonPanel);
     	
       // Set the dialog box's caption.
       this.setText(this.constants.TextPopUp());
@@ -45,14 +44,13 @@ public class PopUpAddLangue extends DialogBox {
       
       this.center();
 
-      this.setWidget(this.panelPrincipal);
+      this.setWidget(this.mainPanel);
     }
     
 	/**
 	 * Clear all field in the PopUp
 	 */
-    public void clearField()
-    {
+    public void clearField() {
     	this.textbox.setText("");
     }
     

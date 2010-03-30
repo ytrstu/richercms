@@ -13,26 +13,24 @@ import wizardConfig.client.presenter.Presenter;
 import wizardConfig.client.view.Page1View;
 import wizardConfig.client.view.Page2View;
 
-public class AppController implements Presenter, ValueChangeHandler<String>
-{
+public class AppController implements Presenter, ValueChangeHandler<String> {
+	
 	private final HandlerManager eventBus;
-	private final ServiceLangueAsync rpcServiceLangue;
+	private final LanguageServiceAsync rpcServiceLangue;
 	private HasWidgets container;
 
-	public AppController(ServiceLangueAsync rpc, HandlerManager eventBus) 
-	{
+	public AppController(LanguageServiceAsync rpc, HandlerManager eventBus) {
 		super();
 		this.rpcServiceLangue = rpc;
 		this.eventBus = eventBus;
-		bind(); // evt binding
+		bind(); /* evt binding*/
 	}
 
 	/**
 	 * bind the events that turns the interface view
 	 */
-	private void bind() 
-	{
-		//History.addValueChangeHandler(this);
+	private void bind() {
+		/*History.addValueChangeHandler(this);*/
 		
 	    eventBus.addHandler(GoPage2Event.TYPE,
 	            new GoPage2EventHandler() {
@@ -45,8 +43,8 @@ public class AppController implements Presenter, ValueChangeHandler<String>
 	/**
 	 * Display the first view
 	 */
-	public void go(final HasWidgets container) 
-	{
+	public void go(final HasWidgets container) {
+		
 		this.container = container;
 		Presenter presenter = new Page1Presenter(this.eventBus, new Page1View());
 		presenter.go(container);
@@ -55,8 +53,8 @@ public class AppController implements Presenter, ValueChangeHandler<String>
 	/**
 	 * Display the second view
 	 */
-	private void GoPage2() 
-	{
+	private void GoPage2() {
+		
 		Presenter presenter = new Page2Presenter(this.rpcServiceLangue, this.eventBus, new Page2View());
 		presenter.go(container);
 	}

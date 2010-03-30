@@ -6,53 +6,60 @@
 <web-app>
 
 	<!-- Servlets -->
-  <servlet>
-    <servlet-name>userService</servlet-name>
-    <servlet-class>com.esial.richercms.server.UserInfoServiceImpl</servlet-class>
-  </servlet>
-  
-  <servlet>
-    <servlet-name>pageService</servlet-name>
-    <servlet-class>com.esial.richercms.server.PageServiceImpl</servlet-class>
-  </servlet>
-  <servlet>
-    <servlet-name>uploadServlet</servlet-name>
-    <servlet-class>com.esial.richercms.server.FileUploadServlet</servlet-class>
-  </servlet>
-  <servlet>
-  <servlet-name>statService</servlet-name>
-    <servlet-class>com.esial.richercms.server.StatServiceImpl</servlet-class>
-  </servlet>
-  
-  <servlet-mapping>
-  <servlet-name>userService</servlet-name>
-  <url-pattern>/richercms/user</url-pattern>
-</servlet-mapping>
-
-	<servlet>
-    	<servlet-name>ServiceLangueServlet</servlet-name>
+  	<servlet>
+    	<servlet-name>userService</servlet-name>
+    	<servlet-class>com.esial.richercms.server.UserInfoServiceImpl</servlet-class>
+  	</servlet>
+  	
+  	<servlet>
+    	<servlet-name>pageService</servlet-name>
+    	<servlet-class>com.esial.richercms.server.PageServiceImpl</servlet-class>
+  	</servlet>
+  	
+  	<servlet>
+    	<servlet-name>uploadServlet</servlet-name>
+    	<servlet-class>com.esial.richercms.server.FileUploadServlet</servlet-class>
+  	</servlet>
+  	
+  	<servlet>
+  		<servlet-name>statService</servlet-name>
+    	<servlet-class>com.esial.richercms.server.StatServiceImpl</servlet-class>
+  	</servlet>
+  	
+  	<servlet>
+    	<servlet-name>languageServiceServlet</servlet-name>
     	<servlet-class>wizardConfig.server.ServiceLangueImpl</servlet-class>
  	</servlet>
+  	
+  	
+  	
+  
+ 	<servlet-mapping>
+  		<servlet-name>userService</servlet-name>
+  		<url-pattern>/richercms/user</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+    	<servlet-name>pageService</servlet-name>
+    	<url-pattern>/richercms/pages</url-pattern>
+  	</servlet-mapping>
 
-<servlet-mapping>
-    <servlet-name>pageService</servlet-name>
-    <url-pattern>/richercms/pages</url-pattern>
-  </servlet-mapping>
-  
-  <servlet-mapping>
-    <servlet-name>uploadServlet</servlet-name>
-    <url-pattern>/richercms/upload</url-pattern>
-  </servlet-mapping>
-  
-  <servlet-mapping>
-    <servlet-name>statService</servlet-name>
-    <url-pattern>/richercms/stats</url-pattern>
-  </servlet-mapping>
+  	<servlet-mapping>
+    	<servlet-name>uploadServlet</servlet-name>
+    	<url-pattern>/richercms/upload</url-pattern>
+  	</servlet-mapping>
   
 	<servlet-mapping>
-		<servlet-name>ServiceLangueServlet</servlet-name>
-		<url-pattern>/wizardconfig/serviceLangue</url-pattern>
+    	<servlet-name>statService</servlet-name>
+    	<url-pattern>/richercms/stats</url-pattern>
+  	</servlet-mapping>
+  
+	<servlet-mapping>
+		<servlet-name>languageServiceServlet</servlet-name>
+		<url-pattern>/wizardconfig/languageService</url-pattern>
 	</servlet-mapping>
+  
+  
   
 	<!-- Default page to serve -->
 	<welcome-file-list>

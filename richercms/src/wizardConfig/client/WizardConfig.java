@@ -2,8 +2,9 @@ package wizardConfig.client;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
+import com.google.gwt.user.client.ui.Widget;
+import com.mvp4g.client.Mvp4gModule;
 
 
 
@@ -15,13 +16,12 @@ public class WizardConfig implements EntryPoint {
 	/**
 	 * This is the entry point method.
 	 */
-	public void onModuleLoad() {
-		
-		LanguageServiceAsync rpcLangue = GWT.create(LanguageService.class);
-	    HandlerManager eventBus = new HandlerManager(null);
-	    
-	    AppController appViewer = new AppController(rpcLangue, eventBus);
-	    appViewer.go(RootLayoutPanel.get());
+	public void onModuleLoad() 
+	{
+		// the only way to display layoutPanel
+	    Mvp4gModule module = (Mvp4gModule)GWT.create( Mvp4gModule.class );
+	    module.createAndStartModule();
+	    RootLayoutPanel.get().add( (Widget)module.getStartView() );
 	}
 	
 }

@@ -7,7 +7,10 @@ import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
 
-
+/**
+ * Represent a language
+ * @author homberg.g
+ */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class Language {
 	

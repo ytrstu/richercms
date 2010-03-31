@@ -28,4 +28,12 @@ public interface wizardConfigConstants extends Constants {
 	  @DefaultStringValue(" Add Language ")
 	  String TextPopUp();
 	  
+	  @DefaultStringValue(" Add ")
+	  String buttonAddLanguagePopUp();
+	  
+	  @DefaultStringValue(" Cancel ")
+	  String buttonCancelPopUp();
+	  
+	  @DefaultStringValue(" Language : ")
+	  String labelLanguagePopUp();
 }

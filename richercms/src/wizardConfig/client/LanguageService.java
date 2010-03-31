@@ -2,11 +2,17 @@ package wizardConfig.client;
 
 import java.util.List;
 
-import wizardConfig.shared.DetailsLanguage;
+import wizardConfig.shared.BeanLanguageDetails;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
+
+/**
+ * All services needed to handle languages
+ * @author homberg.g
+ *
+ */
 @RemoteServiceRelativePath("languageService")
 public interface LanguageService extends RemoteService
 {
@@ -14,7 +20,7 @@ public interface LanguageService extends RemoteService
 	 * Return the list containing the detail of the language to display
 	 * @return the list containing the detail of the language
 	 */
-	public List<DetailsLanguage> getLangues();
+	public List<BeanLanguageDetails> getLangues();
 	
 	/**
 	 * Add Bases Languages in the datastore

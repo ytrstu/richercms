@@ -7,5 +7,8 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="con" path="com.google.appengine.eclipse.core.GAE_CONTAINER"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-fileupload-1.2.1.jar"/>
+	<classpathentry kind="lib" path="C:/Appli/workspace/mvp4g/commons-configuration-1.6/commons-configuration-1.6.jar"/>
+	<classpathentry kind="lib" path="C:/Appli/workspace/mvp4g/commons-lang-2.5/commons-lang-2.5.jar"/>
+	<classpathentry kind="lib" path="C:/Appli/workspace/mvp4g/mvp4g-1.1.0.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

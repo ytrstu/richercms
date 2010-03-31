@@ -10,10 +10,14 @@ import javax.jdo.Query;
 
 import wizardConfig.client.LanguageService;
 import wizardConfig.server.businessObj.Language;
-import wizardConfig.shared.DetailsLanguage;
+import wizardConfig.shared.BeanLanguageDetails;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
+/**
+ * Implementation of all language Services.
+ * @author homberg.g
+ */
 @SuppressWarnings("serial")
 public class ServiceLangueImpl extends RemoteServiceServlet implements LanguageService{
 
@@ -25,16 +29,16 @@ public class ServiceLangueImpl extends RemoteServiceServlet implements LanguageS
 	 * Renvoi les langues disponibles
 	 */
 	@SuppressWarnings("unchecked")
-	public List<DetailsLanguage> getLangues() {
+	public List<BeanLanguageDetails> getLangues() {
 		
 		PersistenceManager pm = getPersistenceManager();
-		ArrayList<DetailsLanguage> lst = new ArrayList<DetailsLanguage>();
+		ArrayList<BeanLanguageDetails> lst = new ArrayList<BeanLanguageDetails>();
 	    try {
 	        Query q = pm.newQuery(Language.class);
 	        languages = (List<Language>) q.execute();
 	        
 	        for (Language language : languages) {
-	            lst.add(new DetailsLanguage(language.getLangue(),language.isSelected()));
+	            lst.add(new BeanLanguageDetails(language.getLangue(),language.isSelected()));
 	          }
         } finally {
         	pm.close();

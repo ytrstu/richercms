@@ -7,16 +7,16 @@ import wizardConfig.client.wizardConfigConstants;
 import wizardConfig.client.Interface.IdisplayPage2;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
-import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -24,7 +24,7 @@ import com.google.gwt.user.client.ui.Widget;
  * @author homberg.g
  *
  */
-public class Page2View extends DockLayoutPanel implements IdisplayPage2 {
+public class Page2View extends LayoutPanel implements IdisplayPage2 {
 	
 	//gestion des langues
 	private wizardConfigConstants constants = GWT.create(wizardConfigConstants.class);
@@ -35,36 +35,14 @@ public class Page2View extends DockLayoutPanel implements IdisplayPage2 {
 	private Button btnDeleteLanguage = new Button(constants.buttonDelLanguage());
 	private ListBox languageList = new ListBox();
 	private FlexTable LanguageTable;
-	private VerticalPanel languagePanel = new VerticalPanel();
+	private ScrollPanel ScrollLanguageTable = new ScrollPanel();
+	private LayoutPanel languagePanel = new LayoutPanel();
 	private HorizontalPanel add_DelPanel = new HorizontalPanel();
-	private PopUpAddLangue popUpAddLanguage = new PopUpAddLangue();
+	private PopUpAddLangue popUpAddLanguage = null;
 	
 	
-	public Page2View() {
-		
-		super(Unit.PX);
-		
-	    this.popUpAddLanguage.hide();
-	    
-	    this.LanguageTable = new FlexTable();
-	    this.LanguageTable.setCellSpacing(0);
-	    this.LanguageTable.setCellPadding(0);
-	    this.LanguageTable.setWidth("100%");
-	    this.LanguageTable.addStyleName("contacts-ListContents");
-	    this.LanguageTable.getColumnFormatter().setWidth(0, "15px");
-	    
-	    this.add_DelPanel.add(this.btnAddLanguage);
-	    this.add_DelPanel.add(this.btnDeleteLanguage);
-	    
-	    this.languagePanel.add(this.LanguageTable);
-	    this.languagePanel.add(this.add_DelPanel);
-
-	    this.addSouth(this.btnNext, 30);
-	    this.addNorth(new HTML(this.constants.titlePage2()),30);
-	    this.add(this.languagePanel);
-
-	    //hauteur de la page
-	    this.setHeight("200px");
+	public Page2View() {	
+		super();
 	}
 	
 
@@ -93,6 +71,7 @@ public class Page2View extends DockLayoutPanel implements IdisplayPage2 {
 	}
 
 	public void showPopUpAddLanguage() {
+			
 		// on vide les champs avant de re-afficher
 		this.popUpAddLanguage.clearField();
 		this.popUpAddLanguage.show();
@@ -158,5 +137,52 @@ public class Page2View extends DockLayoutPanel implements IdisplayPage2 {
 	public void clearTableLanguage() {
 		this.LanguageTable.removeAllRows();
 	}
+
+	/**
+	 * call by the mvp4g framework to instantiate view (lazy method)
+	 */
+	public void createView() {
+		
+		this.popUpAddLanguage = new PopUpAddLangue();
+		
+		//Title => root 10%
+		HTML title = new HTML(this.constants.titlePage2());
+		this.add(title);
+		this.setWidgetTopHeight(title, 0, Style.Unit.PCT, 10, Style.Unit.PCT);
+		
+		//LanguageTable
+		this.LanguageTable = new FlexTable();
+		this.LanguageTable.setCellSpacing(3);
+		this.LanguageTable.setCellPadding(3);
+		this.LanguageTable.setBorderWidth(1);
+		//this.LanguageTable.getColumnFormatter().setWidth(0, "15px");
+		
+		//ScrollLanguageTable
+		this.ScrollLanguageTable.add(this.LanguageTable);
+		this.ScrollLanguageTable.setWidth("10%");
+		
+		//add_DelPanel
+		this.add_DelPanel.add(this.btnAddLanguage);
+		this.add_DelPanel.add(this.btnDeleteLanguage);
+		
+		//languagePanel
+		this.languagePanel.add(this.ScrollLanguageTable);
+		this.languagePanel.setWidgetTopHeight(this.ScrollLanguageTable, 0, Style.Unit.PCT, 80, Style.Unit.PCT);
+		this.languagePanel.add(this.add_DelPanel);
+		this.languagePanel.setWidgetTopHeight(this.add_DelPanel, 85, Style.Unit.PCT, 10, Style.Unit.PCT);
+						
+		//languagePanel => root 50%
+		this.add(this.languagePanel);
+		this.setWidgetTopHeight(this.languagePanel, 10, Style.Unit.PCT, 50, Style.Unit.PCT);
+		
+		//btnNext => root 3%
+		btnNext.setWidth("10%");
+		this.add(this.btnNext);
+		this.setWidgetTopHeight(this.btnNext, 85, Style.Unit.PCT, 3, Style.Unit.PCT);
+		
+		//hauteur de la page
+		//this.setHeight("200px");
+	}
+	
 	
 }

@@ -5,13 +5,14 @@ import java.util.List;
 
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.Widget;
+import com.mvp4g.client.view.LazyView;
 
 /**
  * Allows the presenter to communicate with the view
  * Page2View <=> Page2Presenter
  * @author homberg.g
  */
-public interface IdisplayPage2 {
+public interface IdisplayPage2 extends LazyView{
 	
 	/**
 	 * get the handler of the button Next
@@ -43,8 +44,16 @@ public interface IdisplayPage2 {
 	 */
 	HasClickHandlers getPopUpBtnCancel();
 	
-
+	/**
+	 * DEPRECATED :)
+	 * @param langues
+	 */
 	void setLanguageList(ArrayList<String> langues);
+	
+	/**
+	 * DEPRECATED :)
+	 * @param langues
+	 */
 	void setLanguageTable(ArrayList<String> langues);
 	
 	/**

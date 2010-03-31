@@ -3,19 +3,23 @@ package wizardConfig.shared;
 import java.io.Serializable;
 
 
-
-public class DetailsLanguage implements Serializable {
+/**
+ * Contain the displayable elements of a language.
+ * @author homberg.g
+ */
+@SuppressWarnings("serial")
+public class BeanLanguageDetails implements Serializable {
 	
 	private String language;
 	private Boolean isSelected;
 	
 	
-	public DetailsLanguage() {
+	public BeanLanguageDetails() {
 		this.language ="";
 		this.isSelected = false;
 	}
 	
-	public DetailsLanguage(String lg, boolean isSelected) {
+	public BeanLanguageDetails(String lg, boolean isSelected) {
 		this.language = lg;
 		this.isSelected = isSelected;
 	}

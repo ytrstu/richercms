@@ -5,11 +5,9 @@ import wizardConfig.client.Interface.IdisplayPage1;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style;
-import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.HasChangeHandlers;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
@@ -22,7 +20,7 @@ import com.google.gwt.user.client.ui.Widget;
  * @author homberg.g
  *
  */
-public class Page1View  extends DockLayoutPanel implements IdisplayPage1 {
+public class Page1View  extends LayoutPanel implements IdisplayPage1 {
 	
 	//gestion des langues
 	private wizardConfigConstants constants = GWT.create(wizardConfigConstants.class);
@@ -37,47 +35,16 @@ public class Page1View  extends DockLayoutPanel implements IdisplayPage1 {
 	private LayoutPanel centralPanel = new LayoutPanel();
 	//private DockLayoutPanel panelPrincipal = new DockLayoutPanel(Unit.PX); // layout principal
 	
-	/**
-	 * build the view and place widgets
-	 */
+
 	public Page1View() {
-		
-		super(Unit.PX);
-		this.languageList.addItem("English");
-		this.languageList.addItem("Francais");
-		this.languageList.addItem("Deutsch");
-		this.languageList.setVisibleItemCount(1);
-		languagePanel.setBorderWidth(3);
-
-
-		this.languagePanel.add(language);
-		this.languagePanel.add(languageList);
-		
-
-		centralPanel.add(languagePanel);
-		HTML news = new HTML(constants.summary());
-		centralPanel.add(news);
-		centralPanel.setWidgetTopHeight(languagePanel, 5, Style.Unit.PCT, 4, Style.Unit.PCT);
-		centralPanel.setWidgetTopHeight(news, 25, Style.Unit.PCT, 80, Style.Unit.PCT);
-		centralPanel.setWidth("80%");
-		
-		btnNext.setWidth("10%");
-		//Layout principal
-	    this.addNorth(new HTML(constants.titlePage1()), 50);
-	    this.addSouth(btnNext, 30);
-	    this.add(centralPanel);
-
-	    //hauteur de la page
-	    //this.setHeight("300px");
-
-	    // recuperation du layout root + ajout de notre panel
-	    //RootLayoutPanel panelRoot = RootLayoutPanel.get();
-	    //panelRoot.add(this);
-
+		super();
 	}
 	
-	public Widget asWidget() {
-		
+	/**
+	 * return the view
+	 * @return this
+	 */
+	public Widget asWidget() {	
 		return this;
 	}
 
@@ -112,5 +79,45 @@ public class Page1View  extends DockLayoutPanel implements IdisplayPage1 {
 	public int getIndexLanguage() {
 		
 		return this.languageList.getSelectedIndex();
+	}
+
+	/**
+	 * call by the mvp4g framework to instanciate view (lazy method)
+	 */
+	public void createView() 
+	{
+		//Title => root 10%
+		HTML title = new HTML(constants.titlePage1());
+		this.add(title);
+		this.setWidgetTopHeight(title, 0, Style.Unit.PCT, 10, Style.Unit.PCT);
+		
+		//List => centralPanel
+		this.languageList.addItem("English");
+		this.languageList.addItem("Francais");
+		this.languageList.addItem("Deutsch");
+		this.languageList.setVisibleItemCount(1);
+		//languagePanel.setBorderWidth(3);
+		this.languagePanel.add(language);
+		this.languagePanel.add(languageList);
+		centralPanel.add(languagePanel);
+		
+		//Summary => centralPanel
+		HTML summary = new HTML(constants.summary());
+		centralPanel.add(summary);
+		
+		//position of the widgets in the centralPanel
+		centralPanel.setWidgetTopHeight(languagePanel, 0, Style.Unit.PCT, 4, Style.Unit.PCT);
+		centralPanel.setWidgetTopHeight(summary, 10, Style.Unit.PCT, 90, Style.Unit.PCT);
+		//centralPanel.setWidth("50%");
+		
+		//centralPanel => root 80%
+	    this.add(centralPanel);
+	    this.setWidgetTopHeight(centralPanel, 10, Style.Unit.PCT, 80, Style.Unit.PCT);
+	    
+		//Next button => root 3%
+		btnNext.setWidth("10%");
+		this.add(btnNext);
+		this.setWidgetTopHeight(btnNext, 85, Style.Unit.PCT, 3, Style.Unit.PCT);
+		
 	}
 }

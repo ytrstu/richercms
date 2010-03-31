@@ -4,71 +4,54 @@ import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.shared.HandlerManager;
 
 import wizardConfig.client.Interface.IdisplayPage1;
-import wizardConfig.client.event.GoPage2Event;
-import wizardConfig.client.presenter.Presenter;
+import wizardConfig.client.event.WizardConfigEventBus;
+import wizardConfig.client.view.Page1View;
+
+
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.HasWidgets;
+import com.mvp4g.client.annotation.Presenter;
+import com.mvp4g.client.presenter.LazyPresenter;
 
 
 /**
  * First page of the configuration wizard
  * @author homberg.g
- *
  */
-public class Page1Presenter implements Presenter {
+@Presenter( view = Page1View.class)
+public class Page1Presenter extends LazyPresenter<IdisplayPage1, WizardConfigEventBus> {
 	
-	  private final HandlerManager eventBus;
-	  private final IdisplayPage1 display;
-	  
-	  /**
-	   * constructor 
-	   * @param eventBus
-	   * @param view
-	   */
-	  public Page1Presenter(HandlerManager eventBus, IdisplayPage1 view) {
-		  
-	    //this.rpcLangue= rpcService;
-	    this.eventBus = eventBus;
-	    this.display = view;
-	  }
-	  
-	  /**
-	   * Initialize the view
-	   */
-	  public void go(final HasWidgets container) {
-		  
-		    bind();
-		    String test = this.myLocale();
-		    
-			if (test.equalsIgnoreCase("fr")) {
-				this.display.setSelectedLanguage(1);
-			} else if (test.equalsIgnoreCase("de")) {
-				this.display.setSelectedLanguage(2);
-			} else {
-				this.display.setSelectedLanguage(0);
-			}
-			
-		    container.clear();
-		    container.add(display.asWidget());
+
+	public void onStartWizard() {
+		
+		String test = this.myLocale();
+		
+		if (test.equalsIgnoreCase("fr")) {
+			this.view.setSelectedLanguage(1);
+		} else if (test.equalsIgnoreCase("de")) {
+			this.view.setSelectedLanguage(2);
+		} else {
+			this.view.setSelectedLanguage(0);
+		}
+		
+		eventBus.changeBody(view.asWidget());
 	  }
 	  
 	/**
-	 * Bind the different evt
-	 * (lien entre l'evt d'un widget de la vue et soit le presenter, soit le controller)
+	 * Bind the various evt
+	 * It's Mvp4g framework who call this function
 	 */
-	private void bind() {
+	public void bindView() {
 		
 		// changement de page (page1 -> page2)
-	    display.getNextButton().addClickHandler(new ClickHandler() {   
+		view.getNextButton().addClickHandler(new ClickHandler() {   
 	        public void onClick(ClickEvent event) {
-	          eventBus.fireEvent(new GoPage2Event());
+	          eventBus.GoToSecondPage();
 	        }
 	      });
 	    
-	    display.getSelectedLanguage().addChangeHandler(new ChangeHandler(){
+		view.getSelectedLanguage().addChangeHandler(new ChangeHandler(){
 			public void onChange(ChangeEvent event) {
 				changeLangueUI();		
 			}
@@ -80,7 +63,7 @@ public class Page1Presenter implements Presenter {
 	 */
 	public void changeLangueUI() {
 		
-		switch (this.display.getIndexLanguage()) {
+		switch (this.view.getIndexLanguage()) {
 		case 0: {
 			myReload("en");
 		}break;
@@ -116,10 +99,10 @@ public class Page1Presenter implements Presenter {
 		return "en";
 	}
 	
-	 /**
-	  * Modify the "Locale" variable with the new countryCode
-	  * @param countryCode
-	  */
+	/**
+	 * Modify the "Locale" variable with the new countryCode
+	 * @param countryCode
+	 */
 	public void myReload(String countryCode) {
 		
 		String url = Window.Location.getHref();
@@ -139,5 +122,5 @@ public class Page1Presenter implements Presenter {
 		}
 	
 		Window.Location.replace(buf.toString());
-	};
+	}
 }

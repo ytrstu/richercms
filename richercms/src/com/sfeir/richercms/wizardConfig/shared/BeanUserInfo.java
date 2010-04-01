@@ -2,6 +2,10 @@ package com.sfeir.richercms.wizardConfig.shared;
 
 import java.io.Serializable;
 
+/**
+ * Contain All information about the current user
+ * @author homberg.g
+ */
 public class BeanUserInfo implements Serializable {
 
 	/**

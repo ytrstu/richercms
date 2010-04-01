@@ -1080,7 +1080,7 @@ td.datePickerMonth {
 	align :center;
   font-weight: bold;
   	font-size : 20px;
-  	 background : url(tab_images/logo3.jpg);
+  	 background : url(tab_images/logo3.jpg) no-repeat;
 	padding : 100px 200px 100px 100px;
 }
 

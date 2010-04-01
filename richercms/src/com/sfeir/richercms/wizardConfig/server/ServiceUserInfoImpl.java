@@ -7,6 +7,11 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.sfeir.richercms.wizardConfig.client.UserInfoService;
 import com.sfeir.richercms.wizardConfig.shared.BeanUserInfo;
 
+/**
+ * Implementation of all User Services.
+ * @author homberg.g
+ *
+ */
 @SuppressWarnings("serial")
 public class ServiceUserInfoImpl extends RemoteServiceServlet implements UserInfoService {
 

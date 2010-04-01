@@ -14,7 +14,10 @@ import com.sfeir.richercms.wizardConfig.client.event.WizardConfigEventBus;
 import com.sfeir.richercms.wizardConfig.client.view.PageLoginView;
 import com.sfeir.richercms.wizardConfig.shared.BeanUserInfo;
 
-
+/**
+ * Presenter of the home page
+ * @author homberg.g
+ */
 @Presenter( view = PageLoginView.class)
 public class PageLoginPresenter extends LazyPresenter<IdisplayPageLogin, WizardConfigEventBus> {
 	

@@ -28,9 +28,13 @@
   	
   	<servlet>
     	<servlet-name>languageServiceServlet</servlet-name>
-    	<servlet-class>wizardConfig.server.ServiceLangueImpl</servlet-class>
+    	<servlet-class>com.sfeir.richercms.wizardConfig.server.ServiceLangueImpl</servlet-class>
  	</servlet>
   	
+	<servlet>
+    	<servlet-name>userServiceServlet</servlet-name>
+    	<servlet-class>com.sfeir.richercms.wizardConfig.server.ServiceUserInfoImpl</servlet-class>
+  	</servlet>
   	
   	
   
@@ -58,12 +62,17 @@
 		<servlet-name>languageServiceServlet</servlet-name>
 		<url-pattern>/wizardconfig/languageService</url-pattern>
 	</servlet-mapping>
+	
+ 	<servlet-mapping>
+  		<servlet-name>userServiceServlet</servlet-name>
+  		<url-pattern>/wizardconfig/userService</url-pattern>
+	</servlet-mapping>
   
   
   
 	<!-- Default page to serve -->
 	<welcome-file-list>
-		<welcome-file>Richercms.html</welcome-file>
+		<welcome-file>WizardConfig.html</welcome-file>
 	</welcome-file-list>
 	
 </web-app>

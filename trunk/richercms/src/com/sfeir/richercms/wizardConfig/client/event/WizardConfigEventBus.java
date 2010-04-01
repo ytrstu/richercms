@@ -48,7 +48,7 @@ public interface WizardConfigEventBus extends EventBus{
 	
 	/**
 	 * Start the rootLayout and display the first page.
-	 * 2 presenter are started : RootPresenter and Page1Presenter
+	 * 2 presenter are started : RootPresenter and PageLoginPresenter(first view to display)
 	 */
 	@Start
 	@Event( handlers = {RootPresenter.class, PageLoginPresenter.class} )

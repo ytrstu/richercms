@@ -11,6 +11,7 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.ResizeComposite;
 import com.google.gwt.user.client.ui.Widget;
 import com.sfeir.richercms.wizardConfig.client.wizardConfigConstants;
 import com.sfeir.richercms.wizardConfig.client.Interface.IdisplayPage1;
@@ -20,7 +21,7 @@ import com.sfeir.richercms.wizardConfig.client.Interface.IdisplayPage1;
  * @author homberg.g
  *
  */
-public class Page1View  extends LayoutPanel implements IdisplayPage1 {
+public class Page1View  extends ResizeComposite implements IdisplayPage1 {
 	
 	//gestion des langues
 	private wizardConfigConstants constants = GWT.create(wizardConfigConstants.class);
@@ -34,7 +35,6 @@ public class Page1View  extends LayoutPanel implements IdisplayPage1 {
 	private HorizontalPanel languagePanel = new HorizontalPanel();
 	private LayoutPanel centralPanel = new LayoutPanel();
 	//private DockLayoutPanel panelPrincipal = new DockLayoutPanel(Unit.PX); // layout principal
-	
 
 	public Page1View() {
 		super();
@@ -86,10 +86,14 @@ public class Page1View  extends LayoutPanel implements IdisplayPage1 {
 	 */
 	public void createView() 
 	{
+		LayoutPanel dialog = new LayoutPanel();
+		dialog.addStyleName("wizardDialog");
+		CenterLayoutPanel mainPanel = new CenterLayoutPanel(800, 400, dialog);
+		
 		//Title => root 10%
 		HTML title = new HTML(constants.titlePage1());
-		this.add(title);
-		this.setWidgetTopHeight(title, 0, Style.Unit.PCT, 10, Style.Unit.PCT);
+		dialog.add(title);
+		dialog.setWidgetTopHeight(title, 0, Style.Unit.PCT, 10, Style.Unit.PCT);
 		
 		//List => centralPanel
 		this.languageList.addItem("English");
@@ -111,13 +115,14 @@ public class Page1View  extends LayoutPanel implements IdisplayPage1 {
 		//centralPanel.setWidth("50%");
 		
 		//centralPanel => root 80%
-	    this.add(centralPanel);
-	    this.setWidgetTopHeight(centralPanel, 10, Style.Unit.PCT, 80, Style.Unit.PCT);
+		dialog.add(centralPanel);
+		dialog.setWidgetTopHeight(centralPanel, 10, Style.Unit.PCT, 80, Style.Unit.PCT);
 	    
 		//Next button => root 3%
 		btnNext.setWidth("10%");
-		this.add(btnNext);
-		this.setWidgetTopHeight(btnNext, 85, Style.Unit.PCT, 3, Style.Unit.PCT);
+		dialog.add(btnNext);
+		dialog.setWidgetTopHeight(btnNext, 85, Style.Unit.PCT, 3, Style.Unit.PCT);
 		
+		initWidget(mainPanel);
 	}
 }

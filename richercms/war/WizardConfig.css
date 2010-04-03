@@ -1142,6 +1142,10 @@ color : #CCCFFF;
 	background-color: white;
 }
 
+.wizardMain {
+	overflow: auto;
+}
+
 .bodyPanel {
 	background: url("/img/mainBackground.png") no-repeat;
 }

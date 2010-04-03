@@ -32,11 +32,9 @@ public class PageLoginView extends LayoutPanel implements IdisplayPageLogin {
 		
 		this.loginLabel.setStylePrimaryName("text-login");
 
-		this.add(loginLabel);
-		this.setWidgetTopHeight(this.loginLabel, 10, Style.Unit.PCT, 50, Style.Unit.PCT);
 		this.signInLink.setStylePrimaryName("anchor-login");
 		this.add(this.signInLink);
-		this.setWidgetTopHeight(this.signInLink, 50, Style.Unit.PCT, 22, Style.Unit.PCT);	
+		this.setWidgetTopHeight(this.signInLink, 55, Style.Unit.PCT, 169, Style.Unit.PX);	
 	}
 
 	public Anchor getSignInLink() {

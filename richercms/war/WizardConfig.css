@@ -1133,8 +1133,15 @@ color : #CCCFFF;
 	margin-bottom:5px;
 	margin-right:5px;
 	margin-left:1px;
-	padding:10px;
 	-moz-box-shadow: 3px 3px 7px #aaa;  
     -webkit-box-shadow: 3px 3px 7px #aaa;  
     box-shadow: 3px 3px 7px #555; 
+    border-radius : 5px;
+    -moz-border-radius : 5px;
+    -webkit-border-radius : 5px;
+	background-color: white;
+}
+
+.bodyPanel {
+	background: url("/img/mainBackground.png") no-repeat;
 }

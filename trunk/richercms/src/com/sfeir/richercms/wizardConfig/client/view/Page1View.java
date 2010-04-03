@@ -112,7 +112,7 @@ public class Page1View  extends ResizeComposite implements IdisplayPage1 {
 		
 		//centralPanel => root 80%
 		mainContent.add(centralPanel);
-		mainContent.setWidgetTopHeight(centralPanel, 10, Style.Unit.PCT, 80, Style.Unit.PCT);
+		mainContent.setWidgetTopHeight(centralPanel, 0, Style.Unit.PCT, 80, Style.Unit.PCT);
 	    
 		// Next button
 		FlowPanel buttonPanel = new FlowPanel();

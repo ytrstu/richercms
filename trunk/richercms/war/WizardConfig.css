@@ -1136,6 +1136,7 @@ color : #CCCFFF;
     -moz-border-radius : 5px;
     -webkit-border-radius : 5px;
 	background-color: white;
+	filter: progid:DXImageTransform.Microsoft.dropShadow(Direction=135);
 }
 
 .wizardMain {
@@ -1158,4 +1159,8 @@ color : #CCCFFF;
     border-radius : 3px;
     -moz-border-radius : 3px;
     -webkit-border-radius : 3px;
+}
+
+.buttonMarginRight {
+	margin-right: 5px !important;
 }

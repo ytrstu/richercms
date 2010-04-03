@@ -10,10 +10,11 @@ import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.ResizeComposite;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.sfeir.richercms.wizardConfig.client.wizardConfigConstants;
@@ -24,7 +25,7 @@ import com.sfeir.richercms.wizardConfig.client.Interface.IdisplayPage2;
  * @author homberg.g
  *
  */
-public class Page2View extends LayoutPanel implements IdisplayPage2 {
+public class Page2View extends ResizeComposite implements IdisplayPage2 {
 	
 	//gestion des langues
 	private wizardConfigConstants constants = GWT.create(wizardConfigConstants.class);
@@ -37,7 +38,7 @@ public class Page2View extends LayoutPanel implements IdisplayPage2 {
 	private FlexTable LanguageTable;
 	private ScrollPanel ScrollLanguageTable = new ScrollPanel();
 	private LayoutPanel languagePanel = new LayoutPanel();
-	private HorizontalPanel add_DelPanel = new HorizontalPanel();
+	private FlowPanel add_DelPanel = new FlowPanel();
 	private PopUpAddLangue popUpAddLanguage = null;
 	
 	
@@ -146,42 +147,42 @@ public class Page2View extends LayoutPanel implements IdisplayPage2 {
 		this.popUpAddLanguage = new PopUpAddLangue();
 		
 		//Title => root 10%
-		HTML title = new HTML(this.constants.titlePage2());
-		this.add(title);
-		this.setWidgetTopHeight(title, 0, Style.Unit.PCT, 10, Style.Unit.PCT);
+		LayoutPanel mainContent = new LayoutPanel();
+		Label title = new Label(this.constants.titlePage2());
+		CenterLayoutPanel mainPanel = new CenterLayoutPanel(800, 400, title, mainContent);
 		
 		//LanguageTable
 		this.LanguageTable = new FlexTable();
 		this.LanguageTable.setCellSpacing(3);
 		this.LanguageTable.setCellPadding(3);
-		this.LanguageTable.setBorderWidth(1);
 		//this.LanguageTable.getColumnFormatter().setWidth(0, "15px");
 		
 		//ScrollLanguageTable
 		this.ScrollLanguageTable.add(this.LanguageTable);
-		this.ScrollLanguageTable.setWidth("10%");
 		
 		//add_DelPanel
+		this.btnAddLanguage.addStyleName("buttonMarginRight");
 		this.add_DelPanel.add(this.btnAddLanguage);
 		this.add_DelPanel.add(this.btnDeleteLanguage);
 		
 		//languagePanel
 		this.languagePanel.add(this.ScrollLanguageTable);
-		this.languagePanel.setWidgetTopHeight(this.ScrollLanguageTable, 0, Style.Unit.PCT, 80, Style.Unit.PCT);
+		this.languagePanel.setWidgetTopHeight(this.ScrollLanguageTable, 0, Style.Unit.PX, 260, Style.Unit.PX);
 		this.languagePanel.add(this.add_DelPanel);
-		this.languagePanel.setWidgetTopHeight(this.add_DelPanel, 85, Style.Unit.PCT, 10, Style.Unit.PCT);
+		this.languagePanel.setWidgetBottomHeight(this.add_DelPanel, 50, Style.Unit.PX, 30, Style.Unit.PX);
 						
 		//languagePanel => root 50%
-		this.add(this.languagePanel);
-		this.setWidgetTopHeight(this.languagePanel, 10, Style.Unit.PCT, 50, Style.Unit.PCT);
+		mainContent.add(this.languagePanel);
+		//mainContent.setWidgetTopHeight(this.languagePanel, 100, Style.Unit.PCT, 100, Style.Unit.PCT);
 		
-		//btnNext => root 3%
-		btnNext.setWidth("10%");
-		this.add(this.btnNext);
-		this.setWidgetTopHeight(this.btnNext, 85, Style.Unit.PCT, 3, Style.Unit.PCT);
+		// Next button
+		FlowPanel buttonPanel = new FlowPanel();
+		buttonPanel.addStyleName("buttonPanel");
+		buttonPanel.add(btnNext);
+		mainContent.add(buttonPanel);
+		mainContent.setWidgetBottomHeight(buttonPanel, 0, Style.Unit.PX, 28, Style.Unit.PX);
 		
-		//hauteur de la page
-		//this.setHeight("200px");
+		initWidget(mainPanel);
 	}
 	
 	

@@ -1,12 +1,9 @@
 package com.sfeir.richercms.wizardConfig.client.view;
 
 import com.google.gwt.dom.client.Style;
-import com.google.gwt.layout.client.Layout.Alignment;
 import com.google.gwt.user.client.ui.Anchor;
-import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.LayoutPanel;
-import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.sfeir.richercms.wizardConfig.client.Interface.IdisplayPageLogin;
 

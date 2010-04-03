@@ -3,7 +3,6 @@ package com.sfeir.richercms.wizardConfig.client.view;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DeferredCommand;
-import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.ResizeComposite;
 import com.google.gwt.user.client.ui.Widget;
@@ -38,6 +37,8 @@ public class CenterLayoutPanel extends ResizeComposite {
 		titlePanel.add(title);
 		paddingPanel.add(titlePanel);
 		paddingPanel.add(dialog);
+		paddingPanel.setWidgetLeftRight(dialog, 0, Style.Unit.PX, 0, Style.Unit.PX);
+		paddingPanel.setWidgetTopBottom(dialog, 30, Style.Unit.PX, 0, Style.Unit.PX);
 		initWidget(mainPanel);
 		DeferredCommand.addCommand(new Command() {
 			@Override

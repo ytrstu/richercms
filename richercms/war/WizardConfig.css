@@ -1076,12 +1076,8 @@ td.datePickerMonth {
 
 
 .anchor-login{
-	 margin-left : 750px;
-	align :center;
-  font-weight: bold;
-  	font-size : 20px;
-  	 background : url(tab_images/logo3.jpg) no-repeat;
-	padding : 100px 200px 100px 100px;
+	margin-left : 530px;
+  	background : url("/tab_images/signIn.png") no-repeat;
 }
 
 .text-login{

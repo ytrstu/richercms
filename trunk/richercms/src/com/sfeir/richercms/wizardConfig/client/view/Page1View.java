@@ -119,7 +119,7 @@ public class Page1View  extends ResizeComposite implements IdisplayPage1 {
 		buttonPanel.addStyleName("buttonPanel");
 		buttonPanel.add(btnNext);
 		mainContent.add(buttonPanel);
-		mainContent.setWidgetBottomHeight(buttonPanel, 0, Style.Unit.PX, 25, Style.Unit.PX);
+		mainContent.setWidgetBottomHeight(buttonPanel, 0, Style.Unit.PX, 28, Style.Unit.PX);
 		
 		initWidget(mainPanel);
 	}

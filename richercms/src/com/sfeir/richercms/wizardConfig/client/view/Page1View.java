@@ -6,6 +6,7 @@ import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.HasChangeHandlers;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
@@ -87,7 +88,7 @@ public class Page1View  extends ResizeComposite implements IdisplayPage1 {
 	public void createView() 
 	{
 		LayoutPanel mainContent = new LayoutPanel();
-		HTML title = new HTML(constants.titlePage1());
+		Label title = new Label(constants.titlePage1());
 		CenterLayoutPanel mainPanel = new CenterLayoutPanel(800, 400, title, mainContent);
 		
 		//List => centralPanel
@@ -105,7 +106,7 @@ public class Page1View  extends ResizeComposite implements IdisplayPage1 {
 		centralPanel.add(summary);
 		
 		//position of the widgets in the centralPanel
-		centralPanel.setWidgetTopHeight(languagePanel, 0, Style.Unit.PCT, 4, Style.Unit.PCT);
+		centralPanel.setWidgetTopHeight(languagePanel, 0, Style.Unit.PCT, 10, Style.Unit.PCT);
 		centralPanel.setWidgetTopHeight(summary, 10, Style.Unit.PCT, 90, Style.Unit.PCT);
 		//centralPanel.setWidth("50%");
 		
@@ -113,10 +114,12 @@ public class Page1View  extends ResizeComposite implements IdisplayPage1 {
 		mainContent.add(centralPanel);
 		mainContent.setWidgetTopHeight(centralPanel, 10, Style.Unit.PCT, 80, Style.Unit.PCT);
 	    
-		//Next button => root 3%
-		//btnNext.setWidth("10%");
-		mainContent.add(btnNext);
-		mainContent.setWidgetTopHeight(btnNext, 85, Style.Unit.PCT, 3, Style.Unit.PCT);
+		// Next button
+		FlowPanel buttonPanel = new FlowPanel();
+		buttonPanel.addStyleName("buttonPanel");
+		buttonPanel.add(btnNext);
+		mainContent.add(buttonPanel);
+		mainContent.setWidgetBottomHeight(buttonPanel, 0, Style.Unit.PX, 25, Style.Unit.PX);
 		
 		initWidget(mainPanel);
 	}

@@ -3,6 +3,7 @@ package com.sfeir.richercms.wizardConfig.client.view;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DeferredCommand;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.ResizeComposite;
 import com.google.gwt.user.client.ui.Widget;
@@ -11,7 +12,7 @@ public class CenterLayoutPanel extends ResizeComposite {
 
 	private int width;
 	private int height;
-	private LayoutPanel mainPanel = new LayoutPanel();;
+	private LayoutPanel mainPanel = new LayoutPanel();
 	LayoutPanel borderLayout = new LayoutPanel();
 	
 	/**
@@ -32,7 +33,10 @@ public class CenterLayoutPanel extends ResizeComposite {
 		borderLayout.add(paddingPanel);
 		borderLayout.setWidgetLeftRight(paddingPanel, 5, Style.Unit.PX, 5, Style.Unit.PX);
 		borderLayout.setWidgetTopBottom(paddingPanel, 5, Style.Unit.PX, 5, Style.Unit.PX);
-		paddingPanel.add(title);
+		LayoutPanel titlePanel = new LayoutPanel();
+		titlePanel.addStyleName("titlePanel");
+		titlePanel.add(title);
+		paddingPanel.add(titlePanel);
 		paddingPanel.add(dialog);
 		initWidget(mainPanel);
 		DeferredCommand.addCommand(new Command() {

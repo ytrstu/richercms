@@ -1145,3 +1145,17 @@ color : #CCCFFF;
 .bodyPanel {
 	background: url("/img/mainBackground.png") no-repeat;
 }
+
+.buttonPanel {
+	text-align: center;
+}
+
+.titlePanel {
+	border-bottom: 1px solid #aaaaaa;
+	border-right: 1px solid #aaaaaa;
+	background-color: aqua;
+	height: 22px;
+    border-radius : 3px;
+    -moz-border-radius : 3px;
+    -webkit-border-radius : 3px;
+}

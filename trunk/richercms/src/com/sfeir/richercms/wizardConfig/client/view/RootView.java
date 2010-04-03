@@ -19,6 +19,7 @@ public class RootView extends ResizeComposite implements IrootDisplay {
 	
 	public RootView() {
 		this.body = new LayoutPanel();
+		this.body.addStyleName("bodyPanel");
 		this.initWidget(this.body);
 	}
 

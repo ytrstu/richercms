@@ -4,12 +4,15 @@ import com.google.gwt.dom.client.Style;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DeferredCommand;
 import com.google.gwt.user.client.ui.LayoutPanel;
+import com.google.gwt.user.client.ui.ResizeComposite;
+import com.google.gwt.user.client.ui.Widget;
 
-public class CenterLayoutPanel extends LayoutPanel {
+public class CenterLayoutPanel extends ResizeComposite {
 
 	private int width;
 	private int height;
-	private LayoutPanel dialog;
+	private LayoutPanel mainPanel = new LayoutPanel();;
+	LayoutPanel borderLayout = new LayoutPanel();
 	
 	/**
 	 * Center Layout Panel with fixed size
@@ -18,13 +21,20 @@ public class CenterLayoutPanel extends LayoutPanel {
 	 * @param height : height in pixel from the layout
 	 * @param dialog : main child
 	 */
-	public CenterLayoutPanel(int width, int height, LayoutPanel dialog) {
+	public CenterLayoutPanel(int width, int height, Widget title, Widget dialog) {
 		super();
 		this.height = height;
 		this.width = width;
-		this.dialog = dialog;
-		this.add(dialog);
-		
+		mainPanel.addStyleName("wizardMain");
+		borderLayout.addStyleName("wizardDialog");
+		mainPanel.add(borderLayout);
+		LayoutPanel paddingPanel = new LayoutPanel();
+		borderLayout.add(paddingPanel);
+		borderLayout.setWidgetLeftRight(paddingPanel, 5, Style.Unit.PX, 5, Style.Unit.PX);
+		borderLayout.setWidgetTopBottom(paddingPanel, 5, Style.Unit.PX, 5, Style.Unit.PX);
+		paddingPanel.add(title);
+		paddingPanel.add(dialog);
+		initWidget(mainPanel);
 		DeferredCommand.addCommand(new Command() {
 			@Override
 			public void execute() {
@@ -52,8 +62,8 @@ public class CenterLayoutPanel extends LayoutPanel {
 			top = 0;
 		}
 
-		this.setWidgetLeftWidth(dialog, left, Style.Unit.PX, width, Style.Unit.PX);
-		this.setWidgetTopHeight(dialog, top, Style.Unit.PX, height, Style.Unit.PX);
+		mainPanel.setWidgetLeftWidth(borderLayout, left, Style.Unit.PX, width, Style.Unit.PX);
+		mainPanel.setWidgetTopHeight(borderLayout, top, Style.Unit.PX, height, Style.Unit.PX);
 		
 	}
 	

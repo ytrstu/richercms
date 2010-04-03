@@ -86,14 +86,9 @@ public class Page1View  extends ResizeComposite implements IdisplayPage1 {
 	 */
 	public void createView() 
 	{
-		LayoutPanel dialog = new LayoutPanel();
-		dialog.addStyleName("wizardDialog");
-		CenterLayoutPanel mainPanel = new CenterLayoutPanel(800, 400, dialog);
-		
-		//Title => root 10%
+		LayoutPanel mainContent = new LayoutPanel();
 		HTML title = new HTML(constants.titlePage1());
-		dialog.add(title);
-		dialog.setWidgetTopHeight(title, 0, Style.Unit.PCT, 10, Style.Unit.PCT);
+		CenterLayoutPanel mainPanel = new CenterLayoutPanel(800, 400, title, mainContent);
 		
 		//List => centralPanel
 		this.languageList.addItem("English");
@@ -115,13 +110,13 @@ public class Page1View  extends ResizeComposite implements IdisplayPage1 {
 		//centralPanel.setWidth("50%");
 		
 		//centralPanel => root 80%
-		dialog.add(centralPanel);
-		dialog.setWidgetTopHeight(centralPanel, 10, Style.Unit.PCT, 80, Style.Unit.PCT);
+		mainContent.add(centralPanel);
+		mainContent.setWidgetTopHeight(centralPanel, 10, Style.Unit.PCT, 80, Style.Unit.PCT);
 	    
 		//Next button => root 3%
-		btnNext.setWidth("10%");
-		dialog.add(btnNext);
-		dialog.setWidgetTopHeight(btnNext, 85, Style.Unit.PCT, 3, Style.Unit.PCT);
+		//btnNext.setWidth("10%");
+		mainContent.add(btnNext);
+		mainContent.setWidgetTopHeight(btnNext, 85, Style.Unit.PCT, 3, Style.Unit.PCT);
 		
 		initWidget(mainPanel);
 	}

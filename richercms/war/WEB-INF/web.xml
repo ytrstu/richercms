@@ -36,6 +36,11 @@
     	<servlet-class>com.sfeir.richercms.wizardConfig.server.ServiceUserInfoImpl</servlet-class>
   	</servlet>
   	
+	<servlet>
+    	<servlet-name>pageServiceServlet</servlet-name>
+    	<servlet-class>com.sfeir.richercms.main.server.ServicePageImpl</servlet-class>
+  	</servlet>
+  	
   	
   
  	<servlet-mapping>
@@ -66,6 +71,11 @@
  	<servlet-mapping>
   		<servlet-name>userServiceServlet</servlet-name>
   		<url-pattern>/wizardconfig/userService</url-pattern>
+	</servlet-mapping>
+	
+	 	<servlet-mapping>
+  		<servlet-name>pageServiceServlet</servlet-name>
+  		<url-pattern>/main/pageService</url-pattern>
 	</servlet-mapping>
   
   

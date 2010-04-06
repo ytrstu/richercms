@@ -14,6 +14,7 @@ import com.sfeir.richercms.main.client.tinyMCE.TinyMCE;
 
 public class MainPageView extends TabLayoutPanel implements IdisplayMainPage {
 
+	private NavigationPanel navPanel = new NavigationPanel();
 
 	public MainPageView() {
 		super(25, Unit.PX);
@@ -41,9 +42,9 @@ public class MainPageView extends TabLayoutPanel implements IdisplayMainPage {
 
 	private SplitLayoutPanel createMainInterface() {
 		SplitLayoutPanel p = new SplitLayoutPanel();
-		NavigationPanel navPanel = new NavigationPanel();
-		navPanel.setStyleName("tab-content");
-		p.addWest(navPanel, 168);
+		
+		this.navPanel.setStyleName("tab-content");
+		p.addWest(this.navPanel, 168);
 		
 		final int height = Window.getClientHeight()-30;
 		
@@ -60,5 +61,14 @@ public class MainPageView extends TabLayoutPanel implements IdisplayMainPage {
 		p.add(tinyMcePanel);
 		
 		return p;
+	}
+
+
+	public void addPageInTree(String name) {
+		this.navPanel.addPageInTree(name);
+	}
+
+	public void clearTree() {
+		this.navPanel.clearTree();
 	}
 }

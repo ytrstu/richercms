@@ -144,11 +144,11 @@ public class Page2View extends ResizeComposite implements IdisplayPage2 {
 	 */
 	public void createView() {
 		
-		this.popUpAddLanguage = new PopUpAddLangue();
-		
+		this.popUpAddLanguage = new PopUpAddLangue();		
 		//Title => root 10%
 		LayoutPanel mainContent = new LayoutPanel();
 		Label title = new Label(this.constants.titlePage2());
+		//is wrapped by the composite (super)
 		CenterLayoutPanel mainPanel = new CenterLayoutPanel(800, 400, title, mainContent);
 		
 		//LanguageTable

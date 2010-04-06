@@ -7,6 +7,11 @@ import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.ResizeComposite;
 import com.google.gwt.user.client.ui.Widget;
 
+/**
+ * Center Layout Panel with fixed size
+ * @author Ensminger.f
+ *
+ */
 public class CenterLayoutPanel extends ResizeComposite {
 
 	private int width;
@@ -40,8 +45,8 @@ public class CenterLayoutPanel extends ResizeComposite {
 		paddingPanel.setWidgetLeftRight(dialog, 0, Style.Unit.PX, 0, Style.Unit.PX);
 		paddingPanel.setWidgetTopBottom(dialog, 30, Style.Unit.PX, 0, Style.Unit.PX);
 		initWidget(mainPanel);
+		
 		DeferredCommand.addCommand(new Command() {
-			@Override
 			public void execute() {
 				changeSize();
 			}

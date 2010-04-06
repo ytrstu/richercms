@@ -26,15 +26,14 @@ public class MainPageView extends TabLayoutPanel implements IdisplayMainPage {
 	public void createView() {
 		
 	    LayoutPanel layoutPanel1 = new LayoutPanel();
-	    //layoutPanel1.setStyleName("tab-content");
 	    layoutPanel1.add(createMainInterface());
-	    this.add(layoutPanel1, "TinyMce with resize");
+	    this.add(layoutPanel1, "Site Explorator");
 	    
 	    LayoutPanel layoutPanel2 = new LayoutPanel();
 	    layoutPanel2.setStyleName("tab-content");
 	    HTML h1 = new HTML("TODO...");
 	    layoutPanel2.add(h1);
-	    this.add(layoutPanel2, "Persistence example");
+	    this.add(layoutPanel2, "Administration");
 
 	    this.selectTab(0);
 		
@@ -42,16 +41,15 @@ public class MainPageView extends TabLayoutPanel implements IdisplayMainPage {
 
 	private SplitLayoutPanel createMainInterface() {
 		SplitLayoutPanel p = new SplitLayoutPanel();
-		LayoutPanel navPanel = new LayoutPanel();
+		NavigationPanel navPanel = new NavigationPanel();
 		navPanel.setStyleName("tab-content");
-		navPanel.add(new HTML("navigation"));
 		p.addWest(navPanel, 168);
 		
 		final int height = Window.getClientHeight()-30;
 		
-		LayoutPanel listPanel = new LayoutPanel();
+		InformationPanel listPanel = new InformationPanel();
 		listPanel.setStyleName("tab-content");
-		listPanel.add(new HTML("list"));
+
 		p.addNorth(listPanel, height/2);
 		
 		final LayoutPanel tinyMcePanel = new LayoutPanel();

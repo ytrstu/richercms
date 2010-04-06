@@ -35,7 +35,6 @@ public class Page1View  extends ResizeComposite implements IdisplayPage1 {
 	// panel de la fenetre
 	private HorizontalPanel languagePanel = new HorizontalPanel();
 	private LayoutPanel centralPanel = new LayoutPanel();
-	//private DockLayoutPanel panelPrincipal = new DockLayoutPanel(Unit.PX); // layout principal
 
 	public Page1View() {
 		super();
@@ -89,6 +88,7 @@ public class Page1View  extends ResizeComposite implements IdisplayPage1 {
 	{
 		LayoutPanel mainContent = new LayoutPanel();
 		Label title = new Label(constants.titlePage1());
+		//is wrapped by the composite (super)
 		CenterLayoutPanel mainPanel = new CenterLayoutPanel(800, 400, title, mainContent);
 		
 		//List => centralPanel

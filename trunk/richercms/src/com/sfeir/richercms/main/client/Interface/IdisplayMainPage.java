@@ -7,4 +7,6 @@ import com.mvp4g.client.view.LazyView;
 public interface IdisplayMainPage extends LazyView {
 
 	Widget asWidget();
+	void addPageInTree(String name);
+	void clearTree();
 }

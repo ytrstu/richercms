@@ -11,7 +11,7 @@ import com.mvp4g.client.Mvp4gModule;
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
  */
-public class WizardConfig implements EntryPoint {
+public class WizardConfig implements EntryPoint{
 
 	/**
 	 * This is the entry point method.
@@ -23,5 +23,6 @@ public class WizardConfig implements EntryPoint {
 	    module.createAndStartModule();
 	    RootLayoutPanel.get().add( (Widget)module.getStartView() );
 	}
+
 	
 }

@@ -7,8 +7,6 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.mvp4g.client.annotation.InjectService;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
-import com.sfeir.richercms.wizardConfig.client.LanguageServiceAsync;
-import com.sfeir.richercms.wizardConfig.client.UserInfoService;
 import com.sfeir.richercms.wizardConfig.client.UserInfoServiceAsync;
 import com.sfeir.richercms.wizardConfig.client.Interface.IdisplayPageLogin;
 import com.sfeir.richercms.wizardConfig.client.event.WizardConfigEventBus;

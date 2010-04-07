@@ -4,8 +4,10 @@ package com.sfeir.richercms.wizardConfig.client.event;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
+import com.mvp4g.client.annotation.InitHistory;
 import com.mvp4g.client.annotation.Start;
-import com.mvp4g.client.event.EventBus;
+import com.mvp4g.client.event.EventBusWithLookup;
+import com.sfeir.richercms.wizardConfig.client.history.WizardHistoryConverter;
 import com.sfeir.richercms.wizardConfig.client.presenter.Page1Presenter;
 import com.sfeir.richercms.wizardConfig.client.presenter.Page2Presenter;
 import com.sfeir.richercms.wizardConfig.client.presenter.PageLoginPresenter;
@@ -22,19 +24,19 @@ import com.sfeir.richercms.wizardConfig.client.view.RootView;
  * @author homberg.g
  */
 @Events(startView = RootView.class)
-public interface WizardConfigEventBus extends EventBus{
+public interface WizardConfigEventBus extends EventBusWithLookup{
 
 	/**
 	 * Change view : Page1 => Page2
 	 */
-	@Event(handlers=Page2Presenter.class)
+	@Event(handlers=Page2Presenter.class, historyConverter = WizardHistoryConverter.class)
 	public void GoToSecondPage();
 	
 	
 	/**
 	 * Change view : Login => Page1
 	 */
-	@Event(handlers=Page1Presenter.class)
+	@Event(handlers=Page1Presenter.class, historyConverter = WizardHistoryConverter.class)
 	public void startWizard();
 	
 	/**
@@ -51,6 +53,8 @@ public interface WizardConfigEventBus extends EventBus{
 	 * 2 presenter are started : RootPresenter and PageLoginPresenter(first view to display)
 	 */
 	@Start
-	@Event( handlers = {RootPresenter.class, PageLoginPresenter.class} )
+	@InitHistory
+	@Event( handlers = {RootPresenter.class, PageLoginPresenter.class}, historyConverter = WizardHistoryConverter.class)
 	public void login();
+	
 }

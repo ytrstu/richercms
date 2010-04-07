@@ -92,11 +92,12 @@ public class Page1Presenter extends LazyPresenter<IdisplayPage1, WizardConfigEve
 			String[] splitted = url.split("locale=");
 			
 			if (splitted.length < 2)
-				return "en";
+				return "";
 			
-			return splitted[1];
+			String[] splittedLocal = splitted[1].split("#");
+			return splittedLocal[0];
 		}
-		return "en";
+		return "";
 	}
 	
 	/**
@@ -115,12 +116,23 @@ public class Page1Presenter extends LazyPresenter<IdisplayPage1, WizardConfigEve
 			buf.append(countryCode);
 			System.out.println("Avec locale : "+buf);
 		} else {
-			buf.append(url);
+			String[] splitted = url.split("#");
+			buf.append(splitted[0]);
 			buf.append("?locale=");
 			buf.append(countryCode);
+			buf.append("#");
+			buf.append(splitted[1]);
 			System.out.println("Sans locale : "+buf);
 		}
 	
 		Window.Location.replace(buf.toString());
+
+		if (countryCode.equalsIgnoreCase("fr")) {
+			this.view.setSelectedLanguage(1);
+		} else if (countryCode.equalsIgnoreCase("de")) {
+			this.view.setSelectedLanguage(2);
+		} else {
+			this.view.setSelectedLanguage(0);
+		}
 	}
 }

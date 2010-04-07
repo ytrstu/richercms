@@ -2,6 +2,7 @@ package com.sfeir.richercms.wizardConfig.client.presenter;
 
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.mvp4g.client.annotation.InjectService;
 import com.mvp4g.client.annotation.Presenter;
@@ -36,6 +37,7 @@ public class PageLoginPresenter extends LazyPresenter<IdisplayPageLogin, WizardC
 		
 		rpcLoginService.login(GWT.getHostPageBaseURL(), new AsyncCallback<BeanUserInfo>() {
 			public void onFailure(Throwable error) {
+				Window.alert("Connection for login failed");
 			}
 
 			public void onSuccess(BeanUserInfo result) {

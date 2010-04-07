@@ -55,15 +55,6 @@ a, a:visited, a:hover {
   	background : url("/tab_images/signIn.png") no-repeat;
 }
 
-.text-login{
-  align :center;
-  font-weight: bold;
-  font-size : 20px;
-  margin-left : 220px;
-  background : url(tab_images/logo1.png) no-repeat;
-  padding : 200px 400px 200px 300px;
-	}
-
 .anchor-login:hover{
 	color : #CCCFFF;
 }

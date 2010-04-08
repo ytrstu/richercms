@@ -45,22 +45,22 @@
   
  	<servlet-mapping>
   		<servlet-name>userService</servlet-name>
-  		<url-pattern>/richercms/user</url-pattern>
+  		<url-pattern>/RichercmsEsial/user</url-pattern>
 	</servlet-mapping>
 	
 	<servlet-mapping>
     	<servlet-name>pageService</servlet-name>
-    	<url-pattern>/richercms/pages</url-pattern>
+    	<url-pattern>/RichercmsEsial/pages</url-pattern>
   	</servlet-mapping>
 
   	<servlet-mapping>
     	<servlet-name>uploadServlet</servlet-name>
-    	<url-pattern>/richercms/upload</url-pattern>
+    	<url-pattern>/RichercmsEsial/upload</url-pattern>
   	</servlet-mapping>
   
 	<servlet-mapping>
     	<servlet-name>statService</servlet-name>
-    	<url-pattern>/richercms/stats</url-pattern>
+    	<url-pattern>/RichercmsEsial/stats</url-pattern>
   	</servlet-mapping>
   
 	<servlet-mapping>

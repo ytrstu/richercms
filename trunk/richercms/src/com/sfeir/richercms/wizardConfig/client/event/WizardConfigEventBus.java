@@ -7,6 +7,7 @@ import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.annotation.InitHistory;
 import com.mvp4g.client.annotation.Start;
 import com.mvp4g.client.event.EventBusWithLookup;
+import com.sfeir.richercms.wizardConfig.client.Interface.WizardModule;
 import com.sfeir.richercms.wizardConfig.client.history.WizardHistoryConverter;
 import com.sfeir.richercms.wizardConfig.client.presenter.Page1Presenter;
 import com.sfeir.richercms.wizardConfig.client.presenter.Page2Presenter;

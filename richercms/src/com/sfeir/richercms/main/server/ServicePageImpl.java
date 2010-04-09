@@ -10,7 +10,7 @@ import javax.jdo.Query;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.sfeir.richercms.main.client.PageService;
 import com.sfeir.richercms.main.shared.Page;
-import com.sfeir.richercms.wizardConfig.server.businessObj.Language;
+import com.sfeir.richercms.wizard.server.business.Language;
 
 
 /**

@@ -1,4 +1,4 @@
-package com.sfeir.richercms.wizardConfig.client;
+package com.sfeir.richercms.wizard.client;
 
 import com.google.gwt.i18n.client.Constants;
 

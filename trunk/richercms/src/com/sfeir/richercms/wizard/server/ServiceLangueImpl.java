@@ -1,4 +1,4 @@
-package com.sfeir.richercms.wizardConfig.server;
+package com.sfeir.richercms.wizard.server;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,9 +10,9 @@ import javax.jdo.Query;
 
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-import com.sfeir.richercms.wizardConfig.client.LanguageService;
-import com.sfeir.richercms.wizardConfig.server.businessObj.Language;
-import com.sfeir.richercms.wizardConfig.shared.BeanLanguageDetails;
+import com.sfeir.richercms.wizard.client.LanguageService;
+import com.sfeir.richercms.wizard.server.business.Language;
+import com.sfeir.richercms.wizard.shared.BeanLanguageDetails;
 
 /**
  * Implementation of all language Services.

@@ -1,12 +1,10 @@
-package com.sfeir.richercms.wizardConfig.client;
+package com.sfeir.richercms.wizard.client;
 
 
 import java.util.List;
 
-
-
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.sfeir.richercms.wizardConfig.shared.BeanLanguageDetails;
+import com.sfeir.richercms.wizard.shared.BeanLanguageDetails;
 
 /**
  * Language Services

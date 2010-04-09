@@ -9,7 +9,7 @@ import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.sfeir.richercms.client.RootEventBus;
 import com.sfeir.richercms.client.UserInfoServiceAsync;
-import com.sfeir.richercms.client.Interface.IdisplayPageLogin;
+import com.sfeir.richercms.client.interfaces.IdisplayPageLogin;
 import com.sfeir.richercms.client.view.PageLoginView;
 import com.sfeir.richercms.shared.BeanUserInfo;
 

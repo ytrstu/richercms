@@ -6,7 +6,7 @@ import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.ResizeComposite;
 import com.google.gwt.user.client.ui.Widget;
-import com.sfeir.richercms.client.Interface.IrootDisplay;
+import com.sfeir.richercms.client.interfaces.IrootDisplay;
 
 
 /**

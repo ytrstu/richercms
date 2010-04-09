@@ -5,7 +5,7 @@ import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.sfeir.richercms.client.Interface.IdisplayPageLogin;
+import com.sfeir.richercms.client.interfaces.IdisplayPageLogin;
 
 
 /**

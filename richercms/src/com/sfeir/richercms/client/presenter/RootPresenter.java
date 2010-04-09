@@ -6,7 +6,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 import com.sfeir.richercms.client.RootEventBus;
-import com.sfeir.richercms.client.Interface.IrootDisplay;
+import com.sfeir.richercms.client.interfaces.IrootDisplay;
 import com.sfeir.richercms.client.view.RootView;
 
 

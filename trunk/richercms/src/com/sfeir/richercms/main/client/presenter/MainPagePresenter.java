@@ -12,8 +12,6 @@ import com.sfeir.richercms.main.client.Interface.IdisplayMainPage;
 import com.sfeir.richercms.main.client.event.MainEventBus;
 import com.sfeir.richercms.main.client.view.MainPageView;
 import com.sfeir.richercms.main.shared.Page;
-import com.sfeir.richercms.wizardConfig.client.LanguageServiceAsync;
-import com.sfeir.richercms.wizardConfig.shared.BeanLanguageDetails;
 
 
 @Presenter( view = MainPageView.class)
@@ -28,7 +26,7 @@ public class MainPagePresenter extends LazyPresenter<IdisplayMainPage, MainEvent
 		
 	}
 
-	public void onStart() {
+	public void onStartMain() {
 		eventBus.changeBody(view.asWidget());
 		this.buildTree();
 	}

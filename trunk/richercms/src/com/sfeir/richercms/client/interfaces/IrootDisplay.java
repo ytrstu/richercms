@@ -20,4 +20,16 @@ public interface IrootDisplay
 	 * @return a Composite where the rootLayoutPanel is attached
 	 */
 	public Widget getViewWidget();
+	
+	/**
+	 * add a css style thanks to its name
+	 * @param styleName : name of the style in css File
+	 */
+	public void AddStyle(String styleName);
+	
+	/**
+	 * remove a css style thanks to its name
+	 * @param styleName : name of the style in css File
+	 */
+	public void RemoveStyle(String styleName);
 }

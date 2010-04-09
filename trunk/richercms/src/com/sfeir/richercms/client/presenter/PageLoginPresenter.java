@@ -32,7 +32,7 @@ public class PageLoginPresenter extends LazyPresenter<IdisplayPageLogin, RootEve
 	}
 	
 	public void onLogin() {
-		
+		this.view.showPopUpWait();
 		rpcLoginService.login(GWT.getHostPageBaseURL(), new AsyncCallback<BeanUserInfo>() {
 			public void onFailure(Throwable error) {
 				Window.alert("Connection for login failed");
@@ -46,6 +46,7 @@ public class PageLoginPresenter extends LazyPresenter<IdisplayPageLogin, RootEve
 					view.getSignInLink().setHref(result.getLoginUrl());
 					eventBus.changeBody(view.asWidget());
 				}
+				view.hidePopUpWait();
 			}
 		});
 		

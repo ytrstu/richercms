@@ -17,6 +17,7 @@ public class PageLoginView extends LayoutPanel implements IdisplayPageLogin {
 
 	private Label loginLabel = new Label("");
 	private Anchor signInLink = new Anchor();
+	private PopUpWait popUpWait;
 	
 	public PageLoginView() {	
 		super();
@@ -25,9 +26,18 @@ public class PageLoginView extends LayoutPanel implements IdisplayPageLogin {
 	public Widget asWidget() {
 		return this;
 	}
+	
+	public void hidePopUpWait() {
+		this.popUpWait.hide();
+	}
+	
+	public void showPopUpWait() {
+		
+		this.popUpWait.show();
+	}
 
 	public void createView() {
-		
+		this.popUpWait = new PopUpWait();
 		this.loginLabel.setStylePrimaryName("text-login");
 
 		this.signInLink.setStylePrimaryName("anchor-login");

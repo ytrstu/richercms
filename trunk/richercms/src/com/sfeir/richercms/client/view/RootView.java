@@ -31,7 +31,12 @@ public class RootView extends ResizeComposite implements IrootDisplay {
 		return this;
 	}
 
-
-
+	public void AddStyle(String styleName) {
+		this.body.addStyleName(styleName);
+	}
+	
+	public void RemoveStyle(String styleName) {
+		this.body.removeStyleName(styleName);
+	}
 
 }

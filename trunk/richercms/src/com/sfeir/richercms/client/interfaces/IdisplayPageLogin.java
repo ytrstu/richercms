@@ -14,4 +14,8 @@ public interface IdisplayPageLogin extends LazyView {
 	 * @return the login anchor
 	 */
 	Anchor getSignInLink();
+	
+	public void showPopUpWait();
+	
+	public void hidePopUpWait();
 }

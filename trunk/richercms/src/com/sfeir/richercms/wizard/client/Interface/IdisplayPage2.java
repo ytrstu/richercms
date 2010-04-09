@@ -92,6 +92,16 @@ public interface IdisplayPage2 extends LazyView {
 	 * Hide the Add Language PopUp
 	 */
 	void hidePopUpAddLanguage();
+		
+	/**
+	 * Show the PopUpWait
+	 */
+	void showPopUpWait();
+	
+	/**
+	 * Hide the PopUpWait
+	 */
+	void hidePopUpWait();
 	
 	/**
 	 * Clear the table of languages

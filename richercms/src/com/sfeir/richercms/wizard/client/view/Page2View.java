@@ -14,9 +14,11 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.ResizeComposite;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.sfeir.richercms.client.view.PopUpWait;
 import com.sfeir.richercms.wizard.client.wizardConfigConstants;
 import com.sfeir.richercms.wizard.client.Interface.IdisplayPage2;
 
@@ -40,6 +42,7 @@ public class Page2View extends ResizeComposite implements IdisplayPage2 {
 	private LayoutPanel languagePanel = new LayoutPanel();
 	private FlowPanel add_DelPanel = new FlowPanel();
 	private PopUpAddLangue popUpAddLanguage = null;
+	private PopUpWait popUpWait = null;
 	
 	
 	public Page2View() {	
@@ -78,9 +81,17 @@ public class Page2View extends ResizeComposite implements IdisplayPage2 {
 		this.popUpAddLanguage.show();
 	}
 	
+	public void showPopUpWait() {
+		
+		this.popUpWait.show();
+	}
 
 	public void hidePopUpAddLanguage() {
 		this.popUpAddLanguage.hide();
+	}
+	
+	public void hidePopUpWait() {
+		this.popUpWait.hide();
 	}
 
 	public void setLanguageList(ArrayList<String> languages) {
@@ -121,16 +132,16 @@ public class Page2View extends ResizeComposite implements IdisplayPage2 {
 
 	public void setSelectedLanguage(int id) {
 		
-		CheckBox checkBox = (CheckBox)this.LanguageTable.getWidget(id, 0);
-		checkBox.setValue(true);
+		RadioButton RadioButton = (RadioButton)this.LanguageTable.getWidget(id, 0);
+		RadioButton.setValue(true);
 	}
 
 
 	public void addLanguage(String language, boolean checked) {
 		
-		CheckBox box = new CheckBox();
-		box.setValue(checked);
-		this.LanguageTable.setWidget(this.LanguageTable.getRowCount(), 0, box);
+		RadioButton radio = new RadioButton("");
+		radio.setValue(checked);
+		this.LanguageTable.setWidget(this.LanguageTable.getRowCount(), 0, radio);
 		// on doit faire this.LanguageTable.getRowCount()-1 car la ligne a �t� cr�er juste au dessus
 		this.LanguageTable.setText(this.LanguageTable.getRowCount()-1, 1, language);
 	}
@@ -144,7 +155,9 @@ public class Page2View extends ResizeComposite implements IdisplayPage2 {
 	 */
 	public void createView() {
 		
-		this.popUpAddLanguage = new PopUpAddLangue();		
+		this.popUpAddLanguage = new PopUpAddLangue();
+		this.popUpWait = new PopUpWait();
+		
 		//Title => root 10%
 		LayoutPanel mainContent = new LayoutPanel();
 		Label title = new Label(this.constants.titlePage2());
@@ -181,6 +194,7 @@ public class Page2View extends ResizeComposite implements IdisplayPage2 {
 		buttonPanel.add(btnNext);
 		mainContent.add(buttonPanel);
 		mainContent.setWidgetBottomHeight(buttonPanel, 0, Style.Unit.PX, 28, Style.Unit.PX);
+		
 		
 		initWidget(mainPanel);
 	}

@@ -78,6 +78,7 @@ public class Page2Presenter extends LazyPresenter<IdisplayPage2, WizardConfigEve
 	public void onGoToSecondPage() {
 		
 		eventBus.changeBody(view.asWidget());
+		this.view.showPopUpWait();
 	    fetchLanguageTable();
 	}
 	
@@ -91,6 +92,8 @@ public class Page2Presenter extends LazyPresenter<IdisplayPage2, WizardConfigEve
 	    		view.clearTableLanguage();	    		
 	    		for(BeanLanguageDetails dLg : result)
 	    			view.addLanguage(dLg.getLangue(),dLg.getSelectionner());
+	    		
+	    	    view.hidePopUpWait();
 	    	}
 	        public void onFailure(Throwable caught) {
 	            Window.alert("Error retrieving language");}

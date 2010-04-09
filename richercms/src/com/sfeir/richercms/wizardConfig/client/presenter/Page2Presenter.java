@@ -39,6 +39,7 @@ public class Page2Presenter extends LazyPresenter<IdisplayPage2, WizardConfigEve
 		view.getNextButton().addClickHandler(new ClickHandler() {   
 	        public void onClick(ClickEvent event) {
 	        	saveSelectedLanguage();
+	        	eventBus.wizardFinished();
 	        }
 	      });
 		

@@ -4,16 +4,12 @@ package com.sfeir.richercms.wizardConfig.client.event;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
-import com.mvp4g.client.annotation.InitHistory;
-import com.mvp4g.client.annotation.Start;
+
 import com.mvp4g.client.event.EventBusWithLookup;
-import com.sfeir.richercms.wizardConfig.client.Interface.WizardModule;
 import com.sfeir.richercms.wizardConfig.client.history.WizardHistoryConverter;
 import com.sfeir.richercms.wizardConfig.client.presenter.Page1Presenter;
 import com.sfeir.richercms.wizardConfig.client.presenter.Page2Presenter;
-import com.sfeir.richercms.wizardConfig.client.presenter.PageLoginPresenter;
-import com.sfeir.richercms.wizardConfig.client.presenter.RootPresenter;
-import com.sfeir.richercms.wizardConfig.client.view.RootView;
+import com.sfeir.richercms.wizardConfig.client.view.Page1View;
 
 
 /**
@@ -24,7 +20,7 @@ import com.sfeir.richercms.wizardConfig.client.view.RootView;
  * 
  * @author homberg.g
  */
-@Events(startView = RootView.class)
+@Events(startView = Page1View.class, module = WizardModule.class)
 public interface WizardConfigEventBus extends EventBusWithLookup{
 
 	/**
@@ -44,18 +40,17 @@ public interface WizardConfigEventBus extends EventBusWithLookup{
 	 * Display the new view in the rootLayout
 	 * @param widget : the new view
 	 */
-	@Event( handlers = RootPresenter.class )
+	@Event( forwardToParent = true )
 	public void changeBody( Widget widget );
 	
-	
+	@Event( forwardToParent = true )
+	public void wizardFinished();
 	
 	/**
 	 * Start the rootLayout and display the first page.
 	 * 2 presenter are started : RootPresenter and PageLoginPresenter(first view to display)
 	 */
-	@Start
-	@InitHistory
-	@Event( handlers = {RootPresenter.class, PageLoginPresenter.class}, historyConverter = WizardHistoryConverter.class)
-	public void login();
+	/*@Event( handlers = {RootPresenter.class, PageLoginPresenter.class}, historyConverter = WizardHistoryConverter.class)
+	public void login();*/
 	
 }

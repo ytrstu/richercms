@@ -8,8 +8,8 @@ import com.mvp4g.client.annotation.InjectService;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.sfeir.richercms.main.client.PageServiceAsync;
-import com.sfeir.richercms.main.client.Interface.IdisplayMainPage;
 import com.sfeir.richercms.main.client.event.MainEventBus;
+import com.sfeir.richercms.main.client.interfaces.IdisplayMainPage;
 import com.sfeir.richercms.main.client.view.MainPageView;
 import com.sfeir.richercms.main.shared.Page;
 

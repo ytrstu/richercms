@@ -28,7 +28,7 @@
   	
   	<servlet>
     	<servlet-name>languageServiceServlet</servlet-name>
-    	<servlet-class>com.sfeir.richercms.wizardConfig.server.ServiceLangueImpl</servlet-class>
+    	<servlet-class>com.sfeir.richercms.wizard.server.ServiceLangueImpl</servlet-class>
  	</servlet>
   	
 	<servlet>

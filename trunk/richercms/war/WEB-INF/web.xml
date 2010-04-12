@@ -82,7 +82,7 @@
   
 	<!-- Default page to serve -->
 	<welcome-file-list>
-		<welcome-file>RicherCMS.html</welcome-file>
+		<welcome-file>RicherCMS.jsp</welcome-file>
 	</welcome-file-list>
 	
 </web-app>

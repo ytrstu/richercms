@@ -36,6 +36,8 @@ public class Page1Presenter extends LazyPresenter<IdisplayPage1, WizardConfigEve
 		}
 		
 		eventBus.changeBody(view.asWidget());
+		
+		
 	  }
 	  
 	/**

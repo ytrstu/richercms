@@ -24,7 +24,7 @@
   <servlet path="/user" class="com.esial.richercms.server.UserInfoServiceImpl" />
   <servlet path="/pages" class="com.esial.richercms.server.PageServiceImpl" />
   <servlet path="/upload" class="com.esial.richercms.server.FileUploadServlet" />
-  <servlet path="/stats" class="com.esial.richercms.server.StatServiceImpl" />µ
+  <servlet path="/stats" class="com.esial.richercms.server.StatServiceImpl" />
 
   <!-- Specify the app entry point class.                         -->
   <entry-point class='com.esial.richercms.client.Richercms'/>

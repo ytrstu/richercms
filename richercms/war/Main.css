@@ -182,3 +182,8 @@ td.datePickerMonth {
 
 .dateBoxPopup {
 }
+
+.waitImg {
+	background-image: url('tab_images/loading29.gif');
+	background-repeat: no-repeat;
+}

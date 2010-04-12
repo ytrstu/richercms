@@ -130,3 +130,8 @@ color : #CCCFFF;
 .buttonMarginRight {
 	margin-right: 5px !important;
 }
+
+.lgTable td{
+	border: 1px solid #BBBBBB;
+	text-align:center;
+}

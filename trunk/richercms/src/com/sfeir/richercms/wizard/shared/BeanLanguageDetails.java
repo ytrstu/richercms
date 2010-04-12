@@ -11,16 +11,25 @@ import java.io.Serializable;
 public class BeanLanguageDetails implements Serializable {
 	
 	private String language;
+	private String tag;
 	private Boolean isSelected;
 	
 	
 	public BeanLanguageDetails() {
 		this.language ="";
+		this.tag ="";
 		this.isSelected = false;
 	}
 	
 	public BeanLanguageDetails(String lg, boolean isSelected) {
 		this.language = lg;
+		this.tag = "";
+		this.isSelected = isSelected;
+	}
+	
+	public BeanLanguageDetails(String lg, String tag, boolean isSelected) {
+		this.language = lg;
+		this.tag = tag;
 		this.isSelected = isSelected;
 	}
 	
@@ -39,5 +48,14 @@ public class BeanLanguageDetails implements Serializable {
 	public void setSelectionner(Boolean selectionner) {
 		this.isSelected = selectionner;
 	}
+
+	public String getTag() {
+		return this.tag;
+	}
+
+	public void setTag(String tag) {
+		this.tag = tag;
+	}
+	
 	
 }

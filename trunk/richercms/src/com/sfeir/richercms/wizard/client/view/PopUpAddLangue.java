@@ -4,10 +4,10 @@ package com.sfeir.richercms.wizard.client.view;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.VerticalPanel;
 import com.sfeir.richercms.wizard.client.wizardConfigConstants;
 
 /**
@@ -22,23 +22,27 @@ public class PopUpAddLangue extends DialogBox {
 	
 	public final Button ok = new Button(constants.buttonAddLanguagePopUp()); // public pour le passage des evt au presenter
 	public final Button cancel = new Button(constants.buttonCancelPopUp()); // public pour le passage des evt au presenter
-	private final Label label = new Label(constants.labelLanguagePopUp());
-	public final TextBox textbox = new TextBox(); // public pour le passage des evt au presenter
-	private VerticalPanel mainPanel = new VerticalPanel();
-	private HorizontalPanel valuePanel = new HorizontalPanel();
-	private HorizontalPanel buttonPanel = new HorizontalPanel();
+	private final Label labelLanguage = new Label(constants.labelLanguagePopUp());
+	public final TextBox textboxLanguage = new TextBox(); // public pour le passage des evt au presenter
+	private final Label labelTag = new Label(constants.labelTagPopUp());
+	public final TextBox textboxTag = new TextBox(); // public pour le passage des evt au presenter
+	private FlexTable mainPanel = new FlexTable();
 	
 	
     public PopUpAddLangue() {
     	
-		this.valuePanel.add(this.label);
-		this.valuePanel.add(this.textbox);
+    	this.mainPanel.setWidget(0, 0, this.labelLanguage);
+    	this.mainPanel.setWidget(0, 1, this.textboxLanguage);
 			
-		this.buttonPanel.add(this.ok);
-		this.buttonPanel.add(this.cancel);
-			
-		this.mainPanel.add(this.valuePanel);
-		this.mainPanel.add(this.buttonPanel);
+    	this.mainPanel.setWidget(1, 0, this.labelTag);
+    	this.mainPanel.setWidget(1, 1, this.textboxTag);
+		
+    	this.mainPanel.setWidget(2, 0, this.ok);
+    	this.mainPanel.setWidget(2, 1, this.cancel);
+    	
+    	
+		this.mainPanel.setCellSpacing(3);
+		this.mainPanel.setCellPadding(3);
 			
 		// Set the dialog box's caption.
 		this.setText(this.constants.TextPopUp());  
@@ -59,13 +63,14 @@ public class PopUpAddLangue extends DialogBox {
 	 * Clear all field in the PopUp
 	 */
     public void clearField() {
-    	this.textbox.setText("");
+    	this.textboxLanguage.setText("");
+    	this.textboxTag.setText("");
     }
     
     public void show()
     {
     	super.show();
-    	this.textbox.setFocus(true);
+    	this.textboxLanguage.setFocus(true);
     }
     
     

@@ -36,4 +36,19 @@ public interface wizardConfigConstants extends Constants {
 	  
 	  @DefaultStringValue(" Language : ")
 	  String labelLanguagePopUp();
+	  
+	  @DefaultStringValue("Tag (fr, en_US) : ")
+	  String labelTagPopUp();
+	  
+	  @DefaultStringValue("Default language")
+	  String LanguageTitleColumn1();
+	  
+	  @DefaultStringValue("Language")
+	  String LanguageTitleColumn2();
+	  
+	  @DefaultStringValue("tag")
+	  String LanguageTitleColumn3();
+	  
+	  @DefaultStringValue("Delete")
+	  String LanguageTitleColumn4();
 }

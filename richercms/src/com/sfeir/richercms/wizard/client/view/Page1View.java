@@ -93,7 +93,7 @@ public class Page1View  extends ResizeComposite implements IdisplayPage1 {
 		
 		//List => centralPanel
 		this.languageList.addItem("English");
-		this.languageList.addItem("Francais");
+		this.languageList.addItem("Français");
 		this.languageList.addItem("Deutsch");
 		this.languageList.setVisibleItemCount(1);
 		//languagePanel.setBorderWidth(3);

@@ -4,7 +4,6 @@ package com.sfeir.richercms.wizard.client.presenter;
 
 import java.util.List;
 
-
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
@@ -50,13 +49,6 @@ public class Page2Presenter extends LazyPresenter<IdisplayPage2, WizardConfigEve
 	        }
 	      });
 	    
-		// lancement de la popUp d'ajout d'une langue
-	    view.getDelButton().addClickHandler(new ClickHandler() {   
-	        public void onClick(ClickEvent event) {
-	          deleteLanguage();
-	        }
-	      });
-	    
 		// Ajout d'une langue au niveau du PopUp
 	    view.getPopUpBtnOk().addClickHandler(new ClickHandler() {   
 	        public void onClick(ClickEvent event) 
@@ -89,10 +81,17 @@ public class Page2Presenter extends LazyPresenter<IdisplayPage2, WizardConfigEve
 		
 	    this.rpcLangue.getLangues( new AsyncCallback<List<BeanLanguageDetails>>() {
 	    	public void onSuccess(List<BeanLanguageDetails> result) {
-	    		view.clearTableLanguage();	    		
+	    		view.clearTableLanguage();
+
 	    		for(BeanLanguageDetails dLg : result)
-	    			view.addLanguage(dLg.getLangue(),dLg.getSelectionner());
-	    		
+	    		{
+	    			view.addLanguage(dLg.getLangue(),dLg.getTag() ,dLg.getSelectionner()).addClickHandler(new ClickHandler() {
+	    				private int pos = view.getCurrentNumRow();
+	    		        public void onClick(ClickEvent event) {
+	    			          deleteLanguage(pos);
+	    			        }
+	    		        });
+	    		}
 	    	    view.hidePopUpWait();
 	    	}
 	        public void onFailure(Throwable caught) {
@@ -110,8 +109,11 @@ public class Page2Presenter extends LazyPresenter<IdisplayPage2, WizardConfigEve
 			Window.alert("No Language Entered");
 			return false;
 		}
-		else {
-			this.rpcLangue.addLanguage(this.view.getPopUpNewLanguage(),new AsyncCallback<Void>() {
+		else if (this.view.getPopUpNewTag().length() == 0){
+			Window.alert("please, enter the tag");
+			return false;
+		}else {
+			this.rpcLangue.addLanguage(this.view.getPopUpNewLanguage(), this.view.getPopUpNewTag(),new AsyncCallback<Void>() {
 				    	public void onSuccess(Void result){
 				    		fetchLanguageTable();}
 				        public void onFailure(Throwable caught) {
@@ -121,6 +123,7 @@ public class Page2Presenter extends LazyPresenter<IdisplayPage2, WizardConfigEve
 		}
 			
 	}
+	
 	/**
 	 * Save selected Languages in datastore
 	 */
@@ -136,9 +139,8 @@ public class Page2Presenter extends LazyPresenter<IdisplayPage2, WizardConfigEve
 	/**
 	 * Delete selected Languages in datastore
 	 */
-	private void deleteLanguage() {
-		
-		this.rpcLangue.deleteLanguage(this.view.getSelectedLanguage(), new AsyncCallback<Void>() {
+	private void deleteLanguage(int id) {
+		this.rpcLangue.deleteLanguage(id, new AsyncCallback<Void>() {
 						public void onSuccess(Void result) {
 							fetchLanguageTable();
 						}

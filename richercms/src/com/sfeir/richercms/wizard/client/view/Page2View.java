@@ -1,19 +1,16 @@
 package com.sfeir.richercms.wizard.client.view;
 
-import java.util.ArrayList;
-import java.util.List;
-
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.LayoutPanel;
-import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.ResizeComposite;
 import com.google.gwt.user.client.ui.ScrollPanel;
@@ -35,8 +32,6 @@ public class Page2View extends ResizeComposite implements IdisplayPage2 {
 	//widget de la fenetre
 	private Button btnNext = new Button(constants.buttonNext());
 	private Button btnAddLanguage = new Button(constants.buttonAddLanguage());
-	private Button btnDeleteLanguage = new Button(constants.buttonDelLanguage());
-	private ListBox languageList = new ListBox();
 	private FlexTable LanguageTable;
 	private ScrollPanel ScrollLanguageTable = new ScrollPanel();
 	private LayoutPanel languagePanel = new LayoutPanel();
@@ -60,10 +55,6 @@ public class Page2View extends ResizeComposite implements IdisplayPage2 {
 	
 	public HasClickHandlers getAddButton() {	
 		return this.btnAddLanguage;
-	}
-	
-	public HasClickHandlers getDelButton() {
-		return this.btnDeleteLanguage;
 	}
 	
 	public HasClickHandlers getPopUpBtnOk() {
@@ -94,40 +85,28 @@ public class Page2View extends ResizeComposite implements IdisplayPage2 {
 		this.popUpWait.hide();
 	}
 
-	public void setLanguageList(ArrayList<String> languages) {
-		this.languageList.clear();
-		for (int i = 0; i < languages.size(); ++i) 
-		{
-			this.languageList.addItem(languages.get(i));
-		}
-	}
 	
 	public String getPopUpNewLanguage(){
-		return this.popUpAddLanguage.textbox.getText();
+		return this.popUpAddLanguage.textboxLanguage.getText();
 	}
 	
-	public void setLanguageTable(ArrayList<String> languages) {
-		
-		this.LanguageTable.removeAllRows();
-		
-		for (int i = 0; i < languages.size(); ++i) {
-			this.LanguageTable.setWidget(i, 0, new CheckBox());
-			this.LanguageTable.setText(i, 1, languages.get(i));
-		}
+	public String getPopUpNewTag(){
+		return this.popUpAddLanguage.textboxTag.getText();
 	}
 	
-	public List<Integer> getSelectedLanguage() {
+	
+	public int getSelectedLanguage() {
 		
-		List<Integer> selectedRows = new ArrayList<Integer>();
-		   
-		for (int i = 0; i < this.LanguageTable.getRowCount(); ++i) {
-			CheckBox checkBox = (CheckBox)this.LanguageTable.getWidget(i, 0);
+
+		for (int i = 1; i < this.LanguageTable.getRowCount(); ++i) {
+			RadioButton radioBtn = (RadioButton)this.LanguageTable.getWidget(i, 0);
 			
-			if (checkBox.getValue()){
-				selectedRows.add(i);
+			if (radioBtn.getValue()){
+				//i-1 : due to the title row
+				return (i-1);
 			}
 		}
-		return selectedRows;
+		return -1;
 	}
 
 	public void setSelectedLanguage(int id) {
@@ -137,17 +116,24 @@ public class Page2View extends ResizeComposite implements IdisplayPage2 {
 	}
 
 
-	public void addLanguage(String language, boolean checked) {
+	public HasClickHandlers addLanguage(String language, String tag, boolean checked) {
 		
 		RadioButton radio = new RadioButton("");
+		PushButton btnDel = new PushButton( new Image("tab_images/Delete-icon.png"));
 		radio.setValue(checked);
 		this.LanguageTable.setWidget(this.LanguageTable.getRowCount(), 0, radio);
 		// on doit faire this.LanguageTable.getRowCount()-1 car la ligne a �t� cr�er juste au dessus
 		this.LanguageTable.setText(this.LanguageTable.getRowCount()-1, 1, language);
+		//tag
+		this.LanguageTable.setText(this.LanguageTable.getRowCount()-1, 2, tag);
+		// the delBnt
+		this.LanguageTable.setWidget(this.LanguageTable.getRowCount()-1, 3, btnDel);
+		return btnDel;
 	}
 
 	public void clearTableLanguage() {
 		this.LanguageTable.removeAllRows();
+		this.addLanguageTableTitle();
 	}
 
 	/**
@@ -166,8 +152,12 @@ public class Page2View extends ResizeComposite implements IdisplayPage2 {
 		
 		//LanguageTable
 		this.LanguageTable = new FlexTable();
+		this.LanguageTable.addStyleName("lgTable");
 		this.LanguageTable.setCellSpacing(3);
 		this.LanguageTable.setCellPadding(3);
+		//this.LanguageTable.setBorderWidth(1);
+		this.addLanguageTableTitle();
+		
 		//this.LanguageTable.getColumnFormatter().setWidth(0, "15px");
 		
 		//ScrollLanguageTable
@@ -176,7 +166,6 @@ public class Page2View extends ResizeComposite implements IdisplayPage2 {
 		//add_DelPanel
 		this.btnAddLanguage.addStyleName("buttonMarginRight");
 		this.add_DelPanel.add(this.btnAddLanguage);
-		this.add_DelPanel.add(this.btnDeleteLanguage);
 		
 		//languagePanel
 		this.languagePanel.add(this.ScrollLanguageTable);
@@ -199,5 +188,20 @@ public class Page2View extends ResizeComposite implements IdisplayPage2 {
 		initWidget(mainPanel);
 	}
 	
+	/**
+	 * add title of each columns of the Language table
+	 */
+	public void addLanguageTableTitle()
+	{
+		this.LanguageTable.setText(0, 0, this.constants.LanguageTitleColumn1());
+		this.LanguageTable.setText(0, 1, this.constants.LanguageTitleColumn2());
+		this.LanguageTable.setText(0, 2, this.constants.LanguageTitleColumn3());
+		this.LanguageTable.setText(0, 3, this.constants.LanguageTitleColumn4());
+	}
 	
+	public int getCurrentNumRow()
+	{
+		//the last line = number of row -1 - (title row)
+		return this.LanguageTable.getRowCount() - 2;
+	}
 }

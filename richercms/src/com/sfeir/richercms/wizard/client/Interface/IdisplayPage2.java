@@ -1,8 +1,5 @@
 package com.sfeir.richercms.wizard.client.Interface;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.view.LazyView;
@@ -26,11 +23,6 @@ public interface IdisplayPage2 extends LazyView {
 	 */
 	HasClickHandlers getAddButton();
 	
-	/**
-	 * get the handler of the button Delete
-	 * @return The handler of the button Delete
-	 */
-	HasClickHandlers getDelButton();
 	
 	/**
 	 * get the handler of the button Ok on the PopUp
@@ -44,30 +36,20 @@ public interface IdisplayPage2 extends LazyView {
 	 */
 	HasClickHandlers getPopUpBtnCancel();
 	
-	/**
-	 * DEPRECATED :)
-	 * @param langues
-	 */
-	void setLanguageList(ArrayList<String> langues);
-	
-	/**
-	 * DEPRECATED :)
-	 * @param langues
-	 */
-	void setLanguageTable(ArrayList<String> langues);
 	
 	/**
 	 * Add a Language in the table
 	 * @param langue 
 	 * @param checked true if the language is selected.
+	 * @return the delete Button for bind Event;
 	 */
-	void addLanguage(String langue, boolean checked);
+	HasClickHandlers addLanguage(String langue, String tag, boolean checked);
 	
 	/**
-	 * Get the List of selected IDs (id = position in the table)
-	 * @return List of selected IDs in the table
+	 * Get the default language selected (id = position in the table)
+	 * @return the default language selected
 	 */
-	List<Integer> getSelectedLanguage();
+	int getSelectedLanguage();
 	
 	
 	/**
@@ -77,11 +59,16 @@ public interface IdisplayPage2 extends LazyView {
 	void setSelectedLanguage(int id);
 	
 	/**
-	 * Return the string entered by the user in the popup
+	 * Return the name of the new language entered by the user in the popup
 	 * @return The string entered in the popUp
 	 */
 	String getPopUpNewLanguage();
 	
+	/**
+	 * Return the tag of the new language entered by the user in the popup
+	 * @return The string entered in the popUp
+	 */
+	String getPopUpNewTag();
 	
 	/**
 	 * Show the Add Language PopUp
@@ -109,4 +96,9 @@ public interface IdisplayPage2 extends LazyView {
 	void clearTableLanguage();
 	
 	Widget asWidget();
+	
+	/**
+	 * @return the current lineNumber of the language table
+	 */
+	int getCurrentNumRow();
 }

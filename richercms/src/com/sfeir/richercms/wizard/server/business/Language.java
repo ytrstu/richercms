@@ -20,6 +20,8 @@ public class Language {
 	@Persistent
 	private String langue;
 	@Persistent
+	private String tag;
+	@Persistent
 	private boolean selected;
 	
 	
@@ -31,6 +33,18 @@ public class Language {
 	public Language(String langue) {
 		this.langue = langue;
 		this.selected = false;
+	}
+	
+	public Language(String langue, String tag) {
+		this.langue = langue;
+		this.tag = tag;
+		this.selected = false;
+	}
+	
+	public Language(String langue, String tag, boolean selected) {
+		this.langue = langue;
+		this.tag = tag;
+		this.selected = selected;
 	}
 
 	public Long getId() {
@@ -55,6 +69,14 @@ public class Language {
 
 	public void setSelected(boolean selected) {
 		this.selected = selected;
+	}
+
+	public String getTag() {
+		return tag;
+	}
+
+	public void setTag(String tag) {
+		this.tag = tag;
 	}
 
 }

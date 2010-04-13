@@ -8,7 +8,6 @@ import javax.jdo.PersistenceManager;
 import javax.jdo.PersistenceManagerFactory;
 import javax.jdo.Query;
 
-
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.sfeir.richercms.wizard.client.LanguageService;
 import com.sfeir.richercms.wizard.server.business.Language;
@@ -46,14 +45,32 @@ public class ServiceLangueImpl extends RemoteServiceServlet implements LanguageS
 		return lst;
 	}
 	
+
+	public BeanLanguageDetails getLangue(int id) {
+		
+		PersistenceManager pm = getPersistenceManager();
+		
+		 try
+		 {
+			 Language lg = pm.getObjectById(Language.class, this.languages.get(id).getId());
+			 
+			 if(lg != null)
+				 return new BeanLanguageDetails(lg.getLangue(), lg.getTag(), lg.isSelected());
+			 else
+				 return null;
+		 }finally{
+			 pm.close();
+		 }
+	}
+	
 	public void addBasesLanguage() {
 		
 	    PersistenceManager pm = getPersistenceManager();
 	    try {
-	      pm.makePersistent(new Language("Français"));
-	      pm.makePersistent(new Language("Anglais"));
-	      pm.makePersistent(new Language("Allemand"));
-	      pm.makePersistent(new Language("Italien"));
+	      pm.makePersistent(new Language("Français","fr", false));
+	      pm.makePersistent(new Language("Anglais","en", false));
+	      pm.makePersistent(new Language("Allemand", "de", false));
+	      pm.makePersistent(new Language("Italien", "it", false));
 	    } finally {
 	      pm.close();
 	    }
@@ -132,6 +149,23 @@ public class ServiceLangueImpl extends RemoteServiceServlet implements LanguageS
 				 pm.deletePersistent(lg);
 			 }
 
+		 }finally{
+			 pm.close();
+		 }
+	}
+	
+	@SuppressWarnings("unchecked")
+	public void deleteAllLanguages()
+	{
+		PersistenceManager pm = getPersistenceManager();
+		 try {
+		        Query q = pm.newQuery(Language.class);
+		        languages = (List<Language>) q.execute();
+
+				 for (Language lg : this.languages) {
+					 pm.deletePersistent(lg);
+				 }
+				 
 		 }finally{
 			 pm.close();
 		 }

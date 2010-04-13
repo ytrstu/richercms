@@ -43,14 +43,10 @@ public interface WizardConfigEventBus extends EventBusWithLookup{
 	@Event( forwardToParent = true )
 	public void changeBody( Widget widget );
 	
+	/**
+	 * forward this event to the parent eventbus
+	 */
 	@Event( forwardToParent = true )
 	public void wizardFinished();
-	
-	/**
-	 * Start the rootLayout and display the first page.
-	 * 2 presenter are started : RootPresenter and PageLoginPresenter(first view to display)
-	 */
-	/*@Event( handlers = {RootPresenter.class, PageLoginPresenter.class}, historyConverter = WizardHistoryConverter.class)
-	public void login();*/
-	
+		
 }

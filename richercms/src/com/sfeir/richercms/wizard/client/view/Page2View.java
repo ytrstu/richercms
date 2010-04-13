@@ -31,6 +31,7 @@ public class Page2View extends ResizeComposite implements IdisplayPage2 {
 	
 	//widget de la fenetre
 	private Button btnNext = new Button(constants.buttonNext());
+	private Button btnPrevious = new Button(constants.buttonPrevious());
 	private Button btnAddLanguage = new Button(constants.buttonAddLanguage());
 	private FlexTable LanguageTable;
 	private ScrollPanel ScrollLanguageTable = new ScrollPanel();
@@ -51,6 +52,10 @@ public class Page2View extends ResizeComposite implements IdisplayPage2 {
 
 	public HasClickHandlers getNextButton() {	
 		return this.btnNext;
+	}
+	
+	public HasClickHandlers getPreviousButton() {
+		return this.btnPrevious;
 	}
 	
 	public HasClickHandlers getAddButton() {	
@@ -179,6 +184,8 @@ public class Page2View extends ResizeComposite implements IdisplayPage2 {
 		
 		// Next button
 		FlowPanel buttonPanel = new FlowPanel();
+		buttonPanel.addStyleName("buttonPanel");
+		buttonPanel.add(btnPrevious);
 		buttonPanel.addStyleName("buttonPanel");
 		buttonPanel.add(btnNext);
 		mainContent.add(buttonPanel);

@@ -59,6 +59,9 @@ public class CenterLayoutPanel extends ResizeComposite {
 		super.onResize();
 	}
 
+	/**
+	 * called in the onResize event
+	 */
 	public void changeSize() {
 		int parentHeight = getParent().getOffsetHeight();
 		int parentWidth = getParent().getOffsetWidth();

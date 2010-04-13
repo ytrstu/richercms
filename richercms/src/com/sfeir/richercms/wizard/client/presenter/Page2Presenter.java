@@ -42,6 +42,13 @@ public class Page2Presenter extends LazyPresenter<IdisplayPage2, WizardConfigEve
 	        }
 	      });
 		
+		// Sauvegarde des langue choisi + changement de view (page2 -> Page1)
+		view.getPreviousButton().addClickHandler(new ClickHandler() {   
+	        public void onClick(ClickEvent event) {
+	        	eventBus.startWizard();
+	        }
+	      });
+		
 		// lancement de la popUp d'ajout d'une langue
 	    view.getAddButton().addClickHandler(new ClickHandler() {   
 	        public void onClick(ClickEvent event) {
@@ -66,7 +73,9 @@ public class Page2Presenter extends LazyPresenter<IdisplayPage2, WizardConfigEve
 	      });
 	}
 	  
-
+	/**
+	 * fired when the next button is clicked
+	 */
 	public void onGoToSecondPage() {
 		
 		eventBus.changeBody(view.asWidget());

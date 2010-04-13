@@ -19,7 +19,11 @@ import com.sfeir.richercms.wizard.client.event.WizardModule;
 
 
 
-
+/**
+ * The main Event bus
+ * @author homberg.g
+ *
+ */
 @Events(startView = RootView.class, debug = true)
 @ChildModules( 
 		{@ChildModule( moduleClass = WizardModule.class, async = true, autoDisplay = false),
@@ -33,14 +37,25 @@ public interface RootEventBus extends EventBusWithLookup {
 	@Event( handlers = RootPresenter.class )
 	public void changeBody( Widget widget );
 	
+	/**
+	 * Start the wizard module and forward this event
+	 */
 	@Event(modulesToLoad = WizardModule.class, handlers = RootPresenter.class)
 	public void startWizard();
 	
+	/**
+	 * Start the main module and forward this event
+	 */
 	@Event( modulesToLoad = MainModule.class )
 	public void startMain();
 	
+	/**
+	 * Event send by the wizard module when the configuration is finished
+	 */
 	@Event( handlers = RootPresenter.class )
 	public void wizardFinished();
+	
+	
 	/**
 	 * Start the rootLayout and display the first page.
 	 * 2 presenter are started : RootPresenter and PageLoginPresenter(first view to display)

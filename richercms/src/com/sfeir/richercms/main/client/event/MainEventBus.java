@@ -8,7 +8,11 @@ import com.sfeir.richercms.main.client.presenter.MainPagePresenter;
 import com.sfeir.richercms.main.client.view.MainPageView;
 
 
-
+/**
+ * Event bus for the main module
+ * @author homberg.g
+ *
+ */
 @Events(startView = MainPageView.class, module = MainModule.class)
 public interface MainEventBus extends EventBus {
 

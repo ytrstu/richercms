@@ -23,6 +23,9 @@ import com.sfeir.richercms.wizard.client.view.Page1View;
 public class Page1Presenter extends LazyPresenter<IdisplayPage1, WizardConfigEventBus> {
 	
 
+	/**
+	 * when the wizard start, the language is tested and the view was displaying
+	 */
 	public void onStartWizard() {
 		
 		String test = this.myLocale();
@@ -35,9 +38,7 @@ public class Page1Presenter extends LazyPresenter<IdisplayPage1, WizardConfigEve
 			this.view.setSelectedLanguage(0);
 		}
 		
-		eventBus.changeBody(view.asWidget());
-		
-		
+		eventBus.changeBody(view.asWidget());	
 	  }
 	  
 	/**

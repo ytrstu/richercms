@@ -5,6 +5,11 @@ import com.google.gwt.user.client.ui.ResizeComposite;
 import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
 
+/**
+ * Panel containing the tree who represent the architectural view of the site.
+ * @author homberg.g
+ *
+ */
 public class NavigationPanel extends ResizeComposite{
 
 	private Tree navigationTree = new Tree();
@@ -15,6 +20,9 @@ public class NavigationPanel extends ResizeComposite{
 		createView();
 	}
 
+	/**
+	 * Create the widget and attached all component
+	 */
 	private void createView() {
 		this.navigationTree.setAnimationEnabled(true);
 		LayoutPanel main = new LayoutPanel();

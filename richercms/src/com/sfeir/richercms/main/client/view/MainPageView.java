@@ -11,7 +11,12 @@ import com.google.gwt.user.client.ui.Widget;
 import com.sfeir.richercms.main.client.interfaces.IdisplayMainPage;
 import com.sfeir.richercms.main.client.tinyMCE.TinyMCE;
 
-
+/**
+ * Main panel, containing the others (navigation, information and editor)
+ * this panel offer 2 side : the first and th administration side.
+ * @author homberg.g
+ *
+ */
 public class MainPageView extends TabLayoutPanel implements IdisplayMainPage {
 
 	private NavigationPanel navPanel = new NavigationPanel();
@@ -24,6 +29,9 @@ public class MainPageView extends TabLayoutPanel implements IdisplayMainPage {
 		return this;
 	}
 	
+	/**
+	 * Create the widget and attached all component
+	 */
 	public void createView() {
 		
 	    LayoutPanel layoutPanel1 = new LayoutPanel();
@@ -39,7 +47,11 @@ public class MainPageView extends TabLayoutPanel implements IdisplayMainPage {
 	    this.selectTab(0);
 		
 	}
-
+	
+	/**
+	 * Build the split panel containing 3 part (navigation, information and editor)
+	 * @return
+	 */
 	private SplitLayoutPanel createMainInterface() {
 		SplitLayoutPanel p = new SplitLayoutPanel();
 		

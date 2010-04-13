@@ -22,6 +22,13 @@ public interface LanguageService extends RemoteService
 	public List<BeanLanguageDetails> getLangues();
 	
 	/**
+	 * 
+	 * @param id : the position in the DisplayTable of a specific language
+	 * @return detail of this language
+	 */
+	public BeanLanguageDetails getLangue(int id);
+	
+	/**
 	 * Add Bases Languages in the datastore
 	 */
 	public void addBasesLanguage();
@@ -51,6 +58,10 @@ public interface LanguageService extends RemoteService
 	 */
 	public void deleteLanguages(List<Integer> lstID);
 	
+	/**
+	 * Delete all Languages
+	 */
+	public void deleteAllLanguages();
 
 	/**
 	 * Delete a language

@@ -123,7 +123,9 @@ public class Page1Presenter extends LazyPresenter<IdisplayPage1, WizardConfigEve
 			buf.append("?locale=");
 			buf.append(countryCode);
 			buf.append("#");
-			buf.append(splitted[1]);
+			if(splitted.length > 2)
+				buf.append(splitted[1]);
+			
 			System.out.println("Sans locale : "+buf);
 		}
 	

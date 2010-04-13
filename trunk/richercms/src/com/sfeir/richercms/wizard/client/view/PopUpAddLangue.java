@@ -28,6 +28,9 @@ public class PopUpAddLangue extends DialogBox {
 	private FlexTable mainPanel = new FlexTable();
 	
 	
+	/**
+	 * initialize all widget on the PopUp
+	 */
     public PopUpAddLangue() {
     	
     	this.mainPanel.setWidget(0, 0, this.labelLanguage);
@@ -66,6 +69,9 @@ public class PopUpAddLangue extends DialogBox {
     	this.textboxTag.setText("");
     }
     
+    /**
+     * show the PopUp
+     */
     public void show()
     {
     	super.show();

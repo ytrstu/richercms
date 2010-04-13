@@ -4,6 +4,12 @@ import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.view.LazyView;
 
+/**
+ * Allows the presenter to communicate with the view
+ * PageLogin <=> PageLoginPresenter
+ * @author homberg.g
+ *
+ */
 public interface IdisplayPageLogin extends LazyView {
 
 	Widget asWidget();
@@ -15,7 +21,13 @@ public interface IdisplayPageLogin extends LazyView {
 	 */
 	Anchor getSignInLink();
 	
+	/**
+	 * Show a little popUp during loading
+	 */
 	public void showPopUpWait();
 	
+	/**
+	 * Hide the popUp use during loading
+	 */
 	public void hidePopUpWait();
 }

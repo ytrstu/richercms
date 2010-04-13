@@ -7,7 +7,11 @@ import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.datepicker.client.DateBox;
 
-
+/**
+ * Information panel in the manView, use to create a new page
+ * @author homberg.g
+ *
+ */
 public class InformationPanel extends ResizeComposite {
 	
 	private Label lBrowserTitle = new Label("Browser Title");
@@ -31,6 +35,9 @@ public class InformationPanel extends ResizeComposite {
 		createView();
 	}
 	
+	/**
+	 * Create the widget and attached all component
+	 */
 	public void createView() {
 		
 		ScrollPanel root = new ScrollPanel();

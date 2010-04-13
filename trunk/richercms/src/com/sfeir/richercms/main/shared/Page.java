@@ -9,6 +9,10 @@ import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
 
+/**
+ * Contain the displayable elements of a page.
+ * @author homberg.g
+ */
 @SuppressWarnings("serial")
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class Page implements Serializable{

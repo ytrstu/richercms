@@ -18,6 +18,7 @@ import com.sfeir.richercms.main.shared.Page;
 public class MainPagePresenter extends LazyPresenter<IdisplayMainPage, MainEventBus> {
 	
 	private PageServiceAsync rpcPage = null;
+	
 	/**
 	 * Bind the various evt
 	 * It's Mvp4g framework who call this function
@@ -26,11 +27,17 @@ public class MainPagePresenter extends LazyPresenter<IdisplayMainPage, MainEvent
 		
 	}
 
+	/**
+	 * Fired when the main do start
+	 */
 	public void onStartMain() {
 		eventBus.changeBody(view.asWidget());
 		this.buildTree();
 	}
 	
+	/**
+	 * build the webPage tree with information in the datastore
+	 */
 	private void buildTree()
 	{
 		this.rpcPage.getPages(new AsyncCallback<List<Page>>() {

@@ -18,6 +18,12 @@ public interface IdisplayPage2 extends LazyView {
 	HasClickHandlers getNextButton();
 	
 	/**
+	 * get the handler of the button Previous
+	 * @return The handler of the button Previous
+	 */
+	HasClickHandlers getPreviousButton();
+	
+	/**
 	 * get the handler of the button Add
 	 * @return The handler of the button Add
 	 */

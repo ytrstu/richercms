@@ -16,14 +16,14 @@ public interface wizardConfigConstants extends Constants {
 	  @DefaultStringValue("Next")
 	  String buttonNext();
 	  
+	  @DefaultStringValue("Previous")
+	  String buttonPrevious();
+	  
 	  @DefaultStringValue("Language : ")
 	  String LabelLangue();
 	  
-	  @DefaultStringValue(" + ")
+	  @DefaultStringValue(" add Language ")
 	  String buttonAddLanguage();
-	  
-	  @DefaultStringValue(" - ")
-	  String buttonDelLanguage();
 	  
 	  @DefaultStringValue(" Add Language ")
 	  String TextPopUp();

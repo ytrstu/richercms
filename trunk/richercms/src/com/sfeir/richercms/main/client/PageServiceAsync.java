@@ -3,8 +3,7 @@ package com.sfeir.richercms.main.client;
 import java.util.List;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.sfeir.richercms.main.shared.Page;
-
+import com.sfeir.richercms.main.shared.BeanPage;
 
 /**
  * WebPage Services
@@ -13,9 +12,9 @@ import com.sfeir.richercms.main.shared.Page;
  */
 public interface PageServiceAsync {
 
-	public void getPages(AsyncCallback<List<Page>> callback);
-	public void getPage(int id, AsyncCallback<Page> callback);
-	public void addPage(Page newPage, AsyncCallback<Void> callback);
-	public void updatePage(Page p, AsyncCallback<Void> callback);
+	public void getPages(AsyncCallback<List<BeanPage>> callback);
+	public void getPage(int id, AsyncCallback<BeanPage> callback);
+	public void addPage(BeanPage newPage, AsyncCallback<Void> callback);
+	public void updatePage(BeanPage p, AsyncCallback<Void> callback);
 	public void deletePage(int id, AsyncCallback<Void> callback);
 }

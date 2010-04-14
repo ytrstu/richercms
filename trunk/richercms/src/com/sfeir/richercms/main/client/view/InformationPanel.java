@@ -6,13 +6,14 @@ import com.google.gwt.user.client.ui.ResizeComposite;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.datepicker.client.DateBox;
+import com.sfeir.richercms.main.client.interfaces.IInformationPanel;
 
 /**
  * Information panel in the manView, use to create a new page
  * @author homberg.g
  *
  */
-public class InformationPanel extends ResizeComposite {
+public class InformationPanel extends ResizeComposite implements IInformationPanel {
 	
 	private Label lBrowserTitle = new Label("Browser Title");
 	private Label lPageTitle = new Label("Page title");

@@ -3,12 +3,12 @@ package com.sfeir.richercms.wizard.server;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.jdo.JDOHelper;
 import javax.jdo.PersistenceManager;
 import javax.jdo.PersistenceManagerFactory;
 import javax.jdo.Query;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+import com.sfeir.richercms.server.PMF;
 import com.sfeir.richercms.wizard.client.LanguageService;
 import com.sfeir.richercms.wizard.server.business.Language;
 import com.sfeir.richercms.wizard.shared.BeanLanguageDetails;
@@ -20,10 +20,13 @@ import com.sfeir.richercms.wizard.shared.BeanLanguageDetails;
 @SuppressWarnings("serial")
 public class ServiceLangueImpl extends RemoteServiceServlet implements LanguageService{
 
-	private static final PersistenceManagerFactory PMF =
-	      JDOHelper.getPersistenceManagerFactory("transactions-optional");
+	private static final PersistenceManagerFactory Pmf = PMF.get();
 	private List<Language> languages = null;
 
+	private PersistenceManager getPersistenceManager() {
+		return Pmf.getPersistenceManager();
+	}
+	
 	/**
 	 * Renvoi les langues disponibles
 	 */
@@ -192,9 +195,5 @@ public class ServiceLangueImpl extends RemoteServiceServlet implements LanguageS
 		 }
 		 return false;
 	}
-	
-	private PersistenceManager getPersistenceManager() {
-		return PMF.getPersistenceManager();
-	}
-	
+		
 }

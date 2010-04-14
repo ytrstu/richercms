@@ -75,7 +75,7 @@
 	
 	 	<servlet-mapping>
   		<servlet-name>pageServiceServlet</servlet-name>
-  		<url-pattern>/main/pageService</url-pattern>
+  		<url-pattern>/RicherCMS/pageService</url-pattern>
 	</servlet-mapping>
   
   

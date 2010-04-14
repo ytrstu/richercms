@@ -8,6 +8,8 @@ import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.SplitLayoutPanel;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.sfeir.richercms.main.client.interfaces.IInformationPanel;
+import com.sfeir.richercms.main.client.interfaces.INavigationPanel;
 import com.sfeir.richercms.main.client.interfaces.IdisplayMainPage;
 import com.sfeir.richercms.main.client.tinyMCE.TinyMCE;
 
@@ -20,6 +22,7 @@ import com.sfeir.richercms.main.client.tinyMCE.TinyMCE;
 public class MainPageView extends TabLayoutPanel implements IdisplayMainPage {
 
 	private NavigationPanel navPanel = new NavigationPanel();
+	private InformationPanel listPanel = new InformationPanel();
 
 	public MainPageView() {
 		super(25, Unit.PX);
@@ -45,7 +48,6 @@ public class MainPageView extends TabLayoutPanel implements IdisplayMainPage {
 	    this.add(layoutPanel2, "Administration");
 
 	    this.selectTab(0);
-		
 	}
 	
 	/**
@@ -56,12 +58,12 @@ public class MainPageView extends TabLayoutPanel implements IdisplayMainPage {
 		SplitLayoutPanel p = new SplitLayoutPanel();
 		
 		this.navPanel.setStyleName("tab-content");
+		this.listPanel.setStyleName("tab-content");
+		
 		p.addWest(this.navPanel, 168);
 		
 		final int height = Window.getClientHeight()-30;
-		
-		InformationPanel listPanel = new InformationPanel();
-		listPanel.setStyleName("tab-content");
+
 
 		p.addNorth(listPanel, height/2);
 		
@@ -74,13 +76,14 @@ public class MainPageView extends TabLayoutPanel implements IdisplayMainPage {
 		
 		return p;
 	}
-
-
-	public void addPageInTree(String name) {
-		this.navPanel.addPageInTree(name);
+	
+	public INavigationPanel getNavigationPanel()
+	{
+		return this.navPanel;
 	}
-
-	public void clearTree() {
-		this.navPanel.clearTree();
+	
+	public IInformationPanel getInformationPanel()
+	{
+		return this.listPanel;
 	}
 }

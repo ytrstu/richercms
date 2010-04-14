@@ -1,15 +1,17 @@
 package com.sfeir.richercms.main.server;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import javax.jdo.JDOHelper;
 import javax.jdo.PersistenceManager;
 import javax.jdo.PersistenceManagerFactory;
 import javax.jdo.Query;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.sfeir.richercms.main.client.PageService;
-import com.sfeir.richercms.main.shared.Page;
+import com.sfeir.richercms.main.server.business.Page;
+import com.sfeir.richercms.main.shared.BeanPage;
+import com.sfeir.richercms.server.PMF;
 
 
 /**
@@ -19,41 +21,44 @@ import com.sfeir.richercms.main.shared.Page;
 @SuppressWarnings("serial")
 public class ServicePageImpl extends RemoteServiceServlet implements PageService {
 	
-	private static final PersistenceManagerFactory PMF =
-	      JDOHelper.getPersistenceManagerFactory("transactions-optional");
-	
+	private static final PersistenceManagerFactory Pmf = PMF.get();
 	private List<Page> pages = null;
 	
 	private PersistenceManager getPersistenceManager() {
-		return PMF.getPersistenceManager();
+		return Pmf.getPersistenceManager();
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Page>  getPages() {
-		//addBasesPage();
+	public List<BeanPage>  getPages() {
 		PersistenceManager pm = getPersistenceManager();
+        ArrayList<BeanPage> lst = new ArrayList<BeanPage>();
 
 	    try {
 	        Query q = pm.newQuery(Page.class);
 	        this.pages = (List<Page>) q.execute();
 	        
+	        for (Page page : this.pages)
+	        	lst.add(this.pageToBean(page));
+	        
         } finally {
         	pm.close();
         }
-        return this.pages;
+        
+        return lst;
 	}
 	
-	public void addPage(Page newPage)
+	public void addPage(BeanPage newPage)
 	{
 		PersistenceManager pm = getPersistenceManager();
 	    try {
-	    		pm.makePersistent(newPage);
+		    	Page p = this.BeanToPage(newPage);
+	    		pm.makePersistent(p);
 		    } finally {
 		      pm.close();
 		    }
 	}
 	
-	public void updatePage(Page p)
+	public void updatePage(BeanPage p)
 	{
 		PersistenceManager pm = getPersistenceManager();
 		 try {
@@ -81,7 +86,7 @@ public class ServicePageImpl extends RemoteServiceServlet implements PageService
 		 }
 	}
 	
-	public Page getPage(int id)
+	public BeanPage getPage(int id)
 	{
 		Page page = null;
 		PersistenceManager pm = getPersistenceManager();
@@ -91,9 +96,9 @@ public class ServicePageImpl extends RemoteServiceServlet implements PageService
 			 }finally{
 				 pm.close();
 			 }
-		 return page;
+		 return this.pageToBean(page);
 	}
-/*	
+	
 	private void addBasesPage() {
 		
 	    PersistenceManager pm = getPersistenceManager();
@@ -105,5 +110,23 @@ public class ServicePageImpl extends RemoteServiceServlet implements PageService
 	    } finally {
 	      pm.close();
 	    }
-	}*/
+	}
+	
+	
+	/**
+	 * make a Bean Page with all information necessary to display correctly a Page
+	 * @return the corresponding BeanPage
+	 */
+	public BeanPage pageToBean(Page p) {
+		 return new BeanPage(p.getBrowserTitle(),p.getPageTitle(), p.getUrlName(),
+				 p.getDescription(), p.getKeyWord(), p.getPublicationStart(),
+				 p.getPublicationFinish(), p.getContent());
+	}
+	
+	public Page BeanToPage(BeanPage bean) {
+		return new Page(bean.getBrowserTitle(),bean.getPageTitle(), bean.getUrlName(),
+				bean.getDescription(), bean.getKeyWord(), bean.getPublicationStart(),
+				bean.getPublicationFinish(), bean.getContent());
+
+	}
 }

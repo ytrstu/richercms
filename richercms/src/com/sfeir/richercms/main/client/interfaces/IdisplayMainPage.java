@@ -15,13 +15,14 @@ public interface IdisplayMainPage extends LazyView {
 	Widget asWidget();
 	
 	/**
-	 * Modify the view and add a new node in the tree
-	 * @param name name of the node
+	 * Allows the presenter to communicate with the NavigationPanel
+	 * @return NavigationPanel
 	 */
-	void addPageInTree(String name);
+	INavigationPanel getNavigationPanel();
 	
 	/**
-	 * clear the webPage tree
+	 * Allows the presenter to communicate with the InformationPanel
+	 * @return InformationPanel
 	 */
-	void clearTree();
+	IInformationPanel getInformationPanel();
 }

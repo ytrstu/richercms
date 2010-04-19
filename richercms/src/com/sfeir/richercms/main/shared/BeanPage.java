@@ -1,6 +1,8 @@
 package com.sfeir.richercms.main.shared;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @SuppressWarnings("serial")
@@ -14,14 +16,24 @@ public class BeanPage implements Serializable {
 	private String publicationStart;
 	private String publicationFinish;
 	private String content;
+	private List<BeanPage> subPages;
 	
 	public BeanPage() {
 		super();
+		this.browserTitle = "";
+		this.pageTitle = "";
+		this.urlName = "";
+		this.description = "";
+		this.keyWord = "";
+		this.publicationStart = "";
+		this.publicationFinish = "";
+		this.content = "";
+		this.subPages = new ArrayList<BeanPage>();
 	}
 
 	public BeanPage(String browserTitle, String pageTitle, String urlName,
 			String description, String keyWord, String publicationStart,
-			String publicationFinish, String content) {
+			String publicationFinish, String content, List<BeanPage> subPages) {
 		super();
 		this.browserTitle = browserTitle;
 		this.pageTitle = pageTitle;
@@ -31,6 +43,7 @@ public class BeanPage implements Serializable {
 		this.publicationStart = publicationStart;
 		this.publicationFinish = publicationFinish;
 		this.content = content;
+		this.subPages = subPages;
 	}
 
 	public String getBrowserTitle() {
@@ -97,4 +110,11 @@ public class BeanPage implements Serializable {
 		this.content = content;
 	}
 
+	public List<BeanPage> getSubPages() {
+		return subPages;
+	}
+
+	public void setSubPages(List<BeanPage> subPages) {
+		this.subPages = subPages;
+	}
 }

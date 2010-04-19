@@ -1,15 +1,19 @@
 package com.sfeir.richercms.main.client.view;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.PopupPanel;
+import com.sfeir.richercms.main.client.MainConstants;
 import com.sfeir.richercms.main.client.interfaces.IPopUpTree;
 
 public class PopUpTree extends PopupPanel implements IPopUpTree{
 	
-	private Button btnAddPage = new Button("Ajouter une page");
-	private Button btnDelPage = new Button("supprimer la page");
+	//gestion des langues
+	private MainConstants constants = GWT.create(MainConstants.class);
+	private Button btnAddPage = new Button(constants.PopUpAddPage());
+	private Button btnDelPage = new Button(constants.PopUpDelPage());
 	
 	public PopUpTree() {
 		super();
@@ -29,7 +33,7 @@ public class PopUpTree extends PopupPanel implements IPopUpTree{
 	
 	private void addPage() {
 		this.clear();
-		this.setTitle("Action :");
+		this.setTitle(constants.PopUpAddDelPageTitle());
 		HorizontalPanel hPanel = new HorizontalPanel();
 		hPanel.add(this.btnAddPage);
 		hPanel.add(this.btnDelPage);

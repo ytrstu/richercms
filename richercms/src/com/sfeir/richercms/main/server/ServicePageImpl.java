@@ -6,10 +6,12 @@ import java.util.List;
 import javax.jdo.PersistenceManager;
 import javax.jdo.PersistenceManagerFactory;
 import javax.jdo.Query;
+import javax.jdo.Transaction;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.sfeir.richercms.main.client.PageService;
 import com.sfeir.richercms.main.server.business.Page;
+import com.sfeir.richercms.main.server.business.Root;
 import com.sfeir.richercms.main.shared.BeanPage;
 import com.sfeir.richercms.server.PMF;
 
@@ -22,7 +24,7 @@ import com.sfeir.richercms.server.PMF;
 public class ServicePageImpl extends RemoteServiceServlet implements PageService {
 	
 	private static final PersistenceManagerFactory Pmf = PMF.get();
-	private List<Page> pages = null;
+	private Root root = null;
 	
 	private PersistenceManager getPersistenceManager() {
 		return Pmf.getPersistenceManager();
@@ -30,16 +32,22 @@ public class ServicePageImpl extends RemoteServiceServlet implements PageService
 
 	@SuppressWarnings("unchecked")
 	public List<BeanPage>  getPages() {
+		
+		//this.addBasesPage();
+		
 		PersistenceManager pm = getPersistenceManager();
         ArrayList<BeanPage> lst = new ArrayList<BeanPage>();
-
 	    try {
-	        Query q = pm.newQuery(Page.class);
-	        this.pages = (List<Page>) q.execute();
-	        
-	        for (Page page : this.pages)
+	    	Transaction tx = pm.currentTransaction();
+	    	tx.begin();
+	        Query q = pm.newQuery(Root.class);
+
+	        List<Root> roots = (List<Root>) q.execute();
+	        this.root = roots.get(0);
+	        for (Page page : this.root.getPages())
 	        	lst.add(this.pageToBean(page));
-	        
+	        tx.commit();
+
         } finally {
         	pm.close();
         }
@@ -52,7 +60,11 @@ public class ServicePageImpl extends RemoteServiceServlet implements PageService
 		PersistenceManager pm = getPersistenceManager();
 	    try {
 		    	Page p = this.BeanToPage(newPage);
-	    		pm.makePersistent(p);
+		    	Transaction tx = pm.currentTransaction();
+		    	tx.begin();
+		    		Root r = pm.getObjectById(Root.class, this.root.getEncodedKey());
+		    		r.getPages().add(p);
+		    	tx.commit();
 		    } finally {
 		      pm.close();
 		    }
@@ -62,10 +74,7 @@ public class ServicePageImpl extends RemoteServiceServlet implements PageService
 	{
 		PersistenceManager pm = getPersistenceManager();
 		 try {
-			 {
-				 //Page page = pm.getObjectById(Page.class, p.getId());
-				 //pm.deletePersistent(page);
-			 }
+			 	Root r = pm.getObjectById(Root.class, this.root.getEncodedKey()); 	
 
 		 }finally{
 			 pm.close();
@@ -76,12 +85,13 @@ public class ServicePageImpl extends RemoteServiceServlet implements PageService
 		
 		PersistenceManager pm = getPersistenceManager();
 		 try {
-			 {
-				 Page page = pm.getObjectById(Page.class, this.pages.get(id).getId());
-				 pm.deletePersistent(page);
+		    	Transaction tx = pm.currentTransaction();
+		    	tx.begin();
+					Page page = pm.getObjectById(Page.class, this.root.getPages().get(id).getEncodedKey());
+					pm.deletePersistent(page);
+				tx.commit();
 			 }
-
-		 }finally{
+		 finally{
 			 pm.close();
 		 }
 	}
@@ -91,7 +101,7 @@ public class ServicePageImpl extends RemoteServiceServlet implements PageService
 		Page page = null;
 		PersistenceManager pm = getPersistenceManager();
 		 try {
-			 	page = pm.getObjectById(Page.class, this.pages.get(id).getId());
+			 	//page = pm.getObjectById(Page.class, this.pages.get(id).getId());
 
 			 }finally{
 				 pm.close();
@@ -99,17 +109,62 @@ public class ServicePageImpl extends RemoteServiceServlet implements PageService
 		 return this.pageToBean(page);
 	}
 	
+	
 	private void addBasesPage() {
 		
 	    PersistenceManager pm = getPersistenceManager();
-	    try {
-	      pm.makePersistent(new Page("Page 1","Page 1","1","1","1","1","1","1"));
-	      pm.makePersistent(new Page("Page 2","Page 2","2","2","2","2","2","2"));
-	      pm.makePersistent(new Page("Page 3","Page 3","3","3","3","3","3","3"));
-	      pm.makePersistent(new Page("Page 4","Page 4","4","4","4","4","4","4"));
-	    } finally {
-	      pm.close();
-	    }
+
+    	//p.setSubPages(lst);
+    	
+	   /* try {*/
+	    	
+	    	//pm.makePersistentAll(lst);
+	    	
+	    	Transaction tx = pm.currentTransaction();
+	    	try {
+		        tx.begin();
+		        
+			    	List<Page> lst = new ArrayList<Page>();
+			    	
+			    	List<Page> lst1 = new ArrayList<Page>();
+			    	lst1.add(new Page("Page 1.1","Page 1.1","1.1","1.1","1.1","1.1","1.1","1.1"));
+			    	lst1.add(new Page("Page 1.2","Page 1.2","1.2","1.2","1.2","1.2","1.2","1.2"));
+			    	lst1.add(new Page("Page 1.3","Page 1.3","1.3","1.3","1.3","1.3","1.3","1.3"));
+	
+			    	Page sp1 = new Page("Page 1","Page 1","1","1","1","1","1","1",lst1);
+			    	lst.add(sp1);
+			    	
+			    	List<Page> lst3 = new ArrayList<Page>();
+			    	lst3.add(new Page("Page 3.1","Page 3.1","3.1","3.1","3.1","3.1","3.1","3.1"));
+			    	lst3.add(new Page("Page 3.2","Page 3.2","3.2","3.2","3.2","3.2","3.2","3.2"));
+			    	lst3.add(new Page("Page 3.3","Page 3.3","3.3","3.3","3.3","3.3","3.3","3.3"));
+			    	lst3.add(new Page("Page 3.4","Page 3.4","3.4","3.4","3.4","3.4","3.4","3.4"));
+			    	
+			    	lst.add(new Page("Page 2","Page 2","2","2","2","2","2","2"));
+			    	
+			    	Page sp3 = new Page("Page 3","Page 3","3","3","3","3","3","3",lst3);
+			    	lst.add(sp3);
+			    	
+			    	lst.add(new Page("Page 4","Page 4","4","4","4","4","4","4"));
+			    	
+			    	Root mp = new Root();
+			    	mp.setPages(lst);
+		    		pm.makePersistent(mp);
+	            tx.commit();
+	    	} finally {
+	            if (tx.isActive()) {
+	                tx.rollback();
+	            }
+	    	}
+
+		    /*pm.makePersistent(new SubPage("Page 1","Page 1","1","1","1","1","1","1",lst1));
+		    pm.makePersistent(new SubPage("Page 2","Page 2","2","2","2","2","2","2"));
+		    pm.makePersistent(new SubPage("Page 3","Page 3","3","3","3","3","3","3",lst3));
+		    pm.makePersistent(new SubPage("Page 4","Page 4","4","4","4","4","4","4"));*/
+	   /* } finally {
+	    		pm.close();
+	    }*/
+	    
 	}
 	
 	
@@ -120,7 +175,7 @@ public class ServicePageImpl extends RemoteServiceServlet implements PageService
 	public BeanPage pageToBean(Page p) {
 		 return new BeanPage(p.getBrowserTitle(),p.getPageTitle(), p.getUrlName(),
 				 p.getDescription(), p.getKeyWord(), p.getPublicationStart(),
-				 p.getPublicationFinish(), p.getContent());
+				 p.getPublicationFinish(), p.getContent(),null);
 	}
 	
 	public Page BeanToPage(BeanPage bean) {

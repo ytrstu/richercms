@@ -1,23 +1,27 @@
 package com.sfeir.richercms.main.server.business;
 
+import java.util.ArrayList;
+import java.util.List;
 
+
+import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.IdGeneratorStrategy;
-import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
-
 /**
- * Contain the displayable elements of a page.
+ * Contain a page.
  * @author homberg.g
  */
-@PersistenceCapable(identityType = IdentityType.APPLICATION)
+
+@PersistenceCapable
 public class Page{
 
-	@PrimaryKey
-	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-	private Long id;
+    @PrimaryKey
+    @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
+    @Extension(vendorName="datanucleus", key="gae.encoded-pk", value="true")
+    private String encodedKey;
 	@Persistent
 	private String browserTitle;
 	@Persistent
@@ -34,6 +38,8 @@ public class Page{
 	private String publicationFinish;
 	@Persistent
 	private String content;
+	@Persistent
+	private List<Page> subPages;
 
 	
 	public Page()
@@ -46,8 +52,9 @@ public class Page{
 		this.browserTitle = new String("");
 		this.browserTitle = new String("");
 		this.content = new String("");
+		this.subPages = new ArrayList<Page>();
 	}
-
+	
 	public Page(String browserTitle, String pageTitle, String urlName,
 			String description, String keyWord, String publicationStart,
 			String publicationFinish, String content) {
@@ -59,14 +66,21 @@ public class Page{
 		this.publicationStart = publicationStart;
 		this.publicationFinish = publicationFinish;
 		this.content = content;
+		this.subPages = new ArrayList<Page>();
 	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
+	
+	public Page(String browserTitle, String pageTitle, String urlName,
+			String description, String keyWord, String publicationStart,
+			String publicationFinish, String content, List<Page> subPages) {
+		this.browserTitle = browserTitle;
+		this.pageTitle = pageTitle;
+		this.urlName = urlName;
+		this.description = description;
+		this.keyWord = keyWord;
+		this.publicationStart = publicationStart;
+		this.publicationFinish = publicationFinish;
+		this.content = content;
+		this.subPages = subPages;
 	}
 
 	public String getBrowserTitle() {
@@ -132,4 +146,22 @@ public class Page{
 	public void setContent(String content) {
 		this.content = content;
 	}
+
+	public List<Page> getSubPages() {
+		return subPages;
+	}
+
+	public void setSubPages(List<Page> subPages) {
+		this.subPages = subPages;
+	}
+
+	public String getEncodedKey() {
+		return encodedKey;
+	}
+
+	public void setEncodedKey(String encodedKey) {
+		this.encodedKey = encodedKey;
+	}
+
+	
 }

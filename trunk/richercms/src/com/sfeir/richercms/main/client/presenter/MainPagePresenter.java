@@ -36,6 +36,7 @@ public class MainPagePresenter extends LazyPresenter<IdisplayMainPage, MainEvent
 				public void onSelection(SelectionEvent<TreeItem> event) {
 					selectedItem = event.getSelectedItem();
 					popUpAction(); // all action on the popUp
+					view.getInformationPanel().deasabledWidgets();
 				}
 		});
 		
@@ -46,6 +47,12 @@ public class MainPagePresenter extends LazyPresenter<IdisplayMainPage, MainEvent
 				}
 		});
 		
+		view.getNavigationPanel().getPopUpTree().getClickBtnAddPage()
+		.addClickHandler(new ClickHandler(){
+			public void onClick(ClickEvent event) {
+				view.getInformationPanel().enabledWidgets();
+			}
+	});
 	}
 	
 	/**
@@ -59,8 +66,8 @@ public class MainPagePresenter extends LazyPresenter<IdisplayMainPage, MainEvent
 	/**
 	 * build the webPage tree with information in the datastore
 	 */
-	private void buildTree()
-	{
+	private void buildTree() {
+		
 		this.rpcPage.getPages(new AsyncCallback<List<BeanPage>>() {
 	    	public void onSuccess(List<BeanPage> result) {
 	    		view.getNavigationPanel().clearTree();	    		
@@ -71,27 +78,29 @@ public class MainPagePresenter extends LazyPresenter<IdisplayMainPage, MainEvent
 			});
 	}
 	
-	private void popUpAction()
-	{
+	private void popUpAction() {
+		
 		// place the popUp at the right position
 		view.getNavigationPanel().getPopUpTree().setPopupPosition(this.selectedItem.getAbsoluteLeft(),
 													this.selectedItem.getAbsoluteTop());
 		view.getNavigationPanel().getPopUpTree().show(1);
+		
+		
 	}
-	
-	private void popUpDeletePage()
-	{
-		selectedItem.remove();
+
+	private void popUpDeletePage() {	
 		
 		view.getNavigationPanel().getPopUpTree().hide();
 		//this.rpcPage
-		TreeItem parent = selectedItem.getParentItem();
-		/*
+		final TreeItem parent = selectedItem.getParentItem();
+		
 		this.rpcPage.deletePage(parent.getChildIndex(selectedItem), new AsyncCallback<Void>() {
-			public void onSuccess(Void result){}
+			public void onSuccess(Void result) {
+				buildTree(); //reload the new tree
+			}
 			public void onFailure(Throwable caught) {
 				Window.alert("Error : DeletePage");}
-		});*/
+		});
 		
 		selectedItem = null;
 	}

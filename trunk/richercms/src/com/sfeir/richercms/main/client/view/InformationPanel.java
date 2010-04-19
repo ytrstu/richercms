@@ -1,11 +1,13 @@
 package com.sfeir.richercms.main.client.view;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ResizeComposite;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.datepicker.client.DateBox;
+import com.sfeir.richercms.main.client.MainConstants;
 import com.sfeir.richercms.main.client.interfaces.IInformationPanel;
 
 /**
@@ -15,13 +17,16 @@ import com.sfeir.richercms.main.client.interfaces.IInformationPanel;
  */
 public class InformationPanel extends ResizeComposite implements IInformationPanel {
 	
-	private Label lBrowserTitle = new Label("Browser Title");
-	private Label lPageTitle = new Label("Page title");
-	private Label lUrlName = new Label("Url name");
-	private Label lDescription = new Label("Desciption");
-	private Label lKeyWord = new Label("Keyword");
-	private Label lPublicationStart = new Label("Start date of publication");
-	private Label lPublicationFinish = new Label("End date of publication");
+	//gestion des langues
+	private MainConstants constants = GWT.create(MainConstants.class);
+	
+	private Label lBrowserTitle = new Label(constants.BrowserTitle());
+	private Label lPageTitle = new Label(constants.PageTitle());
+	private Label lUrlName = new Label(constants.UrlName());
+	private Label lDescription = new Label(constants.Description());
+	private Label lKeyWord = new Label(constants.KeyWord());
+	private Label lPublicationStart = new Label(constants.PublicationStart());
+	private Label lPublicationFinish = new Label(constants.PublicationFinish());
 	
 	private TextBox tBrowserTitle = new TextBox();
 	private TextBox tPageTitle = new TextBox();
@@ -39,7 +44,7 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 	/**
 	 * Create the widget and attached all component
 	 */
-	public void createView() {
+	private void createView() {
 		
 		ScrollPanel root = new ScrollPanel();
 		FlexTable tab = new FlexTable();
@@ -62,5 +67,25 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 
 
 		this.initWidget(root);
+	}
+	
+	public void enabledWidgets() {
+		this.tBrowserTitle.setEnabled(true);
+		this.tPageTitle.setEnabled(true);
+		this.tUrlName.setEnabled(true);
+		this.tDescription.setEnabled(true);
+		this.tKeyWord.setEnabled(true);
+		this.dPublicationStart.setEnabled(true);
+		this.dPublicationFinish.setEnabled(true);
+	}
+	
+	public void deasabledWidgets() {
+		this.tBrowserTitle.setEnabled(false);
+		this.tPageTitle.setEnabled(false);
+		this.tUrlName.setEnabled(false);
+		this.tDescription.setEnabled(false);
+		this.tKeyWord.setEnabled(false);
+		this.dPublicationStart.setEnabled(false);
+		this.dPublicationFinish.setEnabled(false);
 	}
 }

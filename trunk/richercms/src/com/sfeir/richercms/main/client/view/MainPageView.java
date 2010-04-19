@@ -1,6 +1,7 @@
 package com.sfeir.richercms.main.client.view;
 
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HTML;
@@ -8,10 +9,10 @@ import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.SplitLayoutPanel;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.sfeir.richercms.main.client.MainConstants;
 import com.sfeir.richercms.main.client.interfaces.IInformationPanel;
 import com.sfeir.richercms.main.client.interfaces.INavigationPanel;
 import com.sfeir.richercms.main.client.interfaces.IdisplayMainPage;
-import com.sfeir.richercms.main.client.tinyMCE.TinyMCE;
 
 /**
  * Main panel, containing the others (navigation, information and editor)
@@ -21,8 +22,11 @@ import com.sfeir.richercms.main.client.tinyMCE.TinyMCE;
  */
 public class MainPageView extends TabLayoutPanel implements IdisplayMainPage {
 
-	private NavigationPanel navPanel = new NavigationPanel();
-	private InformationPanel listPanel = new InformationPanel();
+	//gestion des langues
+	private MainConstants constants = GWT.create(MainConstants.class);
+	private NavigationPanel navPanel = null;
+	private InformationPanel listPanel = null;
+	private TinyMCEPanel tinyMcePanel = null;
 
 	public MainPageView() {
 		super(25, Unit.PX);
@@ -37,15 +41,22 @@ public class MainPageView extends TabLayoutPanel implements IdisplayMainPage {
 	 */
 	public void createView() {
 		
+		final int height = Window.getClientHeight()-30;
+		
+		this.navPanel = new NavigationPanel();
+		this.listPanel = new InformationPanel();
+		this.tinyMcePanel = new TinyMCEPanel(height/2-50);
+		
+		
 	    LayoutPanel layoutPanel1 = new LayoutPanel();
-	    layoutPanel1.add(createMainInterface());
-	    this.add(layoutPanel1, "Site Explorator");
+	    layoutPanel1.add(this.createMainInterface(height));
+	    this.add(layoutPanel1, constants.TitlePanel1());
 	    
 	    LayoutPanel layoutPanel2 = new LayoutPanel();
 	    layoutPanel2.setStyleName("tab-content");
 	    HTML h1 = new HTML("TODO...");
 	    layoutPanel2.add(h1);
-	    this.add(layoutPanel2, "Administration");
+	    this.add(layoutPanel2, constants.TitlePanel2());
 
 	    this.selectTab(0);
 	}
@@ -54,24 +65,18 @@ public class MainPageView extends TabLayoutPanel implements IdisplayMainPage {
 	 * Build the split panel containing 3 part (navigation, information and editor)
 	 * @return
 	 */
-	private SplitLayoutPanel createMainInterface() {
+	private SplitLayoutPanel createMainInterface(int height) {
+				
 		SplitLayoutPanel p = new SplitLayoutPanel();
 		
+		//style application
 		this.navPanel.setStyleName("tab-content");
 		this.listPanel.setStyleName("tab-content");
+		this.tinyMcePanel.setStyleName("tab-content");
 		
+		//add Panels in the splitPanel
 		p.addWest(this.navPanel, 168);
-		
-		final int height = Window.getClientHeight()-30;
-
-
 		p.addNorth(listPanel, height/2);
-		
-		final LayoutPanel tinyMcePanel = new LayoutPanel();
-		tinyMcePanel.setStyleName("tab-content");
-	    TinyMCE tmce = new TinyMCE((height/2-50)+"px");
-		tinyMcePanel.add(tmce);
-		
 		p.add(tinyMcePanel);
 		
 		return p;

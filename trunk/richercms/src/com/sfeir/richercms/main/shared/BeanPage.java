@@ -8,6 +8,7 @@ import java.util.List;
 @SuppressWarnings("serial")
 public class BeanPage implements Serializable {
 	
+	private String key;
 	private String browserTitle;
 	private String pageTitle;
 	private String urlName;
@@ -20,6 +21,7 @@ public class BeanPage implements Serializable {
 	
 	public BeanPage() {
 		super();
+		this.key = "";
 		this.browserTitle = "";
 		this.pageTitle = "";
 		this.urlName = "";
@@ -31,10 +33,11 @@ public class BeanPage implements Serializable {
 		this.subPages = new ArrayList<BeanPage>();
 	}
 
-	public BeanPage(String browserTitle, String pageTitle, String urlName,
+	public BeanPage(String key, String browserTitle, String pageTitle, String urlName,
 			String description, String keyWord, String publicationStart,
 			String publicationFinish, String content, List<BeanPage> subPages) {
 		super();
+		this.key = key;
 		this.browserTitle = browserTitle;
 		this.pageTitle = pageTitle;
 		this.urlName = urlName;
@@ -44,6 +47,14 @@ public class BeanPage implements Serializable {
 		this.publicationFinish = publicationFinish;
 		this.content = content;
 		this.subPages = subPages;
+	}
+
+	public String getKey() {
+		return key;
+	}
+
+	public void setKey(String key) {
+		this.key = key;
 	}
 
 	public String getBrowserTitle() {

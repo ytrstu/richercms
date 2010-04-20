@@ -1,5 +1,7 @@
 package com.sfeir.richercms.main.client.view;
 
+import java.util.Date;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
@@ -65,7 +67,7 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 		tab.setWidget(6,1,this.dPublicationFinish);
 		root.add(tab);
 
-
+		this.deasabledWidgets();
 		this.initWidget(root);
 	}
 	
@@ -88,4 +90,74 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 		this.dPublicationStart.setEnabled(false);
 		this.dPublicationFinish.setEnabled(false);
 	}
+	
+	public void clearFields()
+	{
+		this.tBrowserTitle.setText("");
+		this.tDescription.setText("");
+		this.tKeyWord.setText("");
+		this.tPageTitle.setText("");
+		this.tUrlName.setText("");
+		this.dPublicationFinish.setValue(new Date());
+		this.dPublicationStart.setValue(new Date());
+	}
+
+	public String getBrowserTitle() {
+		return tBrowserTitle.getText();
+	}
+
+
+	public String getPageTitle() {
+		return tPageTitle.getText();
+	}
+
+	public String getUrlName() {
+		return tUrlName.getText();
+	}
+
+	public String getDescription() {
+		return tDescription.getText();
+	}
+
+	public String getKeyWord() {
+		return tKeyWord.getText();
+	}
+
+	public String getPublicationStart() {
+		return dPublicationStart.getValue().toString();
+	}
+
+	public String getPublicationFinish() {
+		return dPublicationFinish.getValue().toString();
+	}
+
+	public void setBrowserTitle(String browserTitle) {
+		this.tBrowserTitle.setText(browserTitle);	
+	}
+
+	public void setDescription(String description) {
+		this.tDescription.setText(description);
+	}
+
+	public void setKeyWord(String keyWord) {
+		this.tKeyWord.setText(keyWord);
+	}
+
+	public void setPageTitle(String pageTitle) {
+		this.tPageTitle.setText(pageTitle);
+	}
+
+	public void setPublicationFinish(String publicationFinish) {
+		this.dPublicationFinish.setValue(new Date(publicationFinish));
+	}
+
+	public void setPublicationStart(String publicationStart) {
+		this.dPublicationStart.setValue(new Date(publicationStart));
+	}
+
+	public void setUrlName(String urlName) {
+		this.tUrlName.setText(urlName);
+	}
+	
+	
 }

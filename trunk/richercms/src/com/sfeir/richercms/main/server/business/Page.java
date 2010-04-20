@@ -69,9 +69,39 @@ public class Page{
 		this.subPages = new ArrayList<Page>();
 	}
 	
+	public Page(String key, String browserTitle, String pageTitle, String urlName,
+			String description, String keyWord, String publicationStart,
+			String publicationFinish, String content) {
+		this.encodedKey = key;
+		this.browserTitle = browserTitle;
+		this.pageTitle = pageTitle;
+		this.urlName = urlName;
+		this.description = description;
+		this.keyWord = keyWord;
+		this.publicationStart = publicationStart;
+		this.publicationFinish = publicationFinish;
+		this.content = content;
+		this.subPages = new ArrayList<Page>();
+	}
+	
 	public Page(String browserTitle, String pageTitle, String urlName,
 			String description, String keyWord, String publicationStart,
 			String publicationFinish, String content, List<Page> subPages) {
+		this.browserTitle = browserTitle;
+		this.pageTitle = pageTitle;
+		this.urlName = urlName;
+		this.description = description;
+		this.keyWord = keyWord;
+		this.publicationStart = publicationStart;
+		this.publicationFinish = publicationFinish;
+		this.content = content;
+		this.subPages = subPages;
+	}
+	
+	public Page(String key, String browserTitle, String pageTitle, String urlName,
+			String description, String keyWord, String publicationStart,
+			String publicationFinish, String content, List<Page> subPages) {
+		this.encodedKey = key;
 		this.browserTitle = browserTitle;
 		this.pageTitle = pageTitle;
 		this.urlName = urlName;

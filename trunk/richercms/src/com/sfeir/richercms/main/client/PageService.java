@@ -22,11 +22,11 @@ public interface PageService extends RemoteService {
 	public List<BeanPage>  getPages();
 	
 	/**
-	 * Return a page according  is id
-	 * @param id position in the list
+	 * Return a page according  is key
+	 * @param key unique id of the Page
 	 * @return the good page
 	 */
-	BeanPage getPage(int id);
+	BeanPage getPage(String key);
 	
 	/**
 	 * Add a new Page in the dataStore

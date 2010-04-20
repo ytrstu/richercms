@@ -12,6 +12,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.sfeir.richercms.main.client.MainConstants;
 import com.sfeir.richercms.main.client.interfaces.IInformationPanel;
 import com.sfeir.richercms.main.client.interfaces.INavigationPanel;
+import com.sfeir.richercms.main.client.interfaces.IValidationPanel;
 import com.sfeir.richercms.main.client.interfaces.IdisplayMainPage;
 
 /**
@@ -27,6 +28,7 @@ public class MainPageView extends TabLayoutPanel implements IdisplayMainPage {
 	private NavigationPanel navPanel = null;
 	private InformationPanel listPanel = null;
 	private TinyMCEPanel tinyMcePanel = null;
+	private ValidationPanel validationPanel = null;
 
 	public MainPageView() {
 		super(25, Unit.PX);
@@ -45,7 +47,8 @@ public class MainPageView extends TabLayoutPanel implements IdisplayMainPage {
 		
 		this.navPanel = new NavigationPanel();
 		this.listPanel = new InformationPanel();
-		this.tinyMcePanel = new TinyMCEPanel(height/2-50);
+		this.tinyMcePanel = new TinyMCEPanel(height/2-70);
+		this.validationPanel = new ValidationPanel();
 		
 		
 	    LayoutPanel layoutPanel1 = new LayoutPanel();
@@ -68,15 +71,16 @@ public class MainPageView extends TabLayoutPanel implements IdisplayMainPage {
 	private SplitLayoutPanel createMainInterface(int height) {
 				
 		SplitLayoutPanel p = new SplitLayoutPanel();
-		
 		//style application
 		this.navPanel.setStyleName("tab-content");
 		this.listPanel.setStyleName("tab-content");
 		this.tinyMcePanel.setStyleName("tab-content");
+		this.validationPanel.setStyleName("tab-content");
 		
 		//add Panels in the splitPanel
 		p.addWest(this.navPanel, 168);
-		p.addNorth(listPanel, height/2);
+		p.addNorth(listPanel, height/2 -120);
+		p.addSouth(this.validationPanel, 60);
 		p.add(tinyMcePanel);
 		
 		return p;
@@ -90,5 +94,10 @@ public class MainPageView extends TabLayoutPanel implements IdisplayMainPage {
 	public IInformationPanel getInformationPanel()
 	{
 		return this.listPanel;
+	}
+	
+	public IValidationPanel getValidationPanel()
+	{
+		return this.validationPanel;
 	}
 }

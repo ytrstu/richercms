@@ -36,37 +36,56 @@ public class ServicePageImpl extends RemoteServiceServlet implements PageService
 		//this.addBasesPage();
 		
 		PersistenceManager pm = getPersistenceManager();
+    	Transaction tx = pm.currentTransaction();
         ArrayList<BeanPage> lst = new ArrayList<BeanPage>();
 	    try {
-	    	Transaction tx = pm.currentTransaction();
 	    	tx.begin();
-	        Query q = pm.newQuery(Root.class);
-
-	        List<Root> roots = (List<Root>) q.execute();
-	        this.root = roots.get(0);
-	        for (Page page : this.root.getPages())
-	        	lst.add(this.pageToBean(page));
+		        Query q = pm.newQuery(Root.class);
+		        List<Root> roots = (List<Root>) q.execute();
+		        
+		        if(roots.size() == 0){
+		        	this.root = new Root();
+			    	List<Page> lst1 = new ArrayList<Page>();
+			    	lst1.add(new Page());
+			    	this.root.setPages(lst1);
+		        	pm.makePersistent(this.root);
+		        } else {
+		        	this.root = roots.get(0);
+		        	for (Page page : this.root.getPages())
+		        		lst.add(this.pageToBean(page));
+		        }
 	        tx.commit();
 
         } finally {
+			if (tx.isActive()) {
+			    tx.rollback();
+			}
         	pm.close();
         }
         
         return lst;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void addPage(BeanPage newPage)
 	{
 		PersistenceManager pm = getPersistenceManager();
+    	Transaction tx = pm.currentTransaction();
 	    try {
 		    	Page p = this.BeanToPage(newPage);
-		    	Transaction tx = pm.currentTransaction();
+		    	
 		    	tx.begin();
-		    		Root r = pm.getObjectById(Root.class, this.root.getEncodedKey());
-		    		r.getPages().add(p);
+			    	Query q = pm.newQuery(Root.class);
+			        List<Root> roots = (List<Root>) q.execute();
+			        this.root = roots.get(0);
+			        this.root.getPages().add(p);
+		    		pm.makePersistent(p);
 		    	tx.commit();
 		    } finally {
-		      pm.close();
+				if (tx.isActive()) {
+				    tx.rollback();
+				}
+				pm.close();
 		    }
 	}
 	
@@ -96,14 +115,21 @@ public class ServicePageImpl extends RemoteServiceServlet implements PageService
 		 }
 	}
 	
-	public BeanPage getPage(int id)
+	public BeanPage getPage(String key)
 	{
 		Page page = null;
 		PersistenceManager pm = getPersistenceManager();
+    	Transaction tx = pm.currentTransaction();
 		 try {
-			 	//page = pm.getObjectById(Page.class, this.pages.get(id).getId());
 
-			 }finally{
+		    	tx.begin();
+			 		page = pm.getObjectById(Page.class, key);
+			 	tx.commit();
+
+			 }finally {
+				if (tx.isActive()) {
+				    tx.rollback();
+				}
 				 pm.close();
 			 }
 		 return this.pageToBean(page);
@@ -173,7 +199,7 @@ public class ServicePageImpl extends RemoteServiceServlet implements PageService
 	 * @return the corresponding BeanPage
 	 */
 	public BeanPage pageToBean(Page p) {
-		 return new BeanPage(p.getBrowserTitle(),p.getPageTitle(), p.getUrlName(),
+		 return new BeanPage(p.getEncodedKey(), p.getBrowserTitle(),p.getPageTitle(), p.getUrlName(),
 				 p.getDescription(), p.getKeyWord(), p.getPublicationStart(),
 				 p.getPublicationFinish(), p.getContent(),null);
 	}

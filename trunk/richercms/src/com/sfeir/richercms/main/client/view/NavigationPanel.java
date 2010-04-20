@@ -1,6 +1,7 @@
 package com.sfeir.richercms.main.client.view;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.HasMouseDownHandlers;
 import com.google.gwt.event.logical.shared.HasSelectionHandlers;
 import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.ResizeComposite;
@@ -17,10 +18,8 @@ import com.sfeir.richercms.main.client.interfaces.IPopUpTree;
  */
 public class NavigationPanel extends ResizeComposite implements INavigationPanel{
 
-	//gestion des langues
-	private MainConstants constants = GWT.create(MainConstants.class);
 	private Tree navigationTree = new Tree();
-	private TreeItem rootItem = new TreeItem(constants.MainWebSitePage());
+	private TreeItem rootItem = null;
 	private PopUpTree popUp = new PopUpTree();
 	
 	public NavigationPanel() {
@@ -34,22 +33,33 @@ public class NavigationPanel extends ResizeComposite implements INavigationPanel
 	private void createView() {
 		this.navigationTree.setAnimationEnabled(true);
 		LayoutPanel main = new LayoutPanel();
-		this.navigationTree.addItem(rootItem);
 		main.add(this.navigationTree);
 		this.initWidget(main);
 	}
 	
-	public void addPageInTree(String name)
+	public void addPageInTree(String name, String key)
 	{
-		this.rootItem.addItem(name);
+		TreeItem t = new TreeItem();
+		t.setUserObject(key);
+		t.setText(name);
+		
+		if(this.rootItem == null) {
+			this.rootItem = t;
+			this.navigationTree.addItem(this.rootItem);
+		}
+		else
+			this.rootItem.addItem(t);
 	}
 	
 	public void clearTree() {
 		this.navigationTree.clear();
-		this.rootItem = new TreeItem(constants.MainWebSitePage());
-		this.navigationTree.addItem(rootItem);
+		this.rootItem = null;
 	}
 	
+	public HasMouseDownHandlers getTreeMouseDown()
+	{
+		return this.navigationTree;
+	}
 	public HasSelectionHandlers<TreeItem> getSelectedEvtTree() {
 		return this.navigationTree;
 	}

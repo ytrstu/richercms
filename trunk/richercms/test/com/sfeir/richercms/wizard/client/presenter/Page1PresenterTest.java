@@ -18,14 +18,6 @@ public class Page1PresenterTest extends GWTTestCase {
 	}
 	
 	
-	public void testMyLocale() {
-		
-		//at begining, locale is unset
-		assertEquals(this.p.myLocale(),"");
-		//TODO manque un bout
-
-	}
-	
 	/**
 	 * TODO other test but how
 	 */

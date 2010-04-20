@@ -5,10 +5,13 @@ import java.util.List;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.MouseDownEvent;
+import com.google.gwt.event.dom.client.MouseDownHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
 import com.mvp4g.client.annotation.InjectService;
 import com.mvp4g.client.annotation.Presenter;
@@ -35,24 +38,43 @@ public class MainPagePresenter extends LazyPresenter<IdisplayMainPage, MainEvent
 			.addSelectionHandler(new SelectionHandler<TreeItem>(){
 				public void onSelection(SelectionEvent<TreeItem> event) {
 					selectedItem = event.getSelectedItem();
-					popUpAction(); // all action on the popUp
+					popUpAction();
 					view.getInformationPanel().deasabledWidgets();
 				}
 		});
 		
+		view.getNavigationPanel().getTreeMouseDown()
+			.addMouseDownHandler(new MouseDownHandler(){
+				public void onMouseDown(MouseDownEvent event) {
+					//popUpAction();
+					//view.getInformationPanel().deasabledWidgets();
+				}
+		});
+		
 		view.getNavigationPanel().getPopUpTree().getClickBtnDelPage()
-			.addClickHandler(new ClickHandler(){
+			.addClickHandler(new ClickHandler() {
 				public void onClick(ClickEvent event) {
 					popUpDeletePage();
+					view.getInformationPanel().clearFields();
+					view.getNavigationPanel().getPopUpTree().hide();
 				}
 		});
 		
 		view.getNavigationPanel().getPopUpTree().getClickBtnAddPage()
-		.addClickHandler(new ClickHandler(){
+		.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
+				view.getInformationPanel().clearFields();
 				view.getInformationPanel().enabledWidgets();
+				view.getNavigationPanel().getPopUpTree().hide();
 			}
-	});
+		});
+		
+		view.getValidationPanel().getClicBtnAdd().addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				addPage();
+				view.getInformationPanel().deasabledWidgets();
+			}
+		});
 	}
 	
 	/**
@@ -72,13 +94,22 @@ public class MainPagePresenter extends LazyPresenter<IdisplayMainPage, MainEvent
 	    	public void onSuccess(List<BeanPage> result) {
 	    		view.getNavigationPanel().clearTree();	    		
 	    		for(BeanPage page : result)
-	    			view.getNavigationPanel().addPageInTree(page.getPageTitle());
+	    			view.getNavigationPanel().addPageInTree(page.getPageTitle(),page.getKey());
 	    	}
 			public void onFailure(Throwable caught){}
 			});
 	}
 	
 	private void popUpAction() {
+		
+		String key = (String) this.selectedItem.getUserObject();
+		this.rpcPage.getPage(key, new AsyncCallback<BeanPage>() {
+			public void onSuccess(BeanPage result) {
+				displayPage(result);
+			}
+			public void onFailure(Throwable caught) {
+				Window.alert("Error : Get current Page");}
+		});
 		
 		// place the popUp at the right position
 		view.getNavigationPanel().getPopUpTree().setPopupPosition(this.selectedItem.getAbsoluteLeft(),
@@ -88,6 +119,16 @@ public class MainPagePresenter extends LazyPresenter<IdisplayMainPage, MainEvent
 		
 	}
 
+	private void displayPage(BeanPage result) {
+		view.getInformationPanel().setBrowserTitle(result.getBrowserTitle());
+		view.getInformationPanel().setDescription(result.getDescription());
+		view.getInformationPanel().setKeyWord(result.getKeyWord());
+		view.getInformationPanel().setPageTitle(result.getPageTitle());
+		//view.getInformationPanel().setPublicationFinish(result.getPublicationFinish());
+		//view.getInformationPanel().setPublicationStart(result.getPublicationStart());
+		view.getInformationPanel().setUrlName(result.getUrlName());
+	}
+	
 	private void popUpDeletePage() {	
 		
 		view.getNavigationPanel().getPopUpTree().hide();
@@ -103,6 +144,27 @@ public class MainPagePresenter extends LazyPresenter<IdisplayMainPage, MainEvent
 		});
 		
 		selectedItem = null;
+	}
+	
+	private void addPage()
+	{
+		BeanPage newPage = new BeanPage();
+		newPage.setBrowserTitle(view.getInformationPanel().getBrowserTitle());
+		newPage.setContent("");
+		newPage.setDescription(view.getInformationPanel().getDescription());
+		newPage.setKeyWord(view.getInformationPanel().getKeyWord());
+		newPage.setPageTitle(view.getInformationPanel().getPageTitle());
+		newPage.setPublicationFinish(view.getInformationPanel().getPublicationFinish());
+		newPage.setPublicationStart(view.getInformationPanel().getPublicationStart());
+		newPage.setUrlName(view.getInformationPanel().getUrlName());
+		
+		this.rpcPage.addPage(newPage, new AsyncCallback<Void>() {
+			public void onSuccess(Void result) {
+				buildTree(); //reload the new tree
+			}
+			public void onFailure(Throwable caught) {
+			Window.alert("Error : AddPage");}
+		});
 	}
 	
 	/**

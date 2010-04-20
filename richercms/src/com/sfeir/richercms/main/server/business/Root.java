@@ -7,13 +7,11 @@ import java.util.List;
 import javax.jdo.annotations.Element;
 import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.IdGeneratorStrategy;
-import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
-import com.google.appengine.api.datastore.Key;
-//(identityType = IdentityType.APPLICATION)
+
 @PersistenceCapable
 public class Root {
 	
@@ -27,7 +25,6 @@ public class Root {
 	
 	public Root()
 	{
-
 		this.pages = new ArrayList<Page>();
 	}
 

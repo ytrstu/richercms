@@ -13,7 +13,7 @@ import com.sfeir.richercms.main.shared.BeanPage;
 public interface PageServiceAsync {
 
 	public void getPages(AsyncCallback<List<BeanPage>> callback);
-	public void getPage(int id, AsyncCallback<BeanPage> callback);
+	public void getPage(String key, AsyncCallback<BeanPage> callback);
 	public void addPage(BeanPage newPage, AsyncCallback<Void> callback);
 	public void updatePage(BeanPage p, AsyncCallback<Void> callback);
 	public void deletePage(int id, AsyncCallback<Void> callback);

@@ -42,4 +42,10 @@ public interface MainConstants extends Constants {
 	  
 	  @DefaultStringValue("Delete this page")
 	  String PopUpDelPage();
+	  
+	  @DefaultStringValue("Add")
+	  String BtnAdd();
+	  
+	  @DefaultStringValue("Cancel")
+	  String BtnCancel();
 }

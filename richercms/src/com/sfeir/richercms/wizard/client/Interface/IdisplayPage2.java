@@ -3,6 +3,7 @@ package com.sfeir.richercms.wizard.client.Interface;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.view.LazyView;
+import com.sfeir.richercms.wizard.client.wizardConfigConstants;
 
 /**
  * Allows the presenter to communicate with the view
@@ -104,7 +105,17 @@ public interface IdisplayPage2 extends LazyView {
 	Widget asWidget();
 	
 	/**
-	 * @return the current lineNumber of the language table
+	 * the number of the last line.
+	 * this method subtract the titleRow.
+	 * Start at 0.
+	 * -1 if any language has been added.
+	 * @return the number of line : represent the id of the language in the list.
 	 */
 	int getCurrentNumRow();
+	
+	/**
+	 * Needed to set messages with the needed language.
+	 * @return the wizardConfigConstants for setting language
+	 */
+	wizardConfigConstants getConstant();
 }

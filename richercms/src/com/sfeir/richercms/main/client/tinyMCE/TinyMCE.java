@@ -83,6 +83,10 @@ public class TinyMCE extends ResizeComposite {
         getTextData();
         return ta.getText();
     }
+    
+    public void setReadOnly(boolean readOnly) {
+    	ta.setReadOnly(readOnly);
+    }
 
     /**
      * @see com.google.gwt.user.client.ui.Widget#onLoad()

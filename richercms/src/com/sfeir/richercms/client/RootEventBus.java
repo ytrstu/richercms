@@ -6,6 +6,8 @@ import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.annotation.InitHistory;
 import com.mvp4g.client.annotation.Start;
+import com.mvp4g.client.annotation.module.AfterLoadChildModule;
+import com.mvp4g.client.annotation.module.BeforeLoadChildModule;
 import com.mvp4g.client.annotation.module.ChildModule;
 import com.mvp4g.client.annotation.module.ChildModules;
 
@@ -16,6 +18,7 @@ import com.sfeir.richercms.client.presenter.RootPresenter;
 import com.sfeir.richercms.client.view.RootView;
 import com.sfeir.richercms.main.client.event.MainModule;
 import com.sfeir.richercms.wizard.client.event.WizardModule;
+import com.sfeir.richercms.wizard.client.presenter.Page1Presenter;
 
 
 
@@ -54,6 +57,16 @@ public interface RootEventBus extends EventBusWithLookup {
 	 */
 	@Event( handlers = RootPresenter.class )
 	public void wizardFinished();
+	
+	
+	@BeforeLoadChildModule
+	@Event(handlers = RootPresenter.class)
+	public void beforeLoadWizard();
+
+	
+	@AfterLoadChildModule
+	@Event(handlers = RootPresenter.class)
+	public void afterLoadWizard();
 	
 	
 	/**

@@ -13,7 +13,7 @@ import com.sfeir.richercms.main.client.view.MainPageView;
  * @author homberg.g
  *
  */
-@Events(startView = MainPageView.class, module = MainModule.class)
+@Events(startView = MainPageView.class, module = MainModule.class, debug = true)
 public interface MainEventBus extends EventBus {
 
 	

@@ -46,7 +46,9 @@ public class ServicePageImpl extends RemoteServiceServlet implements PageService
 		        if(roots.size() == 0){
 		        	this.root = new Root();
 			    	List<Page> lst1 = new ArrayList<Page>();
-			    	lst1.add(new Page());
+			    	Page p = new Page(); p.setPageTitle("Main");
+			    	pm.makePersistent(p);
+			    	lst1.add(p);
 			    	this.root.setPages(lst1);
 		        	pm.makePersistent(this.root);
 		        } else {

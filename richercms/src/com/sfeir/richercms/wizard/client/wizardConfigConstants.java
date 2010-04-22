@@ -51,4 +51,16 @@ public interface wizardConfigConstants extends Constants {
 	  
 	  @DefaultStringValue("Delete")
 	  String LanguageTitleColumn4();
+	  
+	  @DefaultStringValue("It takes at least one language, please add one")
+	  String AlertNoLanguage();
+	  
+	  @DefaultStringValue("It takes a default language, please select a default language")
+	  String AlertNoLanguageSelected();
+	  
+	  @DefaultStringValue("No Language Entered, please add the name of the language")
+	  String AlertNoLanguageEntered();
+	  
+	  @DefaultStringValue("No Language tag Entered, please add the tag of the language")
+	  String AlertNoTagLanguageEntered();
 }

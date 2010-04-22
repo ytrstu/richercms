@@ -2,7 +2,6 @@ package com.sfeir.richercms.client.presenter;
 
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.mvp4g.client.annotation.InjectService;
 import com.mvp4g.client.annotation.Presenter;
@@ -11,7 +10,9 @@ import com.sfeir.richercms.client.RootEventBus;
 import com.sfeir.richercms.client.UserInfoServiceAsync;
 import com.sfeir.richercms.client.interfaces.IdisplayPageLogin;
 import com.sfeir.richercms.client.view.PageLoginView;
+import com.sfeir.richercms.client.view.PopUpMessage;
 import com.sfeir.richercms.shared.BeanUserInfo;
+import com.sfeir.richercms.wizard.client.ConfigurationServiceAsync;
 
 /**
  * Presenter of the home page
@@ -22,6 +23,7 @@ public class PageLoginPresenter extends LazyPresenter<IdisplayPageLogin, RootEve
 	
 	// Initialized by the mvp4g framework
 	private UserInfoServiceAsync rpcLoginService = null;
+	private ConfigurationServiceAsync rpcConfigurationService = null;
 	
 	/**
 	 * Bind the various evt
@@ -33,14 +35,29 @@ public class PageLoginPresenter extends LazyPresenter<IdisplayPageLogin, RootEve
 	
 	public void onLogin() {
 		this.view.showPopUpWait();
-		rpcLoginService.login(GWT.getHostPageBaseURL(), new AsyncCallback<BeanUserInfo>() {
+		this.rpcLoginService.login(GWT.getHostPageBaseURL(), new AsyncCallback<BeanUserInfo>() {
 			public void onFailure(Throwable error) {
-				Window.alert("Connection for login failed");
+				PopUpMessage p = new PopUpMessage("Connection for login failed");
+				p.show();
 			}
 
 			public void onSuccess(BeanUserInfo result) {
+				//on test si il est loggé ou s'il faut le faire passer par la page de login
 				if(result.isLoggedIn()) {
-					eventBus.startWizard();
+					//on test pour voir si il faut lancer le wizard ou alord directement le main
+					rpcConfigurationService.SiteIsConfigured(new AsyncCallback<Boolean>() {
+						public void onFailure(Throwable error) {
+							PopUpMessage p = new PopUpMessage("Connection test confguration failed");
+							p.show();
+						}
+
+						public void onSuccess(Boolean result) {
+							if(result.booleanValue())
+								eventBus.startMain();
+							else
+								eventBus.startWizard();
+						}
+					});	
 				}
 				else {
 					view.getSignInLink().setHref(result.getLoginUrl());
@@ -59,6 +76,11 @@ public class PageLoginPresenter extends LazyPresenter<IdisplayPageLogin, RootEve
 	@InjectService
 	public void setUserService( UserInfoServiceAsync rpcLoginService ) {
 		this.rpcLoginService = rpcLoginService;
+	}
+	
+	@InjectService
+	public void setConfigurationService( ConfigurationServiceAsync rpcConfigurationService ) {
+		this.rpcConfigurationService = rpcConfigurationService;
 	}
 
 }

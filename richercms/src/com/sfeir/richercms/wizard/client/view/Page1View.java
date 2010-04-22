@@ -5,6 +5,8 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.HasChangeHandlers;
 import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.http.client.UrlBuilder;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
@@ -28,13 +30,14 @@ public class Page1View  extends ResizeComposite implements IdisplayPage1 {
 	private wizardConfigConstants constants = GWT.create(wizardConfigConstants.class);
 	
 	//widget de la fenetre
-	private Button btnNext = new Button(constants.buttonNext());
-	private Label language = new Label(constants.LabelLangue());
-	private ListBox languageList = new ListBox();
+	private Button btnNext = null;
+	private Label language = null;
+	private ListBox languageList = null;
 	
 	// panel de la fenetre
-	private HorizontalPanel languagePanel = new HorizontalPanel();
-	private LayoutPanel centralPanel = new LayoutPanel();
+	private HorizontalPanel languagePanel = null;
+	private LayoutPanel centralPanel = null;
+	
 
 	public Page1View() {
 		super();
@@ -80,12 +83,30 @@ public class Page1View  extends ResizeComposite implements IdisplayPage1 {
 		
 		return this.languageList.getSelectedIndex();
 	}
-
+	
+	/**
+	 * Modify the "Locale" variable with the new countryCode
+	 * @param countryCode
+	 */
+	public void reload(String countryCode) {
+		
+		UrlBuilder urlBuilder = Window.Location.createUrlBuilder();
+		urlBuilder.setParameter("locale", countryCode);
+		Window.Location.replace(urlBuilder.buildString());
+	}
+	
+	
 	/**
 	 * call by the mvp4g framework to instanciate view (lazy method)
 	 */
 	public void createView() 
 	{
+		this.btnNext = new Button(constants.buttonNext());
+		this.language = new Label(constants.LabelLangue());
+		this.languageList = new ListBox();
+		this.languagePanel = new HorizontalPanel();
+		this.centralPanel = new LayoutPanel();
+		
 		LayoutPanel mainContent = new LayoutPanel();
 		Label title = new Label(constants.titlePage1());
 		//is wrapped by the composite (super)

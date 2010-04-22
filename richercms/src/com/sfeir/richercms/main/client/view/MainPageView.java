@@ -12,6 +12,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.sfeir.richercms.main.client.MainConstants;
 import com.sfeir.richercms.main.client.interfaces.IInformationPanel;
 import com.sfeir.richercms.main.client.interfaces.INavigationPanel;
+import com.sfeir.richercms.main.client.interfaces.ITinyMCEPanel;
 import com.sfeir.richercms.main.client.interfaces.IValidationPanel;
 import com.sfeir.richercms.main.client.interfaces.IdisplayMainPage;
 
@@ -99,5 +100,10 @@ public class MainPageView extends TabLayoutPanel implements IdisplayMainPage {
 	public IValidationPanel getValidationPanel()
 	{
 		return this.validationPanel;
+	}
+	
+	public ITinyMCEPanel getTinyMCEPanel()
+	{
+		return this.tinyMcePanel;
 	}
 }

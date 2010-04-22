@@ -36,5 +36,19 @@ public class TinyMCEPanel extends ResizeComposite implements ITinyMCEPanel {
 		this.tmce.setVisible(false);	
 	}
 	
+	public String getContent() {
+		return this.tmce.getText();
+	}
 	
+	public void setContent(String content) {
+		this.tmce.setText(content);
+	}
+	
+	public void enableEditor() {
+		this.tmce.setReadOnly(true);
+	}
+	
+	public void disableEditor() {
+		this.tmce.setReadOnly(false);
+	}
 }

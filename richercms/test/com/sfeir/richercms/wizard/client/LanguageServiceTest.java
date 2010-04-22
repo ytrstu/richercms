@@ -3,6 +3,10 @@ package com.sfeir.richercms.wizard.client;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.junit.client.GWTTestCase;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -19,6 +23,7 @@ public class LanguageServiceTest extends GWTTestCase {
 	/**
 	 * Initialize rpc connection
 	 */
+	@Before
 	public void gwtSetUp()
 	{
 		this.rpcLanguage = GWT.create(LanguageService.class);
@@ -28,6 +33,7 @@ public class LanguageServiceTest extends GWTTestCase {
 	/**
 	 * Delete all Language
 	 */
+	@Test
 	public void testDeleteAllService() {
 		
 	  this.rpcLanguage.deleteAllLanguages(new AsyncCallback<Void>() {
@@ -41,6 +47,7 @@ public class LanguageServiceTest extends GWTTestCase {
 	/**
 	 * Add 3 Languages
 	 */
+	@Test
 	public void testBasesLanguage() {
 		
 		this.rpcLanguage.addBasesLanguage(new AsyncCallback<Void>() {
@@ -54,6 +61,7 @@ public class LanguageServiceTest extends GWTTestCase {
 	/**
 	 * get the 3 languages added
 	 */
+	@Test
 	public void testgetLangues() {
 		
 		this.rpcLanguage.getLangues(new AsyncCallback<List<BeanLanguageDetails>>(){
@@ -67,6 +75,7 @@ public class LanguageServiceTest extends GWTTestCase {
 	/**
 	 * add a language and test the numbe on language in the datastore
 	 */
+	@Test
 	public void testAddLanguage() {
 		
 		this.rpcLanguage.addLanguage("Russe", "ru",new AsyncCallback<Void>() {
@@ -85,6 +94,7 @@ public class LanguageServiceTest extends GWTTestCase {
 	/**
 	 * delete the 4th element added above
 	 */
+	@Test
 	public void testDeleteLanguage() {
 		
 		//delete the 4th (0 is the first id) element added above
@@ -104,6 +114,7 @@ public class LanguageServiceTest extends GWTTestCase {
 	/**
 	 * get a language thanks to his id (position)
 	 */
+	@Test
 	public void testGetLanguage() {
 		
 		this.rpcLanguage.getLangue(0, new AsyncCallback<BeanLanguageDetails>(){
@@ -125,6 +136,7 @@ public class LanguageServiceTest extends GWTTestCase {
 	/**
 	 * Select a list of default language -_-
 	 */
+	@Test
 	public void testSelectLanguages()
 	{
 		List<Integer> lstID = new ArrayList<Integer>();
@@ -147,6 +159,7 @@ public class LanguageServiceTest extends GWTTestCase {
 	/**
 	 * Select the default language
 	 */
+	@Test
 	public void testSelectLanguage()
 	{
 		this.rpcLanguage.selectLanguage(3, new AsyncCallback<Void>(){
@@ -165,6 +178,7 @@ public class LanguageServiceTest extends GWTTestCase {
 	/**
 	 * Delete latest language
 	 */
+	@After
 	public void testdeleteLanguages() {
 		
 		List<Integer> lstID = new ArrayList<Integer>();

@@ -6,11 +6,12 @@ import java.util.List;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.mvp4g.client.annotation.InjectService;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
+import com.sfeir.richercms.client.view.PopUpMessage;
+import com.sfeir.richercms.wizard.client.ConfigurationServiceAsync;
 import com.sfeir.richercms.wizard.client.LanguageServiceAsync;
 import com.sfeir.richercms.wizard.client.Interface.IdisplayPage2;
 import com.sfeir.richercms.wizard.client.event.WizardConfigEventBus;
@@ -26,6 +27,7 @@ public class Page2Presenter extends LazyPresenter<IdisplayPage2, WizardConfigEve
   
 	// Initialized by the mvp4g framework
 	private LanguageServiceAsync rpcLangue = null;
+	private ConfigurationServiceAsync rpcConfigurationService = null;
 		
 	
 	/**
@@ -38,7 +40,8 @@ public class Page2Presenter extends LazyPresenter<IdisplayPage2, WizardConfigEve
 		view.getNextButton().addClickHandler(new ClickHandler() {   
 	        public void onClick(ClickEvent event) {
 	        	saveSelectedLanguage();
-	        	eventBus.wizardFinished();
+	        	if(check())
+	        		eventBus.wizardFinished();
 	        }
 	      });
 		
@@ -87,7 +90,6 @@ public class Page2Presenter extends LazyPresenter<IdisplayPage2, WizardConfigEve
 	 * fill the LanguageArray
 	 */
 	private void fetchLanguageTable() {
-		
 	    this.rpcLangue.getLangues( new AsyncCallback<List<BeanLanguageDetails>>() {
 	    	public void onSuccess(List<BeanLanguageDetails> result) {
 	    		view.clearTableLanguage();
@@ -104,7 +106,8 @@ public class Page2Presenter extends LazyPresenter<IdisplayPage2, WizardConfigEve
 	    	    view.hidePopUpWait();
 	    	}
 	        public void onFailure(Throwable caught) {
-	            Window.alert("Error retrieving language");}
+	        	PopUpMessage p = new PopUpMessage("Error retrieving language");
+	        	p.show();}
 	    });
 	}
 	
@@ -115,18 +118,21 @@ public class Page2Presenter extends LazyPresenter<IdisplayPage2, WizardConfigEve
 	private boolean ajouteLangue() {
 		
 		if(this.view.getPopUpNewLanguage().length() == 0) {
-			Window.alert("No Language Entered");
+			PopUpMessage p = new PopUpMessage(view.getConstant().AlertNoLanguageEntered());
+			p.show();
 			return false;
 		}
 		else if (this.view.getPopUpNewTag().length() == 0){
-			Window.alert("please, enter the tag");
+			PopUpMessage p = new PopUpMessage(view.getConstant().AlertNoTagLanguageEntered());
+			p.show();
 			return false;
 		}else {
 			this.rpcLangue.addLanguage(this.view.getPopUpNewLanguage(), this.view.getPopUpNewTag(),new AsyncCallback<Void>() {
 				    	public void onSuccess(Void result){
 				    		fetchLanguageTable();}
 				        public void onFailure(Throwable caught) {
-				            Window.alert("Error : addLanguage");}
+				        	PopUpMessage p = new PopUpMessage("Error : addLanguage");
+				        	p.show();}
 				    });
 			return true;
 		}
@@ -141,7 +147,8 @@ public class Page2Presenter extends LazyPresenter<IdisplayPage2, WizardConfigEve
 		this.rpcLangue.selectLanguage(this.view.getSelectedLanguage(), new AsyncCallback<Void>() {
 						public void onSuccess(Void result){}
 						public void onFailure(Throwable caught) {
-							Window.alert("Error : SelectLanguage");}
+							PopUpMessage p = new PopUpMessage("Error : SelectLanguage");
+							p.show();}
 				});
 	}
 
@@ -154,8 +161,37 @@ public class Page2Presenter extends LazyPresenter<IdisplayPage2, WizardConfigEve
 							fetchLanguageTable();
 						}
 						public void onFailure(Throwable caught) {
-							Window.alert("Error : DeleteLanguage");}
+							PopUpMessage p = new PopUpMessage("Error : DeleteLanguage");
+							p.show();}
 				});
+	}
+	
+	/**
+	 * Check if minimum information are set : a default Language, etc ...
+	 * And send PopUp to help user to set informations.
+	 * if all is good, set the configuration state with true.
+	 * @return true if minimum informations are set
+	 */
+	private boolean check()
+	{
+		if(view.getCurrentNumRow() == -1) {
+			PopUpMessage p = new PopUpMessage(view.getConstant().AlertNoLanguage());
+			p.show();
+			return false;
+		}
+		if(view.getSelectedLanguage() == -1) {
+			PopUpMessage p = new PopUpMessage(view.getConstant().AlertNoLanguageSelected());
+			p.show();
+			return false;
+		}
+		
+		rpcConfigurationService.setIsConfigurated(true, new AsyncCallback<Void>() {
+			public void onSuccess(Void result) {;}
+			public void onFailure(Throwable caught) {
+				PopUpMessage p = new PopUpMessage("Error : Configuration");
+				p.show();}});
+		
+		return true;
 	}
 	
 	/**
@@ -165,5 +201,10 @@ public class Page2Presenter extends LazyPresenter<IdisplayPage2, WizardConfigEve
 	@InjectService
 	public void setUserService( LanguageServiceAsync rpcLangue ) {
 		this.rpcLangue = rpcLangue;
+	}
+	
+	@InjectService
+	public void setConfigurationService( ConfigurationServiceAsync rpcConfigurationService ) {
+		this.rpcConfigurationService = rpcConfigurationService;
 	}
 }

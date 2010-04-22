@@ -18,4 +18,5 @@ public interface UserInfoService extends RemoteService {
 	 * @return information about user and if it was connected
 	 */
 	public BeanUserInfo login(String requestUri);
+	
 }

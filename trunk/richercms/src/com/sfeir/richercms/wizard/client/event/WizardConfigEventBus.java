@@ -4,6 +4,8 @@ package com.sfeir.richercms.wizard.client.event;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
+import com.mvp4g.client.annotation.module.AfterLoadChildModule;
+import com.mvp4g.client.annotation.module.BeforeLoadChildModule;
 
 import com.mvp4g.client.event.EventBusWithLookup;
 import com.sfeir.richercms.wizard.client.history.WizardHistoryConverter;
@@ -20,7 +22,7 @@ import com.sfeir.richercms.wizard.client.view.Page1View;
  * 
  * @author homberg.g
  */
-@Events(startView = Page1View.class, module = WizardModule.class)
+@Events(startView = Page1View.class, module = WizardModule.class, debug = true)
 public interface WizardConfigEventBus extends EventBusWithLookup{
 
 	/**
@@ -48,5 +50,5 @@ public interface WizardConfigEventBus extends EventBusWithLookup{
 	 */
 	@Event( forwardToParent = true )
 	public void wizardFinished();
-		
+			
 }

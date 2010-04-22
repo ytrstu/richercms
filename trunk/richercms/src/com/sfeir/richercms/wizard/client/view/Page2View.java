@@ -30,13 +30,13 @@ public class Page2View extends ResizeComposite implements IdisplayPage2 {
 	private wizardConfigConstants constants = GWT.create(wizardConfigConstants.class);
 	
 	//widget de la fenetre
-	private Button btnNext = new Button(constants.buttonNext());
-	private Button btnPrevious = new Button(constants.buttonPrevious());
-	private Button btnAddLanguage = new Button(constants.buttonAddLanguage());
-	private FlexTable LanguageTable;
-	private ScrollPanel ScrollLanguageTable = new ScrollPanel();
-	private LayoutPanel languagePanel = new LayoutPanel();
-	private FlowPanel add_DelPanel = new FlowPanel();
+	private Button btnNext = null;
+	private Button btnPrevious = null;
+	private Button btnAddLanguage = null;
+	private FlexTable LanguageTable = null;
+	private ScrollPanel ScrollLanguageTable = null;
+	private LayoutPanel languagePanel = null;
+	private FlowPanel add_DelPanel = null;
 	private PopUpAddLangue popUpAddLanguage = null;
 	private PopUpWait popUpWait = null;
 	
@@ -45,7 +45,7 @@ public class Page2View extends ResizeComposite implements IdisplayPage2 {
 		super();
 	}
 	
-
+	
 	public Widget asWidget() {	
 		return this;
 	}
@@ -101,7 +101,6 @@ public class Page2View extends ResizeComposite implements IdisplayPage2 {
 	
 	
 	public int getSelectedLanguage() {
-		
 
 		for (int i = 1; i < this.LanguageTable.getRowCount(); ++i) {
 			RadioButton radioBtn = (RadioButton)this.LanguageTable.getWidget(i, 0);
@@ -148,6 +147,12 @@ public class Page2View extends ResizeComposite implements IdisplayPage2 {
 		
 		this.popUpAddLanguage = new PopUpAddLangue();
 		this.popUpWait = new PopUpWait();
+		this.btnNext = new Button(constants.buttonNext());
+		this.btnPrevious = new Button(constants.buttonPrevious());
+		this.btnAddLanguage = new Button(constants.buttonAddLanguage());
+		this.ScrollLanguageTable = new ScrollPanel();
+		this.languagePanel = new LayoutPanel();
+		this.add_DelPanel = new FlowPanel();
 		
 		//Title => root 10%
 		LayoutPanel mainContent = new LayoutPanel();
@@ -210,5 +215,10 @@ public class Page2View extends ResizeComposite implements IdisplayPage2 {
 	{
 		//the last line = number of row -1 - (title row)
 		return this.LanguageTable.getRowCount() - 2;
+	}
+	
+	public wizardConfigConstants getConstant()
+	{
+		return this.constants;
 	}
 }

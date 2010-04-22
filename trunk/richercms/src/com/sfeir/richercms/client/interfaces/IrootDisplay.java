@@ -32,4 +32,14 @@ public interface IrootDisplay
 	 * @param styleName : name of the style in css File
 	 */
 	public void RemoveStyle(String styleName);
+	
+	/**
+	 * Show the PopUpWait
+	 */
+	void showPopUpWait();
+	
+	/**
+	 * Hide the PopUpWait
+	 */
+	void hidePopUpWait();
 }

@@ -42,4 +42,11 @@ public class RootPresenter extends BasePresenter<IrootDisplay, RootEventBus> {
 		eventBus.startMain();
 	}
 
+	public void onBeforeLoadWizard() {
+		view.showPopUpWait();
+	}
+	
+	public void onAfterLoadWizard() {
+		view.hidePopUpWait();
+	}
 }

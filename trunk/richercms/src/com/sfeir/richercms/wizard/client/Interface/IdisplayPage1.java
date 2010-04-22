@@ -36,6 +36,13 @@ public interface IdisplayPage1 extends LazyView{
      */
     void setSelectedLanguage(int idLanguage);
     
+    
+	/**
+	 * Modify the "Locale" variable with the new countryCode
+	 * @param countryCode
+	 */
+    void reload(String countryCode);
+        
     Widget asWidget();
    
 }

@@ -16,11 +16,14 @@ import com.sfeir.richercms.client.interfaces.IrootDisplay;
 public class RootView extends ResizeComposite implements IrootDisplay {
 
 	private LayoutPanel body;
+	//the wait popUp
+	private PopUpWait popUpWait = null;
 	
 	public RootView() {
 		this.body = new LayoutPanel();
 		this.body.addStyleName("bodyPanel");
 		this.initWidget(this.body);
+		this.popUpWait = new PopUpWait();
 	}
 
 	public Panel getBody() {
@@ -37,6 +40,14 @@ public class RootView extends ResizeComposite implements IrootDisplay {
 	
 	public void RemoveStyle(String styleName) {
 		this.body.removeStyleName(styleName);
+	}
+	
+	public void showPopUpWait() {		
+		this.popUpWait.show();
+	}
+	
+	public void hidePopUpWait() {
+		this.popUpWait.hide();
 	}
 
 }

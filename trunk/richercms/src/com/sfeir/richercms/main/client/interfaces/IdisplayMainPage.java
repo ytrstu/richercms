@@ -32,4 +32,10 @@ public interface IdisplayMainPage extends LazyView {
 	 * @return ValidationPanel
 	 */
 	IValidationPanel getValidationPanel();
+	
+	/**
+	 * Allows the presenter to communicate with the TinyEditor
+	 * @return TinyMCEPanel
+	 */
+	ITinyMCEPanel getTinyMCEPanel();
 }

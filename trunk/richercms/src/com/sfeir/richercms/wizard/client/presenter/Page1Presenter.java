@@ -4,12 +4,10 @@ import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.http.client.UrlBuilder;
 import com.google.gwt.i18n.client.LocaleInfo;
 
 
 
-import com.google.gwt.user.client.Window;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.sfeir.richercms.wizard.client.Interface.IdisplayPage1;
@@ -24,7 +22,18 @@ import com.sfeir.richercms.wizard.client.view.Page1View;
 @Presenter( view = Page1View.class)
 public class Page1Presenter extends LazyPresenter<IdisplayPage1, WizardConfigEventBus> {
 	
-
+	/**
+	 * Using this for testing presenter with a mock view
+	 * @param view
+	 */
+	public Page1Presenter(IdisplayPage1 view) {
+		this.view = view;
+	}
+	
+	public Page1Presenter() {
+		super();
+	}
+	
 	/**
 	 * when the wizard start, the language is tested and the view was displaying
 	 */
@@ -32,7 +41,7 @@ public class Page1Presenter extends LazyPresenter<IdisplayPage1, WizardConfigEve
 		changeViewLocale(LocaleInfo.getCurrentLocale().getLocaleName());
 		eventBus.changeBody(view.asWidget());	
 	}
-
+	
 	/**
 	 * Initialize the current view with the language passed in parameter
 	 * @param currentLocale : language of the view
@@ -74,31 +83,18 @@ public class Page1Presenter extends LazyPresenter<IdisplayPage1, WizardConfigEve
 		
 		switch (this.view.getIndexLanguage()) {
 		case 0: 
-			myReload("en");
+			this.view.reload("en");
 			break;
 		case 1: 
-			myReload("fr");
+			this.view.reload("fr");
 			break;
 		case 2: 
-			myReload("de");
+			this.view.reload("de");
 			break;
 		default:
-			myReload("en");
+			this.view.reload("en");
 			break;
 		}
 	}
-	
 
-	/**
-	 * Modify the "Locale" variable with the new countryCode
-	 * @param countryCode
-	 */
-	public void myReload(String countryCode) {
-		
-		UrlBuilder urlBuilder = Window.Location.createUrlBuilder();
-		urlBuilder.setParameter("locale", countryCode);
-		Window.Location.replace(urlBuilder.buildString());
-
-		changeViewLocale(countryCode);
-	}
 }

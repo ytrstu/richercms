@@ -30,4 +30,17 @@ public interface MainEventBus extends EventBus {
 	 */
 	@Event( handlers =  MainPagePresenter.class )
 	public void startMain();
+	
+	
+	/**
+	 * fired by the NavigationPresenter when the addPage menu is clicked
+	 */
+	@Event( handlers =  MainPagePresenter.class )
+	public void AddPage();
+	
+	/**
+	 * fired by the NavigationPresenter when the DelPage menu is clicked
+	 */
+	@Event( handlers =  MainPagePresenter.class )
+	public void DeletePage();
 }

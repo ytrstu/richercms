@@ -1,15 +1,16 @@
 package com.sfeir.richercms.main.client.view;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.HasMouseDownHandlers;
+import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.logical.shared.HasSelectionHandlers;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.ResizeComposite;
 import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
-import com.sfeir.richercms.main.client.MainConstants;
 import com.sfeir.richercms.main.client.interfaces.INavigationPanel;
-import com.sfeir.richercms.main.client.interfaces.IPopUpTree;
+import com.sfeir.richercms.main.client.interfaces.IPopUpMenuBar;
 
 /**
  * Panel containing the tree who represent the architectural view of the site.
@@ -20,7 +21,7 @@ public class NavigationPanel extends ResizeComposite implements INavigationPanel
 
 	private Tree navigationTree = new Tree();
 	private TreeItem rootItem = null;
-	private PopUpTree popUp = new PopUpTree();
+	private PopUpMenuBar menuBar = new PopUpMenuBar();
 	
 	public NavigationPanel() {
 		super();
@@ -37,11 +38,16 @@ public class NavigationPanel extends ResizeComposite implements INavigationPanel
 		this.initWidget(main);
 	}
 	
-	public void addPageInTree(String name, String key)
+	public HasClickHandlers addPageInTree(String name, String key)
 	{
+		Button b = new Button(">");
+		HorizontalPanel p = new HorizontalPanel();
+		p.add(new Label(name));
+		p.add(b);
+		b.setVisible(false);
 		TreeItem t = new TreeItem();
 		t.setUserObject(key);
-		t.setText(name);
+		t.setWidget(p);
 		
 		if(this.rootItem == null) {
 			this.rootItem = t;
@@ -49,6 +55,9 @@ public class NavigationPanel extends ResizeComposite implements INavigationPanel
 		}
 		else
 			this.rootItem.addItem(t);
+		
+		
+		return b;
 	}
 	
 	public void clearTree() {
@@ -56,16 +65,13 @@ public class NavigationPanel extends ResizeComposite implements INavigationPanel
 		this.rootItem = null;
 	}
 	
-	public HasMouseDownHandlers getTreeMouseDown()
-	{
-		return this.navigationTree;
-	}
 	public HasSelectionHandlers<TreeItem> getSelectedEvtTree() {
 		return this.navigationTree;
 	}
 	
-	public IPopUpTree getPopUpTree() {
-		return this.popUp;
+	
+	public IPopUpMenuBar getPopUpMenuBar () {
+		return this.menuBar;
 	}
 	
 }

@@ -3,8 +3,6 @@ package com.sfeir.richercms.main.client.presenter;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.MouseDownEvent;
-import com.google.gwt.event.dom.client.MouseDownHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -46,37 +44,13 @@ public class MainPagePresenter extends LazyPresenter<IdisplayMainPage, MainEvent
 			.addSelectionHandler(new SelectionHandler<TreeItem>(){
 				public void onSelection(SelectionEvent<TreeItem> event) {
 					navPanelPresenter.setSelectedItem(event.getSelectedItem());
+					view.getInformationPanel().deasabledWidgets();
+					view.getValidationPanel().deasableButtons();
+					view.getTinyMCEPanel().disableEditor();
 					displayPage();
 				}
 		});
 		
-		view.getNavigationPanel().getTreeMouseDown()
-			.addMouseDownHandler(new MouseDownHandler(){
-				public void onMouseDown(MouseDownEvent event) {
-					//popUpAction();
-					//view.getInformationPanel().deasabledWidgets();
-				}
-		});
-		
-		view.getNavigationPanel().getPopUpTree().getClickBtnDelPage()
-			.addClickHandler(new ClickHandler() {
-				public void onClick(ClickEvent event) {
-					navPanelPresenter.popUpDeletePage();
-					view.getInformationPanel().clearFields();
-					view.getNavigationPanel().getPopUpTree().hide();
-				}
-		});
-		
-		view.getNavigationPanel().getPopUpTree().getClickBtnAddPage()
-		.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent event) {
-				view.getInformationPanel().clearFields();
-				view.getInformationPanel().enabledWidgets();
-				view.getValidationPanel().enabledButtons();
-				view.getTinyMCEPanel().enableEditor();
-				view.getNavigationPanel().getPopUpTree().hide();
-			}
-		});
 		
 		view.getValidationPanel().getClicBtnAdd().addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
@@ -95,13 +69,22 @@ public class MainPagePresenter extends LazyPresenter<IdisplayMainPage, MainEvent
 	public void onStartMain() {
 		
 		this.infoPanelPresenter.onStartInfoPanel(this.view.getInformationPanel());
-		this.navPanelPresenter.onStartNavPanel(this.view.getNavigationPanel());
+		this.navPanelPresenter.onStartNavPanel(this.view.getNavigationPanel(),eventBus);
 		this.editorPanelPresenter.onStartTinyMCEPanel(this.view.getTinyMCEPanel());
 		this.valPanelPresenter.onStartValidationPanel(this.view.getValidationPanel());
-		
 		eventBus.changeBody(view.asWidget());
 	}
 	
+	public void onAddPage() {
+		view.getInformationPanel().clearFields();
+		view.getInformationPanel().enabledWidgets();
+		view.getValidationPanel().enabledButtons();
+		view.getTinyMCEPanel().enableEditor();
+	}
+	
+	public void onDeletePage() {
+		view.getInformationPanel().clearFields();
+	}
 	
 	private void displayPage() {
 		String key = this.navPanelPresenter.showPopUpAction();

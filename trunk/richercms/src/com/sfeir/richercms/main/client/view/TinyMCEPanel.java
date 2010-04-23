@@ -8,13 +8,14 @@ import com.sfeir.richercms.main.client.tinyMCE.TinyMCE;
 public class TinyMCEPanel extends ResizeComposite implements ITinyMCEPanel {
 
 	private TinyMCE tmce = null;
-	
+	private int height = 0;
 	/**
 	 * Constructor
 	 * @param height of the tinyEditor in pixels
 	 */
 	public TinyMCEPanel(int height) {
 		super();
+		this.height = height;
 		this.tmce = new TinyMCE((height/2-50)+"px");
 		this.createView();
 	}
@@ -41,6 +42,7 @@ public class TinyMCEPanel extends ResizeComposite implements ITinyMCEPanel {
 	}
 	
 	public void setContent(String content) {
+		this.tmce = new TinyMCE((this.height/2-50)+"px");
 		this.tmce.setText(content);
 	}
 	

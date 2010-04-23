@@ -31,7 +31,7 @@ public class TinyMCEPanelPresenter {
 	 * @param content to display
 	 */
 	public void displayContent(String content) {
-		
+		this.view.setContent(content);
 	}
 	
 }

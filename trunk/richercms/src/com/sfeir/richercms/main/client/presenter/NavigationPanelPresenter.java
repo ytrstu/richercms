@@ -4,28 +4,32 @@ import java.util.List;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.SelectionEvent;
+import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.TreeItem;
+import com.mvp4g.client.annotation.InjectService;
+import com.mvp4g.client.annotation.Presenter;
+import com.mvp4g.client.presenter.LazyPresenter;
 import com.sfeir.richercms.client.view.PopUpMessage;
 import com.sfeir.richercms.main.client.PageServiceAsync;
 import com.sfeir.richercms.main.client.event.MainEventBus;
 import com.sfeir.richercms.main.client.interfaces.INavigationPanel;
+import com.sfeir.richercms.main.client.view.NavigationPanel;
 import com.sfeir.richercms.main.shared.BeanPage;
 
-public class NavigationPanelPresenter {
 
-	private INavigationPanel view = null;
-	private PageServiceAsync rpcPage = null;
+@Presenter( view = NavigationPanel.class)
+public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, MainEventBus>{
+
 	private TreeItem selectedItem = null; // current selected Item in tree
-	private MainEventBus eventBus = null;
+	private PageServiceAsync rpcPage = null;
 	
 	public NavigationPanelPresenter() {
-		this.view = null;
-		this.rpcPage = null;
-		this.eventBus = null;
+		super();
 	}
 	
 	/**
@@ -33,36 +37,79 @@ public class NavigationPanelPresenter {
 	 */ 
 	public void bindView() {
 		
-	}
-	
-	/**
-	 * Fired when the main do start
-	 * @param navPanel 
-	 */
-	public void onStartNavPanel(INavigationPanel navPanel, MainEventBus eventBus) {
-		this.eventBus = eventBus;
-		this.view = navPanel;
-		
+		view.getSelectedEvtTree()
+		.addSelectionHandler(new SelectionHandler<TreeItem>(){
+			public void onSelection(SelectionEvent<TreeItem> event) {
+				setSelectedItem(event.getSelectedItem()); // fait des actions spécifique
+				eventBus.displayPage((String) selectedItem.getUserObject());
+				showMenuButton();
+			}
+		});
+		// commande pour la suppression d'une page
 		this.view.getPopUpMenuBar().setDelPageCommand(new Command(){
 			public void execute() {
 				popUpDeletePage();
-				NavigationPanelPresenter.this.eventBus.DeletePage();
+				NavigationPanelPresenter.this.eventBus.deletePage();
 			}});
-		
+		// commande pour l'ajout d'une sous-page
 		this.view.getPopUpMenuBar().setAddPageCommand(new Command(){
 			public void execute() {
-				NavigationPanelPresenter.this.eventBus.AddPage();
+				NavigationPanelPresenter.this.eventBus.addPage();
 				view.getPopUpMenuBar().hide();
 			}});
-		
-		this.buildTree();
+	}
+	
+	/**
+	 * Show button using to display menuBar
+	 */
+	public void showMenuButton() {
+		HorizontalPanel panel = (HorizontalPanel)this.selectedItem.getWidget();
+		panel.getWidget(1).setVisible(true);
+	}
 
+	/**
+	 * Use this when a new Item in the tree is selected.
+	 * @param selectedItem
+	 */
+	public void setSelectedItem(TreeItem selectedItem) {
+		if(this.selectedItem!=null) {
+			HorizontalPanel panel = (HorizontalPanel)this.selectedItem.getWidget();
+			panel.getWidget(1).setVisible(false);
+		}
+		this.selectedItem = selectedItem;
+	}
+	
+	/**
+	 * delete page selected in the tree
+	 */
+	public void popUpDeletePage() {	
+		
+		view.getPopUpMenuBar().hide();
+		
+		this.rpcPage.deletePage((String)selectedItem.getUserObject(), new AsyncCallback<Void>() {
+			public void onSuccess(Void result) {
+				onBuildTree(); //reload the new tree
+			}
+			public void onFailure(Throwable caught) {
+				PopUpMessage p = new PopUpMessage("Error : DeletePage");
+				p.show();}
+		});
+		
+		selectedItem = null;
+	}
+	
+	
+	/////////////////////////////////////////////// EVENT ///////////////////////////////////////////////
+
+	public void onStartPanels() {		
+		this.eventBus.changeNavPanel(this.view);
+		this.onBuildTree();
 	}
 	
 	/**
 	 * build the webPage tree with information in the datastore
 	 */
-	public void buildTree() {
+	public void onBuildTree() {
 		
 		this.rpcPage.getPages(new AsyncCallback<List<BeanPage>>() {
 	    	public void onSuccess(List<BeanPage> result) {
@@ -83,53 +130,15 @@ public class NavigationPanelPresenter {
 			});
 	}
 	
-	/**
-	 * delete page selected in the tree
-	 */
-	public void popUpDeletePage() {	
-		
-		view.getPopUpMenuBar().hide();
-		//this.rpcPage
-		final TreeItem parent = selectedItem.getParentItem();
-		
-		this.rpcPage.deletePage(parent.getChildIndex(selectedItem), new AsyncCallback<Void>() {
-			public void onSuccess(Void result) {
-				buildTree(); //reload the new tree
-			}
-			public void onFailure(Throwable caught) {
-				PopUpMessage p = new PopUpMessage("Error : DeletePage");
-				p.show();}
-		});
-		
-		selectedItem = null;
-	}
 	
-	public String showPopUpAction() {
-		
-		String key = (String) this.selectedItem.getUserObject();
-		HorizontalPanel panel = (HorizontalPanel)this.selectedItem.getWidget();
-		panel.getWidget(1).setVisible(true);
-		
-		return key;
-	}
-
-	public TreeItem getSelectedItem() {
-		return selectedItem;
-	}
-
-	public void setSelectedItem(TreeItem selectedItem) {
-		if(this.selectedItem!=null) {
-			HorizontalPanel panel = (HorizontalPanel)this.selectedItem.getWidget();
-			panel.getWidget(1).setVisible(false);
-		}
-		this.selectedItem = selectedItem;
-	}
-
-	public PageServiceAsync getRpcPage() {
-		return rpcPage;
-	}
-
-	public void setRpcPage(PageServiceAsync rpcPage) {
+	
+	
+	/**
+	 * used by the framework to instantiate rpcPage 
+	 * @param rpcPage
+	 */
+	@InjectService
+	public void setPageService( PageServiceAsync rpcPage ) {
 		this.rpcPage = rpcPage;
 	}
 }

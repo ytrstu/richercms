@@ -1,24 +1,39 @@
 package com.sfeir.richercms.main.client.presenter;
 
-
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.mvp4g.client.annotation.InjectService;
+import com.mvp4g.client.annotation.Presenter;
+import com.mvp4g.client.presenter.LazyPresenter;
+import com.sfeir.richercms.client.view.PopUpMessage;
+import com.sfeir.richercms.main.client.PageServiceAsync;
+import com.sfeir.richercms.main.client.event.MainEventBus;
 import com.sfeir.richercms.main.client.interfaces.IInformationPanel;
+import com.sfeir.richercms.main.client.view.InformationPanel;
 import com.sfeir.richercms.main.shared.BeanPage;
 
-public class InformationPanelPresenter {
+@Presenter( view = InformationPanel.class)
+public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, MainEventBus>{
 
-	private IInformationPanel view = null;
+	private PageServiceAsync rpcPage = null;
 	
 	public InformationPanelPresenter() {
-		this.view = null;
+		super();
 	}
 	
 	/**
 	 * Fired when the main do start
 	 * @param infoPanel 
 	 */
-	public void onStartInfoPanel(IInformationPanel infoPanel) {
-		this.view = infoPanel;
+	public void onStartPanels() {
 		this.view.deasabledWidgets();
+		this.eventBus.changeInfoPanel(this.view);
+	}
+	
+	/**
+	 * Bind the various evt
+	 * It's Mvp4g framework who call this function
+	 */ 
+	public void bindView() {
 	}
 	
 	
@@ -26,17 +41,26 @@ public class InformationPanelPresenter {
 	 * display Page informations
 	 * @param result the bean containing the page information
 	 */
-	public void displayPage(BeanPage result) {
+	public void onDisplayPage(String key) {
+		this.view.clearFields();
+		this.view.deasabledWidgets();
 		
-		view.setBrowserTitle(result.getBrowserTitle());
-		view.setDescription(result.getDescription());
-		view.setKeyWord(result.getKeyWord());
-		view.setPageTitle(result.getPageTitle());
-		//view.setPublicationFinish(result.getPublicationFinish());
-		//view.setPublicationStart(result.getPublicationStart());
-		view.setUrlName(result.getUrlName());
+		this.rpcPage.getPage(key, new AsyncCallback<BeanPage>() {
+			public void onSuccess(BeanPage result) {
+				view.setBrowserTitle(result.getBrowserTitle());
+				view.setDescription(result.getDescription());
+				view.setKeyWord(result.getKeyWord());
+				view.setPageTitle(result.getPageTitle());
+				//view.setPublicationFinish(result.getPublicationFinish());
+				//view.setPublicationStart(result.getPublicationStart());
+				view.setUrlName(result.getUrlName());
+			}
+			public void onFailure(Throwable caught) {
+				PopUpMessage p = new PopUpMessage("Error : Get current Page");
+				p.show();}
+		});
 	}
-	
+		
 	/**
 	 * make a Page and set all field who information is in InformationPanel
 	 * @return a BeanPage with all information of the InformationPanel form
@@ -53,5 +77,35 @@ public class InformationPanelPresenter {
 		newPage.setUrlName(view.getUrlName());
 		
 		return newPage;
+	}
+	
+/////////////////////////////////////////////// EVENT ///////////////////////////////////////////////
+	
+	public void onAddPage() {
+		view.clearFields();
+		view.enabledWidgets();
+	}
+	
+	public void onSavePage() {
+		view.deasabledWidgets();
+	}
+	
+	public void onDeletePage() {
+		view.clearFields();
+	}
+	
+	public void onCallInfo() {
+		this.eventBus.sendInfo(addInformationInPage());
+	}
+	
+	
+
+	/**
+	 * used by the framework to instantiate rpcPage 
+	 * @param rpcPage
+	 */
+	@InjectService
+	public void setPageService( PageServiceAsync rpcPage ) {
+		this.rpcPage = rpcPage;
 	}
 }

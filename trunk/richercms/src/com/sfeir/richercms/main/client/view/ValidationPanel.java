@@ -4,7 +4,6 @@ package com.sfeir.richercms.main.client.view;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.gwt.layout.client.Layout.Alignment;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.LayoutPanel;
@@ -22,13 +21,12 @@ public class ValidationPanel extends ResizeComposite implements IValidationPanel
 	
 	public ValidationPanel() {
 		super();
-		createView();
 	}
 	
 	/**
 	 * Create the widget and attached all component
 	 */
-	private void createView() {
+	public void createView() {
 		
 		FlexTable tab = new FlexTable();
 		tab.setCellSpacing(10);

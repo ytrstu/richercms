@@ -8,6 +8,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ResizeComposite;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 import com.sfeir.richercms.main.client.MainConstants;
 import com.sfeir.richercms.main.client.interfaces.IInformationPanel;
@@ -40,13 +41,12 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 	
 	public InformationPanel() {
 		super();
-		createView();
 	}
 	
 	/**
 	 * Create the widget and attached all component
 	 */
-	private void createView() {
+	public void createView() {
 		
 		ScrollPanel root = new ScrollPanel();
 		FlexTable tab = new FlexTable();
@@ -157,6 +157,10 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 
 	public void setUrlName(String urlName) {
 		this.tUrlName.setText(urlName);
+	}
+
+	public Widget asWidget() {
+		return this;
 	}
 	
 	

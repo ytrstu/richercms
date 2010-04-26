@@ -15,27 +15,26 @@ public interface IdisplayMainPage extends LazyView {
 	Widget asWidget();
 	
 	/**
-	 * Allows the presenter to communicate with the NavigationPanel
-	 * @return NavigationPanel
+	 * Load the NavigationPanel in the right place Panel
+	 * @param navPanel
 	 */
-	INavigationPanel getNavigationPanel();
-	
+	public void setNavPanel(INavigationPanel navPanel);
+
 	/**
-	 * Allows the presenter to communicate with the InformationPanel
-	 * @return InformationPanel
+	 * Load the InformationPanel in the right place Panel
+	 * @param listPanel
 	 */
-	IInformationPanel getInformationPanel();
-	
+	public void setInfoPanel(IInformationPanel listPanel);
+
 	/**
-	 * Allows the presenter to communicate with the ValidationPanel
-	 * Containing the add button and the cancel button.
-	 * @return ValidationPanel
+	 * Load the TinyMCEPanel in the right place Panel
+	 * @param tinyMcePanel
 	 */
-	IValidationPanel getValidationPanel();
-	
+	public void setTinyMcePanel(ITinyMCEPanel tinyMcePanel);
+
 	/**
-	 * Allows the presenter to communicate with the TinyEditor
-	 * @return TinyMCEPanel
+	 * Load the ValidationPanel in the right place Panel
+	 * @param validationPanel
 	 */
-	ITinyMCEPanel getTinyMCEPanel();
+	public void setValidationPanel(IValidationPanel validationPanel);
 }

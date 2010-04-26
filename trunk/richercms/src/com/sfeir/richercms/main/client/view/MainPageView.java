@@ -30,7 +30,10 @@ public class MainPageView extends TabLayoutPanel implements IdisplayMainPage {
 	private InformationPanel listPanel = null;
 	private TinyMCEPanel tinyMcePanel = null;
 	private ValidationPanel validationPanel = null;
-
+	private SplitLayoutPanel splitedPanel = null;
+	
+	private final int height = Window.getClientHeight()-30;
+	
 	public MainPageView() {
 		super(25, Unit.PX);
 	}
@@ -42,18 +45,12 @@ public class MainPageView extends TabLayoutPanel implements IdisplayMainPage {
 	/**
 	 * Create the widget and attached all component
 	 */
-	public void createView() {
-		
-		final int height = Window.getClientHeight()-30;
-		
-		this.navPanel = new NavigationPanel();
-		this.listPanel = new InformationPanel();
-		this.tinyMcePanel = new TinyMCEPanel(height/2-70);
-		this.validationPanel = new ValidationPanel();
-		
+	public void createView() {	
 		
 	    LayoutPanel layoutPanel1 = new LayoutPanel();
-	    layoutPanel1.add(this.createMainInterface(height));
+	    this.splitedPanel = new SplitLayoutPanel();
+	    
+	    layoutPanel1.add(this.splitedPanel);
 	    this.add(layoutPanel1, constants.TitlePanel1());
 	    
 	    LayoutPanel layoutPanel2 = new LayoutPanel();
@@ -64,46 +61,33 @@ public class MainPageView extends TabLayoutPanel implements IdisplayMainPage {
 
 	    this.selectTab(0);
 	}
-	
-	/**
-	 * Build the split panel containing 3 part (navigation, information and editor)
-	 * @return
-	 */
-	private SplitLayoutPanel createMainInterface(int height) {
-				
-		SplitLayoutPanel p = new SplitLayoutPanel();
-		//style application
+
+	public void setConstants(MainConstants constants) {
+		this.constants = constants;
+	}
+
+	public void setNavPanel(INavigationPanel navPanel) {
+		this.navPanel = (NavigationPanel)navPanel;
 		this.navPanel.setStyleName("tab-content");
+		this.splitedPanel.addWest(this.navPanel, 168);
+	}
+
+	public void setInfoPanel(IInformationPanel listPanel) {
+		this.listPanel = (InformationPanel)listPanel;
 		this.listPanel.setStyleName("tab-content");
+		this.splitedPanel.addNorth(this.listPanel, this.height/2 -120);
+	}
+
+	public void setTinyMcePanel(ITinyMCEPanel tinyMcePanel) {
+
+		this.tinyMcePanel = (TinyMCEPanel)tinyMcePanel;
 		this.tinyMcePanel.setStyleName("tab-content");
+		this.splitedPanel.add(this.tinyMcePanel);
+	}
+
+	public void setValidationPanel(IValidationPanel validationPanel) {
+		this.validationPanel = (ValidationPanel)validationPanel;
 		this.validationPanel.setStyleName("tab-content");
-		
-		//add Panels in the splitPanel
-		p.addWest(this.navPanel, 168);
-		p.addNorth(listPanel, height/2 -120);
-		p.addSouth(this.validationPanel, 60);
-		p.add(tinyMcePanel);
-		
-		return p;
-	}
-	
-	public INavigationPanel getNavigationPanel()
-	{
-		return this.navPanel;
-	}
-	
-	public IInformationPanel getInformationPanel()
-	{
-		return this.listPanel;
-	}
-	
-	public IValidationPanel getValidationPanel()
-	{
-		return this.validationPanel;
-	}
-	
-	public ITinyMCEPanel getTinyMCEPanel()
-	{
-		return this.tinyMcePanel;
+		this.splitedPanel.addSouth(this.validationPanel, 60);
 	}
 }

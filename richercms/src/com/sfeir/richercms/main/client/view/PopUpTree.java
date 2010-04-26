@@ -8,6 +8,13 @@ import com.google.gwt.user.client.ui.PopupPanel;
 import com.sfeir.richercms.main.client.MainConstants;
 import com.sfeir.richercms.main.client.interfaces.IPopUpTree;
 
+/**
+ * 
+ * @author homberg.g
+ *
+ *Old PopUp System
+ *
+ */
 public class PopUpTree extends PopupPanel implements IPopUpTree{
 	
 	//gestion des langues

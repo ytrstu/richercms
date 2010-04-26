@@ -1,18 +1,16 @@
 package com.sfeir.richercms.main.client.presenter;
 
-
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.logical.shared.SelectionEvent;
-import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.TreeItem;
 import com.mvp4g.client.annotation.InjectService;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.sfeir.richercms.client.view.PopUpMessage;
 import com.sfeir.richercms.main.client.PageServiceAsync;
 import com.sfeir.richercms.main.client.event.MainEventBus;
+import com.sfeir.richercms.main.client.interfaces.IInformationPanel;
+import com.sfeir.richercms.main.client.interfaces.INavigationPanel;
+import com.sfeir.richercms.main.client.interfaces.ITinyMCEPanel;
+import com.sfeir.richercms.main.client.interfaces.IValidationPanel;
 import com.sfeir.richercms.main.client.interfaces.IdisplayMainPage;
 import com.sfeir.richercms.main.client.view.MainPageView;
 import com.sfeir.richercms.main.shared.BeanPage;
@@ -21,17 +19,11 @@ import com.sfeir.richercms.main.shared.BeanPage;
 public class MainPagePresenter extends LazyPresenter<IdisplayMainPage, MainEventBus> {
 	
 	private PageServiceAsync rpcPage = null;
-	private InformationPanelPresenter infoPanelPresenter = null;
-	private NavigationPanelPresenter navPanelPresenter = null;
-	private TinyMCEPanelPresenter editorPanelPresenter = null;
-	private ValidationPanelPresenter valPanelPresenter = null;
+	private BeanPage editingPage = null;
 	
 	public MainPagePresenter()
 	{
-		this.infoPanelPresenter = new  InformationPanelPresenter();
-		this.navPanelPresenter = new NavigationPanelPresenter();
-		this.editorPanelPresenter = new TinyMCEPanelPresenter();
-		this.valPanelPresenter = new ValidationPanelPresenter();
+		super();
 	}
 	
 	/**
@@ -39,81 +31,61 @@ public class MainPagePresenter extends LazyPresenter<IdisplayMainPage, MainEvent
 	 * It's Mvp4g framework who call this function
 	 */ 
 	public void bindView() {
-		
-		view.getNavigationPanel().getSelectedEvtTree()
-			.addSelectionHandler(new SelectionHandler<TreeItem>(){
-				public void onSelection(SelectionEvent<TreeItem> event) {
-					navPanelPresenter.setSelectedItem(event.getSelectedItem());
-					view.getInformationPanel().deasabledWidgets();
-					view.getValidationPanel().deasableButtons();
-					view.getTinyMCEPanel().disableEditor();
-					displayPage();
-				}
-		});
-		
-		
-		view.getValidationPanel().getClicBtnAdd().addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent event) {
-				addPage();
-				view.getInformationPanel().deasabledWidgets();
-				view.getValidationPanel().deasableButtons();
-				view.getTinyMCEPanel().disableEditor();
-				displayPage();
-			}
-		});
 	}
 	
-	/**
-	 * Fired when the main do start
-	 */
-	public void onStartMain() {
-		
-		this.infoPanelPresenter.onStartInfoPanel(this.view.getInformationPanel());
-		this.navPanelPresenter.onStartNavPanel(this.view.getNavigationPanel(),eventBus);
-		this.editorPanelPresenter.onStartTinyMCEPanel(this.view.getTinyMCEPanel());
-		this.valPanelPresenter.onStartValidationPanel(this.view.getValidationPanel());
-		eventBus.changeBody(view.asWidget());
-	}
-	
-	public void onAddPage() {
-		view.getInformationPanel().clearFields();
-		view.getInformationPanel().enabledWidgets();
-		view.getValidationPanel().enabledButtons();
-		view.getTinyMCEPanel().enableEditor();
-	}
-	
-	public void onDeletePage() {
-		view.getInformationPanel().clearFields();
-	}
-	
-	private void displayPage() {
-		String key = this.navPanelPresenter.showPopUpAction();
-		this.rpcPage.getPage(key, new AsyncCallback<BeanPage>() {
-			public void onSuccess(BeanPage result) {
-				infoPanelPresenter.displayPage(result);
-				editorPanelPresenter.displayContent(result.getContent());
-			}
-			public void onFailure(Throwable caught) {
-				PopUpMessage p = new PopUpMessage("Error : Get current Page");
-				p.show();}
-		});
-		
-	}
 	
 	private void addPage()
 	{
-		BeanPage newPage = this.infoPanelPresenter.addInformationInPage();
-		newPage.setContent(view.getTinyMCEPanel().getContent());
-		
-		this.rpcPage.addPage(newPage, new AsyncCallback<Void>() {
+		this.rpcPage.addPage(this.editingPage, new AsyncCallback<Void>() {
 			public void onSuccess(Void result) {
-				navPanelPresenter.buildTree(); //reload the new tree
+				eventBus.buildTree(); //reload the new tree
 			}
 			public void onFailure(Throwable caught) {
 				PopUpMessage p = new PopUpMessage("Error : AddPage");
 				p.show();}
 		});
 	}
+	
+	
+	/////////////////////////////////////////////// EVENT ///////////////////////////////////////////////
+	
+	public void onChangeNavPanel(INavigationPanel navPanel) {
+		this.view.setNavPanel(navPanel);
+	}
+	
+	public void onChangeInfoPanel(IInformationPanel infoPanel) {
+		this.view.setInfoPanel(infoPanel);
+	}
+	
+	public void onChangeEditorPanel(ITinyMCEPanel tinyMcePanel) {
+		this.view.setTinyMcePanel(tinyMcePanel);
+	}
+	
+	public void onChangeValidationPanel(IValidationPanel validationPanel) {
+		this.view.setValidationPanel(validationPanel);
+	}
+	
+	public void onStartMain() {	
+		this.eventBus.startPanels();
+		eventBus.changeBody(view.asWidget());
+	}
+	
+	public void onSavePage() {
+		this.eventBus.callInfo();
+	}
+
+	public void onSendInfo(BeanPage info) {
+		this.editingPage = info;
+		this.eventBus.callContent();
+	}
+	
+	public void onSendContent(String content) {
+		this.editingPage.setContent(content);
+		this.addPage();
+	}
+	
+	
+	
 	
 	/**
 	 * used by the framework to instantiate rpcPage 
@@ -122,6 +94,5 @@ public class MainPagePresenter extends LazyPresenter<IdisplayMainPage, MainEvent
 	@InjectService
 	public void setPageService( PageServiceAsync rpcPage ) {
 		this.rpcPage = rpcPage;
-		this.navPanelPresenter.setRpcPage(rpcPage);
 	}
 }

@@ -19,23 +19,33 @@ import com.sfeir.richercms.main.client.interfaces.IPopUpMenuBar;
  */
 public class NavigationPanel extends ResizeComposite implements INavigationPanel{
 
-	private Tree navigationTree = new Tree();
+	private Tree navigationTree = null;
 	private TreeItem rootItem = null;
-	private PopUpMenuBar menuBar = new PopUpMenuBar();
+	private PopUpMenuBar menuBar = null;
 	
 	public NavigationPanel() {
 		super();
-		createView();
 	}
 
 	/**
 	 * Create the widget and attached all component
 	 */
-	private void createView() {
+	public void createView() {
+		this.menuBar = new PopUpMenuBar();
+		this.navigationTree =  new Tree();
+		
 		this.navigationTree.setAnimationEnabled(true);
 		LayoutPanel main = new LayoutPanel();
 		main.add(this.navigationTree);
 		this.initWidget(main);
+	}
+	
+	/**
+	 * Clear the tree
+	 */
+	public void clearTree() {
+		this.navigationTree.clear();
+		this.rootItem = null;
 	}
 	
 	public HasClickHandlers addPageInTree(String name, String key)
@@ -59,16 +69,10 @@ public class NavigationPanel extends ResizeComposite implements INavigationPanel
 		
 		return b;
 	}
-	
-	public void clearTree() {
-		this.navigationTree.clear();
-		this.rootItem = null;
-	}
-	
+		
 	public HasSelectionHandlers<TreeItem> getSelectedEvtTree() {
 		return this.navigationTree;
 	}
-	
 	
 	public IPopUpMenuBar getPopUpMenuBar () {
 		return this.menuBar;

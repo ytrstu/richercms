@@ -51,12 +51,14 @@ public class ServicePageImpl extends RemoteServiceServlet implements PageService
 			    	lst1.add(p);
 			    	this.root.setPages(lst1);
 		        	pm.makePersistent(this.root);
+		        	
 		        } else {
 		        	this.root = roots.get(0);
 		        	for (Page page : this.root.getPages())
 		        		lst.add(this.pageToBean(page));
 		        }
 	        tx.commit();
+	        
 
         } finally {
 			if (tx.isActive()) {
@@ -102,13 +104,13 @@ public class ServicePageImpl extends RemoteServiceServlet implements PageService
 		 }
 	}
 	
-	public void deletePage(int id) {
+	public void deletePage(String key) {
 		
 		PersistenceManager pm = getPersistenceManager();
 		 try {
 		    	Transaction tx = pm.currentTransaction();
 		    	tx.begin();
-					Page page = pm.getObjectById(Page.class, this.root.getPages().get(id).getEncodedKey());
+					Page page = pm.getObjectById(Page.class, key);
 					pm.deletePersistent(page);
 				tx.commit();
 			 }

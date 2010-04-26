@@ -1,6 +1,8 @@
 package com.sfeir.richercms.main.client.interfaces;
 
-public interface ITinyMCEPanel {
+import com.mvp4g.client.view.LazyView;
+
+public interface ITinyMCEPanel extends LazyView{
 
 	/**
 	 * display the editor in the Panel

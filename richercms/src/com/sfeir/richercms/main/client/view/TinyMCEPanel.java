@@ -1,29 +1,33 @@
 package com.sfeir.richercms.main.client.view;
 
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.ResizeComposite;
 import com.sfeir.richercms.main.client.interfaces.ITinyMCEPanel;
 import com.sfeir.richercms.main.client.tinyMCE.TinyMCE;
 
+/**
+ * @author homberg.g
+ */
 public class TinyMCEPanel extends ResizeComposite implements ITinyMCEPanel {
 
 	private TinyMCE tmce = null;
-	private int height = 0;
+	private final int height = Window.getClientHeight()-30;
+	
 	/**
 	 * Constructor
 	 * @param height of the tinyEditor in pixels
 	 */
-	public TinyMCEPanel(int height) {
+	public TinyMCEPanel() {
 		super();
-		this.height = height;
-		this.tmce = new TinyMCE((height/2-50)+"px");
-		this.createView();
 	}
 	
 	/**
 	 * Create the widget and attached all component
 	 */
-	private void createView() {
+	public void createView() {
+		
+		this.tmce = new TinyMCE((height/2-50)+"px");
 		LayoutPanel main = new LayoutPanel();
 		main.add(this.tmce);
 		this.initWidget(main);

@@ -16,5 +16,5 @@ public interface PageServiceAsync {
 	public void getPage(String key, AsyncCallback<BeanPage> callback);
 	public void addPage(BeanPage newPage, AsyncCallback<Void> callback);
 	public void updatePage(BeanPage p, AsyncCallback<Void> callback);
-	public void deletePage(int id, AsyncCallback<Void> callback);
+	public void deletePage(String key, AsyncCallback<Void> callback);
 }

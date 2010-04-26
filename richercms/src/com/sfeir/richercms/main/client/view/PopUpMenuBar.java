@@ -7,6 +7,12 @@ import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.sfeir.richercms.main.client.interfaces.IPopUpMenuBar;
 
+/**
+ * 
+ * @author homberg.g
+ *
+ * MenuBar, using to make modification on Page (add, delete, modify, ...)
+ */
 public class PopUpMenuBar extends PopupPanel implements IPopUpMenuBar{
 
 	private MenuBar popupMenuBar = new MenuBar(true);

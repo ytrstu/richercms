@@ -42,8 +42,8 @@ public interface PageService extends RemoteService {
 	
 	/**
 	 * delete a page 
-	 * @param id : position of the page in the list
+	 * @param key : the key of the Page
 	 */
-	public void deletePage(int id);
+	public void deletePage(String key);
 
 }

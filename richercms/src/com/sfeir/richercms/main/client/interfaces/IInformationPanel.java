@@ -1,7 +1,12 @@
 package com.sfeir.richercms.main.client.interfaces;
 
-public interface IInformationPanel {
+import com.google.gwt.user.client.ui.Widget;
+import com.mvp4g.client.view.LazyView;
 
+public interface IInformationPanel extends LazyView {
+
+	Widget asWidget();
+	
 	/**
 	 * Deasable all widgets includes in the Panel
 	 */

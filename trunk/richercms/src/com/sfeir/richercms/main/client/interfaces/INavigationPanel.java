@@ -1,5 +1,7 @@
 package com.sfeir.richercms.main.client.interfaces;
 
+import java.util.List;
+
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.logical.shared.HasSelectionHandlers;
 import com.google.gwt.user.client.ui.TreeItem;
@@ -32,4 +34,6 @@ public interface INavigationPanel extends LazyView{
 	 * @return : the PopUp
 	 */
 	IPopUpMenuBar getPopUpMenuBar ();
+	
+	void setTree(List<TreeItem> roots);
 }

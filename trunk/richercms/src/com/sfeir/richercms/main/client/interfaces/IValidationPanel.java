@@ -26,4 +26,10 @@ public interface IValidationPanel extends LazyView {
 	 * @return : EventHandler
 	 */
 	HasClickHandlers getClicBtnCancel();
+	
+	/**
+	 *  Change the text of the btn
+	 * @param text : the newText
+	 */
+	void setBtnAddText(String text);
 }

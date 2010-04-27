@@ -1,5 +1,6 @@
 package com.sfeir.richercms.main.client.presenter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -10,6 +11,8 @@ import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TreeItem;
 import com.mvp4g.client.annotation.InjectService;
 import com.mvp4g.client.annotation.Presenter;
@@ -54,7 +57,14 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Ma
 		// commande pour l'ajout d'une sous-page
 		this.view.getPopUpMenuBar().setAddPageCommand(new Command(){
 			public void execute() {
-				NavigationPanelPresenter.this.eventBus.addPage();
+				NavigationPanelPresenter.this.eventBus.addPage((String) selectedItem.getUserObject());
+				view.getPopUpMenuBar().hide();
+			}});
+		
+		// commande pour la modification d'une page
+		this.view.getPopUpMenuBar().setModifyPageCommand(new Command(){
+			public void execute() {
+				NavigationPanelPresenter.this.eventBus.modifyPage((String) selectedItem.getUserObject());
 				view.getPopUpMenuBar().hide();
 			}});
 	}
@@ -64,7 +74,7 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Ma
 	 */
 	public void showMenuButton() {
 		HorizontalPanel panel = (HorizontalPanel)this.selectedItem.getWidget();
-		panel.getWidget(1).setVisible(true);
+		panel.getWidget(2).setVisible(true);
 	}
 
 	/**
@@ -74,7 +84,7 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Ma
 	public void setSelectedItem(TreeItem selectedItem) {
 		if(this.selectedItem!=null) {
 			HorizontalPanel panel = (HorizontalPanel)this.selectedItem.getWidget();
-			panel.getWidget(1).setVisible(false);
+			panel.getWidget(2).setVisible(false);
 		}
 		this.selectedItem = selectedItem;
 	}
@@ -109,6 +119,7 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Ma
 	/**
 	 * build the webPage tree with information in the datastore
 	 */
+	/*
 	public void onBuildTree() {
 		
 		this.rpcPage.getPages(new AsyncCallback<List<BeanPage>>() {
@@ -128,9 +139,59 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Ma
 				PopUpMessage p = new PopUpMessage("Error : Build tree");
 				p.show();}
 			});
+	}*/
+	
+	
+	public void onBuildTree() {
+		
+		this.rpcPage.getPages(new AsyncCallback<List<BeanPage>>() {
+	    	public void onSuccess(List<BeanPage> result) {
+	    		view.clearTree();	 
+	    		ArrayList<TreeItem> rootList = new ArrayList<TreeItem>();
+	    		for(BeanPage res : result) {
+	    			rootList.add(makeTree(res,true));
+	    		}
+	    		view.setTree(rootList);
+	    	}
+			public void onFailure(Throwable caught){
+				PopUpMessage p = new PopUpMessage("Error : Build tree");
+				p.show();}
+			});
 	}
 	
 	
+	public TreeItem makeTree(BeanPage parent,boolean mainPage) {
+		
+		Button b = new Button(">");
+		HorizontalPanel p = new HorizontalPanel();
+		Image img;
+		
+		if(mainPage)
+			img = new Image("tab_images/mainPage.JPG");
+		else
+			img = new Image("tab_images/subPage.JPG");
+		p.setSpacing(5);
+		p.add(img);
+		p.add(new Label(parent.getPageTitle()));
+		p.add(b);
+		b.setVisible(false);
+		TreeItem parentLeaf = new TreeItem();
+		parentLeaf.setUserObject(parent.getKey());
+		parentLeaf.setWidget(p);
+		
+		b.addClickHandler(new ClickHandler() { // open the popUpMenu
+			public void onClick(ClickEvent event) {
+				Button b = (Button)event.getSource();
+				view.getPopUpMenuBar().setPopupPosition(b.getAbsoluteLeft() + b.getOffsetWidth(),
+														b.getAbsoluteTop() + b.getOffsetHeight());
+				view.getPopUpMenuBar().show();
+			}});
+		
+		for(BeanPage child : parent.getSubPages()) {
+				parentLeaf.addItem(makeTree(child, false));
+		}
+		return parentLeaf;
+	}
 	
 	
 	/**

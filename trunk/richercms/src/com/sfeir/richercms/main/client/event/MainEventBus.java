@@ -49,8 +49,17 @@ public interface MainEventBus extends EventBus {
 	/**
 	 * fired by the NavigationPresenter when the addPage menu is clicked
 	 */
+	@Event( handlers = {MainPagePresenter.class, InformationPanelPresenter.class, ValidationPanelPresenter.class, TinyMCEPanelPresenter.class} )
+	public void addPage(String key);
+	
 	@Event( handlers = {InformationPanelPresenter.class, ValidationPanelPresenter.class, TinyMCEPanelPresenter.class} )
-	public void addPage();
+	public void cancelPage();
+	
+	/**
+	 * fired by the NavigationPresenter when the addPage menu is clicked
+	 */
+	@Event( handlers = {MainPagePresenter.class, InformationPanelPresenter.class, ValidationPanelPresenter.class, TinyMCEPanelPresenter.class} )
+	public void modifyPage(String key);
 	
 	/**
 	 * fired by 
@@ -64,6 +73,13 @@ public interface MainEventBus extends EventBus {
 	 */
 	@Event( handlers = {InformationPanelPresenter.class, ValidationPanelPresenter.class} )
 	public void displayPage(String Key);
+	
+	/**
+	 * Fired by the InformationPanelPresenter, for displaying the content of the selected Page
+	 * @param Key
+	 */
+	@Event( handlers = {TinyMCEPanelPresenter.class} )
+	public void displayContent(String content);
 	
 	/**
 	 * Fired by the ValidationPresenter when the add buton is clicked

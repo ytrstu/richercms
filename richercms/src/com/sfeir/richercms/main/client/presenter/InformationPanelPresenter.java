@@ -54,6 +54,7 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 				//view.setPublicationFinish(result.getPublicationFinish());
 				//view.setPublicationStart(result.getPublicationStart());
 				view.setUrlName(result.getUrlName());
+				eventBus.displayContent(result.getContent());
 			}
 			public void onFailure(Throwable caught) {
 				PopUpMessage p = new PopUpMessage("Error : Get current Page");
@@ -81,8 +82,17 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 	
 /////////////////////////////////////////////// EVENT ///////////////////////////////////////////////
 	
-	public void onAddPage() {
+	public void onAddPage(String key) {
 		view.clearFields();
+		view.enabledWidgets();
+	}
+	
+	public void onCancelPage() {
+		view.clearFields();
+		view.deasabledWidgets();
+	}
+	
+	public void onModifyPage(String key) {
 		view.enabledWidgets();
 	}
 	

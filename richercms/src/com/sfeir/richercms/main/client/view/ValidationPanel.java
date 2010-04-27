@@ -1,9 +1,9 @@
 package com.sfeir.richercms.main.client.view;
 
 
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.layout.client.Layout.Alignment;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.LayoutPanel;
@@ -30,11 +30,13 @@ public class ValidationPanel extends ResizeComposite implements IValidationPanel
 		
 		FlexTable tab = new FlexTable();
 		tab.setCellSpacing(10);
+
 		tab.setWidget(0,0,this.btnAdd);
 		tab.setWidget(0,1,this.btnCancel);
 		
 		LayoutPanel p = new LayoutPanel();
 		p.add(tab);
+
 		this.initWidget(p);
 	}
 
@@ -55,6 +57,10 @@ public class ValidationPanel extends ResizeComposite implements IValidationPanel
 
 	public HasClickHandlers getClicBtnCancel() {
 		return this.btnCancel;
+	}
+	
+	public void setBtnAddText(String text) {
+		this.btnAdd.setText(text);
 	}
 	
 	

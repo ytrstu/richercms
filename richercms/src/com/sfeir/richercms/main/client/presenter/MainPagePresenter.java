@@ -20,9 +20,10 @@ public class MainPagePresenter extends LazyPresenter<IdisplayMainPage, MainEvent
 	
 	private PageServiceAsync rpcPage = null;
 	private BeanPage editingPage = null;
+	private String key = null; // field used to save the key of the current Page
+	private int AddOrModify = 0; //0 => add, 1=> modify
 	
-	public MainPagePresenter()
-	{
+	public MainPagePresenter() {
 		super();
 	}
 	
@@ -34,8 +35,8 @@ public class MainPagePresenter extends LazyPresenter<IdisplayMainPage, MainEvent
 	}
 	
 	
-	private void addPage()
-	{
+	private void addPage() {
+		this.editingPage.setKey(this.key);
 		this.rpcPage.addPage(this.editingPage, new AsyncCallback<Void>() {
 			public void onSuccess(Void result) {
 				eventBus.buildTree(); //reload the new tree
@@ -46,8 +47,32 @@ public class MainPagePresenter extends LazyPresenter<IdisplayMainPage, MainEvent
 		});
 	}
 	
+	public void modifyPage() {
+		
+		this.editingPage.setKey(this.key);
+		this.rpcPage.updatePage(this.editingPage, new AsyncCallback<Void>() {
+			public void onSuccess(Void result) {
+				eventBus.buildTree(); //reload the new tree
+			}
+			public void onFailure(Throwable caught) {
+				PopUpMessage p = new PopUpMessage("Error : Modify Page");
+				p.show();}
+		});
+	}
+	
 	
 	/////////////////////////////////////////////// EVENT ///////////////////////////////////////////////
+	
+	public void onAddPage(String key){
+		this.AddOrModify = 0;
+		this.key = key;
+	}
+	
+	public void onModifyPage(String key)
+	{
+		this.AddOrModify = 1;
+		this.key = key;
+	}
 	
 	public void onChangeNavPanel(INavigationPanel navPanel) {
 		this.view.setNavPanel(navPanel);
@@ -81,7 +106,17 @@ public class MainPagePresenter extends LazyPresenter<IdisplayMainPage, MainEvent
 	
 	public void onSendContent(String content) {
 		this.editingPage.setContent(content);
-		this.addPage();
+
+		switch(this.AddOrModify) {
+			case 0 :
+				this.addPage();
+				break;
+			case 1 :
+				this.modifyPage();
+				break;
+			default :
+				break;
+		}		
 	}
 	
 	

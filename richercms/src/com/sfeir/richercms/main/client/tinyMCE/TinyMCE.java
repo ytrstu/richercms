@@ -76,12 +76,26 @@ public class TinyMCE extends ResizeComposite {
      * @param text
      */
     public void setText(String text) {
+    	this.removeMCE(id);
         ta.setText(text);
+        this.setTextAreaToTinyMCE(id);
     }
 
     public String getText() {
         getTextData();
         return ta.getText();
+    }
+    
+    public void disable() {
+    	this.removeMCE(id);
+    	ta.setEnabled(false);
+    	this.setTextAreaToTinyMCE(id);
+    }
+    
+    public void enable() {
+    	this.removeMCE(id);
+    	ta.setEnabled(true);
+    	this.setTextAreaToTinyMCE(id);
     }
     
     public void setReadOnly(boolean readOnly) {

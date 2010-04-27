@@ -1,5 +1,7 @@
 package com.sfeir.richercms.main.client.view;
 
+import java.util.List;
+
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.logical.shared.HasSelectionHandlers;
 import com.google.gwt.user.client.ui.Button;
@@ -7,6 +9,7 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.ResizeComposite;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
 import com.sfeir.richercms.main.client.interfaces.INavigationPanel;
@@ -35,7 +38,7 @@ public class NavigationPanel extends ResizeComposite implements INavigationPanel
 		this.navigationTree =  new Tree();
 		
 		this.navigationTree.setAnimationEnabled(true);
-		LayoutPanel main = new LayoutPanel();
+		ScrollPanel main = new ScrollPanel();
 		main.add(this.navigationTree);
 		this.initWidget(main);
 	}
@@ -76,6 +79,12 @@ public class NavigationPanel extends ResizeComposite implements INavigationPanel
 	
 	public IPopUpMenuBar getPopUpMenuBar () {
 		return this.menuBar;
+	}
+	
+	public void setTree(List<TreeItem> roots) {
+		for (TreeItem root : roots) {
+			this.navigationTree.addItem(root);
+		}
 	}
 	
 }

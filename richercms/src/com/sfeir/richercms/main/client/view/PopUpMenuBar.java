@@ -16,6 +16,7 @@ import com.sfeir.richercms.main.client.interfaces.IPopUpMenuBar;
 public class PopUpMenuBar extends PopupPanel implements IPopUpMenuBar{
 
 	private MenuBar popupMenuBar = new MenuBar(true);
+	private MenuItem modifyPage = null;
 	private MenuItem addPage = null;
 	private MenuItem delPage = null;
 
@@ -23,10 +24,12 @@ public class PopUpMenuBar extends PopupPanel implements IPopUpMenuBar{
 		super(true);
 		
 		// instantiate with empty command
+		this.modifyPage = new MenuItem("modify page", true, new Command(){public void execute() {;}});
 		this.addPage = new MenuItem("Add page", true, new Command(){public void execute() {;}});
 		this.delPage = new MenuItem("Delete page", true, new Command(){public void execute() {;}});
-		this.popupMenuBar.addItem(addPage);
-		this.popupMenuBar.addItem(delPage);
+		this.popupMenuBar.addItem(this.modifyPage);
+		this.popupMenuBar.addItem(this.addPage);
+		this.popupMenuBar.addItem(this.delPage);
 		  
 		this.popupMenuBar.setVisible(true);
 		this.popupMenuBar.setAnimationEnabled(true);
@@ -47,6 +50,11 @@ public class PopUpMenuBar extends PopupPanel implements IPopUpMenuBar{
 	public void setDelPageCommand(Command cmd)
 	{
 		this.delPage.setCommand(cmd);
+	}
+	
+	public void setModifyPageCommand(Command cmd)
+	{
+		this.modifyPage.setCommand(cmd);
 	}
 
 }

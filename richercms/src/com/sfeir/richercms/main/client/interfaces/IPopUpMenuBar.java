@@ -10,6 +10,8 @@ public interface IPopUpMenuBar {
 	
 	void setDelPageCommand(Command cmd);
 	
+	void setModifyPageCommand(Command cmd);
+	
 	void show();
 	
 	void hide();

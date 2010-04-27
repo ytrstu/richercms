@@ -48,6 +48,22 @@ public class BeanPage implements Serializable {
 		this.content = content;
 		this.subPages = subPages;
 	}
+	
+	public BeanPage(String key, String browserTitle, String pageTitle, String urlName,
+			String description, String keyWord, String publicationStart,
+			String publicationFinish, String content) {
+		super();
+		this.key = key;
+		this.browserTitle = browserTitle;
+		this.pageTitle = pageTitle;
+		this.urlName = urlName;
+		this.description = description;
+		this.keyWord = keyWord;
+		this.publicationStart = publicationStart;
+		this.publicationFinish = publicationFinish;
+		this.content = content;
+		this.subPages = new ArrayList<BeanPage>();
+	}
 
 	public String getKey() {
 		return key;

@@ -51,7 +51,7 @@ public class ServicePageImpl extends RemoteServiceServlet implements PageService
 			    	lst1.add(p);
 			    	this.root.setPages(lst1);
 		        	pm.makePersistent(this.root);
-		        	
+		        	lst.add(this.pageToBean(p));
 		        } else {
 		        	this.root = roots.get(0);
 		        	for (Page page : this.root.getPages())

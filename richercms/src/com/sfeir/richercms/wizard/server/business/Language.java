@@ -1,5 +1,6 @@
 package com.sfeir.richercms.wizard.server.business;
 
+import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
@@ -14,45 +15,54 @@ import javax.jdo.annotations.PrimaryKey;
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class Language {
 	
-	@PrimaryKey
-	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-	private Long id;
+    @PrimaryKey
+    @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
+    @Extension(vendorName="datanucleus", key="gae.encoded-pk", value="true")
+    private String encodedKey;
 	@Persistent
 	private String langue;
 	@Persistent
 	private String tag;
 	@Persistent
 	private boolean selected;
+	@Persistent
+	private String translationKey; //permet de savoir si une translation est associé a cette langue, null sinon
 	
 	
 	public Language() {
 		this.langue = "";
 		this.selected = false;
+		this.tag  = "";
+		this.translationKey = null;
 	}
 
 	public Language(String langue) {
 		this.langue = langue;
 		this.selected = false;
+		this.tag  = "";
+		this.translationKey = null;
 	}
 	
 	public Language(String langue, String tag) {
 		this.langue = langue;
 		this.tag = tag;
 		this.selected = false;
+		this.translationKey = null;
 	}
 	
 	public Language(String langue, String tag, boolean selected) {
 		this.langue = langue;
 		this.tag = tag;
 		this.selected = selected;
+		this.translationKey = null;
 	}
 
-	public Long getId() {
-		return this.id;
+	public String getEncodedKey() {
+		return encodedKey;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setEncodedKey(String encodedKey) {
+		this.encodedKey = encodedKey;
 	}
 
 	public String getLangue() {
@@ -79,4 +89,11 @@ public class Language {
 		this.tag = tag;
 	}
 
+	public String getTranslationKey() {
+		return this.translationKey;
+	}
+
+	public void setTranslationKey(String translationKey) {
+		this.translationKey = translationKey;
+	}
 }

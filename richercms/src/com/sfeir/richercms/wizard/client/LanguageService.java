@@ -2,6 +2,7 @@ package com.sfeir.richercms.wizard.client;
 
 import java.util.List;
 
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.sfeir.richercms.wizard.shared.BeanLanguageDetails;
@@ -68,4 +69,18 @@ public interface LanguageService extends RemoteService
 	 * @param id : the position in the DisplayTable of the language available to delete
 	 */
 	public void deleteLanguage(int id);
+	
+	/**
+	 * When a translation of the website is setting, in the current language, we need to set the key of the translation
+	 * @param languagekey : key of the language in the database
+	 * @param translationKey : key of the translation in the database
+	 */
+	public void setTranslationKey(String languagekey, String translationKey);
+	
+	/**
+	 * Return the key of a translation. if any translation exist, this function retrun null
+	 * @param languagekey : the key of the language who need a translation
+	 * @return the key of the translation in the database or null either
+	 */
+	public String isAlreadyTranslated(String languagekey);
 }

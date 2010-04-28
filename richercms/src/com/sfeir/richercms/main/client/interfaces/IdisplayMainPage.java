@@ -1,5 +1,6 @@
 package com.sfeir.richercms.main.client.interfaces;
 
+import com.google.gwt.event.dom.client.HasChangeHandlers;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.view.LazyView;
 
@@ -37,4 +38,25 @@ public interface IdisplayMainPage extends LazyView {
 	 * @param validationPanel
 	 */
 	public void setValidationPanel(IValidationPanel validationPanel);
+	
+	/**
+	 * Add a language in the listBox
+	 * @param name : the display name of the language 
+	 * @param key : the key, needed to retrive the page translation in the dataBase
+	 * @param defaultLg : if is set : the language was select by default and a string is added in the name to specify it.
+	 */
+	public void addLanguageInListBox(String name, String key, boolean defaultLg);
+	
+	/**
+	 * When a new language is selected in the listBox
+	 * @return the Event
+	 */
+	public HasChangeHandlers onChangeSelectedLg();
+	
+	/**
+	 * Return the key of the language, its the key of the associated language in the datastore.
+	 * @return the key of the selected Language
+	 */
+	public String getKeyOfSelectedLg();
+
 }

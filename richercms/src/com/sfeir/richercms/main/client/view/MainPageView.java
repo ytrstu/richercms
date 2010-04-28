@@ -3,6 +3,7 @@ package com.sfeir.richercms.main.client.view;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.event.dom.client.HasChangeHandlers;
 import com.google.gwt.layout.client.Layout.Alignment;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Window;
@@ -43,7 +44,7 @@ public class MainPageView extends ResizeComposite implements IdisplayMainPage {
 	private MenuBar mainmenu  = null;
 	DockLayoutPanel layoutPanel1 = null;
 	LayoutPanel layoutPanel2 = null;
-	ListBox language = null;
+	ListBox languages = null;
 
 	private final int height = Window.getClientHeight()-30;
 	
@@ -65,9 +66,8 @@ public class MainPageView extends ResizeComposite implements IdisplayMainPage {
 	    this.splitedPanel = new SplitLayoutPanel();
 		
 		// liste du choix de la langue
-		this.language = new ListBox(false);
-		this.language.addItem("Français");
-		this.language.setWidth("200px");
+		this.languages = new ListBox(false);
+		this.languages.setWidth("200px");
 		Label listBoxTitle = new Label("Langue en cours : ");
 	    LayoutPanel placmentPanel = new  LayoutPanel();
 	    
@@ -104,7 +104,7 @@ public class MainPageView extends ResizeComposite implements IdisplayMainPage {
 	    FlexTable labelAndListBox = new FlexTable();
 	    labelAndListBox.setWidget(0, 0, this.mainmenu);
 	    labelAndListBox.setWidget(0, 1, listBoxTitle);
-	    labelAndListBox.setWidget(0, 2, this.language);
+	    labelAndListBox.setWidget(0, 2, this.languages);
 	    placmentPanel.setStyleName("tab-content");
 	    placmentPanel.add(labelAndListBox);
 	    placmentPanel.setWidgetHorizontalPosition(labelAndListBox,  Alignment.END);
@@ -155,5 +155,23 @@ public class MainPageView extends ResizeComposite implements IdisplayMainPage {
 		this.layoutPanel1.addSouth(this.validationPanel, 50);
 		//ajout de l'élément final : signifie la fin du chargement
 	    this.layoutPanel1.add(this.splitedPanel);
+	}
+	
+	public void addLanguageInListBox(String name, String key, boolean defaultLg) {
+		
+		if(defaultLg){
+			this.languages.addItem(name+" (DEFAULT)", key);
+			this.languages.setSelectedIndex(this.languages.getItemCount()-1);
+		}
+		else
+			this.languages.addItem(name, key);
+	}
+	
+	public HasChangeHandlers onChangeSelectedLg() {
+		return this.languages;
+	}
+	
+	public String getKeyOfSelectedLg() {
+		return this.languages.getValue(this.languages.getSelectedIndex());
 	}
 }

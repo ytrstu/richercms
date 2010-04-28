@@ -30,6 +30,7 @@ public class ServicePageImpl extends RemoteServiceServlet implements PageService
 		return Pmf.getPersistenceManager();
 	}
 
+	
 	@SuppressWarnings("unchecked")
 	public List<BeanPage>  getPages() {
 		
@@ -70,6 +71,75 @@ public class ServicePageImpl extends RemoteServiceServlet implements PageService
         return lst;
 	}
 	
+	@SuppressWarnings("unchecked")
+	public BeanPage getMainPage(String translationKey) {
+		
+		PersistenceManager pm = getPersistenceManager();
+    	Transaction tx = pm.currentTransaction();
+    	BeanPage mainPage = null;
+	    try {
+	    	tx.begin();
+		        Query q = pm.newQuery(Root.class);
+		        List<Root> roots = (List<Root>) q.execute();
+		        
+		        if(roots.size() == 0){
+		        	this.root = new Root();
+			    	List<Page> lst1 = new ArrayList<Page>();
+			    	Page p = new Page(); p.setPageTitle("Main");
+			    	pm.makePersistent(p);
+			    	lst1.add(p);
+			    	this.root.setPages(lst1);
+		        	pm.makePersistent(this.root);
+		        	mainPage = this.pageToBean(p);
+		        } else {
+		        	this.root = roots.get(0);
+		        	if(translationKey != null) {
+			        	for (Page page : this.root.getPages())
+			        		if(page.getEncodedKey().equals(translationKey)) {
+			        			mainPage = this.pageToBean(page);
+			        			break;
+			        		}
+		        	}else{
+				    	//p = new Page(); p.setPageTitle("Main-translated"); 
+				    	//pm.makePersistent(p);
+		        		Page p = duplicateMainPage(this.root.getPages().get(0), pm);
+				    	this.root.getPages().add(p);
+	        			mainPage = this.pageToBean(p);
+		        	}
+		        }
+	        tx.commit();
+	        
+
+        } finally {
+			if (tx.isActive()) {
+			    tx.rollback();
+			}
+        	pm.close();
+        }
+        
+        return mainPage;
+	}
+	
+	private Page duplicateMainPage(Page p, PersistenceManager pm) {
+		
+		Page Duplicata = new Page(p.getBrowserTitle(),p.getPageTitle(), p.getUrlName(),
+				 p.getDescription(), p.getKeyWord(), p.getPublicationStart(),
+				 p.getPublicationFinish(), p.getContent());
+
+		if((p.getSubPages()!= null) && (p.getSubPages().size() != 0)) {
+			ArrayList<Page>lst = new ArrayList<Page>();
+			for(Page childPage : p.getSubPages()) {
+				lst.add(duplicateMainPage(childPage,pm));
+			}
+			Duplicata.setSubPages(lst);
+			
+			pm.makePersistent(Duplicata);
+			return Duplicata;
+		}else {
+			pm.makePersistent(Duplicata);
+			return Duplicata;
+		}
+	}
 	
 	public void addPage(BeanPage newPage) {
 		
@@ -146,64 +216,6 @@ public class ServicePageImpl extends RemoteServiceServlet implements PageService
 				 pm.close();
 			 }
 		 return this.pageToBean(page);
-	}
-	
-	
-	private void addBasesPage() {
-		
-	    PersistenceManager pm = getPersistenceManager();
-
-    	//p.setSubPages(lst);
-    	
-	   /* try {*/
-	    	
-	    	//pm.makePersistentAll(lst);
-	    	
-	    	Transaction tx = pm.currentTransaction();
-	    	try {
-		        tx.begin();
-		        
-			    	List<Page> lst = new ArrayList<Page>();
-			    	
-			    	List<Page> lst1 = new ArrayList<Page>();
-			    	lst1.add(new Page("Page 1.1","Page 1.1","1.1","1.1","1.1","1.1","1.1","1.1"));
-			    	lst1.add(new Page("Page 1.2","Page 1.2","1.2","1.2","1.2","1.2","1.2","1.2"));
-			    	lst1.add(new Page("Page 1.3","Page 1.3","1.3","1.3","1.3","1.3","1.3","1.3"));
-	
-			    	Page sp1 = new Page("Page 1","Page 1","1","1","1","1","1","1",lst1);
-			    	lst.add(sp1);
-			    	
-			    	List<Page> lst3 = new ArrayList<Page>();
-			    	lst3.add(new Page("Page 3.1","Page 3.1","3.1","3.1","3.1","3.1","3.1","3.1"));
-			    	lst3.add(new Page("Page 3.2","Page 3.2","3.2","3.2","3.2","3.2","3.2","3.2"));
-			    	lst3.add(new Page("Page 3.3","Page 3.3","3.3","3.3","3.3","3.3","3.3","3.3"));
-			    	lst3.add(new Page("Page 3.4","Page 3.4","3.4","3.4","3.4","3.4","3.4","3.4"));
-			    	
-			    	lst.add(new Page("Page 2","Page 2","2","2","2","2","2","2"));
-			    	
-			    	Page sp3 = new Page("Page 3","Page 3","3","3","3","3","3","3",lst3);
-			    	lst.add(sp3);
-			    	
-			    	lst.add(new Page("Page 4","Page 4","4","4","4","4","4","4"));
-			    	
-			    	Root mp = new Root();
-			    	mp.setPages(lst);
-		    		pm.makePersistent(mp);
-	            tx.commit();
-	    	} finally {
-	            if (tx.isActive()) {
-	                tx.rollback();
-	            }
-	    	}
-
-		    /*pm.makePersistent(new SubPage("Page 1","Page 1","1","1","1","1","1","1",lst1));
-		    pm.makePersistent(new SubPage("Page 2","Page 2","2","2","2","2","2","2"));
-		    pm.makePersistent(new SubPage("Page 3","Page 3","3","3","3","3","3","3",lst3));
-		    pm.makePersistent(new SubPage("Page 4","Page 4","4","4","4","4","4","4"));*/
-	   /* } finally {
-	    		pm.close();
-	    }*/
-	    
 	}
 	
 	

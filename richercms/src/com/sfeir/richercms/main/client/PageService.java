@@ -17,9 +17,17 @@ public interface PageService extends RemoteService {
 	
 	/**
 	 * Return the list containing all webPages needed to display
+	 * @param translationKey : the key of the current translation, if null we take the default result
 	 * @return the list containing all webPages
 	 */
 	public List<BeanPage>  getPages();
+	
+	/**
+	 * Get the main Page in a special translation
+	 * @param translationKey : key of the type of translation
+	 * @return the main Page and all its subPages
+	 */
+	public BeanPage getMainPage(String translationKey);
 	
 	/**
 	 * Return a page according  is key
@@ -45,5 +53,5 @@ public interface PageService extends RemoteService {
 	 * @param key : the key of the Page
 	 */
 	public void deletePage(String key);
-
+	
 }

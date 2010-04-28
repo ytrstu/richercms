@@ -59,7 +59,7 @@ public class TinyMCE extends ResizeComposite {
 
         initWidget(panel);
     }
-
+    
     /**
      * getID() -
      *

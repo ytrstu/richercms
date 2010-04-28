@@ -1,8 +1,5 @@
 package com.sfeir.richercms.main.client.presenter;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
@@ -30,6 +27,7 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Ma
 
 	private TreeItem selectedItem = null; // current selected Item in tree
 	private PageServiceAsync rpcPage = null;
+	private String translationLanguageKey = null;
 	
 	public NavigationPanelPresenter() {
 		super();
@@ -113,7 +111,7 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Ma
 
 	public void onStartPanels() {		
 		this.eventBus.changeNavPanel(this.view);
-		this.onBuildTree();
+		//this.onBuildTree();
 	}
 	
 	/**
@@ -144,14 +142,18 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Ma
 	
 	public void onBuildTree() {
 		
-		this.rpcPage.getPages(new AsyncCallback<List<BeanPage>>() {
-	    	public void onSuccess(List<BeanPage> result) {
+		this.rpcPage.getMainPage(this.translationLanguageKey, new AsyncCallback<BeanPage>() {
+	    	public void onSuccess(BeanPage result) {
 	    		view.clearTree();	 
-	    		ArrayList<TreeItem> rootList = new ArrayList<TreeItem>();
-	    		for(BeanPage res : result) {
-	    			rootList.add(makeTree(res,true));
+	    		TreeItem root = new TreeItem();
+	    		root = makeTree(result,true);
+	    		view.setTree(root);
+	    		
+	    		// si la clé était null alors on a créer la traduction du coup on récupère la clés
+	    		if(translationLanguageKey == null) { 
+	    			eventBus.setTranslationKeyInLanguage(result.getKey());
+	    			translationLanguageKey = result.getKey();
 	    		}
-	    		view.setTree(rootList);
 	    	}
 			public void onFailure(Throwable caught){
 				PopUpMessage p = new PopUpMessage("Error : Build tree");
@@ -201,5 +203,10 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Ma
 	@InjectService
 	public void setPageService( PageServiceAsync rpcPage ) {
 		this.rpcPage = rpcPage;
+	}
+	
+	public void onChangeLanguage(String translationKey) {
+		this.translationLanguageKey = translationKey;
+		this.onBuildTree();
 	}
 }

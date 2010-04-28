@@ -114,7 +114,6 @@ public interface MainEventBus extends EventBus {
 	@Event( handlers = NavigationPanelPresenter.class)
 	public void buildTree();
 
-	
 	/**
 	 * Fired by the NavigationPresenter when the DelPage menu is clicked
 	 */
@@ -148,4 +147,20 @@ public interface MainEventBus extends EventBus {
 	 */
 	@Event( handlers =  MainPagePresenter.class )
 	public void changeValidationPanel(IValidationPanel validationPanel);
+	
+	/**
+	 * Fired by the MainPagePresenter when a new language is selected. That mean, a new translation is needed to display.
+	 * @param translatedKey
+	 */
+	@Event( handlers =  NavigationPanelPresenter.class )
+	public void changeLanguage(String translationKey);
+	
+	/**
+	 * Fired by the NavigationPanelPresenter if the translation key of the language who you need a translation
+	 * are null. Andso, a new translation are created in the database and this event send this key to the presenter.
+	 * The mainPresenter save this key in the selected language.
+	 * @param TranslationKey
+	 */
+	@Event( handlers =  MainPagePresenter.class )
+	public void setTranslationKeyInLanguage(String TranslationKey);
 }

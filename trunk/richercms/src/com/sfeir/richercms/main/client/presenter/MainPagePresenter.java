@@ -1,5 +1,9 @@
 package com.sfeir.richercms.main.client.presenter;
 
+import java.util.List;
+
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.mvp4g.client.annotation.InjectService;
 import com.mvp4g.client.annotation.Presenter;
@@ -14,11 +18,14 @@ import com.sfeir.richercms.main.client.interfaces.IValidationPanel;
 import com.sfeir.richercms.main.client.interfaces.IdisplayMainPage;
 import com.sfeir.richercms.main.client.view.MainPageView;
 import com.sfeir.richercms.main.shared.BeanPage;
+import com.sfeir.richercms.wizard.client.LanguageServiceAsync;
+import com.sfeir.richercms.wizard.shared.BeanLanguageDetails;
 
 @Presenter( view = MainPageView.class)
 public class MainPagePresenter extends LazyPresenter<IdisplayMainPage, MainEventBus> {
 	
 	private PageServiceAsync rpcPage = null;
+	private LanguageServiceAsync rpcLanguage = null;
 	private BeanPage editingPage = null;
 	private String key = null; // field used to save the key of the current Page
 	private int AddOrModify = 0; //0 => add, 1=> modify
@@ -32,6 +39,12 @@ public class MainPagePresenter extends LazyPresenter<IdisplayMainPage, MainEvent
 	 * It's Mvp4g framework who call this function
 	 */ 
 	public void bindView() {
+		
+		view.onChangeSelectedLg().addChangeHandler(new ChangeHandler(){
+			public void onChange(ChangeEvent event) {	
+				changeTranslation(view.getKeyOfSelectedLg());
+			}
+	    	});
 	}
 	
 	
@@ -47,7 +60,7 @@ public class MainPagePresenter extends LazyPresenter<IdisplayMainPage, MainEvent
 		});
 	}
 	
-	public void modifyPage() {
+	private void modifyPage() {
 		
 		this.editingPage.setKey(this.key);
 		this.rpcPage.updatePage(this.editingPage, new AsyncCallback<Void>() {
@@ -57,6 +70,38 @@ public class MainPagePresenter extends LazyPresenter<IdisplayMainPage, MainEvent
 			public void onFailure(Throwable caught) {
 				PopUpMessage p = new PopUpMessage("Error : Modify Page");
 				p.show();}
+		});
+	}
+	
+	private void fetchLanguageListBox() {
+		
+		this.rpcLanguage.getLangues( new AsyncCallback<List<BeanLanguageDetails>>() {
+	    	public void onSuccess(List<BeanLanguageDetails> result) {
+	    		for(BeanLanguageDetails lg : result) {
+	    			if(lg.getSelectionner())
+	    			{
+	    				view.addLanguageInListBox(lg.getLangue(), lg.getKey(), true);
+	    				changeTranslation(lg.getKey());
+	    			}
+	    			else
+	    				view.addLanguageInListBox(lg.getLangue(), lg.getKey(), false);
+	    		}
+	    	}
+			public void onFailure(Throwable caught) {
+	        	PopUpMessage p = new PopUpMessage("Error retrieving language");
+	        	p.show();}
+		});
+	}
+	
+	
+	private void changeTranslation(String languageSelectedKey) {
+		this.rpcLanguage.isAlreadyTranslated(languageSelectedKey, new AsyncCallback<String>() {
+	    	public void onSuccess(String result) {
+	    		eventBus.changeLanguage(result);
+	    	}
+			public void onFailure(Throwable caught) {
+	        	PopUpMessage p = new PopUpMessage("Error retrieving language by key");
+	        	p.show();}
 		});
 	}
 	
@@ -90,7 +135,8 @@ public class MainPagePresenter extends LazyPresenter<IdisplayMainPage, MainEvent
 		this.view.setValidationPanel(validationPanel);
 	}
 	
-	public void onStartMain() {	
+	public void onStartMain() {
+		this.fetchLanguageListBox();
 		this.eventBus.startPanels();
 		eventBus.changeBody(view.asWidget());
 	}
@@ -119,7 +165,14 @@ public class MainPagePresenter extends LazyPresenter<IdisplayMainPage, MainEvent
 		}		
 	}
 	
-	
+	public void onSetTranslationKeyInLanguage(String TranslationKey) {
+		this.rpcLanguage.setTranslationKey(view.getKeyOfSelectedLg(),TranslationKey, new AsyncCallback<Void>() {
+	    	public void onSuccess(Void result) {}
+			public void onFailure(Throwable caught) {
+	        	PopUpMessage p = new PopUpMessage("Error retrieving on setting translationKey");
+	        	p.show();}
+		});
+	}
 	
 	
 	/**
@@ -129,5 +182,14 @@ public class MainPagePresenter extends LazyPresenter<IdisplayMainPage, MainEvent
 	@InjectService
 	public void setPageService( PageServiceAsync rpcPage ) {
 		this.rpcPage = rpcPage;
+	}
+	
+	/**
+	 * used by the framework to instantiate rpcLanguage
+	 * @param rpcLanguage
+	 */
+	@InjectService
+	public void setLanguageService( LanguageServiceAsync rpcLanguage ) {
+		this.rpcLanguage = rpcLanguage;
 	}
 }

@@ -1,24 +1,14 @@
 package com.sfeir.richercms.main.server.business;
 
-import java.util.ArrayList;
-import java.util.List;
-
-
-import javax.jdo.annotations.Element;
 import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
-/**
- * Contain a page.
- * @author homberg.g
- */
-
 @PersistenceCapable
-public class Page{
-
+public class TranslationPage {
+	
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
     @Extension(vendorName="datanucleus", key="gae.encoded-pk", value="true")
@@ -39,12 +29,9 @@ public class Page{
 	private String publicationFinish;
 	@Persistent
 	private String content;
-	@Persistent
-	@Element(dependent = "true")
-	private List<Page> subPages;
-
 	
-	public Page()
+	
+	public TranslationPage()
 	{
 		this.browserTitle = new String("");
 		this.browserTitle = new String("");
@@ -54,10 +41,9 @@ public class Page{
 		this.browserTitle = new String("");
 		this.browserTitle = new String("");
 		this.content = new String("");
-		this.subPages = new ArrayList<Page>();
 	}
 	
-	public Page(String browserTitle, String pageTitle, String urlName,
+	public TranslationPage(String browserTitle, String pageTitle, String urlName,
 			String description, String keyWord, String publicationStart,
 			String publicationFinish, String content) {
 		this.browserTitle = browserTitle;
@@ -68,10 +54,9 @@ public class Page{
 		this.publicationStart = publicationStart;
 		this.publicationFinish = publicationFinish;
 		this.content = content;
-		this.subPages = new ArrayList<Page>();
 	}
 	
-	public Page(String key, String browserTitle, String pageTitle, String urlName,
+	public TranslationPage(String key, String browserTitle, String pageTitle, String urlName,
 			String description, String keyWord, String publicationStart,
 			String publicationFinish, String content) {
 		this.encodedKey = key;
@@ -83,40 +68,18 @@ public class Page{
 		this.publicationStart = publicationStart;
 		this.publicationFinish = publicationFinish;
 		this.content = content;
-		this.subPages = new ArrayList<Page>();
 	}
-	
-	public Page(String browserTitle, String pageTitle, String urlName,
-			String description, String keyWord, String publicationStart,
-			String publicationFinish, String content, List<Page> subPages) {
-		this.browserTitle = browserTitle;
-		this.pageTitle = pageTitle;
-		this.urlName = urlName;
-		this.description = description;
-		this.keyWord = keyWord;
-		this.publicationStart = publicationStart;
-		this.publicationFinish = publicationFinish;
-		this.content = content;
-		this.subPages = subPages;
+
+	public String getEncodedKey() {
+		return this.encodedKey;
 	}
-	
-	public Page(String key, String browserTitle, String pageTitle, String urlName,
-			String description, String keyWord, String publicationStart,
-			String publicationFinish, String content, List<Page> subPages) {
-		this.encodedKey = key;
-		this.browserTitle = browserTitle;
-		this.pageTitle = pageTitle;
-		this.urlName = urlName;
-		this.description = description;
-		this.keyWord = keyWord;
-		this.publicationStart = publicationStart;
-		this.publicationFinish = publicationFinish;
-		this.content = content;
-		this.subPages = subPages;
+
+	public void setEncodedKey(String encodedKey) {
+		this.encodedKey = encodedKey;
 	}
 
 	public String getBrowserTitle() {
-		return browserTitle;
+		return this.browserTitle;
 	}
 
 	public void setBrowserTitle(String browserTitle) {
@@ -124,7 +87,7 @@ public class Page{
 	}
 
 	public String getPageTitle() {
-		return pageTitle;
+		return this.pageTitle;
 	}
 
 	public void setPageTitle(String pageTitle) {
@@ -132,7 +95,7 @@ public class Page{
 	}
 
 	public String getUrlName() {
-		return urlName;
+		return this.urlName;
 	}
 
 	public void setUrlName(String urlName) {
@@ -140,7 +103,7 @@ public class Page{
 	}
 
 	public String getDescription() {
-		return description;
+		return this.description;
 	}
 
 	public void setDescription(String description) {
@@ -148,7 +111,7 @@ public class Page{
 	}
 
 	public String getKeyWord() {
-		return keyWord;
+		return this.keyWord;
 	}
 
 	public void setKeyWord(String keyWord) {
@@ -156,7 +119,7 @@ public class Page{
 	}
 
 	public String getPublicationStart() {
-		return publicationStart;
+		return this.publicationStart;
 	}
 
 	public void setPublicationStart(String publicationStart) {
@@ -164,7 +127,7 @@ public class Page{
 	}
 
 	public String getPublicationFinish() {
-		return publicationFinish;
+		return this.publicationFinish;
 	}
 
 	public void setPublicationFinish(String publicationFinish) {
@@ -172,28 +135,10 @@ public class Page{
 	}
 
 	public String getContent() {
-		return content;
+		return this.content;
 	}
 
 	public void setContent(String content) {
 		this.content = content;
 	}
-
-	public List<Page> getSubPages() {
-		return subPages;
-	}
-
-	public void setSubPages(List<Page> subPages) {
-		this.subPages = subPages;
-	}
-
-	public String getEncodedKey() {
-		return encodedKey;
-	}
-
-	public void setEncodedKey(String encodedKey) {
-		this.encodedKey = encodedKey;
-	}
-
-	
 }

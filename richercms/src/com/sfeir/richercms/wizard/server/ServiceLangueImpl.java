@@ -209,7 +209,7 @@ public class ServiceLangueImpl extends RemoteServiceServlet implements LanguageS
 		}finally{
 			if (tx.isActive()) {
 			    tx.rollback();}
-			pm.close();
+			//pm.close();
 		}
 	}
 	

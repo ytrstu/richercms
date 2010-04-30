@@ -8,6 +8,8 @@ import javax.jdo.PersistenceManagerFactory;
 import javax.jdo.Query;
 import javax.jdo.Transaction;
 
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.sfeir.richercms.main.client.PageService;
 import com.sfeir.richercms.main.server.business.Page;
@@ -65,7 +67,7 @@ public class ServicePageImpl extends RemoteServiceServlet implements PageService
 			if (tx.isActive()) {
 			    tx.rollback();
 			}
-        	pm.close();
+        	//pm.close();
         }
         
         return lst;
@@ -81,16 +83,19 @@ public class ServicePageImpl extends RemoteServiceServlet implements PageService
 	    	tx.begin();
 		        Query q = pm.newQuery(Root.class);
 		        List<Root> roots = (List<Root>) q.execute();
+		    tx.commit();
 		        
-		        if(roots.size() == 0){
-		        	this.root = new Root();
-			    	List<Page> lst1 = new ArrayList<Page>();
-			    	Page p = new Page(); p.setPageTitle("Main");
-			    	pm.makePersistent(p);
-			    	lst1.add(p);
-			    	this.root.setPages(lst1);
-		        	pm.makePersistent(this.root);
+		        if(roots.size() == 0){	
+		        	tx.begin();
+			        	this.root = new Root();
+				    	List<Page> lst1 = new ArrayList<Page>();
+				    	Page p = new Page(); p.setPageTitle("Main");
+				    	lst1.add(p);
+				    	this.root.setPages(lst1);
+			        	pm.makePersistent(this.root);
+		        	tx.commit();
 		        	mainPage = this.pageToBean(p);
+
 		        } else {
 		        	this.root = roots.get(0);
 		        	if(translationKey != null) {
@@ -100,72 +105,94 @@ public class ServicePageImpl extends RemoteServiceServlet implements PageService
 			        			break;
 			        		}
 		        	}else{
-				    	//p = new Page(); p.setPageTitle("Main-translated"); 
-				    	//pm.makePersistent(p);
-		        		Page p = duplicateMainPage(this.root.getPages().get(0), pm);
-				    	this.root.getPages().add(p);
+		        		tx.begin();
+		        			Page p = duplicateMainPage(this.root.getPages().get(0), pm);
+		        			pm.makePersistent(p);
+		        			this.root.getPages().add(p);
+		        			pm.makePersistent(this.root);
+		        			
+		        			p = this.encodingKey(p);
+				    	tx.commit();
 	        			mainPage = this.pageToBean(p);
 		        	}
-		        }
-	        tx.commit();
-	        
+		        }       
 
         } finally {
 			if (tx.isActive()) {
 			    tx.rollback();
 			}
-        	pm.close();
         }
         
         return mainPage;
 	}
 	
-	private Page duplicateMainPage(Page p, PersistenceManager pm) {
+	private Page encodingKey(Page p){
+		Page tmpPage = p;
+		int i = 1234;
+		Key k;
 		
+		for(Page child : tmpPage.getSubPages()) {
+			 k = KeyFactory.createKey(tmpPage.getEncodedKey(),i);
+			 child.setEncodedKey(KeyFactory.keyToString(k));
+			 for(Page subChild : child.getSubPages()){
+				 k = KeyFactory.createKey(child.getEncodedKey(),i);
+				 subChild.setEncodedKey(KeyFactory.keyToString(k));
+				 i = i+1;
+			 }
+			 i = i+1;
+		}
+		return tmpPage;
+	}
+	
+	private Page duplicateMainPage(Page p, PersistenceManager pm) {
 		Page Duplicata = new Page(p.getBrowserTitle(),p.getPageTitle(), p.getUrlName(),
 				 p.getDescription(), p.getKeyWord(), p.getPublicationStart(),
 				 p.getPublicationFinish(), p.getContent());
-
+		
 		if((p.getSubPages()!= null) && (p.getSubPages().size() != 0)) {
 			ArrayList<Page>lst = new ArrayList<Page>();
 			for(Page childPage : p.getSubPages()) {
 				lst.add(duplicateMainPage(childPage,pm));
 			}
 			Duplicata.setSubPages(lst);
-			
-			pm.makePersistent(Duplicata);
+
 			return Duplicata;
 		}else {
-			pm.makePersistent(Duplicata);
 			return Duplicata;
 		}
 	}
 	
 	public void addPage(BeanPage newPage) {
-		
+		int i = 1;
 		PersistenceManager pm = getPersistenceManager();
     	Transaction tx = pm.currentTransaction();
 	    try {
-		    	Page p = this.BeanToPage(newPage);
-		    	
-		    	tx.begin();
-		    		Page parentPage = pm.getObjectById(Page.class, newPage.getKey());
-		    		parentPage.getSubPages().add(p);
-		    		pm.makePersistent(p);
-		    	tx.commit();
+	    	
+	    	tx.begin();
+		    	Page parentPage = pm.getObjectById(Page.class, newPage.getKey());
+	    		Page p = this.BeanToPage(newPage);
+	    		i = i + parentPage.getSubPages().size();
+	    		Key k = new KeyFactory.Builder(Page.class.getSimpleName(), parentPage.getEncodedKey())
+	    			.addChild(Page.class.getSimpleName(), i).getKey();
+	    		
+				p.setEncodedKey(KeyFactory.keyToString(k));
+				
+				parentPage.getSubPages().add(p);
+    		tx.commit();
+		    		
 		    } finally {
 				if (tx.isActive()) {
 				    tx.rollback();
 				}
-				pm.close();
 		    }
 	}
 	
 	public void updatePage(BeanPage p) {
 		
 		PersistenceManager pm = getPersistenceManager();
+    	Transaction tx = pm.currentTransaction();
 		 try {
-		    	Transaction tx = pm.currentTransaction();
+
 		    	tx.begin();
 					Page page = pm.getObjectById(Page.class, p.getKey());
 					page.setBrowserTitle(p.getBrowserTitle());
@@ -179,22 +206,26 @@ public class ServicePageImpl extends RemoteServiceServlet implements PageService
 				tx.commit();
 			 }
 		 finally{
-			 pm.close();
+				if (tx.isActive()) {
+				    tx.rollback();
+				}
 		 }
 	}
 	
 	public void deletePage(String key) {
 		
 		PersistenceManager pm = getPersistenceManager();
+    	Transaction tx = pm.currentTransaction();
 		 try {
-		    	Transaction tx = pm.currentTransaction();
 		    	tx.begin();
 					Page page = pm.getObjectById(Page.class, key);
 					pm.deletePersistent(page);
 				tx.commit();
 			 }
 		 finally{
-			 pm.close();
+			if (tx.isActive()) {
+			    tx.rollback();
+			}
 		 }
 	}
 	
@@ -213,7 +244,6 @@ public class ServicePageImpl extends RemoteServiceServlet implements PageService
 				if (tx.isActive()) {
 				    tx.rollback();
 				}
-				 pm.close();
 			 }
 		 return this.pageToBean(page);
 	}

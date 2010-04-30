@@ -39,7 +39,7 @@ public class Page1Presenter extends LazyPresenter<IdisplayPage1, WizardConfigEve
 	 */
 	public void onStartWizard() {
 		changeViewLocale(LocaleInfo.getCurrentLocale().getLocaleName());
-		eventBus.changeBody(view.asWidget());	
+		eventBus.changeBody(view.asWidget());
 	}
 	
 	/**
@@ -96,5 +96,4 @@ public class Page1Presenter extends LazyPresenter<IdisplayPage1, WizardConfigEve
 			break;
 		}
 	}
-
 }

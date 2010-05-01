@@ -15,6 +15,7 @@ import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.ResizeComposite;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.HTMLTable.CellFormatter;
 import com.sfeir.richercms.client.view.PopUpWait;
 import com.sfeir.richercms.wizard.client.wizardConfigConstants;
 import com.sfeir.richercms.wizard.client.Interface.IdisplayPage2;
@@ -33,8 +34,8 @@ public class Page2View extends ResizeComposite implements IdisplayPage2 {
 	private Button btnNext = null;
 	private Button btnPrevious = null;
 	private Button btnAddLanguage = null;
-	private FlexTable LanguageTable = null;
-	private ScrollPanel ScrollLanguageTable = null;
+	private FlexTable languageTable = null;
+	private ScrollPanel scrollLanguageTable = null;
 	private LayoutPanel languagePanel = null;
 	private FlowPanel add_DelPanel = null;
 	private PopUpAddLangue popUpAddLanguage = null;
@@ -102,8 +103,8 @@ public class Page2View extends ResizeComposite implements IdisplayPage2 {
 	
 	public int getSelectedLanguage() {
 
-		for (int i = 1; i < this.LanguageTable.getRowCount(); ++i) {
-			RadioButton radioBtn = (RadioButton)this.LanguageTable.getWidget(i, 0);
+		for (int i = 1; i < this.languageTable.getRowCount(); ++i) {
+			RadioButton radioBtn = (RadioButton)this.languageTable.getWidget(i, 0);
 			
 			if (radioBtn.getValue()){
 				//i-1 : due to the title row
@@ -115,7 +116,7 @@ public class Page2View extends ResizeComposite implements IdisplayPage2 {
 
 	public void setSelectedLanguage(int id) {
 		
-		RadioButton RadioButton = (RadioButton)this.LanguageTable.getWidget(id, 0);
+		RadioButton RadioButton = (RadioButton)this.languageTable.getWidget(id, 0);
 		RadioButton.setValue(true);
 	}
 
@@ -125,18 +126,18 @@ public class Page2View extends ResizeComposite implements IdisplayPage2 {
 		RadioButton radio = new RadioButton("");
 		PushButton btnDel = new PushButton( new Image("tab_images/Delete-icon.png"));
 		radio.setValue(checked);
-		this.LanguageTable.setWidget(this.LanguageTable.getRowCount(), 0, radio);
+		this.languageTable.setWidget(this.languageTable.getRowCount(), 0, radio);
 		// on doit faire this.LanguageTable.getRowCount()-1 car la ligne a �t� cr�er juste au dessus
-		this.LanguageTable.setText(this.LanguageTable.getRowCount()-1, 1, language);
+		this.languageTable.setText(this.languageTable.getRowCount()-1, 1, language);
 		//tag
-		this.LanguageTable.setText(this.LanguageTable.getRowCount()-1, 2, tag);
+		this.languageTable.setText(this.languageTable.getRowCount()-1, 2, tag);
 		// the delBnt
-		this.LanguageTable.setWidget(this.LanguageTable.getRowCount()-1, 3, btnDel);
+		this.languageTable.setWidget(this.languageTable.getRowCount()-1, 3, btnDel);
 		return btnDel;
 	}
 
 	public void clearTableLanguage() {
-		this.LanguageTable.removeAllRows();
+		this.languageTable.removeAllRows();
 		this.addLanguageTableTitle();
 	}
 
@@ -150,7 +151,7 @@ public class Page2View extends ResizeComposite implements IdisplayPage2 {
 		this.btnNext = new Button(constants.buttonNext());
 		this.btnPrevious = new Button(constants.buttonPrevious());
 		this.btnAddLanguage = new Button(constants.buttonAddLanguage());
-		this.ScrollLanguageTable = new ScrollPanel();
+		this.scrollLanguageTable = new ScrollPanel();
 		this.languagePanel = new LayoutPanel();
 		this.add_DelPanel = new FlowPanel();
 		
@@ -161,25 +162,24 @@ public class Page2View extends ResizeComposite implements IdisplayPage2 {
 		CenterLayoutPanel mainPanel = new CenterLayoutPanel(800, 400, title, mainContent);
 		
 		//LanguageTable
-		this.LanguageTable = new FlexTable();
-		this.LanguageTable.addStyleName("lgTable");
-		this.LanguageTable.setCellSpacing(3);
-		this.LanguageTable.setCellPadding(3);
-		//this.LanguageTable.setBorderWidth(1);
+		this.languageTable = new FlexTable();
+		this.languageTable.addStyleName("lgTable");
+		this.languageTable.setCellSpacing(0);
+		this.languageTable.setCellPadding(5);
 		this.addLanguageTableTitle();
 		
 		//this.LanguageTable.getColumnFormatter().setWidth(0, "15px");
 		
 		//ScrollLanguageTable
-		this.ScrollLanguageTable.add(this.LanguageTable);
+		this.scrollLanguageTable.add(this.languageTable);
 		
 		//add_DelPanel
 		this.btnAddLanguage.addStyleName("buttonMarginRight");
 		this.add_DelPanel.add(this.btnAddLanguage);
 		
 		//languagePanel
-		this.languagePanel.add(this.ScrollLanguageTable);
-		this.languagePanel.setWidgetTopHeight(this.ScrollLanguageTable, 0, Style.Unit.PX, 260, Style.Unit.PX);
+		this.languagePanel.add(this.scrollLanguageTable);
+		this.languagePanel.setWidgetTopHeight(this.scrollLanguageTable, 0, Style.Unit.PX, 260, Style.Unit.PX);
 		this.languagePanel.add(this.add_DelPanel);
 		this.languagePanel.setWidgetBottomHeight(this.add_DelPanel, 50, Style.Unit.PX, 30, Style.Unit.PX);
 						
@@ -203,18 +203,22 @@ public class Page2View extends ResizeComposite implements IdisplayPage2 {
 	/**
 	 * add title of each columns of the Language table
 	 */
-	public void addLanguageTableTitle()
-	{
-		this.LanguageTable.setText(0, 0, this.constants.LanguageTitleColumn1());
-		this.LanguageTable.setText(0, 1, this.constants.LanguageTitleColumn2());
-		this.LanguageTable.setText(0, 2, this.constants.LanguageTitleColumn3());
-		this.LanguageTable.setText(0, 3, this.constants.LanguageTitleColumn4());
+	public void addLanguageTableTitle() {
+		CellFormatter cellFormater = this.languageTable.getCellFormatter();
+		cellFormater.setStyleName(0, 0, "lgTableHeader");
+		cellFormater.setStyleName(0, 1, "lgTableHeader");
+		cellFormater.setStyleName(0, 2, "lgTableHeader");
+		cellFormater.setStyleName(0, 3, "lgTableHeader");
+		this.languageTable.setText(0, 0, this.constants.LanguageTitleColumn1());
+		this.languageTable.setText(0, 1, this.constants.LanguageTitleColumn2());
+		this.languageTable.setText(0, 2, this.constants.LanguageTitleColumn3());
+		this.languageTable.setText(0, 3, this.constants.LanguageTitleColumn4());
 	}
 	
 	public int getCurrentNumRow()
 	{
 		//the last line = number of row -1 - (title row)
-		return this.LanguageTable.getRowCount() - 2;
+		return this.languageTable.getRowCount() - 2;
 	}
 	
 	public wizardConfigConstants getConstant()

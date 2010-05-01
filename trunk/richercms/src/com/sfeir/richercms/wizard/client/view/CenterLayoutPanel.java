@@ -28,6 +28,7 @@ public class CenterLayoutPanel extends ResizeComposite {
 	 */
 	public CenterLayoutPanel(int width, int height, Widget title, Widget dialog) {
 		super();
+		title.setStyleName("wizardDialogTitle");
 		this.height = height;
 		this.width = width;
 		mainPanel.addStyleName("wizardMain");

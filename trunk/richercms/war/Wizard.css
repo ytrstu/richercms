@@ -109,6 +109,14 @@ color : #CCCFFF;
 	overflow: auto;
 }
 
+.wizardDialogTitle {
+	font-family : Arial;
+	padding-top: 2px;
+	padding-left: 5px;
+	font-weight: bold;
+	font-size: 14px;
+}
+
 .bodyPanel {
 	background: url("/img/mainBackground.png") no-repeat;
 }
@@ -131,7 +139,17 @@ color : #CCCFFF;
 	margin-right: 5px !important;
 }
 
-.lgTable td{
-	border: 1px solid #BBBBBB;
+.lgTable {
+	border-top: 1px solid #BBBBBB;
+	border-left: 1px solid #BBBBBB;
 	text-align:center;
+}
+
+.lgTable td {
+	border-bottom: 1px solid #BBBBBB;
+	border-right: 1px solid #BBBBBB;
+}
+
+.lgTableHeader {
+	background-color: #E8D2FF;
 }

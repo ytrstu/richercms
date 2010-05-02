@@ -6,6 +6,7 @@ import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.layout.client.Layout.Alignment;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.ResizeComposite;
 import com.sfeir.richercms.main.client.MainConstants;
@@ -28,14 +29,13 @@ public class ValidationPanel extends ResizeComposite implements IValidationPanel
 	 */
 	public void createView() {
 		
-		FlexTable tab = new FlexTable();
-		tab.setCellSpacing(10);
+		FlowPanel buttonPanel = new FlowPanel();
+		buttonPanel.addStyleName("buttonPanel");
+		buttonPanel.add(btnAdd);
+		buttonPanel.add(btnCancel);
 
-		tab.setWidget(0,0,this.btnAdd);
-		tab.setWidget(0,1,this.btnCancel);
-		
 		LayoutPanel p = new LayoutPanel();
-		p.add(tab);
+		p.add(buttonPanel);
 
 		this.initWidget(p);
 	}

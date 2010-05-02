@@ -30,7 +30,7 @@ public class ValidationPanel extends ResizeComposite implements IValidationPanel
 	public void createView() {
 		
 		FlowPanel buttonPanel = new FlowPanel();
-		buttonPanel.addStyleName("buttonPanel");
+		buttonPanel.addStyleName("mainButtonPanel");
 		buttonPanel.add(btnAdd);
 		buttonPanel.add(btnCancel);
 

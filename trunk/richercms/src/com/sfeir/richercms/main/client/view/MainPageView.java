@@ -9,7 +9,9 @@ import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.ListBox;
@@ -61,18 +63,19 @@ public class MainPageView extends ResizeComposite implements IdisplayMainPage {
 	 */
 	public void createView() {
 		
-		TabLayoutPanel content = new TabLayoutPanel(25, Unit.PX);
 		this.layoutPanel1 = new DockLayoutPanel(Unit.PX);
 	    this.splitedPanel = new SplitLayoutPanel();
 		
 		// liste du choix de la langue
 		this.languages = new ListBox(false);
-		this.languages.setWidth("200px");
+		this.languages.setWidth("240px");
 		Label listBoxTitle = new Label("Langue en cours : ");
+		listBoxTitle.setStyleName("languageLabel");
 	    LayoutPanel placmentPanel = new  LayoutPanel();
 	    
 	    // Create a menu bar
 	    this.mainmenu = new MenuBar();
+	    mainmenu.setStyleName("mainMenuBar");
 	    this.mainmenu.setAutoOpen(true);
 	    this.mainmenu.setWidth("200px");
 	    this.mainmenu.setHeight("20px");
@@ -101,29 +104,23 @@ public class MainPageView extends ResizeComposite implements IdisplayMainPage {
 	    this.mainmenu.addItem(new MenuItem("Help", help));
 
 
-	    FlexTable labelAndListBox = new FlexTable();
-	    labelAndListBox.setWidget(0, 0, this.mainmenu);
-	    labelAndListBox.setWidget(0, 1, listBoxTitle);
-	    labelAndListBox.setWidget(0, 2, this.languages);
-	    placmentPanel.setStyleName("tab-content");
-	    placmentPanel.add(labelAndListBox);
-	    placmentPanel.setWidgetHorizontalPosition(labelAndListBox,  Alignment.END);
-
-			    
-	    this.layoutPanel1.addNorth(placmentPanel, 39);
-	    // --> this.layoutPanel1.add(this.splitedPanel); fait dans le setteur du validation Panel 
-	    // il faut toujours ajouter les élément du nord et du sud avant celui du centre !!
-	    content.add(this.layoutPanel1, constants.TitlePanel1());
+	    LayoutPanel mainLanguagesPanel = new LayoutPanel();
+	    mainLanguagesPanel.add(listBoxTitle);
+	    mainLanguagesPanel.add(languages);
+	    mainLanguagesPanel.setWidgetLeftRight(listBoxTitle, 0, Unit.PX, 70, Unit.PCT);
+	    mainLanguagesPanel.setWidgetLeftRight(languages, 30, Unit.PCT, 5, Unit.PX);
 	    
-	    this.layoutPanel2 = new LayoutPanel();
-	    this.layoutPanel2.setStyleName("tab-content");
-	    HTML h1 = new HTML("TODO...");
-	    this.layoutPanel2.add(h1);
-	    content.add(this.layoutPanel2, constants.TitlePanel2());
+	    placmentPanel.setStyleName("tab-content");
+	    placmentPanel.add(mainmenu);
+	    placmentPanel.add(mainLanguagesPanel);
+	    placmentPanel.setWidgetLeftWidth(mainmenu, 0, Unit.PX, 350, Unit.PX);
+	    placmentPanel.setWidgetRightWidth(mainLanguagesPanel, 0, Unit.PX, 350, Unit.PX);
+	    placmentPanel.setWidgetTopBottom(mainLanguagesPanel, 1, Unit.PX, 1, Unit.PX);
+	    placmentPanel.setWidth("100%");
+			    
+	    this.layoutPanel1.addNorth(placmentPanel, 23);
 
-	    content.selectTab(0);
-
-	    this.initWidget(content);
+	    this.initWidget(layoutPanel1);
 	}
 
 	public void setConstants(MainConstants constants) {
@@ -152,7 +149,7 @@ public class MainPageView extends ResizeComposite implements IdisplayMainPage {
 	public void setValidationPanel(IValidationPanel validationPanel) {
 		this.validationPanel = (ValidationPanel)validationPanel;
 		this.validationPanel.setStyleName("tab-content");
-		this.layoutPanel1.addSouth(this.validationPanel, 50);
+		this.layoutPanel1.addSouth(this.validationPanel, 37);
 		//ajout de l'élément final : signifie la fin du chargement
 	    this.layoutPanel1.add(this.splitedPanel);
 	}

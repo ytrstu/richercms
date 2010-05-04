@@ -17,9 +17,10 @@ public interface ArboPageService extends RemoteService {
 	/**
 	 * Return the list containing all webPages child of a parent arboPage, needed to display
 	 * @param ParentKey : the key of the parent ArboPage
+	 * @param true if the parent are the main, false either
 	 * @return the list containing all child of the current ParentPage
 	 */
-	public List<BeanArboPage>  getChildPages(String ParentKey);
+	public List<BeanArboPage>  getChildPages(String ParentKey, boolean isMain);
 	
 	/**
 	 * Get the main ArboPage in a special translation
@@ -50,8 +51,10 @@ public interface ArboPageService extends RemoteService {
 	/**
 	 * delete a page and all translation of this page
 	 * @param key : the key of the ArboPage
+	 * @param parentKey : the key of the parent : 
+	 * necessary to erase the key of the deleted child in the parent's child List
 	 */
-	public void deleteArboPage(String key);
+	public void deleteArboPage(String key, String parentKey);
 	
 
 }

@@ -14,7 +14,7 @@ import com.sfeir.richercms.main.client.presenter.NavigationPanelPresenter;
 import com.sfeir.richercms.main.client.presenter.TinyMCEPanelPresenter;
 import com.sfeir.richercms.main.client.presenter.ValidationPanelPresenter;
 import com.sfeir.richercms.main.client.view.MainPageView;
-import com.sfeir.richercms.main.shared.BeanPage;
+import com.sfeir.richercms.main.shared.BeanTranslationPage;
 
 
 /**
@@ -62,7 +62,7 @@ public interface MainEventBus extends EventBus {
 	public void modifyPage(String key);
 	
 	/**
-	 * fired by 
+	 * fired by the ValidationPresenter when the saveButton is clicked
 	 */
 	@Event( handlers =  {MainPagePresenter.class, InformationPanelPresenter.class, ValidationPanelPresenter.class, TinyMCEPanelPresenter.class} )
 	public void savePage();
@@ -73,6 +73,12 @@ public interface MainEventBus extends EventBus {
 	 */
 	@Event( handlers = {InformationPanelPresenter.class, ValidationPanelPresenter.class} )
 	public void displayPage(String Key);
+	
+	/**
+	 * Fired by the NavigationPresenter, for displaying the root Page
+	 */
+	@Event( handlers = {InformationPanelPresenter.class, ValidationPanelPresenter.class} )
+	public void displayMainPage();
 	
 	/**
 	 * Fired by the InformationPanelPresenter, for displaying the content of the selected Page
@@ -92,7 +98,7 @@ public interface MainEventBus extends EventBus {
 	 * @param info : Page information
 	 */
 	@Event( handlers =  MainPagePresenter.class )
-	public void sendInfo(BeanPage info);
+	public void sendInfo(BeanTranslationPage info);
 	
 	/**
 	 * Fired by the MainPresenter After having received the data from the page to save.
@@ -113,7 +119,14 @@ public interface MainEventBus extends EventBus {
 	 */
 	@Event( handlers = NavigationPanelPresenter.class)
 	public void buildTree();
-
+	
+	/**
+	 * Fired by the MainPresenter, when a child of the selected node is added.
+	 * This event allows NavigationPanel to reload his child
+	 */
+	@Event( handlers = NavigationPanelPresenter.class)
+	public void reloadChildInTree();
+	
 	/**
 	 * Fired by the NavigationPresenter when the DelPage menu is clicked
 	 */

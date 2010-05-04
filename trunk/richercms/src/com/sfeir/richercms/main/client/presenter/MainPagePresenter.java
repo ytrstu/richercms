@@ -9,7 +9,7 @@ import com.mvp4g.client.annotation.InjectService;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.sfeir.richercms.client.view.PopUpMessage;
-import com.sfeir.richercms.main.client.PageServiceAsync;
+import com.sfeir.richercms.main.client.ArboPageServiceAsync;
 import com.sfeir.richercms.main.client.event.MainEventBus;
 import com.sfeir.richercms.main.client.interfaces.IInformationPanel;
 import com.sfeir.richercms.main.client.interfaces.INavigationPanel;
@@ -17,16 +17,17 @@ import com.sfeir.richercms.main.client.interfaces.ITinyMCEPanel;
 import com.sfeir.richercms.main.client.interfaces.IValidationPanel;
 import com.sfeir.richercms.main.client.interfaces.IdisplayMainPage;
 import com.sfeir.richercms.main.client.view.MainPageView;
-import com.sfeir.richercms.main.shared.BeanPage;
+import com.sfeir.richercms.main.shared.BeanArboPage;
+import com.sfeir.richercms.main.shared.BeanTranslationPage;
 import com.sfeir.richercms.wizard.client.LanguageServiceAsync;
 import com.sfeir.richercms.wizard.shared.BeanLanguageDetails;
 
 @Presenter( view = MainPageView.class)
 public class MainPagePresenter extends LazyPresenter<IdisplayMainPage, MainEventBus> {
 	
-	private PageServiceAsync rpcPage = null;
+	private ArboPageServiceAsync rpcPage = null;
 	private LanguageServiceAsync rpcLanguage = null;
-	private BeanPage editingPage = null;
+	private BeanArboPage editingPage = null;
 	private String key = null; // field used to save the key of the current Page
 	private int AddOrModify = 0; //0 => add, 1=> modify
 	
@@ -49,10 +50,10 @@ public class MainPagePresenter extends LazyPresenter<IdisplayMainPage, MainEvent
 	
 	
 	private void addPage() {
-		this.editingPage.setKey(this.key);
-		this.rpcPage.addPage(this.editingPage, new AsyncCallback<Void>() {
+		//this.editingPage.setKey();
+		this.rpcPage.addArboPage(this.editingPage, this.key, new AsyncCallback<Void>() {
 			public void onSuccess(Void result) {
-				eventBus.buildTree(); //reload the new tree
+				eventBus.reloadChildInTree(); //reload the new tree
 			}
 			public void onFailure(Throwable caught) {
 				PopUpMessage p = new PopUpMessage("Error : AddPage");
@@ -62,10 +63,11 @@ public class MainPagePresenter extends LazyPresenter<IdisplayMainPage, MainEvent
 	
 	private void modifyPage() {
 		
-		this.editingPage.setKey(this.key);
-		this.rpcPage.updatePage(this.editingPage, new AsyncCallback<Void>() {
+		//this.editingPage.setKey(this.key);
+		this.editingPage.setEncodedKey(this.key);
+		this.rpcPage.updateArboPage(this.editingPage, new AsyncCallback<Void>() {
 			public void onSuccess(Void result) {
-				eventBus.buildTree(); //reload the new tree
+				eventBus.reloadChildInTree(); //reload the new tree
 			}
 			public void onFailure(Throwable caught) {
 				PopUpMessage p = new PopUpMessage("Error : Modify Page");
@@ -81,7 +83,7 @@ public class MainPagePresenter extends LazyPresenter<IdisplayMainPage, MainEvent
 	    			if(lg.getSelectionner())
 	    			{
 	    				view.addLanguageInListBox(lg.getLangue(), lg.getKey(), true);
-	    				changeTranslation(lg.getKey());
+	    				//changeTranslation(lg.getKey());
 	    			}
 	    			else
 	    				view.addLanguageInListBox(lg.getLangue(), lg.getKey(), false);
@@ -145,13 +147,14 @@ public class MainPagePresenter extends LazyPresenter<IdisplayMainPage, MainEvent
 		this.eventBus.callInfo();
 	}
 
-	public void onSendInfo(BeanPage info) {
-		this.editingPage = info;
+	public void onSendInfo(BeanTranslationPage info) {
+		this.editingPage = new BeanArboPage();
+		this.editingPage.getTranslation().add(info);
 		this.eventBus.callContent();
 	}
 	
 	public void onSendContent(String content) {
-		this.editingPage.setContent(content);
+		this.editingPage.getTranslation().get(0).setContent(content);
 
 		switch(this.AddOrModify) {
 			case 0 :
@@ -162,7 +165,7 @@ public class MainPagePresenter extends LazyPresenter<IdisplayMainPage, MainEvent
 				break;
 			default :
 				break;
-		}		
+		}
 	}
 	
 	public void onSetTranslationKeyInLanguage(String TranslationKey) {
@@ -180,7 +183,7 @@ public class MainPagePresenter extends LazyPresenter<IdisplayMainPage, MainEvent
 	 * @param rpcPage
 	 */
 	@InjectService
-	public void setPageService( PageServiceAsync rpcPage ) {
+	public void setPageService( ArboPageServiceAsync rpcPage ) {
 		this.rpcPage = rpcPage;
 	}
 	

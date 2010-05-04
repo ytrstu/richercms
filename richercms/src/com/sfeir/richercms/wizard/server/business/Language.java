@@ -1,6 +1,5 @@
 package com.sfeir.richercms.wizard.server.business;
 
-import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
@@ -15,10 +14,9 @@ import javax.jdo.annotations.PrimaryKey;
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class Language {
 	
-    @PrimaryKey
-    @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-    @Extension(vendorName="datanucleus", key="gae.encoded-pk", value="true")
-    private String encodedKey;
+	@PrimaryKey
+	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
+    private Long id;
 	@Persistent
 	private String langue;
 	@Persistent
@@ -26,43 +24,43 @@ public class Language {
 	@Persistent
 	private boolean selected;
 	@Persistent
-	private String translationKey; //permet de savoir si une translation est associé a cette langue, null sinon
+	private int translationID; //permet savoir la position de la traduction associé
 	
 	
 	public Language() {
 		this.langue = "";
 		this.selected = false;
 		this.tag  = "";
-		this.translationKey = null;
+		this.translationID = 0;
 	}
 
 	public Language(String langue) {
 		this.langue = langue;
 		this.selected = false;
 		this.tag  = "";
-		this.translationKey = null;
+		this.translationID = 0;
 	}
 	
 	public Language(String langue, String tag) {
 		this.langue = langue;
 		this.tag = tag;
 		this.selected = false;
-		this.translationKey = null;
+		this.translationID = 0;
 	}
 	
 	public Language(String langue, String tag, boolean selected) {
 		this.langue = langue;
 		this.tag = tag;
 		this.selected = selected;
-		this.translationKey = null;
+		this.translationID = 0;
 	}
 
-	public String getEncodedKey() {
-		return encodedKey;
+	public Long getId() {
+		return id;
 	}
 
-	public void setEncodedKey(String encodedKey) {
-		this.encodedKey = encodedKey;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getLangue() {
@@ -89,11 +87,11 @@ public class Language {
 		this.tag = tag;
 	}
 
-	public String getTranslationKey() {
-		return this.translationKey;
+	public int getTranslationID() {
+		return this.translationID;
 	}
 
-	public void setTranslationKey(String translationKey) {
-		this.translationKey = translationKey;
+	public void setTranslationID(int translationID) {
+		this.translationID = translationID;
 	}
 }

@@ -10,49 +10,49 @@ import java.io.Serializable;
 @SuppressWarnings("serial")
 public class BeanLanguageDetails implements Serializable {
 	
-	private String key;
+	private Long id;
 	private String language;
 	private String tag;
 	private Boolean isSelected;
-	private String translationKey;
+	private int translationID;
 	
 	public BeanLanguageDetails() {
 		this.language ="";
 		this.tag ="";
 		this.isSelected = false;
-		this.translationKey = null;
+		this.translationID = 0;
 	}
 	
-	public BeanLanguageDetails(String key, String lg, boolean isSelected) {
+	public BeanLanguageDetails(Long id, String lg, boolean isSelected) {
 		this.language = lg;
 		this.tag = "";
 		this.isSelected = isSelected;
-		this.translationKey = null;
-		this.key = key;
+		this.translationID = 0;
+		this.id = id;
 	}
 	
-	public BeanLanguageDetails(String key, String lg, String tag, boolean isSelected) {
+	public BeanLanguageDetails(Long id, String lg, String tag, boolean isSelected) {
 		this.language = lg;
 		this.tag = tag;
 		this.isSelected = isSelected;
-		this.translationKey = null;
-		this.key = key;
+		this.translationID = 0;
+		this.id = id;
 	}
 	
-	public BeanLanguageDetails(String key, String lg, String tag, boolean isSelected, String translationKey) {
+	public BeanLanguageDetails(Long id, String lg, String tag, boolean isSelected, int translationID) {
 		this.language = lg;
 		this.tag = tag;
 		this.isSelected = isSelected;
-		this.translationKey = translationKey;
-		this.key = key;
+		this.translationID = translationID;
+		this.id = id;
 	}
 	
-	public String getKey() {
-		return key;
+	public Long getKey() {
+		return id;
 	}
 
-	public void setKey(String key) {
-		this.key = key;
+	public void setKey(Long id) {
+		this.id = id;
 	}
 
 	public String getLangue() {
@@ -79,11 +79,11 @@ public class BeanLanguageDetails implements Serializable {
 		this.tag = tag;
 	}
 
-	public String getTranslationKey() {
-		return this.translationKey;
+	public int getTranslationID() {
+		return this.translationID;
 	}
 
-	public void setTranslationKey(String translationKey) {
-		this.translationKey = translationKey;
+	public void setTranslationID(int translationID) {
+		this.translationID = translationID;
 	}
 }

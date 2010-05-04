@@ -79,15 +79,18 @@ public class MainPagePresenter extends LazyPresenter<IdisplayMainPage, MainEvent
 		
 		this.rpcLanguage.getLangues( new AsyncCallback<List<BeanLanguageDetails>>() {
 	    	public void onSuccess(List<BeanLanguageDetails> result) {
-	    		for(BeanLanguageDetails lg : result) {
-	    			if(lg.getSelectionner())
-	    			{
-	    				view.addLanguageInListBox(lg.getLangue(), lg.getKey(), true);
-	    				//changeTranslation(lg.getKey());
-	    			}
-	    			else
-	    				view.addLanguageInListBox(lg.getLangue(), lg.getKey(), false);
-	    		}
+	    		for(int i = 0 ; i<result.size(); i++) 
+		    		for(BeanLanguageDetails lg : result) {
+		    			if(lg.getTranslationID() == i) // sort language by her translationID
+		    			{
+		    				if( i == 0) // add the default language
+		    					view.addLanguageInListBox(lg.getLangue(), "", true);
+		    				else //other language
+		    					view.addLanguageInListBox(lg.getLangue(), "", false);
+		    				break;
+		    			}
+		    				
+		    		}
 	    	}
 			public void onFailure(Throwable caught) {
 	        	PopUpMessage p = new PopUpMessage("Error retrieving language");
@@ -97,14 +100,14 @@ public class MainPagePresenter extends LazyPresenter<IdisplayMainPage, MainEvent
 	
 	
 	private void changeTranslation(String languageSelectedKey) {
-		this.rpcLanguage.isAlreadyTranslated(languageSelectedKey, new AsyncCallback<String>() {
+		/*this.rpcLanguage.isAlreadyTranslated(languageSelectedKey, new AsyncCallback<String>() {
 	    	public void onSuccess(String result) {
 	    		eventBus.changeLanguage(result);
 	    	}
 			public void onFailure(Throwable caught) {
 	        	PopUpMessage p = new PopUpMessage("Error retrieving language by key");
 	        	p.show();}
-		});
+		});*/
 	}
 	
 	
@@ -169,12 +172,12 @@ public class MainPagePresenter extends LazyPresenter<IdisplayMainPage, MainEvent
 	}
 	
 	public void onSetTranslationKeyInLanguage(String TranslationKey) {
-		this.rpcLanguage.setTranslationKey(view.getKeyOfSelectedLg(),TranslationKey, new AsyncCallback<Void>() {
+		/*this.rpcLanguage.setTranslationKey(view.getKeyOfSelectedLg(),TranslationKey, new AsyncCallback<Void>() {
 	    	public void onSuccess(Void result) {}
 			public void onFailure(Throwable caught) {
 	        	PopUpMessage p = new PopUpMessage("Error retrieving on setting translationKey");
 	        	p.show();}
-		});
+		});*/
 	}
 	
 	

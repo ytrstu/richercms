@@ -12,7 +12,7 @@ import com.sfeir.richercms.main.shared.BeanArboPage;
  */
 public interface ArboPageServiceAsync {
 
-	public void getChildPages(String ParentKey, AsyncCallback<List<BeanArboPage>> callback);
+	public void getChildPages(String ParentKey, boolean isMain, AsyncCallback<List<BeanArboPage>> callback);
 	
 	public void getMainArboPage(AsyncCallback<BeanArboPage> callback);
 
@@ -22,6 +22,6 @@ public interface ArboPageServiceAsync {
 
 	public void updateArboPage(BeanArboPage p, AsyncCallback<Void> callback);
 
-	public void deleteArboPage(String key, AsyncCallback<Void> callback);
+	public void deleteArboPage(String key, String parentKey, AsyncCallback<Void> callback);
 
 }

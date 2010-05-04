@@ -3,12 +3,12 @@ package com.sfeir.richercms.main.server.business;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.jdo.annotations.Element;
 import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
-
 
 @PersistenceCapable
 public class RootArbo {
@@ -18,24 +18,23 @@ public class RootArbo {
     @Extension(vendorName="datanucleus", key="gae.encoded-pk", value="true")
     private String encodedKey;
 	@Persistent
+	@Element(dependent = "true")
 	List<TranslationPage> translation;
-	List<Long> idChildArboPage;
+	@Persistent
+	List<String> idChildArboPage;
 	//TODO List<Long> idTag;
 	
 	public RootArbo() {
-		super();
 		this.translation = new ArrayList<TranslationPage>();
-		this.idChildArboPage = new ArrayList<Long>();
+		this.idChildArboPage = new ArrayList<String>();
 	}
 	
 	public RootArbo(List<TranslationPage> translation) {
-		super();
-		this.idChildArboPage = new ArrayList<Long>();
+		this.idChildArboPage = new ArrayList<String>();
 		this.translation = translation;
 	}
 	
-	public RootArbo(List<TranslationPage> translation, List<Long> idChildArboPage) {
-		super();
+	public RootArbo(List<TranslationPage> translation, List<String> idChildArboPage) {
 		this.idChildArboPage = idChildArboPage;
 		this.translation = translation;
 	}
@@ -56,11 +55,11 @@ public class RootArbo {
 		this.translation = translation;
 	}
 
-	public List<Long> getIdChildArboPage() {
+	public List<String> getIdChildArboPage() {
 		return this.idChildArboPage;
 	}
 
-	public void setIdChildArboPage(List<Long> idChildArboPage) {
+	public void setIdChildArboPage(List<String> idChildArboPage) {
 		this.idChildArboPage = idChildArboPage;
 	}
 }

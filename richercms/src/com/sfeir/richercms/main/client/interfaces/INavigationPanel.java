@@ -2,6 +2,7 @@ package com.sfeir.richercms.main.client.interfaces;
 
 
 import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.event.logical.shared.HasOpenHandlers;
 import com.google.gwt.event.logical.shared.HasSelectionHandlers;
 import com.google.gwt.user.client.ui.TreeItem;
 import com.mvp4g.client.view.LazyView;
@@ -27,6 +28,12 @@ public interface INavigationPanel extends LazyView{
 	 * @return the EvtHandler
 	 */
 	HasSelectionHandlers<TreeItem> getSelectedEvtTree();
+	
+	/**
+	 * Necessary to handle the expandedEvent on the NavigationTree
+	 * @return the EvtHandler
+	 */
+	HasOpenHandlers<TreeItem> getExpandedEvtTree();
 	
 	/**
 	 * Return the interface of the PopUpMenuBar to control it in the presenter.

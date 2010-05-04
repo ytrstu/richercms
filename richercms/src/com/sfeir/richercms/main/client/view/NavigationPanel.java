@@ -2,6 +2,7 @@ package com.sfeir.richercms.main.client.view;
 
 
 import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.event.logical.shared.HasOpenHandlers;
 import com.google.gwt.event.logical.shared.HasSelectionHandlers;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -69,6 +70,10 @@ public class NavigationPanel extends ResizeComposite implements INavigationPanel
 		
 		
 		return b;
+	}
+	
+	public HasOpenHandlers<TreeItem> getExpandedEvtTree() {
+		return this.navigationTree;
 	}
 		
 	public HasSelectionHandlers<TreeItem> getSelectedEvtTree() {

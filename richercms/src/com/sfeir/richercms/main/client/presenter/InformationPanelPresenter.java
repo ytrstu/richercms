@@ -5,16 +5,17 @@ import com.mvp4g.client.annotation.InjectService;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.sfeir.richercms.client.view.PopUpMessage;
-import com.sfeir.richercms.main.client.PageServiceAsync;
+import com.sfeir.richercms.main.client.ArboPageServiceAsync;
 import com.sfeir.richercms.main.client.event.MainEventBus;
 import com.sfeir.richercms.main.client.interfaces.IInformationPanel;
 import com.sfeir.richercms.main.client.view.InformationPanel;
-import com.sfeir.richercms.main.shared.BeanPage;
+import com.sfeir.richercms.main.shared.BeanArboPage;
+import com.sfeir.richercms.main.shared.BeanTranslationPage;
 
 @Presenter( view = InformationPanel.class)
 public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, MainEventBus>{
 
-	private PageServiceAsync rpcPage = null;
+	private ArboPageServiceAsync rpcPage = null;
 	
 	public InformationPanelPresenter() {
 		super();
@@ -36,51 +37,68 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 	public void bindView() {
 	}
 	
+		
+	/**
+	 * make a Page and set all field who information is in InformationPanel
+	 * @return a BeanTranslationPage with all information of the InformationPanel form
+	 */
+	public BeanTranslationPage addInformationInPage() {
+		BeanTranslationPage newTranslation = new BeanTranslationPage();
+		newTranslation.setBrowserTitle(view.getBrowserTitle());
+		newTranslation.setContent("");
+		newTranslation.setDescription(view.getDescription());
+		newTranslation.setKeyWord(view.getKeyWord());
+		newTranslation.setPageTitle(view.getPageTitle());
+		newTranslation.setPublicationFinish(view.getPublicationFinish());
+		newTranslation.setPublicationStart(view.getPublicationStart());
+		newTranslation.setUrlName(view.getUrlName());
+		
+		return newTranslation;
+	}
 	
 	/**
-	 * display Page informations
-	 * @param result the bean containing the page information
+	 * Display a BeanArboPage information in the good field
+	 * @param page : the beanArboPage representing a webPage
 	 */
-	public void onDisplayPage(String key) {
+	private void displayArboPage(BeanArboPage page){
 		this.view.clearFields();
 		this.view.deasabledWidgets();
 		
-		this.rpcPage.getPage(key, new AsyncCallback<BeanPage>() {
-			public void onSuccess(BeanPage result) {
-				view.setBrowserTitle(result.getBrowserTitle());
-				view.setDescription(result.getDescription());
-				view.setKeyWord(result.getKeyWord());
-				view.setPageTitle(result.getPageTitle());
-				//view.setPublicationFinish(result.getPublicationFinish());
-				//view.setPublicationStart(result.getPublicationStart());
-				view.setUrlName(result.getUrlName());
-				eventBus.displayContent(result.getContent());
+		view.setBrowserTitle(page.getTranslation().get(0).getBrowserTitle());
+		view.setDescription(page.getTranslation().get(0).getDescription());
+		view.setKeyWord(page.getTranslation().get(0).getKeyWord());
+		view.setPageTitle(page.getTranslation().get(0).getPageTitle());
+		//view.setPublicationFinish(page.getPublicationFinish());
+		//view.setPublicationStart(page.getPublicationStart());
+		view.setUrlName(page.getTranslation().get(0).getUrlName());
+		eventBus.displayContent(page.getTranslation().get(0).getContent());
+	}
+	
+/////////////////////////////////////////////// EVENT ///////////////////////////////////////////////
+	
+
+	public void onDisplayPage(String key) {
+		this.rpcPage.getArboPage(key, new AsyncCallback<BeanArboPage>() {
+			public void onSuccess(BeanArboPage result) {
+				displayArboPage(result);
 			}
 			public void onFailure(Throwable caught) {
 				PopUpMessage p = new PopUpMessage("Error : Get current Page");
 				p.show();}
 		});
 	}
-		
-	/**
-	 * make a Page and set all field who information is in InformationPanel
-	 * @return a BeanPage with all information of the InformationPanel form
-	 */
-	public BeanPage addInformationInPage() {
-		BeanPage newPage = new BeanPage();
-		newPage.setBrowserTitle(view.getBrowserTitle());
-		newPage.setContent("");
-		newPage.setDescription(view.getDescription());
-		newPage.setKeyWord(view.getKeyWord());
-		newPage.setPageTitle(view.getPageTitle());
-		newPage.setPublicationFinish(view.getPublicationFinish());
-		newPage.setPublicationStart(view.getPublicationStart());
-		newPage.setUrlName(view.getUrlName());
-		
-		return newPage;
+	
+	public void onDisplayMainPage() {
+		this.rpcPage.getMainArboPage(new AsyncCallback<BeanArboPage>() {
+			public void onSuccess(BeanArboPage result) {
+				displayArboPage(result);
+			}
+			public void onFailure(Throwable caught) {
+				PopUpMessage p = new PopUpMessage("Error : Get Main Page");
+				p.show();}
+		});	
 	}
 	
-/////////////////////////////////////////////// EVENT ///////////////////////////////////////////////
 	
 	public void onAddPage(String key) {
 		view.clearFields();
@@ -115,7 +133,7 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 	 * @param rpcPage
 	 */
 	@InjectService
-	public void setPageService( PageServiceAsync rpcPage ) {
+	public void setPageService( ArboPageServiceAsync rpcPage ) {
 		this.rpcPage = rpcPage;
 	}
 }

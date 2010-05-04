@@ -64,6 +64,10 @@ public class ValidationPanelPresenter extends LazyPresenter<IValidationPanel, Ma
 		view.deasableButtons();
 	}
 	
+	public void onDisplayMainPage() {
+		view.deasableButtons();
+	}
+	
 	/**
 	 * Fired when the main do start
 	 * @param navPanel 

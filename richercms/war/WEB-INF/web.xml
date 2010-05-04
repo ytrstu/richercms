@@ -46,6 +46,11 @@
     	<servlet-class>com.sfeir.richercms.main.server.ServicePageImpl</servlet-class>
   	</servlet>
   	
+  	<servlet>
+    	<servlet-name>arboPageServiceServlet</servlet-name>
+    	<servlet-class>com.sfeir.richercms.main.server.ServiceArboPageImpl</servlet-class>
+  	</servlet>
+  	
   	
   
  	<servlet-mapping>
@@ -86,6 +91,11 @@
 	 <servlet-mapping>
   		<servlet-name>pageServiceServlet</servlet-name>
   		<url-pattern>/RicherCMS/pageService</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+  		<servlet-name>arboPageServiceServlet</servlet-name>
+  		<url-pattern>/RicherCMS/arboPageService</url-pattern>
 	</servlet-mapping>
   
   

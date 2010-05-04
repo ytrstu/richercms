@@ -3,6 +3,7 @@ package com.sfeir.richercms.main.server.business;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.jdo.annotations.Element;
 import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.PersistenceCapable;
@@ -17,7 +18,9 @@ public class ArboPage {
     @Extension(vendorName="datanucleus", key="gae.encoded-pk", value="true")
     private String encodedKey;
 	@Persistent
+	@Element(dependent = "true")
 	List<TranslationPage> translation;
+	@Persistent
 	List<String> idChildArboPage;
 	//TODO List<Long> idTag;
 	

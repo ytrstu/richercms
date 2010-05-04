@@ -2,7 +2,6 @@ package com.sfeir.richercms.wizard.client;
 
 import java.util.List;
 
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.sfeir.richercms.wizard.shared.BeanLanguageDetails;
@@ -72,15 +71,20 @@ public interface LanguageService extends RemoteService
 	
 	/**
 	 * When a translation of the website is setting, in the current language, we need to set the key of the translation
-	 * @param languagekey : key of the language in the database
-	 * @param translationKey : key of the translation in the database
+	 * @param id : id of the language in the database
+	 * @param translationID : id needed to search the good translation of a page
 	 */
-	public void setTranslationKey(String languagekey, String translationKey);
+	public void setTranslationKey(Long id, int translationID);
 	
 	/**
 	 * Return the key of a translation. if any translation exist, this function retrun null
-	 * @param languagekey : the key of the language who need a translation
+	 * @param id : the id of the language who need a translation
 	 * @return the key of the translation in the database or null either
 	 */
-	public String isAlreadyTranslated(String languagekey);
+	public Integer isAlreadyTranslated(Long id);
+	
+	/**
+	 * Set all translation id. Use this after all language are added
+	 */
+	public void setAllTranslationID();
 }

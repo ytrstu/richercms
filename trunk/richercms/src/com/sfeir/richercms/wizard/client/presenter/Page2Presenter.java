@@ -191,6 +191,12 @@ public class Page2Presenter extends LazyPresenter<IdisplayPage2, WizardConfigEve
 				PopUpMessage p = new PopUpMessage("Error : Configuration");
 				p.show();}});
 		
+		rpcLangue.setAllTranslationID(new AsyncCallback<Void>() {
+			public void onSuccess(Void result) {;}
+			public void onFailure(Throwable caught) {
+				PopUpMessage p = new PopUpMessage("Error : set translation ID");
+				p.show();}});
+		
 		return true;
 	}
 	

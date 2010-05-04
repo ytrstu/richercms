@@ -21,6 +21,7 @@ public interface LanguageServiceAsync {
 	public void deleteLanguages(List<Integer> lstID, AsyncCallback<Void> callback);
 	public void deleteAllLanguages(AsyncCallback<Void> callback);
 	public void deleteLanguage(int id, AsyncCallback<Void> callback);
-	public void setTranslationKey(String languagekey, String translationKey, AsyncCallback<Void> callback);
-	public void isAlreadyTranslated(String languagekey, AsyncCallback<String> callback);
+	public void setTranslationKey(Long id, int translationID, AsyncCallback<Void> callback);
+	public void isAlreadyTranslated(Long id, AsyncCallback<Integer> callback);
+	public void setAllTranslationID(AsyncCallback<Void> callback);
 }

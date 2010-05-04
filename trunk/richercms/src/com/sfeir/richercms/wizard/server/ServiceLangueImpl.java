@@ -39,9 +39,9 @@ public class ServiceLangueImpl extends RemoteServiceServlet implements LanguageS
 	    try {
 	        Query q = pm.newQuery(Language.class);
 	        languages = (List<Language>) q.execute();
-	        
+	      
 	        for (Language language : languages) {
-	            lst.add(new BeanLanguageDetails(language.getEncodedKey(), language.getLangue(),language.getTag(),language.isSelected(), language.getTranslationKey()));
+	            lst.add(new BeanLanguageDetails(language.getId(), language.getLangue(),language.getTag(),language.isSelected(), language.getTranslationID()));
 	          }
         } finally {
         	pm.close();
@@ -56,10 +56,10 @@ public class ServiceLangueImpl extends RemoteServiceServlet implements LanguageS
 		
 		 try
 		 {
-			 Language lg = pm.getObjectById(Language.class, this.languages.get(id).getEncodedKey());
+			 Language lg = pm.getObjectById(Language.class, this.languages.get(id).getId());
 			 
 			 if(lg != null)
-				 return new BeanLanguageDetails(lg.getEncodedKey(), lg.getLangue(), lg.getTag(), lg.isSelected(), lg.getTranslationKey());
+				 return new BeanLanguageDetails(lg.getId(), lg.getLangue(), lg.getTag(), lg.isSelected(), lg.getTranslationID());
 			 else
 				 return null;
 		 }finally{
@@ -104,11 +104,11 @@ public class ServiceLangueImpl extends RemoteServiceServlet implements LanguageS
 			 {
 				//On d�-selectionne toute les langues
 				 for (Language objLanguage : this.languages) {
-					Language lg = pm.getObjectById(Language.class, objLanguage.getEncodedKey());
+					Language lg = pm.getObjectById(Language.class, objLanguage.getId());
 					lg.setSelected(false);
 				 }
 		
-				 Language lg = pm.getObjectById(Language.class, this.languages.get(id).getEncodedKey());
+				 Language lg = pm.getObjectById(Language.class, this.languages.get(id).getId());
 				 lg.setSelected(true);
 	
 				 
@@ -126,7 +126,7 @@ public class ServiceLangueImpl extends RemoteServiceServlet implements LanguageS
 		 {
 			//On dé-selectionne toute les langues
 			 for (Language objLanguage : this.languages) {
-				Language lg = pm.getObjectById(Language.class, objLanguage.getEncodedKey());
+				Language lg = pm.getObjectById(Language.class, objLanguage.getId());
 				lg.setSelected(false);
 			 }
 	
@@ -134,7 +134,7 @@ public class ServiceLangueImpl extends RemoteServiceServlet implements LanguageS
 			 // On selectionne uniquement les bonnes langues
 			 for (Integer IDlangue : lstID)
 			 {	
-				 Language lg = pm.getObjectById(Language.class, this.languages.get(IDlangue.intValue()).getEncodedKey());
+				 Language lg = pm.getObjectById(Language.class, this.languages.get(IDlangue.intValue()).getId());
 				 lg.setSelected(true);
 			 }
 			 
@@ -149,7 +149,7 @@ public class ServiceLangueImpl extends RemoteServiceServlet implements LanguageS
 		 try {
 			 
 			 for (Integer id : lstID) {
-				 Language lg = pm.getObjectById(Language.class, this.languages.get(id).getEncodedKey());
+				 Language lg = pm.getObjectById(Language.class, this.languages.get(id).getId());
 				 pm.deletePersistent(lg);
 			 }
 
@@ -179,7 +179,7 @@ public class ServiceLangueImpl extends RemoteServiceServlet implements LanguageS
 		
 		PersistenceManager pm = getPersistenceManager();
 		 try {
-				 Language lg = pm.getObjectById(Language.class, this.languages.get(id).getEncodedKey());
+				 Language lg = pm.getObjectById(Language.class, this.languages.get(id).getId());
 				 pm.deletePersistent(lg);
 
 		 }finally{
@@ -197,30 +197,30 @@ public class ServiceLangueImpl extends RemoteServiceServlet implements LanguageS
 		 return false;
 	}
 	
-	public void setTranslationKey(String languagekey, String translationKey){
+	public void setTranslationKey(Long id, int translationID){
 		
 		PersistenceManager pm = getPersistenceManager();
 		Transaction tx = pm.currentTransaction();
 		try {
 			tx.begin();
-				Language lg = pm.getObjectById(Language.class, languagekey);
-				lg.setTranslationKey(translationKey);
+				Language lg = pm.getObjectById(Language.class, id);
+				lg.setTranslationID(translationID);
 			tx.commit();
 		}finally{
 			if (tx.isActive()) {
 			    tx.rollback();}
-			//pm.close();
+			pm.close();
 		}
 	}
 	
-	public String isAlreadyTranslated(String languagekey) {
+	public Integer isAlreadyTranslated(Long id) {
 		PersistenceManager pm = getPersistenceManager();
 		Transaction tx = pm.currentTransaction();
-		String translationKey;
+		int translationID;
 		try {
 			tx.begin();
-				Language lg = pm.getObjectById(Language.class, languagekey);
-				translationKey = lg.getTranslationKey();
+				Language lg = pm.getObjectById(Language.class, id);
+				translationID = lg.getTranslationID();
 			tx.commit();
 		}finally{
 			if (tx.isActive()) {
@@ -228,6 +228,27 @@ public class ServiceLangueImpl extends RemoteServiceServlet implements LanguageS
 			pm.close();
 		}
 		
-		return translationKey;
+		return new Integer(translationID);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public void setAllTranslationID() {
+		PersistenceManager pm = getPersistenceManager();
+	    try {
+	        Query q = pm.newQuery(Language.class);
+	        languages = (List<Language>) q.execute();   
+	        
+	        int i = 0;
+	        for (Language language : languages) {
+	            if(language.isSelected()){
+	            	language.setTranslationID(0);
+	            }else {
+	            	i = i+1;
+	            	language.setTranslationID(i);
+	            }
+	         }
+        } finally {
+        	pm.close();
+        }
 	}
 }

@@ -59,4 +59,31 @@ public interface IdisplayMainPage extends LazyView {
 	 */
 	public String getKeyOfSelectedLg();
 
+	/**
+	 * get the number of language in the lisBox
+	 * @return size of the language listBox
+	 */
+	public int countTranslation();
+	
+	/**
+	 * Return the position in the listBox of the selected Language
+	 * in order to display the good translation
+	 * @return : index of the selected language
+	 */
+	public int getIndexOfCurrentLg();
+	
+	/**
+	 * Set the index of the languages listBox to the default value
+	 */
+	public void setIndexOfLgToDefault();
+	
+	/**
+	 * Disable the listBox containing language
+	 */
+	public void disableLanguageBox();
+	
+	/**
+	 * Enable the listBox containing language
+	 */
+	public void enableLanguageBox();
 }

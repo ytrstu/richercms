@@ -23,7 +23,6 @@ import com.sfeir.richercms.main.client.event.MainEventBus;
 import com.sfeir.richercms.main.client.interfaces.INavigationPanel;
 import com.sfeir.richercms.main.client.view.NavigationPanel;
 import com.sfeir.richercms.main.shared.BeanArboPage;
-import com.sfeir.richercms.main.shared.BeanPage;
 
 
 @Presenter( view = NavigationPanel.class)

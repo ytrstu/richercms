@@ -39,9 +39,16 @@ public class Page2Presenter extends LazyPresenter<IdisplayPage2, WizardConfigEve
 		// Sauvegarde des langue choisi + changement de view (page2 -> MainView)
 		view.getNextButton().addClickHandler(new ClickHandler() {   
 	        public void onClick(ClickEvent event) {
-	        	saveSelectedLanguage();
-	        	if(check())
-	        		eventBus.wizardFinished();
+	        	if(check()) {
+	        		rpcLangue.selectLanguage(view.getSelectedLanguage(), new AsyncCallback<Void>() {
+						public void onSuccess(Void result) {
+							eventBus.wizardFinished();
+						}
+						public void onFailure(Throwable caught) {
+							PopUpMessage p = new PopUpMessage("Error : SelectLanguage");
+							p.show();}
+				});
+	        	}		
 	        }
 	      });
 		
@@ -140,19 +147,6 @@ public class Page2Presenter extends LazyPresenter<IdisplayPage2, WizardConfigEve
 	}
 	
 	/**
-	 * Save selected Languages in datastore
-	 */
-	private void saveSelectedLanguage() {
-		
-		this.rpcLangue.selectLanguage(this.view.getSelectedLanguage(), new AsyncCallback<Void>() {
-						public void onSuccess(Void result){}
-						public void onFailure(Throwable caught) {
-							PopUpMessage p = new PopUpMessage("Error : SelectLanguage");
-							p.show();}
-				});
-	}
-
-	/**
 	 * Delete selected Languages in datastore
 	 */
 	private void deleteLanguage(int id) {
@@ -189,12 +183,6 @@ public class Page2Presenter extends LazyPresenter<IdisplayPage2, WizardConfigEve
 			public void onSuccess(Void result) {;}
 			public void onFailure(Throwable caught) {
 				PopUpMessage p = new PopUpMessage("Error : Configuration");
-				p.show();}});
-		
-		rpcLangue.setAllTranslationID(new AsyncCallback<Void>() {
-			public void onSuccess(Void result) {;}
-			public void onFailure(Throwable caught) {
-				PopUpMessage p = new PopUpMessage("Error : set translation ID");
 				p.show();}});
 		
 		return true;

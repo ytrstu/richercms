@@ -1,5 +1,7 @@
 package com.sfeir.richercms.main.client.event;
 
+import java.util.List;
+
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
@@ -52,7 +54,7 @@ public interface MainEventBus extends EventBus {
 	@Event( handlers = {MainPagePresenter.class, InformationPanelPresenter.class, ValidationPanelPresenter.class, TinyMCEPanelPresenter.class} )
 	public void addPage(String key);
 	
-	@Event( handlers = {InformationPanelPresenter.class, ValidationPanelPresenter.class, TinyMCEPanelPresenter.class} )
+	@Event( handlers = {MainPagePresenter.class, InformationPanelPresenter.class, ValidationPanelPresenter.class, TinyMCEPanelPresenter.class} )
 	public void cancelPage();
 	
 	/**
@@ -95,10 +97,10 @@ public interface MainEventBus extends EventBus {
 	
 	/**
 	 * Fired by the InformationPresenter for Sending the information to save a page (in the mainPresenter)
-	 * @param info : Page information
+	 * @param translation : the list of all translation
 	 */
 	@Event( handlers =  MainPagePresenter.class )
-	public void sendInfo(BeanTranslationPage info);
+	public void sendInfo(List<BeanTranslationPage> translation);
 	
 	/**
 	 * Fired by the MainPresenter After having received the data from the page to save.
@@ -176,4 +178,11 @@ public interface MainEventBus extends EventBus {
 	 */
 	@Event( handlers =  MainPagePresenter.class )
 	public void setTranslationKeyInLanguage(String TranslationKey);
+	
+	/**
+	 * Fired by the MainPresenter when a new language is selected in the listBox.
+	 * @param index : the index of the new translation to display
+	 */
+	@Event( handlers =  InformationPanelPresenter.class )
+	public void changeTranslation(int index);
 }

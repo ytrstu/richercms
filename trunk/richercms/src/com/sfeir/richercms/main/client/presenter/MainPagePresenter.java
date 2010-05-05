@@ -43,17 +43,19 @@ public class MainPagePresenter extends LazyPresenter<IdisplayMainPage, MainEvent
 		
 		view.onChangeSelectedLg().addChangeHandler(new ChangeHandler(){
 			public void onChange(ChangeEvent event) {	
-				changeTranslation(view.getKeyOfSelectedLg());
+				eventBus.changeTranslation(view.getIndexOfCurrentLg());
 			}
 	    	});
 	}
 	
 	
 	private void addPage() {
-		//this.editingPage.setKey();
+		
 		this.rpcPage.addArboPage(this.editingPage, this.key, new AsyncCallback<Void>() {
 			public void onSuccess(Void result) {
 				eventBus.reloadChildInTree(); //reload the new tree
+				//on redonne la possibilité de changer de traduction
+				view.enableLanguageBox();
 			}
 			public void onFailure(Throwable caught) {
 				PopUpMessage p = new PopUpMessage("Error : AddPage");
@@ -98,30 +100,24 @@ public class MainPagePresenter extends LazyPresenter<IdisplayMainPage, MainEvent
 		});
 	}
 	
-	
-	private void changeTranslation(String languageSelectedKey) {
-		/*this.rpcLanguage.isAlreadyTranslated(languageSelectedKey, new AsyncCallback<String>() {
-	    	public void onSuccess(String result) {
-	    		eventBus.changeLanguage(result);
-	    	}
-			public void onFailure(Throwable caught) {
-	        	PopUpMessage p = new PopUpMessage("Error retrieving language by key");
-	        	p.show();}
-		});*/
-	}
-	
-	
 	/////////////////////////////////////////////// EVENT ///////////////////////////////////////////////
 	
 	public void onAddPage(String key){
 		this.AddOrModify = 0;
 		this.key = key;
+		this.view.disableLanguageBox();
+		this.view.setIndexOfLgToDefault();
 	}
 	
 	public void onModifyPage(String key)
 	{
 		this.AddOrModify = 1;
 		this.key = key;
+		this.view.enableLanguageBox();
+	}
+	
+	public void onCancelPage() {
+		this.view.enableLanguageBox();
 	}
 	
 	public void onChangeNavPanel(INavigationPanel navPanel) {
@@ -150,15 +146,15 @@ public class MainPagePresenter extends LazyPresenter<IdisplayMainPage, MainEvent
 		this.eventBus.callInfo();
 	}
 
-	public void onSendInfo(BeanTranslationPage info) {
+	public void onSendInfo(List<BeanTranslationPage> translation) {
 		this.editingPage = new BeanArboPage();
-		this.editingPage.getTranslation().add(info);
+		this.editingPage.setTranslation(translation);
+		//this.editingPage.getTranslation().set(view.getIndexOfCurrentLg(),info);
 		this.eventBus.callContent();
 	}
 	
 	public void onSendContent(String content) {
-		this.editingPage.getTranslation().get(0).setContent(content);
-
+		this.editingPage.getTranslation().get(view.getIndexOfCurrentLg()).setContent(content);
 		switch(this.AddOrModify) {
 			case 0 :
 				this.addPage();

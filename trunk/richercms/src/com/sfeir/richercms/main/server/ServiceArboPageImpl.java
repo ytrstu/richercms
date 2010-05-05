@@ -16,6 +16,7 @@ import com.sfeir.richercms.main.server.business.TranslationPage;
 import com.sfeir.richercms.main.shared.BeanArboPage;
 import com.sfeir.richercms.main.shared.BeanTranslationPage;
 import com.sfeir.richercms.server.PMF;
+import com.sfeir.richercms.wizard.server.business.Language;
 
 @SuppressWarnings("serial")
 public class ServiceArboPageImpl  extends RemoteServiceServlet implements ArboPageService {
@@ -23,6 +24,7 @@ public class ServiceArboPageImpl  extends RemoteServiceServlet implements ArboPa
 	
 	private static final PersistenceManagerFactory Pmf = PMF.get();
 	private RootArbo root = null;
+	private int nbTranslation = 1;
 	
 	private PersistenceManager getPersistenceManager() {
 		return Pmf.getPersistenceManager();
@@ -146,13 +148,19 @@ public class ServiceArboPageImpl  extends RemoteServiceServlet implements ArboPa
 		        Query q = pm.newQuery(RootArbo.class);
 		        List<RootArbo> roots = (List<RootArbo>) q.execute(); 
 		        if(roots.size() == 0){
+		        	countLanguage();
 		        	this.root = new RootArbo();
-		        	//List<TranslationPage> lst1 = new ArrayList<TranslationPage>();
+		        	pm.makePersistent(this.root);
 		        	TranslationPage tp = new TranslationPage(); tp.setPageTitle("main");
 		        	pm.makePersistent(tp);
-			    	//this.root.setTranslation(lst1);
-		        	pm.makePersistent(this.root);
 		        	this.root.getTranslation().add(tp);
+		        	
+		        	//add empty Translation into the page
+		        	for(int i = 1 ; i<this.nbTranslation ; i++) {
+			        	TranslationPage emptyTP = new TranslationPage();
+			        	pm.makePersistent(emptyTP);
+			        	this.root.getTranslation().add(emptyTP);
+		        	}
 		        }else {
 		        	this.root = roots.get(0);
 		        }
@@ -242,6 +250,23 @@ public class ServiceArboPageImpl  extends RemoteServiceServlet implements ArboPa
 		return new TranslationPage(bTp.getBrowserTitle(),bTp.getPageTitle(), bTp.getUrlName(),
 				bTp.getDescription(), bTp.getKeyWord(), bTp.getPublicationStart(),
 				bTp.getPublicationFinish(), bTp.getContent());
+	}
+	
+	
+	/**
+	 * Store the number of language in the class variable nbTranslation.
+	 * With that, the application know how many translation are needed.
+	 */
+	@SuppressWarnings("unchecked")
+	private void countLanguage() {
+		PersistenceManager pm = getPersistenceManager();
+		try {
+	        Query q = pm.newQuery(Language.class);
+	        List<Language> languages = (List<Language>) q.execute();
+	        this.nbTranslation = languages.size();
+		}finally{
+			pm.close();
+		}
 	}
 
 }

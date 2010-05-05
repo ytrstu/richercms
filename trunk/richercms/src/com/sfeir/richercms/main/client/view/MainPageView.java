@@ -4,14 +4,9 @@ package com.sfeir.richercms.main.client.view;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.HasChangeHandlers;
-import com.google.gwt.layout.client.Layout.Alignment;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
-import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.ListBox;
@@ -19,7 +14,6 @@ import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.ResizeComposite;
 import com.google.gwt.user.client.ui.SplitLayoutPanel;
-import com.google.gwt.user.client.ui.TabLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.sfeir.richercms.main.client.MainConstants;
 import com.sfeir.richercms.main.client.interfaces.IInformationPanel;
@@ -170,5 +164,25 @@ public class MainPageView extends ResizeComposite implements IdisplayMainPage {
 	
 	public String getKeyOfSelectedLg() {
 		return this.languages.getValue(this.languages.getSelectedIndex());
+	}
+	
+	public int countTranslation() {
+		return this.languages.getItemCount();
+	}
+	
+	public int getIndexOfCurrentLg() {
+		return this.languages.getSelectedIndex();
+	}
+	
+	public void setIndexOfLgToDefault() {
+		this.languages.setSelectedIndex(0);
+	}
+	
+	public void disableLanguageBox() {
+		this.languages.setEnabled(false);
+	}
+	
+	public void enableLanguageBox(){
+		this.languages.setEnabled(true);
 	}
 }

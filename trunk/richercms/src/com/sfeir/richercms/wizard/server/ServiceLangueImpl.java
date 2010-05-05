@@ -114,7 +114,9 @@ public class ServiceLangueImpl extends RemoteServiceServlet implements LanguageS
 				 
 			 }finally{
 				 pm.close();
-			 }
+			 }	
+			 //when the default language is selected, we can save the index for each language
+			 setAllTranslationID();
 		}
 	}
 	

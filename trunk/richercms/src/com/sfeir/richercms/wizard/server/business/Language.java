@@ -1,7 +1,6 @@
 package com.sfeir.richercms.wizard.server.business;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
-import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
@@ -11,7 +10,7 @@ import javax.jdo.annotations.PrimaryKey;
  * Represent a language
  * @author homberg.g
  */
-@PersistenceCapable(identityType = IdentityType.APPLICATION)
+@PersistenceCapable
 public class Language {
 	
 	@PrimaryKey

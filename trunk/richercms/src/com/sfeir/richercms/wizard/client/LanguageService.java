@@ -48,6 +48,8 @@ public interface LanguageService extends RemoteService
 	
 	/**
 	 * Select a different default Language available for the website
+	 * this method call setAllTranslationID() because we can save the index of each language when the 
+	 * default language is set.
 	 * @param id : the position in the DisplayTable of the new default language available for the website
 	 */
 	public void selectLanguage(int id);

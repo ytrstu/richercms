@@ -1,5 +1,7 @@
 package com.sfeir.richercms.main.client.interfaces;
 
+import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.event.dom.client.HasFocusHandlers;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.view.LazyView;
 
@@ -104,4 +106,88 @@ public interface IInformationPanel extends LazyView {
 	 * @param content of the field PublicationFinish
 	 */
 	void setPublicationFinish(String publicationFinish);
+	
+	/**
+	 * Set the content of each label using for help during a translation
+	 * @param browserTitle : content of default translation
+	 * @param description : content of default translation
+	 * @param keyWord : content of default translation
+	 * @param pageTitle : content of default translation
+	 * @param urlName : content of default translation
+	 */
+	public void setHelp(String browserTitle, String description, String keyWord, 
+			String pageTitle, String urlName);
+	
+	/**
+	 * hide all widget used for display help
+	 */
+	public void hideAllHelpField();
+	
+	/**
+	 * display once widget needed for help
+	 * @param number : the number associated to the position of the textBox who need helpDisplay
+	 * (0 to 4)
+	 */
+	public void showOneHelp(int number);
+	
+	/**
+	 * hide once widget needed for help
+	 * @param number : the number associated to the position of the textBox who need helpDisplay
+	 * (0 to 4)
+	 */
+	public void hideOneHelp(int number);
+	
+	/**
+	 * handle focus event on the 0 of 4 textBox
+	 * @return Event
+	 */
+	public HasFocusHandlers getFocusOnTB0();
+	
+	/**
+	 * handle focus event on the 1 of 4 textBox
+	 * @return Event
+	 */
+	public HasFocusHandlers getFocusOnTB1();
+	
+	/**
+	 * handle focus event on the 2 of 4 textBox
+	 * @return Event
+	 */
+	public HasFocusHandlers getFocusOnTB2();
+	
+	/**
+	 * handle focus event on the 3 of 4 textBox
+	 * @return Event
+	 */
+	public HasFocusHandlers getFocusOnTB3();
+	
+	/**
+	 * handle focus event on the 4 of 4 textBox
+	 * @return Event
+	 */
+	public HasFocusHandlers getFocusOnTB4();
+	
+	/**
+	 * Enable the Translation help 
+	 */
+	public void enableHelp();
+	
+	/**
+	 * disable the Translation help 
+	 */
+	public void disableHelp();
+	
+	/**
+	 * Handle click event on one of the 5th helpsButton 
+	 * @param number : ID of the corresponding button : 0 to 4
+	 * @return
+	 */
+	public HasClickHandlers getclickBtnCpy(int number);
+	
+	/**
+	 * action after a click on the Helpbutton
+	 * copy the content of the help field in the texbox
+	 * @param number : ID of the corresponding help : 0 to 4
+	 */
+	public void cpyHelpInField(int number);
 }

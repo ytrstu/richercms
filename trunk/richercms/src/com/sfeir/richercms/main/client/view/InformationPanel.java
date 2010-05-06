@@ -1,9 +1,15 @@
 package com.sfeir.richercms.main.client.view;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.event.dom.client.HasFocusHandlers;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.Focusable;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ResizeComposite;
 import com.google.gwt.user.client.ui.ScrollPanel;
@@ -22,6 +28,7 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 	
 	//gestion des langues
 	private MainConstants constants = GWT.create(MainConstants.class);
+	private boolean help = false; // savoir si on active ou non l'aide pour la traduction
 	
 	private Label lBrowserTitle = new Label(constants.BrowserTitle());
 	private Label lPageTitle = new Label(constants.PageTitle());
@@ -31,6 +38,9 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 	private Label lPublicationStart = new Label(constants.PublicationStart());
 	private Label lPublicationFinish = new Label(constants.PublicationFinish());
 	
+	private ArrayList<Label> cpyLabelLst = new ArrayList<Label>();
+	private ArrayList<Button> cpyButtonLst = new ArrayList<Button>();
+
 	private TextBox tBrowserTitle = new TextBox();
 	private TextBox tPageTitle = new TextBox();
 	private TextBox tUrlName = new TextBox();
@@ -48,26 +58,59 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 	 */
 	public void createView() {
 		
+		for(int i=0; i<5; i++) {
+			this.cpyButtonLst.add(new Button("<"));
+		}
+		
+		for(int i=0; i<5; i++) {
+			this.cpyLabelLst.add(new Label(""));
+		}
+		
+		HorizontalPanel p;
 		ScrollPanel root = new ScrollPanel();
 		FlexTable tab = new FlexTable();
 		tab.setCellSpacing(10);
+		
 		tab.setWidget(0,0,this.lBrowserTitle);
 		tab.setWidget(0,1,this.tBrowserTitle);
+		p = new HorizontalPanel();
+		p.add(this.cpyButtonLst.get(0));p.add(this.cpyLabelLst.get(0));
+		tab.setWidget(0,2,p);
+		
 		tab.setWidget(1,0,this.lPageTitle);
 		tab.setWidget(1,1,this.tPageTitle);
+		p = new HorizontalPanel();
+		p.add(this.cpyButtonLst.get(1));p.add(this.cpyLabelLst.get(1));
+		tab.setWidget(1,2,p);
+		
 		tab.setWidget(2,0,this.lUrlName);
 		tab.setWidget(2,1,this.tUrlName);
+		p = new HorizontalPanel();
+		p.add(this.cpyButtonLst.get(2));p.add(this.cpyLabelLst.get(2));
+		tab.setWidget(2,2,p);
+		
 		tab.setWidget(3,0,this.lDescription);
 		tab.setWidget(3,1,this.tDescription);
+		p = new HorizontalPanel();
+		p.add(this.cpyButtonLst.get(3));p.add(this.cpyLabelLst.get(3));
+		tab.setWidget(3,2,p);
+		
 		tab.setWidget(4,0,this.lKeyWord);
 		tab.setWidget(4,1,this.tKeyWord);
+		p = new HorizontalPanel();
+		p.add(this.cpyButtonLst.get(4));p.add(this.cpyLabelLst.get(4));
+		tab.setWidget(4,2,p);
+		
 		tab.setWidget(5,0,this.lPublicationStart);
 		tab.setWidget(5,1,this.dPublicationStart);
+		
 		tab.setWidget(6,0,this.lPublicationFinish);
 		tab.setWidget(6,1,this.dPublicationFinish);
+		
 		root.add(tab);
 
 		this.deasabledWidgets();
+		this.hideAllHelpField();
 		this.initWidget(root);
 	}
 	
@@ -163,5 +206,85 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 		return this;
 	}
 	
+	public void setHelp(String browserTitle, String description, String keyWord, 
+			String pageTitle, String urlName) {
+		this.cpyLabelLst.get(0).setText(browserTitle);
+		this.cpyLabelLst.get(3).setText(description);
+		this.cpyLabelLst.get(4).setText(keyWord);
+		this.cpyLabelLst.get(1).setText(pageTitle);
+		this.cpyLabelLst.get(2).setText(urlName);
+	}
 	
+	public void hideAllHelpField() {
+		for(int i = 0 ; i<5 ; i++) {
+			this.cpyButtonLst.get(i).setVisible(false);
+			this.cpyLabelLst.get(i).setVisible(false);
+		}
+	}
+	
+	public void showOneHelp(int number) {
+		if(this.help) {
+			this.hideAllHelpField();
+			this.cpyButtonLst.get(number).setVisible(true);
+			this.cpyLabelLst.get(number).setVisible(true);
+		}
+	}
+	
+	public void hideOneHelp(int number) {
+		this.cpyButtonLst.get(number).setVisible(false);
+		this.cpyLabelLst.get(number).setVisible(false);
+	}
+	
+	public void enableHelp(){
+		this.help = true;
+	}
+	
+	public void disableHelp(){
+		this.help = false;
+		this.hideAllHelpField();
+	}
+	
+	public HasFocusHandlers getFocusOnTB0() {
+		return this.tBrowserTitle;
+	}
+	
+	public HasFocusHandlers getFocusOnTB1() {
+		return this.tPageTitle;
+	}
+	
+	public HasFocusHandlers getFocusOnTB2() {
+		return this.tUrlName;
+	}
+	
+	public HasFocusHandlers getFocusOnTB3() {
+		return this.tDescription;
+	}
+	
+	public HasFocusHandlers getFocusOnTB4() {
+		return this.tKeyWord;
+	}
+	
+	public HasClickHandlers getclickBtnCpy(int number) {
+		return this.cpyButtonLst.get(number);
+	}
+	
+	public void cpyHelpInField(int number) {
+		switch(number) {
+		case 0 :
+			this.tBrowserTitle.setText(this.cpyLabelLst.get(number).getText());
+			break;
+		case 1 :
+			this.tPageTitle.setText(this.cpyLabelLst.get(number).getText());
+			break;
+		case 2 :
+			this.tUrlName.setText(this.cpyLabelLst.get(number).getText());
+			break;
+		case 3 :
+			this.tDescription.setText(this.cpyLabelLst.get(number).getText());
+			break;
+		case 4 :
+			this.tKeyWord.setText(this.cpyLabelLst.get(number).getText());
+			break;
+		}
+	}
 }

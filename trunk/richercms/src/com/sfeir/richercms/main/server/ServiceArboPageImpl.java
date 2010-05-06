@@ -232,7 +232,7 @@ public class ServiceArboPageImpl  extends RemoteServiceServlet implements ArboPa
 	public BeanTranslationPage translationPageToBean(TranslationPage tp) {
 		return new BeanTranslationPage(tp.getEncodedKey(), tp.getBrowserTitle(),tp.getPageTitle(), tp.getUrlName(),
 				 tp.getDescription(), tp.getKeyWord(), tp.getPublicationStart(),
-				 tp.getPublicationFinish(), tp.getContent());
+				 tp.getPublicationFinish(), tp.getContent().getValue());
 	}
 	
 	public ArboPage BeanToArboPage(BeanArboPage bAP,PersistenceManager pm){

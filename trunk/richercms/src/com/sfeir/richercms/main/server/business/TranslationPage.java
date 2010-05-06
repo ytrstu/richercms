@@ -5,6 +5,7 @@ import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
+import com.google.appengine.api.datastore.Text;
 
 @PersistenceCapable
 public class TranslationPage {
@@ -28,7 +29,7 @@ public class TranslationPage {
 	@Persistent
 	private String publicationFinish;
 	@Persistent
-	private String content;
+	private Text content;
 	
 	
 	public TranslationPage()
@@ -40,7 +41,7 @@ public class TranslationPage {
 		this.browserTitle = new String("");
 		this.browserTitle = new String("");
 		this.browserTitle = new String("");
-		this.content = new String("");
+		this.content = new Text("");
 	}
 	
 	public TranslationPage(String browserTitle, String pageTitle, String urlName,
@@ -53,7 +54,7 @@ public class TranslationPage {
 		this.keyWord = keyWord;
 		this.publicationStart = publicationStart;
 		this.publicationFinish = publicationFinish;
-		this.content = content;
+		this.content = new Text(content);
 	}
 	
 	public TranslationPage(String key, String browserTitle, String pageTitle, String urlName,
@@ -67,7 +68,7 @@ public class TranslationPage {
 		this.keyWord = keyWord;
 		this.publicationStart = publicationStart;
 		this.publicationFinish = publicationFinish;
-		this.content = content;
+		this.content = new Text(content);
 	}
 
 	public String getEncodedKey() {
@@ -134,11 +135,11 @@ public class TranslationPage {
 		this.publicationFinish = publicationFinish;
 	}
 
-	public String getContent() {
+	public Text getContent() {
 		return this.content;
 	}
 
-	public void setContent(String content) {
+	public void setContent(Text content) {
 		this.content = content;
 	}
 }

@@ -2,6 +2,10 @@ package com.sfeir.richercms.main.client.presenter;
 
 import java.util.List;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.FocusEvent;
+import com.google.gwt.event.dom.client.FocusHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.mvp4g.client.annotation.InjectService;
 import com.mvp4g.client.annotation.Presenter;
@@ -20,6 +24,7 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 	private ArboPageServiceAsync rpcPage = null;
 	private BeanArboPage currentPage = null;
 	private int translationIndex = 0;
+	private int cpt = 0;
 	
 	public InformationPanelPresenter() {
 		super();
@@ -39,6 +44,46 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 	 * It's Mvp4g framework who call this function
 	 */ 
 	public void bindView() {
+		
+		this.view.getFocusOnTB0().addFocusHandler(new FocusHandler(){
+			public void onFocus(FocusEvent event) {
+				view.showOneHelp(0);
+			};
+		});
+		
+		this.view.getFocusOnTB1().addFocusHandler(new FocusHandler(){
+			public void onFocus(FocusEvent event) {
+				view.showOneHelp(1);
+			};
+		});
+		
+		this.view.getFocusOnTB2().addFocusHandler(new FocusHandler(){
+			public void onFocus(FocusEvent event) {
+				view.showOneHelp(2);
+			};
+		});
+		
+		this.view.getFocusOnTB3().addFocusHandler(new FocusHandler(){
+			public void onFocus(FocusEvent event) {
+				view.showOneHelp(3);
+			};
+		});
+		
+		this.view.getFocusOnTB4().addFocusHandler(new FocusHandler(){
+			public void onFocus(FocusEvent event) {
+				view.showOneHelp(4);
+			};
+		});
+		
+		for(this.cpt=0; this.cpt<5; this.cpt++){
+			this.view.getclickBtnCpy(this.cpt).addClickHandler(new ClickHandler(){
+				private final int index = cpt;
+				public void onClick(ClickEvent event) {
+					view.cpyHelpInField(index);
+				}
+			});
+		}
+		this.cpt = 0;
 	}
 	
 		
@@ -85,6 +130,18 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 		//view.setPublicationStart(page.getPublicationStart());
 		view.setUrlName(page.getTranslation().get(indexTransToDisp).getUrlName());
 		eventBus.displayContent(page.getTranslation().get(indexTransToDisp).getContent());
+		
+		// on active l'aide uniquement sur les traductions et pas sur la langue par defaut
+		if(indexTransToDisp != 0) {
+			view.enableHelp();
+			view.setHelp(page.getTranslation().get(0).getBrowserTitle(),
+					page.getTranslation().get(0).getDescription(), 
+					page.getTranslation().get(0).getKeyWord(), 
+					page.getTranslation().get(0).getPageTitle(), 
+					page.getTranslation().get(0).getUrlName());
+		}else {
+			view.disableHelp();
+		}
 	}
 	
 	private boolean isEmpty(BeanTranslationPage bean){

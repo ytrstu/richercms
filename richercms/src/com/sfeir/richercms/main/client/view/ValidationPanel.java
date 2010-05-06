@@ -3,9 +3,7 @@ package com.sfeir.richercms.main.client.view;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.gwt.layout.client.Layout.Alignment;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.ResizeComposite;
@@ -49,7 +47,6 @@ public class ValidationPanel extends ResizeComposite implements IValidationPanel
 		this.btnAdd.setEnabled(false);
 		this.btnCancel.setEnabled(false);
 	}
-
 
 	public HasClickHandlers getClicBtnAdd() {
 		return this.btnAdd;

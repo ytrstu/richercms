@@ -8,7 +8,6 @@ import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.dom.client.HasFocusHandlers;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.Focusable;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ResizeComposite;
@@ -29,25 +28,18 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 	//gestion des langues
 	private MainConstants constants = GWT.create(MainConstants.class);
 	private boolean help = false; // savoir si on active ou non l'aide pour la traduction
-	
-	private Label lBrowserTitle = new Label(constants.BrowserTitle());
-	private Label lPageTitle = new Label(constants.PageTitle());
-	private Label lUrlName = new Label(constants.UrlName());
-	private Label lDescription = new Label(constants.Description());
-	private Label lKeyWord = new Label(constants.KeyWord());
-	private Label lPublicationStart = new Label(constants.PublicationStart());
-	private Label lPublicationFinish = new Label(constants.PublicationFinish());
-	
-	private ArrayList<Label> cpyLabelLst = new ArrayList<Label>();
-	private ArrayList<Button> cpyButtonLst = new ArrayList<Button>();
 
-	private TextBox tBrowserTitle = new TextBox();
-	private TextBox tPageTitle = new TextBox();
-	private TextBox tUrlName = new TextBox();
-	private TextBox tDescription = new TextBox();
-	private TextBox tKeyWord = new TextBox();
-	private DateBox dPublicationStart = new DateBox();
-	private DateBox dPublicationFinish = new DateBox();
+	
+	private ArrayList<Label> cpyLabelLst = null;
+	private ArrayList<Button> cpyButtonLst = null;
+
+	private TextBox tBrowserTitle = null;
+	private TextBox tPageTitle = null;
+	private TextBox tUrlName = null;
+	private TextBox tDescription = null;
+	private TextBox tKeyWord = null;
+	private DateBox dPublicationStart = null;
+	private DateBox dPublicationFinish = null;
 	
 	public InformationPanel() {
 		super();
@@ -58,8 +50,21 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 	 */
 	public void createView() {
 		
+		this.cpyLabelLst = new ArrayList<Label>();
+		this.cpyButtonLst = new ArrayList<Button>();
+
+		this.tBrowserTitle = new TextBox();
+		this.tPageTitle = new TextBox();
+		this.tUrlName = new TextBox();
+		this.tDescription = new TextBox();
+		this.tKeyWord = new TextBox();
+		this.dPublicationStart = new DateBox();
+		this.dPublicationFinish = new DateBox();
+		
 		for(int i=0; i<5; i++) {
-			this.cpyButtonLst.add(new Button("<"));
+			Button b = new Button();
+			b.setText("<");
+			this.cpyButtonLst.add(b);
 		}
 		
 		for(int i=0; i<5; i++) {
@@ -71,40 +76,40 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 		FlexTable tab = new FlexTable();
 		tab.setCellSpacing(10);
 		
-		tab.setWidget(0,0,this.lBrowserTitle);
+		tab.setWidget(0,0, new Label(constants.BrowserTitle()));
 		tab.setWidget(0,1,this.tBrowserTitle);
 		p = new HorizontalPanel();
 		p.add(this.cpyButtonLst.get(0));p.add(this.cpyLabelLst.get(0));
 		tab.setWidget(0,2,p);
 		
-		tab.setWidget(1,0,this.lPageTitle);
+		tab.setWidget(1,0, new Label(constants.PageTitle()));
 		tab.setWidget(1,1,this.tPageTitle);
 		p = new HorizontalPanel();
 		p.add(this.cpyButtonLst.get(1));p.add(this.cpyLabelLst.get(1));
 		tab.setWidget(1,2,p);
 		
-		tab.setWidget(2,0,this.lUrlName);
+		tab.setWidget(2,0, new Label(constants.UrlName()));
 		tab.setWidget(2,1,this.tUrlName);
 		p = new HorizontalPanel();
 		p.add(this.cpyButtonLst.get(2));p.add(this.cpyLabelLst.get(2));
 		tab.setWidget(2,2,p);
 		
-		tab.setWidget(3,0,this.lDescription);
+		tab.setWidget(3,0, new Label(constants.Description()));
 		tab.setWidget(3,1,this.tDescription);
 		p = new HorizontalPanel();
 		p.add(this.cpyButtonLst.get(3));p.add(this.cpyLabelLst.get(3));
 		tab.setWidget(3,2,p);
 		
-		tab.setWidget(4,0,this.lKeyWord);
+		tab.setWidget(4,0, new Label(constants.KeyWord()));
 		tab.setWidget(4,1,this.tKeyWord);
 		p = new HorizontalPanel();
 		p.add(this.cpyButtonLst.get(4));p.add(this.cpyLabelLst.get(4));
 		tab.setWidget(4,2,p);
 		
-		tab.setWidget(5,0,this.lPublicationStart);
+		tab.setWidget(5,0, new Label(constants.PublicationStart()));
 		tab.setWidget(5,1,this.dPublicationStart);
 		
-		tab.setWidget(6,0,this.lPublicationFinish);
+		tab.setWidget(6,0, new Label(constants.PublicationFinish()));
 		tab.setWidget(6,1,this.dPublicationFinish);
 		
 		root.add(tab);
@@ -166,12 +171,12 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 		return tKeyWord.getText();
 	}
 
-	public String getPublicationStart() {
-		return dPublicationStart.getValue().toString();
+	public Date getPublicationStart() {
+		return dPublicationStart.getValue();
 	}
 
-	public String getPublicationFinish() {
-		return dPublicationFinish.getValue().toString();
+	public Date getPublicationFinish() {
+		return dPublicationFinish.getValue();
 	}
 
 	public void setBrowserTitle(String browserTitle) {
@@ -190,12 +195,12 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 		this.tPageTitle.setText(pageTitle);
 	}
 
-	public void setPublicationFinish(String publicationFinish) {
-		this.dPublicationFinish.setValue(new Date(publicationFinish));
+	public void setPublicationFinish(Date publicationFinish) {
+		this.dPublicationFinish.setValue(publicationFinish);
 	}
 
-	public void setPublicationStart(String publicationStart) {
-		this.dPublicationStart.setValue(new Date(publicationStart));
+	public void setPublicationStart(Date publicationStart) {
+		this.dPublicationStart.setValue(publicationStart);
 	}
 
 	public void setUrlName(String urlName) {

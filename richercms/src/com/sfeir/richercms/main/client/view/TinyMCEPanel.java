@@ -50,7 +50,6 @@ public class TinyMCEPanel extends ResizeComposite implements ITinyMCEPanel {
 	}
 	
 	public void setContent(String content) {
-		//this.tmce = new TinyMCE((this.height/2-50)+"px");
 		this.tmce.setText(content);
 	}
 	

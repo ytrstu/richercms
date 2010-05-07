@@ -1,5 +1,7 @@
 package com.sfeir.richercms.main.client.interfaces;
 
+import java.util.Date;
+
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.dom.client.HasFocusHandlers;
 import com.google.gwt.user.client.ui.Widget;
@@ -58,13 +60,13 @@ public interface IInformationPanel extends LazyView {
 	 * Return the date of the first publication of this new Page
 	 * @return content of the field PublicationStart
 	 */
-	String getPublicationStart();
+	Date getPublicationStart();
 
 	/**
 	 * Return the date of the Last publication of this new Page
 	 * @return content of the field PublicationFinish
 	 */
-	String getPublicationFinish();
+	Date getPublicationFinish();
 	
 	/**
 	 * Set the Browser Title of the new webPage
@@ -99,13 +101,13 @@ public interface IInformationPanel extends LazyView {
 	 * Set the date of the first publication of this new Page
 	 * @param content of the field PublicationStart
 	 */
-	void setPublicationStart(String publicationStart);
+	void setPublicationStart(Date publicationStart);
 
 	/**
 	 * Set the date of the Last publication of this new Page
 	 * @param content of the field PublicationFinish
 	 */
-	void setPublicationFinish(String publicationFinish);
+	void setPublicationFinish(Date publicationFinish);
 	
 	/**
 	 * Set the content of each label using for help during a translation

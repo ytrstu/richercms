@@ -4,8 +4,6 @@ package com.sfeir.richercms.wizard.client.event;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
-import com.mvp4g.client.annotation.module.AfterLoadChildModule;
-import com.mvp4g.client.annotation.module.BeforeLoadChildModule;
 
 import com.mvp4g.client.event.EventBusWithLookup;
 import com.sfeir.richercms.wizard.client.history.WizardHistoryConverter;

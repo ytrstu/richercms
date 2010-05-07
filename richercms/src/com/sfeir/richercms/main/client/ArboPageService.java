@@ -56,5 +56,10 @@ public interface ArboPageService extends RemoteService {
 	 */
 	public void deleteArboPage(String key, String parentKey);
 	
-
+	/**
+	 * Return the last ArboPage added in a parentPage.
+	 * @param parentKey : the key of parentPage
+	 * @return the last child or null if the parent are no child
+	 */
+	public BeanArboPage getLastChildAdded(String parentKey);
 }

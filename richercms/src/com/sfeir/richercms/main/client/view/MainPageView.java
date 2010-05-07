@@ -31,6 +31,7 @@ import com.sfeir.richercms.main.client.interfaces.IdisplayMainPage;
 public class MainPageView extends ResizeComposite implements IdisplayMainPage {
 
 	//gestion des langues
+	@SuppressWarnings("unused")
 	private MainConstants constants = GWT.create(MainConstants.class);
 	private NavigationPanel navPanel = null;
 	private InformationPanel listPanel = null;

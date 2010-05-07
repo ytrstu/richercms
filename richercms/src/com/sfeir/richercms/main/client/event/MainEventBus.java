@@ -1,7 +1,5 @@
 package com.sfeir.richercms.main.client.event;
 
-import java.util.List;
-
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
@@ -16,7 +14,7 @@ import com.sfeir.richercms.main.client.presenter.NavigationPanelPresenter;
 import com.sfeir.richercms.main.client.presenter.TinyMCEPanelPresenter;
 import com.sfeir.richercms.main.client.presenter.ValidationPanelPresenter;
 import com.sfeir.richercms.main.client.view.MainPageView;
-import com.sfeir.richercms.main.shared.BeanTranslationPage;
+import com.sfeir.richercms.main.shared.BeanArboPage;
 
 
 /**
@@ -100,7 +98,7 @@ public interface MainEventBus extends EventBus {
 	 * @param translation : the list of all translation
 	 */
 	@Event( handlers =  MainPagePresenter.class )
-	public void sendInfo(List<BeanTranslationPage> translation);
+	public void sendInfo(BeanArboPage information);
 	
 	/**
 	 * Fired by the MainPresenter After having received the data from the page to save.
@@ -117,17 +115,26 @@ public interface MainEventBus extends EventBus {
 	public void sendContent(String content);
 	
 	/**
-	 * Build the Tree in the NavigationPresenter
-	 */
-	@Event( handlers = NavigationPanelPresenter.class)
-	public void buildTree();
-	
-	/**
-	 * Fired by the MainPresenter, when a child of the selected node is added.
+	 * reload all child of a selected ArboPage
 	 * This event allows NavigationPanel to reload his child
 	 */
 	@Event( handlers = NavigationPanelPresenter.class)
 	public void reloadChildInTree();
+	
+	/**
+	 * Fired by the MainPagePresenter, when a new page is added.
+	 * This method allows the NavigationPresenter to add the new ArboPage in the tree
+	 */
+	@Event( handlers = NavigationPanelPresenter.class)
+	public void AddNewChildInTree();
+	
+	/**
+	 * Fired by the MainPagePresenter, after a ArboPage modification
+	 * This method allows the NavigationPresenter to modify the field display in the tree.
+	 * @param newTitle : the new URLName, display in the tree
+	 */
+	@Event( handlers = NavigationPanelPresenter.class)
+	public void reloadCurrentPageInTree(String newTitle);
 	
 	/**
 	 * Fired by the NavigationPresenter when the DelPage menu is clicked
@@ -162,13 +169,6 @@ public interface MainEventBus extends EventBus {
 	 */
 	@Event( handlers =  MainPagePresenter.class )
 	public void changeValidationPanel(IValidationPanel validationPanel);
-	
-	/**
-	 * Fired by the MainPagePresenter when a new language is selected. That mean, a new translation is needed to display.
-	 * @param translatedKey
-	 */
-	@Event( handlers =  NavigationPanelPresenter.class )
-	public void changeLanguage(String translationKey);
 	
 	/**
 	 * Fired by the NavigationPanelPresenter if the translation key of the language who you need a translation

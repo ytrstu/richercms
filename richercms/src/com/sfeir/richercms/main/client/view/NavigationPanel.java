@@ -88,4 +88,14 @@ public class NavigationPanel extends ResizeComposite implements INavigationPanel
 		this.navigationTree.addItem(root);
 	}
 	
+	public void setTextOfSelectedTI(String text){
+		HorizontalPanel p =(HorizontalPanel)this.navigationTree.getSelectedItem().getWidget();
+		Label l = (Label)p.getWidget(1);
+		l.setText(text);
+	}
+	
+	public void deleteSelectedTI() {
+		this.navigationTree.getSelectedItem().remove();
+	}
+	
 }

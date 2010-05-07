@@ -25,49 +25,37 @@ public class TranslationPage {
 	@Persistent
 	private String keyWord;
 	@Persistent
-	private String publicationStart;
-	@Persistent
-	private String publicationFinish;
-	@Persistent
 	private Text content;
 	
 	
 	public TranslationPage()
 	{
 		this.browserTitle = new String("");
-		this.browserTitle = new String("");
-		this.browserTitle = new String("");
-		this.browserTitle = new String("");
-		this.browserTitle = new String("");
-		this.browserTitle = new String("");
-		this.browserTitle = new String("");
+		this.pageTitle = new String("");
+		this.urlName = new String("");
+		this.description = new String("");
+		this.keyWord = new String("");
 		this.content = new Text("");
 	}
 	
 	public TranslationPage(String browserTitle, String pageTitle, String urlName,
-			String description, String keyWord, String publicationStart,
-			String publicationFinish, String content) {
+			String description, String keyWord, String content) {
 		this.browserTitle = browserTitle;
 		this.pageTitle = pageTitle;
 		this.urlName = urlName;
 		this.description = description;
 		this.keyWord = keyWord;
-		this.publicationStart = publicationStart;
-		this.publicationFinish = publicationFinish;
 		this.content = new Text(content);
 	}
 	
 	public TranslationPage(String key, String browserTitle, String pageTitle, String urlName,
-			String description, String keyWord, String publicationStart,
-			String publicationFinish, String content) {
+			String description, String keyWord, String content) {
 		this.encodedKey = key;
 		this.browserTitle = browserTitle;
 		this.pageTitle = pageTitle;
 		this.urlName = urlName;
 		this.description = description;
 		this.keyWord = keyWord;
-		this.publicationStart = publicationStart;
-		this.publicationFinish = publicationFinish;
 		this.content = new Text(content);
 	}
 
@@ -117,22 +105,6 @@ public class TranslationPage {
 
 	public void setKeyWord(String keyWord) {
 		this.keyWord = keyWord;
-	}
-
-	public String getPublicationStart() {
-		return this.publicationStart;
-	}
-
-	public void setPublicationStart(String publicationStart) {
-		this.publicationStart = publicationStart;
-	}
-
-	public String getPublicationFinish() {
-		return this.publicationFinish;
-	}
-
-	public void setPublicationFinish(String publicationFinish) {
-		this.publicationFinish = publicationFinish;
 	}
 
 	public Text getContent() {

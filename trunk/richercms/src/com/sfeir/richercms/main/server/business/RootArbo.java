@@ -1,42 +1,31 @@
 package com.sfeir.richercms.main.server.business;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.jdo.annotations.Element;
 import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
-@PersistenceCapable
+@PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class RootArbo {
 	
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
     @Extension(vendorName="datanucleus", key="gae.encoded-pk", value="true")
     private String encodedKey;
+    
 	@Persistent
-	@Element(dependent = "true")
-	List<TranslationPage> translation;
-	@Persistent
-	List<String> idChildArboPage;
+	private String keyOfRootArboPage;
+	
 	//TODO List<Long> idTag;
 	
 	public RootArbo() {
-		this.translation = new ArrayList<TranslationPage>();
-		this.idChildArboPage = new ArrayList<String>();
+		this.keyOfRootArboPage = null;
 	}
 	
-	public RootArbo(List<TranslationPage> translation) {
-		this.idChildArboPage = new ArrayList<String>();
-		this.translation = translation;
-	}
-	
-	public RootArbo(List<TranslationPage> translation, List<String> idChildArboPage) {
-		this.idChildArboPage = idChildArboPage;
-		this.translation = translation;
+	public RootArbo(String keyOfRootArboPage) {
+		this.keyOfRootArboPage = keyOfRootArboPage;
 	}
 
 	public String getEncodedKey() {
@@ -47,19 +36,11 @@ public class RootArbo {
 		this.encodedKey = encodedKey;
 	}
 
-	public List<TranslationPage> getTranslation() {
-		return this.translation;
+	public String getKeyOfRootArboPage() {
+		return keyOfRootArboPage;
 	}
 
-	public void setTranslation(List<TranslationPage> translation) {
-		this.translation = translation;
-	}
-
-	public List<String> getIdChildArboPage() {
-		return this.idChildArboPage;
-	}
-
-	public void setIdChildArboPage(List<String> idChildArboPage) {
-		this.idChildArboPage = idChildArboPage;
+	public void setKeyOfRootArboPage(String keyOfRootArboPage) {
+		this.keyOfRootArboPage = keyOfRootArboPage;
 	}
 }

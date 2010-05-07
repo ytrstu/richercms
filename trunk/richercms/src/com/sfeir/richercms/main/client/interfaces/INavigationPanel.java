@@ -42,4 +42,15 @@ public interface INavigationPanel extends LazyView{
 	IPopUpMenuBar getPopUpMenuBar ();
 	
 	void setTree(TreeItem root);
+	
+	/**
+	 * Set the display text of the selected TreeItem
+	 * @param text : new value to display
+	 */
+	void setTextOfSelectedTI(String text);
+	
+	/**
+	 * Delete the selected TreeItem in the tree
+	 */
+	void deleteSelectedTI();
 }

@@ -52,6 +52,7 @@ public class TinyMCEPanelPresenter extends LazyPresenter<ITinyMCEPanel, MainEven
 	
 	public void onAddPage(String key) {
 		view.enableEditor();
+		this.view.setContent("");
 	}
 	
 	public void onCancelPage() {

@@ -89,10 +89,10 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 		
 	/**
 	 * make a Page and set all field who information is in InformationPanel
-	 * @return a BeanTranslationPage with all information of the InformationPanel form
+	 * @return a BeanArboPage with all information of the InformationPanel form
 	 */
-	public List<BeanTranslationPage> addInformationInPage() {
-		
+	public BeanArboPage addInformationInPage() {
+		BeanArboPage nBaP = new BeanArboPage();
 		List<BeanTranslationPage> lst = this.currentPage.getTranslation();
 		
 		BeanTranslationPage newTranslation = new BeanTranslationPage();
@@ -101,13 +101,14 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 		newTranslation.setDescription(view.getDescription());
 		newTranslation.setKeyWord(view.getKeyWord());
 		newTranslation.setPageTitle(view.getPageTitle());
-		newTranslation.setPublicationFinish(view.getPublicationFinish());
-		newTranslation.setPublicationStart(view.getPublicationStart());
 		newTranslation.setUrlName(view.getUrlName());
+		nBaP.setPublicationStart(view.getPublicationStart());
+		nBaP.setPublicationFinish(view.getPublicationFinish());
 		
 		lst.set(this.translationIndex, newTranslation);
+		nBaP.setTranslation(lst);
 		
-		return lst;
+		return nBaP;
 	}
 	
 	/**
@@ -116,23 +117,31 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 	 */
 	private void displayArboPage(BeanArboPage page){
 		this.view.clearFields();
-		int indexTransToDisp = 0; // si la traduction n'existe pas encore alors on affiche celle de base
 		
-		// si la traduction est vide alors on affiche la traduction par défaut
-		if(!isEmpty(page.getTranslation().get(this.translationIndex)))
-			indexTransToDisp = this.translationIndex;
 		
-		view.setBrowserTitle(page.getTranslation().get(indexTransToDisp).getBrowserTitle());
-		view.setDescription(page.getTranslation().get(indexTransToDisp).getDescription());
-		view.setKeyWord(page.getTranslation().get(indexTransToDisp).getKeyWord());
-		view.setPageTitle(page.getTranslation().get(indexTransToDisp).getPageTitle());
-		//view.setPublicationFinish(page.getPublicationFinish());
-		//view.setPublicationStart(page.getPublicationStart());
-		view.setUrlName(page.getTranslation().get(indexTransToDisp).getUrlName());
-		eventBus.displayContent(page.getTranslation().get(indexTransToDisp).getContent());
+		if(!isEmpty(page.getTranslation().get(this.translationIndex))) {
+			view.setBrowserTitle(page.getTranslation().get(this.translationIndex).getBrowserTitle());
+			view.setDescription(page.getTranslation().get(this.translationIndex).getDescription());
+			view.setKeyWord(page.getTranslation().get(this.translationIndex).getKeyWord());
+			view.setPageTitle(page.getTranslation().get(this.translationIndex).getPageTitle());
+			view.setPublicationFinish(page.getPublicationFinish());
+			view.setPublicationStart(page.getPublicationStart());
+			view.setUrlName(page.getTranslation().get(this.translationIndex).getUrlName());
+			eventBus.displayContent(page.getTranslation().get(this.translationIndex).getContent());
+		}
+		else {
+			view.setBrowserTitle("");
+			view.setDescription("");
+			view.setKeyWord("");
+			view.setPageTitle("");
+			view.setPublicationFinish(page.getPublicationFinish());
+			view.setPublicationStart(page.getPublicationStart());
+			view.setUrlName("");
+			eventBus.displayContent(page.getTranslation().get(0).getContent());
+		}
 		
 		// on active l'aide uniquement sur les traductions et pas sur la langue par defaut
-		if(indexTransToDisp != 0) {
+		if(this.translationIndex != 0) {
 			view.enableHelp();
 			view.setHelp(page.getTranslation().get(0).getBrowserTitle(),
 					page.getTranslation().get(0).getDescription(), 

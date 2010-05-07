@@ -3,6 +3,10 @@ package com.sfeir.richercms.main.client.presenter;
 import java.util.List;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.MouseOutEvent;
+import com.google.gwt.event.dom.client.MouseOutHandler;
+import com.google.gwt.event.dom.client.MouseOverEvent;
+import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.event.logical.shared.OpenEvent;
 import com.google.gwt.event.logical.shared.OpenHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
@@ -10,7 +14,6 @@ import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TreeItem;
@@ -21,6 +24,7 @@ import com.sfeir.richercms.client.view.PopUpMessage;
 import com.sfeir.richercms.main.client.ArboPageServiceAsync;
 import com.sfeir.richercms.main.client.event.MainEventBus;
 import com.sfeir.richercms.main.client.interfaces.INavigationPanel;
+import com.sfeir.richercms.main.client.view.HorizontalEventPanel;
 import com.sfeir.richercms.main.client.view.NavigationPanel;
 import com.sfeir.richercms.main.shared.BeanArboPage;
 
@@ -31,7 +35,6 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Ma
 	private TreeItem selectedItem = null; // current selected Item in tree
 	private TreeItem expandedItem = null; // current exanded Item in tree
 	private ArboPageServiceAsync rpcPage = null;
-	private String translationLanguageKey = null;
 	private String rootKey = null;
 	
 	public NavigationPanelPresenter() {
@@ -46,14 +49,8 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Ma
 		view.getSelectedEvtTree()
 		.addSelectionHandler(new SelectionHandler<TreeItem>(){
 			public void onSelection(SelectionEvent<TreeItem> event) {
-				setSelectedItem(event.getSelectedItem()); // fait des actions spécifique
-				
-				// on fait la différence car le root n'est pas un arboPage
-				if(((String) selectedItem.getUserObject()).equals(rootKey))
-					eventBus.displayMainPage();
-				else
-					eventBus.displayPage((String) selectedItem.getUserObject());
-				showMenuButton();
+				setSelectedItem(event.getSelectedItem()); // fait des actions spécifique	
+				eventBus.displayPage((String) selectedItem.getUserObject());
 			}
 		});
 		
@@ -86,24 +83,12 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Ma
 				view.getPopUpMenuBar().hide();
 			}});
 	}
-	
-	/**
-	 * Show button using to display menuBar
-	 */
-	public void showMenuButton() {
-		HorizontalPanel panel = (HorizontalPanel)this.selectedItem.getWidget();
-		panel.getWidget(2).setVisible(true);
-	}
 
 	/**
 	 * Use this when a new Item in the tree is selected.
 	 * @param selectedItem
 	 */
 	public void setSelectedItem(TreeItem selectedItem) {
-		if(this.selectedItem!=null) {
-			HorizontalPanel panel = (HorizontalPanel)this.selectedItem.getWidget();
-			panel.getWidget(2).setVisible(false);
-		}
 		this.selectedItem = selectedItem;
 	}
 	
@@ -117,8 +102,8 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Ma
 		if(!((String) selectedItem.getUserObject()).equals(rootKey)) {
 			this.rpcPage.deleteArboPage((String)selectedItem.getUserObject(), (String)selectedItem.getParentItem().getUserObject(), new AsyncCallback<Void>() {
 				public void onSuccess(Void result) {
+					view.deleteSelectedTI();
 					selectedItem = selectedItem.getParentItem();
-					onReloadChildInTree();
 				}
 				public void onFailure(Throwable caught) {
 					PopUpMessage p = new PopUpMessage("Error : DeletePage");
@@ -144,40 +129,40 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Ma
 		this.expandedItem = this.selectedItem;
 		this.AddChildInTree();
 	}
+	
+
+	public void onAddNewChildInTree() {
+		this.rpcPage.getLastChildAdded((String)this.selectedItem.getUserObject(), 
+				new AsyncCallback<BeanArboPage>() {
+			public void onSuccess(BeanArboPage result) {
+				selectedItem.addItem(makeTreeNode(result));}
+			public void onFailure(Throwable caught){
+				PopUpMessage p = new PopUpMessage("Error : add the new child");
+				p.show();}
+		});
+	}
+	
+	public void onReloadCurrentPageInTree(String newTitle) {
+		view.setTextOfSelectedTI(newTitle);
+	}
 
 	/**
 	 * Take all child node of the expandedNode and add them in the tree
 	 */
 	public void AddChildInTree(){
-		expandedItem.removeItems();
-		//si c'est le main qui est expand
-		if(((String) expandedItem.getUserObject()).equals(rootKey)) {
-			this.rpcPage.getChildPages((String)this.expandedItem.getUserObject(), true,
+		this.rpcPage.getChildPages((String)this.expandedItem.getUserObject(), false,
 				new AsyncCallback<List<BeanArboPage>>() {
-					public void onSuccess(List<BeanArboPage> result) {
-						expandedItem.removeItems();//remove loading
-						for(BeanArboPage subPage : result) {
-							expandedItem.addItem(makeTreeNode(subPage));
-						}
-					}
-					public void onFailure(Throwable caught){
-						PopUpMessage p = new PopUpMessage("Error : Build tree");
-						p.show();}
-				});
-		}else{ //si un autre noeud est expand
-			this.rpcPage.getChildPages((String)this.expandedItem.getUserObject(), false,
-					new AsyncCallback<List<BeanArboPage>>() {
-						public void onSuccess(List<BeanArboPage> result) {
-							expandedItem.removeItems();//remove loading
-							for(BeanArboPage subPage : result) {
-								expandedItem.addItem(makeTreeNode(subPage));
-							}
-						}
-						public void onFailure(Throwable caught){
-							PopUpMessage p = new PopUpMessage("Error : Build tree");
-							p.show();}
-					});
-		}
+			public void onSuccess(List<BeanArboPage> result) {
+				expandedItem.removeItems();//remove loading
+				for(BeanArboPage subPage : result) {
+					expandedItem.addItem(makeTreeNode(subPage));
+				}
+			}
+			public void onFailure(Throwable caught){
+				PopUpMessage p = new PopUpMessage("Error : Build tree");
+				p.show();}
+		});
+		
 	}
 	
 	/**
@@ -206,12 +191,12 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Ma
 	private TreeItem makeTreeNode(BeanArboPage bean){
 		TreeItem node = new TreeItem();
 		Button b = new Button(">");
-		HorizontalPanel p = new HorizontalPanel();
+		HorizontalEventPanel p = new HorizontalEventPanel();
 		Image img = new Image("tab_images/subPage.JPG");
 		
 		p.setSpacing(5);
 		p.add(img);
-		p.add(new Label(bean.getTranslation().get(0).getPageTitle()));
+		p.add(new Label(bean.getTranslation().get(0).getUrlName()));
 		p.add(b);
 		b.setVisible(false);
 		
@@ -219,6 +204,7 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Ma
 		node.setWidget(p);
 		node.addItem("Loading");
 		
+		// EVENT on treeItem
 		
 		b.addClickHandler(new ClickHandler() { // open the popUpMenu
 			public void onClick(ClickEvent event) {
@@ -228,6 +214,22 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Ma
 				view.getPopUpMenuBar().show();
 			}});
 		
+		p.addMouseOverHandler(new MouseOverHandler() {
+			public void onMouseOver(MouseOverEvent event) {
+				HorizontalEventPanel p = (HorizontalEventPanel)event.getSource();
+				Button b = (Button)p.getWidget(2); // img in 0, the label in 0, and the button in 1
+				b.setVisible(true);
+			}
+		});
+		
+		p.addMouseOutHandler(new MouseOutHandler () {
+			public void onMouseOut(MouseOutEvent event) {
+				HorizontalEventPanel p = (HorizontalEventPanel)event.getSource();
+				Button b = (Button)p.getWidget(2); // img in 0, the label in 0, and the button in 1
+				b.setVisible(false);
+			}
+		});
+		
 		return node;
 	}
 	
@@ -235,31 +237,7 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Ma
 
 	public void onStartPanels() {		
 		this.eventBus.changeNavPanel(this.view);
-		//this.onBuildTree();
 		this.createTree();
-	}
-	
-	/**
-	 * DEPRECATED
-	 */
-	public void onBuildTree() {
-		
-		this.rpcPage.getMainArboPage(new AsyncCallback<BeanArboPage>() {
-	    	public void onSuccess(BeanArboPage result) {
-	    		view.clearTree();	 
-				
-				view.setTree(makeTreeNode(result));
-	    		
-	    		// si la clé était null alors on a créer la traduction du coup on récupère la clés
-	    		/*if(translationLanguageKey == null) { 
-	    			eventBus.setTranslationKeyInLanguage(result.getKey());
-	    			translationLanguageKey = result.getKey();
-	    		}*/
-	    	}
-			public void onFailure(Throwable caught){
-				PopUpMessage p = new PopUpMessage("Error : Build tree");
-				p.show();}
-			});
 	}
 		
 	/**
@@ -269,10 +247,5 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Ma
 	@InjectService
 	public void setPageService( ArboPageServiceAsync rpcPage ) {
 		this.rpcPage = rpcPage;
-	}
-	
-	public void onChangeLanguage(String translationKey) {
-		this.translationLanguageKey = translationKey;
-		this.onBuildTree();
 	}
 }

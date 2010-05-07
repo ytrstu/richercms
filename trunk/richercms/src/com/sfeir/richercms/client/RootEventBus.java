@@ -18,8 +18,6 @@ import com.sfeir.richercms.client.presenter.RootPresenter;
 import com.sfeir.richercms.client.view.RootView;
 import com.sfeir.richercms.main.client.event.MainModule;
 import com.sfeir.richercms.wizard.client.event.WizardModule;
-import com.sfeir.richercms.wizard.client.presenter.Page1Presenter;
-
 
 
 /**

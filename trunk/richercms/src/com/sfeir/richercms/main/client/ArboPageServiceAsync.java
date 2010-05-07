@@ -24,4 +24,6 @@ public interface ArboPageServiceAsync {
 
 	public void deleteArboPage(String key, String parentKey, AsyncCallback<Void> callback);
 
+	public void getLastChildAdded(String parentKey, AsyncCallback<BeanArboPage> callback);
 }
+ 

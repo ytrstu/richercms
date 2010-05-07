@@ -18,7 +18,6 @@ import com.sfeir.richercms.main.client.interfaces.IValidationPanel;
 import com.sfeir.richercms.main.client.interfaces.IdisplayMainPage;
 import com.sfeir.richercms.main.client.view.MainPageView;
 import com.sfeir.richercms.main.shared.BeanArboPage;
-import com.sfeir.richercms.main.shared.BeanTranslationPage;
 import com.sfeir.richercms.wizard.client.LanguageServiceAsync;
 import com.sfeir.richercms.wizard.shared.BeanLanguageDetails;
 
@@ -50,10 +49,9 @@ public class MainPagePresenter extends LazyPresenter<IdisplayMainPage, MainEvent
 	
 	
 	private void addPage() {
-		
 		this.rpcPage.addArboPage(this.editingPage, this.key, new AsyncCallback<Void>() {
 			public void onSuccess(Void result) {
-				eventBus.reloadChildInTree(); //reload the new tree
+				eventBus.AddNewChildInTree(); //reload the new tree
 				//on redonne la possibilité de changer de traduction
 				view.enableLanguageBox();
 			}
@@ -69,7 +67,8 @@ public class MainPagePresenter extends LazyPresenter<IdisplayMainPage, MainEvent
 		this.editingPage.setEncodedKey(this.key);
 		this.rpcPage.updateArboPage(this.editingPage, new AsyncCallback<Void>() {
 			public void onSuccess(Void result) {
-				eventBus.reloadChildInTree(); //reload the new tree
+				//reload the new tree
+				eventBus.reloadCurrentPageInTree(editingPage.getTranslation().get(0).getUrlName());
 			}
 			public void onFailure(Throwable caught) {
 				PopUpMessage p = new PopUpMessage("Error : Modify Page");
@@ -146,10 +145,11 @@ public class MainPagePresenter extends LazyPresenter<IdisplayMainPage, MainEvent
 		this.eventBus.callInfo();
 	}
 
-	public void onSendInfo(List<BeanTranslationPage> translation) {
+	public void onSendInfo(BeanArboPage information) {
 		this.editingPage = new BeanArboPage();
-		this.editingPage.setTranslation(translation);
-		//this.editingPage.getTranslation().set(view.getIndexOfCurrentLg(),info);
+		this.editingPage.setPublicationStart(information.getPublicationStart());
+		this.editingPage.setPublicationFinish(information.getPublicationFinish());
+		this.editingPage.setTranslation(information.getTranslation());
 		this.eventBus.callContent();
 	}
 	

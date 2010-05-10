@@ -51,4 +51,61 @@ public interface MainConstants extends Constants {
 	  
 	  @DefaultStringValue("Cancel")
 	  String BtnCancel();
+	  
+	  @DefaultStringValue("Unable to destroy the main page")
+	  String IDeletMainPage();
+	  
+	  @DefaultStringValue("Error : add the new child")
+	  String EAddNewChild();
+	  
+	  @DefaultStringValue("Error : Build tree")
+	  String EBuildTree();
+	  
+	  @DefaultStringValue("Error : Create tree")
+	  String ECreateTree();
+	  
+	  @DefaultStringValue("Loading")
+	  String Loading();
+	  
+	  @DefaultStringValue("Error : Get current Page")
+	  String EGetCurPage();
+	  
+	  @DefaultStringValue("Error : Get Main Page")
+	  String EGetMainPage();
+	  
+	  @DefaultStringValue("Error retrieving language")
+	  String ERetrievingLg();
+	  
+	  @DefaultStringValue("Backup in progress")
+	  String PopUpSaveInProgress();
+	  
+	  @DefaultStringValue("Backup completed with success")
+	  String PopUpSaveFinish();
+	  
+	  @DefaultStringValue("Backup failed, the problem with database")
+	  String PopUpSaveFail();
+	  
+	  @DefaultStringValue("Save changes in progress")
+	  String PopUpSaveModifInProg();
+	  
+	  @DefaultStringValue("Saving modification successfully accomplished")
+	  String PopUpSaveModifFinish();
+	  
+	  @DefaultStringValue("Backup failed, problem with database")
+	  String PopUpSaveModifFail();
+	  
+	  @DefaultStringValue("Retrieving information")
+	  String PopUpTakeInfo();
+	  
+	  @DefaultStringValue("Retrieving modifications")
+	  String PopUpTakeModif();
+	  
+	  @DefaultStringValue("Remove the page and its sub-pages in progress")
+	  String PopUpDelPageInProg();
+	  
+	  @DefaultStringValue("Deletion succeeded!")
+	  String PopUpDelPageFinish();
+	  
+	  @DefaultStringValue("Error during deletion!")
+	  String PopUpDelPageFail();
 }

@@ -6,6 +6,7 @@ import com.google.gwt.event.logical.shared.HasOpenHandlers;
 import com.google.gwt.event.logical.shared.HasSelectionHandlers;
 import com.google.gwt.user.client.ui.TreeItem;
 import com.mvp4g.client.view.LazyView;
+import com.sfeir.richercms.main.client.MainConstants;
 
 public interface INavigationPanel extends LazyView{
 
@@ -53,4 +54,10 @@ public interface INavigationPanel extends LazyView{
 	 * Delete the selected TreeItem in the tree
 	 */
 	void deleteSelectedTI();
+	
+	/**
+	 * Return the MainConstants. Use this for use translationSystem
+	 * @return the MainConstants
+	 */
+	public MainConstants getConstants();
 }

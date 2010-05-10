@@ -14,6 +14,7 @@ import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TreeItem;
@@ -58,7 +59,7 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Ma
 			public void onOpen(OpenEvent<TreeItem> event) {
 				expandedItem = event.getTarget();
 				// on ajoute les fils uniquement si sa n'a pas déjà été fait
-				if(expandedItem.getChild(0).getText().equals("Loading"));
+				if(((String)(expandedItem.getChild(0).getUserObject())).equals("Loading"));
 					AddChildInTree();
 			}
 		});
@@ -67,7 +68,6 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Ma
 		this.view.getPopUpMenuBar().setDelPageCommand(new Command(){
 			public void execute() {
 				deletePage();
-				NavigationPanelPresenter.this.eventBus.deletePage();
 			}});
 		// commande pour l'ajout d'une sous-page
 		this.view.getPopUpMenuBar().setAddPageCommand(new Command(){
@@ -96,25 +96,30 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Ma
 	 * delete page selected in the tree
 	 */
 	public void deletePage() {	
-		
 		view.getPopUpMenuBar().hide();
 		// on ne delete pas la main Page
 		if(!((String) selectedItem.getUserObject()).equals(rootKey)) {
+			// on commence donc la suppression
+			NavigationPanelPresenter.this.eventBus.deletePage();
 			this.rpcPage.deleteArboPage((String)selectedItem.getUserObject(), (String)selectedItem.getParentItem().getUserObject(), new AsyncCallback<Void>() {
 				public void onSuccess(Void result) {
 					view.deleteSelectedTI();
 					selectedItem = selectedItem.getParentItem();
+					eventBus.deletingPageFinish(true); // suppression finis : on peut hide la popUp
 				}
 				public void onFailure(Throwable caught) {
-					PopUpMessage p = new PopUpMessage("Error : DeletePage");
-					p.show();}
+					eventBus.deletingPageFinish(false);}
 			});
 		}else {
-			PopUpMessage p = new PopUpMessage("Impossible de détruire la page principal");
+			PopUpMessage p = new PopUpMessage(this.view.getConstants().IDeletMainPage());
 			p.show();
 		}
 	}
 	
+	/**
+	 * set the key of the root Page
+	 * @param key
+	 */
 	public void setRootKey(String key){
 		this.rootKey = key;
 	}
@@ -135,9 +140,11 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Ma
 		this.rpcPage.getLastChildAdded((String)this.selectedItem.getUserObject(), 
 				new AsyncCallback<BeanArboPage>() {
 			public void onSuccess(BeanArboPage result) {
-				selectedItem.addItem(makeTreeNode(result));}
+				selectedItem.addItem(makeTreeNode(result));
+				eventBus.displayNewPageInTree();}
 			public void onFailure(Throwable caught){
-				PopUpMessage p = new PopUpMessage("Error : add the new child");
+				eventBus.displayNewPageInTree();//even the page are not correctly added, the "add page event" is finished
+				PopUpMessage p = new PopUpMessage(view.getConstants().EAddNewChild());
 				p.show();}
 		});
 	}
@@ -159,7 +166,7 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Ma
 				}
 			}
 			public void onFailure(Throwable caught){
-				PopUpMessage p = new PopUpMessage("Error : Build tree");
+				PopUpMessage p = new PopUpMessage(view.getConstants().EBuildTree());
 				p.show();}
 		});
 		
@@ -177,7 +184,7 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Ma
 
 	    	}
 			public void onFailure(Throwable caught){
-				PopUpMessage p = new PopUpMessage("Error : Create tree");
+				PopUpMessage p = new PopUpMessage(view.getConstants().ECreateTree());
 				p.show();}
 			});
 	}
@@ -200,9 +207,20 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Ma
 		p.add(b);
 		b.setVisible(false);
 		
+		// The loading panel, display during all child of a node is loading
+		HorizontalPanel loadingPanel = new HorizontalPanel();
+		loadingPanel.add(new Image("tab_images/wait.gif"));
+		loadingPanel.add(new Label(this.view.getConstants().Loading()));
+		loadingPanel.setSpacing(3);
+		TreeItem LoadingItem = new TreeItem();
+		LoadingItem.setWidget(loadingPanel);
+		LoadingItem.setUserObject(new String("Loading"));
+		
 		node.setUserObject(bean.getEncodedKey());
 		node.setWidget(p);
-		node.addItem("Loading");
+		node.addItem(LoadingItem);
+		// utile pour pouvoir enlever le loading au chagement de l'arbre
+		 
 		
 		// EVENT on treeItem
 		

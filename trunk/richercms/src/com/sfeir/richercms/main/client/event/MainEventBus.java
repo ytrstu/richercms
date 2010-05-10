@@ -138,9 +138,17 @@ public interface MainEventBus extends EventBus {
 	
 	/**
 	 * Fired by the NavigationPresenter when the DelPage menu is clicked
+	 * * @param state : true if the page is deleted, false either
 	 */
-	@Event( handlers =  InformationPanelPresenter.class )
+	@Event( handlers =  {InformationPanelPresenter.class, MainPagePresenter.class} )
 	public void deletePage();
+	
+	/**
+	 * Fired by the NavigationPresenter when a page is delete
+	 * @param state : true if the page is deleted, false etheir
+	 */
+	@Event( handlers =  MainPagePresenter.class )
+	public void deletingPageFinish(boolean state);
 	
 	/**
 	 * Fired by the NavigationPanel to Load it in the right place in mainView
@@ -185,4 +193,12 @@ public interface MainEventBus extends EventBus {
 	 */
 	@Event( handlers =  InformationPanelPresenter.class )
 	public void changeTranslation(int index);
+	
+	/**
+	 * Fired by the Navigation presenter, when the new page is added
+	 * and allows the MainPagePresenter to hide the WaitPopUp
+	 */
+	@Event( handlers =  MainPagePresenter.class )
+	public void displayNewPageInTree();
+
 }

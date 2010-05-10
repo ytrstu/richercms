@@ -3,6 +3,7 @@ package com.sfeir.richercms.main.client.interfaces;
 import com.google.gwt.event.dom.client.HasChangeHandlers;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.view.LazyView;
+import com.sfeir.richercms.main.client.MainConstants;
 
 
 /**
@@ -86,4 +87,30 @@ public interface IdisplayMainPage extends LazyView {
 	 * Enable the listBox containing language
 	 */
 	public void enableLanguageBox();
+	
+	/**
+	 * Show the popUp who request the user 
+	 * to waited during saving a page in the database
+	 */
+	public void showWaitPopUp();
+	
+	/**
+	 * Hide the popUp who request the user 
+	 * to waited during saving a page in the database
+	 */
+	public void hideWaitPopUp();
+	
+	/**
+	 * Add a new line in the State popUp
+	 * @param text : the description of the new state
+	 * @param state : wait = 0 | success = 1 | fail = 2
+	 */
+	public void addLineInPopUp(String text, int state);
+	
+	
+	/**
+	 * Return the MainConstants. Use this for use translationSystem
+	 * @return the MainConstants
+	 */
+	public MainConstants getConstants();
 }

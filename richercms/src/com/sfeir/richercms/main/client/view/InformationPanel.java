@@ -292,4 +292,8 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 			break;
 		}
 	}
+	
+	public MainConstants getConstants() {
+		return this.constants;
+	}
 }

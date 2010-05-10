@@ -1,6 +1,7 @@
 package com.sfeir.richercms.main.client.view;
 
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.logical.shared.HasOpenHandlers;
 import com.google.gwt.event.logical.shared.HasSelectionHandlers;
@@ -11,6 +12,7 @@ import com.google.gwt.user.client.ui.ResizeComposite;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
+import com.sfeir.richercms.main.client.MainConstants;
 import com.sfeir.richercms.main.client.interfaces.INavigationPanel;
 import com.sfeir.richercms.main.client.interfaces.IPopUpMenuBar;
 
@@ -21,6 +23,8 @@ import com.sfeir.richercms.main.client.interfaces.IPopUpMenuBar;
  */
 public class NavigationPanel extends ResizeComposite implements INavigationPanel{
 
+	//gestion des langues
+	private MainConstants constants = GWT.create(MainConstants.class);
 	private Tree navigationTree = null;
 	private TreeItem rootItem = null;
 	private PopUpMenuBar menuBar = null;
@@ -98,4 +102,7 @@ public class NavigationPanel extends ResizeComposite implements INavigationPanel
 		this.navigationTree.getSelectedItem().remove();
 	}
 	
+	public MainConstants getConstants() {
+		return this.constants;
+	}
 }

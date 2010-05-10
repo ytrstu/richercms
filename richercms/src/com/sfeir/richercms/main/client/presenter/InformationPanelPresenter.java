@@ -179,7 +179,7 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 				currentPage = result;
 			}
 			public void onFailure(Throwable caught) {
-				PopUpMessage p = new PopUpMessage("Error : Get current Page");
+				PopUpMessage p = new PopUpMessage(view.getConstants().EGetCurPage());
 				p.show();}
 		});
 	}
@@ -192,7 +192,7 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 				displayArboPage(result);
 			}
 			public void onFailure(Throwable caught) {
-				PopUpMessage p = new PopUpMessage("Error : Get Main Page");
+				PopUpMessage p = new PopUpMessage(view.getConstants().EGetMainPage());
 				p.show();}
 		});	
 	}
@@ -202,11 +202,13 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 		this.translationIndex = 0; //on commence toujours par ajouter la langue par défaut
 		view.clearFields();
 		view.enabledWidgets();
+		view.disableHelp();
 	}
 	
 	public void onCancelPage() {
 		view.clearFields();
 		view.deasabledWidgets();
+		view.disableHelp();
 	}
 	
 	public void onModifyPage(String key) {
@@ -223,6 +225,7 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 	
 	public void onCallInfo() {
 		this.eventBus.sendInfo(addInformationInPage());
+		this.view.hideAllHelpField();
 	}
 	
 	public void onChangeTranslation(int index) {

@@ -53,6 +53,37 @@ public class CenterLayoutPanel extends ResizeComposite {
 			}
 		});
 	}
+	
+	public CenterLayoutPanel(int width, int height){
+		super();
+		this.height = height;
+		this.width = width;
+		mainPanel.addStyleName("wizardMain");
+		borderLayout.addStyleName("wizardDialog");
+		mainPanel.add(borderLayout);
+		initWidget(mainPanel);
+		
+		DeferredCommand.addCommand(new Command() {
+			public void execute() {
+				changeSize();
+			}
+		});
+	}
+	
+	public void setContent(Widget title, Widget content){
+		title.setStyleName("wizardDialogTitle");
+		LayoutPanel paddingPanel = new LayoutPanel();
+		borderLayout.add(paddingPanel);
+		borderLayout.setWidgetLeftRight(paddingPanel, 5, Style.Unit.PX, 5, Style.Unit.PX);
+		borderLayout.setWidgetTopBottom(paddingPanel, 5, Style.Unit.PX, 5, Style.Unit.PX);
+		LayoutPanel titlePanel = new LayoutPanel();
+		titlePanel.addStyleName("titlePanel");
+		titlePanel.add(title);
+		paddingPanel.add(titlePanel);
+		paddingPanel.add(content);
+		paddingPanel.setWidgetLeftRight(content, 0, Style.Unit.PX, 0, Style.Unit.PX);
+		paddingPanel.setWidgetTopBottom(content, 30, Style.Unit.PX, 0, Style.Unit.PX);
+	}
 
 	@Override
 	public void onResize() {

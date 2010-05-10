@@ -45,6 +45,5 @@ public class PopUpMessage extends DialogBox {
 		this.center();
 	    setWidget(panel);
 	}
-    
 
 }

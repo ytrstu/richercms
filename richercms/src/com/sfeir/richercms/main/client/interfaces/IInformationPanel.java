@@ -6,6 +6,7 @@ import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.dom.client.HasFocusHandlers;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.view.LazyView;
+import com.sfeir.richercms.main.client.MainConstants;
 
 public interface IInformationPanel extends LazyView {
 
@@ -192,4 +193,10 @@ public interface IInformationPanel extends LazyView {
 	 * @param number : ID of the corresponding help : 0 to 4
 	 */
 	public void cpyHelpInField(int number);
+	
+	/**
+	 * Return the MainConstants. Use this for use translationSystem
+	 * @return the MainConstants
+	 */
+	public MainConstants getConstants();
 }

@@ -49,30 +49,34 @@ public class MainPagePresenter extends LazyPresenter<IdisplayMainPage, MainEvent
 	
 	
 	private void addPage() {
+		this.view.addLineInPopUp(view.getConstants().PopUpSaveInProgress(), 0);
 		this.rpcPage.addArboPage(this.editingPage, this.key, new AsyncCallback<Void>() {
 			public void onSuccess(Void result) {
 				eventBus.AddNewChildInTree(); //reload the new tree
+				view.addLineInPopUp(view.getConstants().PopUpSaveFinish(), 1);
+				
 				//on redonne la possibilité de changer de traduction
 				view.enableLanguageBox();
 			}
 			public void onFailure(Throwable caught) {
-				PopUpMessage p = new PopUpMessage("Error : AddPage");
-				p.show();}
+				view.addLineInPopUp(view.getConstants().PopUpSaveFail(), 2);}
 		});
 	}
 	
 	private void modifyPage() {
 		
-		//this.editingPage.setKey(this.key);
+		this.view.addLineInPopUp(view.getConstants().PopUpSaveModifInProg(), 0);
 		this.editingPage.setEncodedKey(this.key);
 		this.rpcPage.updateArboPage(this.editingPage, new AsyncCallback<Void>() {
 			public void onSuccess(Void result) {
+				view.addLineInPopUp(view.getConstants().PopUpSaveModifFinish(), 1);
 				//reload the new tree
 				eventBus.reloadCurrentPageInTree(editingPage.getTranslation().get(0).getUrlName());
+				view.hideWaitPopUp();
 			}
 			public void onFailure(Throwable caught) {
-				PopUpMessage p = new PopUpMessage("Error : Modify Page");
-				p.show();}
+				view.addLineInPopUp(view.getConstants().PopUpSaveModifFail(), 2);
+				view.hideWaitPopUp();}
 		});
 	}
 	
@@ -94,7 +98,7 @@ public class MainPagePresenter extends LazyPresenter<IdisplayMainPage, MainEvent
 		    		}
 	    	}
 			public void onFailure(Throwable caught) {
-	        	PopUpMessage p = new PopUpMessage("Error retrieving language");
+	        	PopUpMessage p = new PopUpMessage(view.getConstants().ERetrievingLg());
 	        	p.show();}
 		});
 	}
@@ -102,6 +106,8 @@ public class MainPagePresenter extends LazyPresenter<IdisplayMainPage, MainEvent
 	/////////////////////////////////////////////// EVENT ///////////////////////////////////////////////
 	
 	public void onAddPage(String key){
+		// show the popUp to the user
+		this.view.addLineInPopUp(view.getConstants().PopUpTakeInfo(), 1);
 		this.AddOrModify = 0;
 		this.key = key;
 		this.view.disableLanguageBox();
@@ -110,6 +116,8 @@ public class MainPagePresenter extends LazyPresenter<IdisplayMainPage, MainEvent
 	
 	public void onModifyPage(String key)
 	{
+		// show the popUp to the user
+		this.view.addLineInPopUp(view.getConstants().PopUpTakeModif(), 1);
 		this.AddOrModify = 1;
 		this.key = key;
 		this.view.enableLanguageBox();
@@ -142,7 +150,12 @@ public class MainPagePresenter extends LazyPresenter<IdisplayMainPage, MainEvent
 	}
 	
 	public void onSavePage() {
+		this.view.showWaitPopUp();
 		this.eventBus.callInfo();
+	}
+	
+	public void onDisplayNewPageInTree() {
+		this.view.hideWaitPopUp();
 	}
 
 	public void onSendInfo(BeanArboPage information) {
@@ -165,6 +178,19 @@ public class MainPagePresenter extends LazyPresenter<IdisplayMainPage, MainEvent
 			default :
 				break;
 		}
+	}
+	
+	public void onDeletePage() {
+		this.view.showWaitPopUp();
+		this.view.addLineInPopUp(view.getConstants().PopUpDelPage(), 0);
+	}
+	
+	public void onDeletingPageFinish(boolean state) {
+		if(state)
+			this.view.addLineInPopUp(view.getConstants().PopUpDelPageFinish(), 1);
+		else
+			this.view.addLineInPopUp(view.getConstants().PopUpDelPageFail(), 2);
+		this.view.hideWaitPopUp();
 	}
 	
 	public void onSetTranslationKeyInLanguage(String TranslationKey) {

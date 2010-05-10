@@ -5,6 +5,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.HasChangeHandlers;
 import com.google.gwt.user.client.Command;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.Label;
@@ -31,7 +32,6 @@ import com.sfeir.richercms.main.client.interfaces.IdisplayMainPage;
 public class MainPageView extends ResizeComposite implements IdisplayMainPage {
 
 	//gestion des langues
-	@SuppressWarnings("unused")
 	private MainConstants constants = GWT.create(MainConstants.class);
 	private NavigationPanel navPanel = null;
 	private InformationPanel listPanel = null;
@@ -39,9 +39,10 @@ public class MainPageView extends ResizeComposite implements IdisplayMainPage {
 	private ValidationPanel validationPanel = null;
 	private SplitLayoutPanel splitedPanel = null;
 	private MenuBar mainmenu  = null;
-	DockLayoutPanel layoutPanel1 = null;
-	LayoutPanel layoutPanel2 = null;
-	ListBox languages = null;
+	private DockLayoutPanel layoutPanel1 = null;
+	private ListBox languages = null;
+	private CenterEventPopUp popUp = null;
+	private LayoutPanel finalContainer = null;
 
 	private final int height = Window.getClientHeight()-30;
 	
@@ -60,6 +61,10 @@ public class MainPageView extends ResizeComposite implements IdisplayMainPage {
 		
 		this.layoutPanel1 = new DockLayoutPanel(Unit.PX);
 	    this.splitedPanel = new SplitLayoutPanel();
+	    
+	    // When it's necessary, this popUp is show
+		this.popUp = new CenterEventPopUp(400, 200,"Sauvegarde en cours");
+	    this.popUp.setVisible(false);
 		
 		// liste du choix de la langue
 		this.languages = new ListBox(false);
@@ -114,8 +119,12 @@ public class MainPageView extends ResizeComposite implements IdisplayMainPage {
 	    placmentPanel.setWidth("100%");
 			    
 	    this.layoutPanel1.addNorth(placmentPanel, 23);
-
-	    this.initWidget(layoutPanel1);
+	    
+	    this.finalContainer = new LayoutPanel();
+	    this.finalContainer.add(this.popUp);
+	    this.finalContainer.add(this.layoutPanel1);
+	    
+	    this.initWidget(this.finalContainer);
 	}
 
 	public void setConstants(MainConstants constants) {
@@ -185,5 +194,32 @@ public class MainPageView extends ResizeComposite implements IdisplayMainPage {
 	
 	public void enableLanguageBox(){
 		this.languages.setEnabled(true);
+	}
+	
+	public void showWaitPopUp(){
+
+		this.finalContainer.remove(this.popUp);
+	    this.finalContainer.add(this.popUp);
+		this.popUp.setVisible(true);
+	}
+	
+	public void hideWaitPopUp(){
+
+		Timer t = new Timer() {
+			public void run() {
+				popUp.setVisible(false);
+				finalContainer.remove(popUp);
+				popUp.ClearTable();
+			}
+		};
+		t.schedule(1000);
+	}
+	
+	public void addLineInPopUp(String text, int state) {
+		this.popUp.AddLine(text, state);
+	}
+		
+	public MainConstants getConstants() {
+		return this.constants;
 	}
 }

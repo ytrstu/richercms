@@ -42,6 +42,7 @@ public class CenterEventPopUp extends CenterLayoutPanel{
 
 	public void ClearTable() {
 		this.displayTable.clear();
+		this.displayTable.removeAllRows();
 	}
 
 

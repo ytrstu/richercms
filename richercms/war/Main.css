@@ -210,3 +210,11 @@ td.datePickerMonth {
 .languageLabel {
 	padding-top: 2px;
 }
+
+.informationTitle {
+	font-family:Arial Unicode MS,Arial,sans-serif;
+	font-size:30px;
+	color:red;
+	direction:ltr;
+	text-align :center;
+}

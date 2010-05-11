@@ -62,4 +62,12 @@ public interface ArboPageService extends RemoteService {
 	 * @return the last child or null if the parent are no child
 	 */
 	public BeanArboPage getLastChildAdded(String parentKey);
+	
+	/**
+	 * Move a child of a page at a specific index.
+	 * @param parentKey : the key of the parentPage
+	 * @param childKey : the key of the child you need to move
+	 * @param index : the new index ( 0 =< index =< child_count )
+	 */
+	public void moveChildPage(String parentKey,String childKey,int index);
 }

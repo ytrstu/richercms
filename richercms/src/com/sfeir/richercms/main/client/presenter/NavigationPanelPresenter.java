@@ -1,5 +1,6 @@
 package com.sfeir.richercms.main.client.presenter;
 
+import java.util.ArrayList;
 import java.util.List;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -18,6 +19,7 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TreeItem;
+import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.InjectService;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
@@ -28,6 +30,7 @@ import com.sfeir.richercms.main.client.interfaces.INavigationPanel;
 import com.sfeir.richercms.main.client.view.HorizontalEventPanel;
 import com.sfeir.richercms.main.client.view.NavigationPanel;
 import com.sfeir.richercms.main.shared.BeanArboPage;
+import com.sfeir.richercms.main.shared.BeanTranslationPage;
 
 
 @Presenter( view = NavigationPanel.class)
@@ -82,6 +85,19 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Ma
 				NavigationPanelPresenter.this.eventBus.modifyPage((String) selectedItem.getUserObject());
 				view.getPopUpMenuBar().hide();
 			}});
+		
+		// commande pour remonter une page dans la liste de fils
+		this.view.getPopUpMenuBar().setUpPageCommand(new Command() {
+			public void execute() {
+				upPageInTree();
+				view.getPopUpMenuBar().hide();
+			}});
+		
+		// commande pour descendre une page dans la liste de fils
+		this.view.getPopUpMenuBar().setDownPageCommand(new Command() {
+			public void execute() {
+				
+			}});
 	}
 
 	/**
@@ -124,6 +140,133 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Ma
 		this.rootKey = key;
 	}
 	
+	/**
+	 * Choose the good image to display in the tree
+	 * according to the BeanArboPage to display
+	 * @param bean : the BeanArboPage
+	 * @return : the good image according information include in the bean
+	 */
+	private Image chooseTheGoodImage(BeanArboPage bean){
+		Image img = null;
+		for(BeanTranslationPage bT : bean.getTranslation()) {
+			// si certain champs d'un traduction son laissé vide alors icone = warning
+			if(bT.getContent().length() == 0 || bT.getBrowserTitle().length() == 0 ||
+					bT.getDescription().length() == 0 || bT.getPageTitle().length() == 0 || 
+					bT.getUrlName().length() == 0) {
+				
+					img = new Image("tab_images/pageWarn.png");
+				
+				img.setTitle(view.getConstants().TreeWarnPage());
+				return img;
+			}
+		}
+		// si toute les traduction son bien remplis alors on choisis l'icone Ok
+		img = new Image("tab_images/pageOk.png");
+		img.setTitle(view.getConstants().TreeOkPage());
+		
+		return img;
+	}
+	
+	private void upPageInTree() {
+		TreeItem parent = selectedItem.getParentItem();
+		
+		if(parent != null && parent.getChildCount()!=1 && parent.getChildIndex(selectedItem)!=0) {
+			
+			TreeItem upperTreeItem = parent.getChild(parent.getChildIndex(selectedItem)-1);
+			Widget display1 = selectedItem.getWidget();
+			Widget display2 = upperTreeItem.getWidget();
+			String key1 = (String)selectedItem.getUserObject();
+			String key2 = (String)upperTreeItem.getUserObject();
+			boolean expand1 = selectedItem.getState();
+			boolean expand2 = upperTreeItem.getState();
+			ArrayList<TreeItem> childs = new ArrayList<TreeItem>();
+			
+			rpcPage.moveChildPage((String)parent.getUserObject(), (String)selectedItem.getUserObject(), 
+					parent.getChildIndex(upperTreeItem), new AsyncCallback<Void>() {
+				public void onSuccess(Void result) {}
+				public void onFailure(Throwable caught) {}
+			});
+			
+			for(int i=0 ; i<selectedItem.getChildCount() ; i++) {
+				childs.add(selectedItem.getChild(i));
+			}
+			
+			selectedItem.removeItems();
+			int nbChild = upperTreeItem.getChildCount();
+			for(int i=0 ; i< nbChild; i++) {
+				// quand le tree node est attaché dans l'autre arbre, il disparait de celui-ci
+				selectedItem.addItem(upperTreeItem.getChild(0));
+			}
+			
+			upperTreeItem.removeItems();
+			for(int i=0 ; i<childs.size() ; i++) {
+				upperTreeItem.addItem(childs.get(i));
+			}
+			
+			selectedItem.setWidget(display2);
+			selectedItem.setUserObject(key2);
+			selectedItem.setState(expand2);
+			selectedItem.setSelected(false);
+			
+			upperTreeItem.setWidget(display1);
+			upperTreeItem.setUserObject(key1);
+			upperTreeItem.setState(expand1);
+			upperTreeItem.setSelected(true);
+			
+			selectedItem = upperTreeItem;
+		}
+	}
+	
+	private void DownPageInTree() {
+		TreeItem parent = selectedItem.getParentItem();
+		
+		if(parent != null && parent.getChildCount()!=1 && parent.getChildIndex(selectedItem)!=0) {
+			
+			TreeItem upperTreeItem = parent.getChild(parent.getChildIndex(selectedItem)-1);
+			Widget display1 = selectedItem.getWidget();
+			Widget display2 = upperTreeItem.getWidget();
+			String key1 = (String)selectedItem.getUserObject();
+			String key2 = (String)upperTreeItem.getUserObject();
+			boolean expand1 = selectedItem.getState();
+			boolean expand2 = upperTreeItem.getState();
+			ArrayList<TreeItem> childs = new ArrayList<TreeItem>();
+			
+			rpcPage.moveChildPage((String)parent.getUserObject(), (String)selectedItem.getUserObject(), 
+					parent.getChildIndex(upperTreeItem), new AsyncCallback<Void>() {
+				public void onSuccess(Void result) {}
+				public void onFailure(Throwable caught) {}
+			});
+			
+			for(int i=0 ; i<selectedItem.getChildCount() ; i++) {
+				childs.add(selectedItem.getChild(i));
+			}
+			
+			selectedItem.removeItems();
+			int nbChild = upperTreeItem.getChildCount();
+			for(int i=0 ; i< nbChild; i++) {
+				// quand le tree node est attaché dans l'autre arbre, il disparait de celui-ci
+				selectedItem.addItem(upperTreeItem.getChild(0));
+			}
+			
+			upperTreeItem.removeItems();
+			for(int i=0 ; i<childs.size() ; i++) {
+				upperTreeItem.addItem(childs.get(i));
+			}
+			
+			selectedItem.setWidget(display2);
+			selectedItem.setUserObject(key2);
+			selectedItem.setState(expand2);
+			selectedItem.setSelected(false);
+			
+			upperTreeItem.setWidget(display1);
+			upperTreeItem.setUserObject(key1);
+			upperTreeItem.setState(expand1);
+			upperTreeItem.setSelected(true);
+			
+			selectedItem = upperTreeItem;
+		}
+	}
+	
 	///////////////////////////////////////// ACTION ON THE TREE /////////////////////////////////////////
 	
 	/**
@@ -147,10 +290,6 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Ma
 				PopUpMessage p = new PopUpMessage(view.getConstants().EAddNewChild());
 				p.show();}
 		});
-	}
-	
-	public void onReloadCurrentPageInTree(String newTitle) {
-		view.setTextOfSelectedTI(newTitle);
 	}
 
 	/**
@@ -198,8 +337,8 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Ma
 	private TreeItem makeTreeNode(BeanArboPage bean){
 		TreeItem node = new TreeItem();
 		Button b = new Button(">");
+		Image img = this.chooseTheGoodImage(bean);
 		HorizontalEventPanel p = new HorizontalEventPanel();
-		Image img = new Image("tab_images/subPage.JPG");
 		
 		p.setSpacing(5);
 		p.add(img);
@@ -256,6 +395,11 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Ma
 	public void onStartPanels() {		
 		this.eventBus.changeNavPanel(this.view);
 		this.createTree();
+	}
+	
+	public void onReloadCurrentPageInTree(BeanArboPage modifOnPage) {
+		view.setTextOfSelectedTI(modifOnPage.getTranslation().get(0).getUrlName());
+		view.setImageOfSelectedTI(this.chooseTheGoodImage(modifOnPage));
 	}
 		
 	/**

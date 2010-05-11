@@ -13,6 +13,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ResizeComposite;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 import com.sfeir.richercms.main.client.MainConstants;
@@ -28,11 +29,11 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 	//gestion des langues
 	private MainConstants constants = GWT.create(MainConstants.class);
 	private boolean help = false; // savoir si on active ou non l'aide pour la traduction
-
 	
 	private ArrayList<Label> cpyLabelLst = null;
 	private ArrayList<Button> cpyButtonLst = null;
 
+	private Label Title = null;
 	private TextBox tBrowserTitle = null;
 	private TextBox tPageTitle = null;
 	private TextBox tUrlName = null;
@@ -49,6 +50,8 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 	 * Create the widget and attached all component
 	 */
 	public void createView() {
+		this.Title = new Label(this.constants.DefaultTitleInformation());
+		this.Title.setStyleName("informationTitle");
 		
 		this.cpyLabelLst = new ArrayList<Label>();
 		this.cpyButtonLst = new ArrayList<Button>();
@@ -112,7 +115,11 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 		tab.setWidget(6,0, new Label(constants.PublicationFinish()));
 		tab.setWidget(6,1,this.dPublicationFinish);
 		
-		root.add(tab);
+		VerticalPanel container = new VerticalPanel();
+		container.add(this.Title);
+		container.add(tab);
+		
+		root.add(container);
 
 		this.deasabledWidgets();
 		this.hideAllHelpField();
@@ -271,6 +278,14 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 	
 	public HasClickHandlers getclickBtnCpy(int number) {
 		return this.cpyButtonLst.get(number);
+	}
+	
+	public void setTitle(String title) {
+		this.Title.setText(title);
+	}
+	
+	public String getTitle() {
+		return this.Title.getText();
 	}
 	
 	public void cpyHelpInField(int number) {

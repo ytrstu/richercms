@@ -134,7 +134,7 @@ public interface MainEventBus extends EventBus {
 	 * @param newTitle : the new URLName, display in the tree
 	 */
 	@Event( handlers = NavigationPanelPresenter.class)
-	public void reloadCurrentPageInTree(String newTitle);
+	public void reloadCurrentPageInTree(BeanArboPage modifOnPage);
 	
 	/**
 	 * Fired by the NavigationPresenter when the DelPage menu is clicked

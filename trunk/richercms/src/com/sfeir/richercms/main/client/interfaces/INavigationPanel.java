@@ -4,6 +4,7 @@ package com.sfeir.richercms.main.client.interfaces;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.logical.shared.HasOpenHandlers;
 import com.google.gwt.event.logical.shared.HasSelectionHandlers;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.TreeItem;
 import com.mvp4g.client.view.LazyView;
 import com.sfeir.richercms.main.client.MainConstants;
@@ -49,6 +50,12 @@ public interface INavigationPanel extends LazyView{
 	 * @param text : new value to display
 	 */
 	void setTextOfSelectedTI(String text);
+	
+	/**
+	 * Set the image displaying in the selectedNode
+	 * @param img
+	 */
+	void setImageOfSelectedTI(Image img);
 	
 	/**
 	 * Delete the selected TreeItem in the tree

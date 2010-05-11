@@ -122,6 +122,19 @@ public interface IInformationPanel extends LazyView {
 			String pageTitle, String urlName);
 	
 	/**
+	 * Set the title of the InformationPanel
+	 * @param title : the new title
+	 */
+	public void setTitle(String title);
+	
+	/**
+	 * Get the title of the InformationPanel
+	 * @return the current title
+	 */
+	public String getTitle();
+	
+	
+	/**
 	 * hide all widget used for display help
 	 */
 	public void hideAllHelpField();

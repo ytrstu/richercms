@@ -180,6 +180,21 @@ public class ServiceArboPageImpl  extends RemoteServiceServlet implements ArboPa
 		return bean;
 	}
 	
+	public void moveChildPage(String parentKey,String childKey,int index) {
+		PersistenceManager pm = getPersistenceManager();
+		try {
+			 	ArboPage parentPage = pm.getObjectById(ArboPage.class, parentKey);
+			 	
+			 	if(parentPage!=null && parentPage.getIdChildArboPage().contains(childKey)){
+				 	parentPage.getIdChildArboPage().remove(childKey);
+				 	parentPage.getIdChildArboPage().add(index, childKey);
+			 	}
+
+		 }finally{
+			pm.close();
+		 }
+	}
+	
 	public BeanArboPage arboPageToBean(ArboPage ap){
 		BeanArboPage bap = new BeanArboPage(ap.getEncodedKey(),ap.getPublicationStart(), ap.getPublicationFinish());
 		ArrayList<BeanTranslationPage> lst = new ArrayList<BeanTranslationPage>();

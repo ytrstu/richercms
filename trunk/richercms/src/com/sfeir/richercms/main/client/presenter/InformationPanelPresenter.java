@@ -118,6 +118,8 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 	private void displayArboPage(BeanArboPage page){
 		this.view.clearFields();
 		
+		//set the title of the panel
+		this.view.setTitle(page.getTranslation().get(0).getUrlName());
 		
 		if(!isEmpty(page.getTranslation().get(this.translationIndex))) {
 			view.setBrowserTitle(page.getTranslation().get(this.translationIndex).getBrowserTitle());
@@ -200,6 +202,7 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 	
 	public void onAddPage(String key) {
 		this.translationIndex = 0; //on commence toujours par ajouter la langue par défaut
+		view.setTitle(view.getConstants().AddPageTitleInformation()+view.getTitle());
 		view.clearFields();
 		view.enabledWidgets();
 		view.disableHelp();
@@ -209,6 +212,7 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 		view.clearFields();
 		view.deasabledWidgets();
 		view.disableHelp();
+		view.setTitle(view.getConstants().DefaultTitleInformation());
 	}
 	
 	public void onModifyPage(String key) {
@@ -224,8 +228,10 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 	}
 	
 	public void onCallInfo() {
-		this.eventBus.sendInfo(addInformationInPage());
+		BeanArboPage bean = addInformationInPage();
+		this.eventBus.sendInfo(bean);
 		this.view.hideAllHelpField();
+		view.setTitle(bean.getTranslation().get(0).getUrlName());
 	}
 	
 	public void onChangeTranslation(int index) {

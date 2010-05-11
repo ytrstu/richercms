@@ -108,4 +108,16 @@ public interface MainConstants extends Constants {
 	  
 	  @DefaultStringValue("Error during deletion!")
 	  String PopUpDelPageFail();
+
+	  @DefaultStringValue("page is complete")
+	  String TreeOkPage();
+
+	  @DefaultStringValue("Some fields or translation are not filled")
+	  String TreeWarnPage();
+	  
+	  @DefaultStringValue("Information")
+	  String DefaultTitleInformation();
+	  
+	  @DefaultStringValue("Add a child in : ")
+	  String AddPageTitleInformation();
 }

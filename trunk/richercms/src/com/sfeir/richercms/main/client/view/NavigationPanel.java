@@ -7,6 +7,7 @@ import com.google.gwt.event.logical.shared.HasOpenHandlers;
 import com.google.gwt.event.logical.shared.HasSelectionHandlers;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ResizeComposite;
 import com.google.gwt.user.client.ui.ScrollPanel;
@@ -96,6 +97,12 @@ public class NavigationPanel extends ResizeComposite implements INavigationPanel
 		HorizontalPanel p =(HorizontalPanel)this.navigationTree.getSelectedItem().getWidget();
 		Label l = (Label)p.getWidget(1);
 		l.setText(text);
+	}
+	
+	public void setImageOfSelectedTI(Image img) {
+		HorizontalPanel p =(HorizontalPanel)this.navigationTree.getSelectedItem().getWidget();
+		p.insert(img, 0);
+		p.remove(1);
 	}
 	
 	public void deleteSelectedTI() {

@@ -49,6 +49,8 @@ public class MainPagePresenter extends LazyPresenter<IdisplayMainPage, MainEvent
 	
 	
 	private void addPage() {
+		// show the popUp to the user
+		this.view.addLineInPopUp(view.getConstants().PopUpTakeInfo(), 1);
 		this.view.addLineInPopUp(view.getConstants().PopUpSaveInProgress(), 0);
 		this.rpcPage.addArboPage(this.editingPage, this.key, new AsyncCallback<Void>() {
 			public void onSuccess(Void result) {
@@ -64,14 +66,15 @@ public class MainPagePresenter extends LazyPresenter<IdisplayMainPage, MainEvent
 	}
 	
 	private void modifyPage() {
-		
+		// show the popUp to the user
+		this.view.addLineInPopUp(view.getConstants().PopUpTakeModif(), 1);
 		this.view.addLineInPopUp(view.getConstants().PopUpSaveModifInProg(), 0);
 		this.editingPage.setEncodedKey(this.key);
 		this.rpcPage.updateArboPage(this.editingPage, new AsyncCallback<Void>() {
 			public void onSuccess(Void result) {
 				view.addLineInPopUp(view.getConstants().PopUpSaveModifFinish(), 1);
-				//reload the new tree
-				eventBus.reloadCurrentPageInTree(editingPage.getTranslation().get(0).getUrlName());
+				//reload the current treeNode
+				eventBus.reloadCurrentPageInTree(editingPage);
 				view.hideWaitPopUp();
 			}
 			public void onFailure(Throwable caught) {
@@ -106,8 +109,6 @@ public class MainPagePresenter extends LazyPresenter<IdisplayMainPage, MainEvent
 	/////////////////////////////////////////////// EVENT ///////////////////////////////////////////////
 	
 	public void onAddPage(String key){
-		// show the popUp to the user
-		this.view.addLineInPopUp(view.getConstants().PopUpTakeInfo(), 1);
 		this.AddOrModify = 0;
 		this.key = key;
 		this.view.disableLanguageBox();
@@ -116,8 +117,6 @@ public class MainPagePresenter extends LazyPresenter<IdisplayMainPage, MainEvent
 	
 	public void onModifyPage(String key)
 	{
-		// show the popUp to the user
-		this.view.addLineInPopUp(view.getConstants().PopUpTakeModif(), 1);
 		this.AddOrModify = 1;
 		this.key = key;
 		this.view.enableLanguageBox();

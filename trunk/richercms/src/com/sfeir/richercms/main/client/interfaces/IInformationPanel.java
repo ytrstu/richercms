@@ -9,7 +9,7 @@ import com.mvp4g.client.view.LazyView;
 import com.sfeir.richercms.main.client.MainConstants;
 
 public interface IInformationPanel extends LazyView {
-
+	
 	Widget asWidget();
 	
 	/**

@@ -6,11 +6,13 @@ import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.event.EventBus;
 import com.sfeir.richercms.main.client.interfaces.IInformationPanel;
 import com.sfeir.richercms.main.client.interfaces.INavigationPanel;
+import com.sfeir.richercms.main.client.interfaces.IReorderPagePanel;
 import com.sfeir.richercms.main.client.interfaces.ITinyMCEPanel;
 import com.sfeir.richercms.main.client.interfaces.IValidationPanel;
 import com.sfeir.richercms.main.client.presenter.InformationPanelPresenter;
 import com.sfeir.richercms.main.client.presenter.MainPagePresenter;
 import com.sfeir.richercms.main.client.presenter.NavigationPanelPresenter;
+import com.sfeir.richercms.main.client.presenter.ReorderPagePanelPresenter;
 import com.sfeir.richercms.main.client.presenter.TinyMCEPanelPresenter;
 import com.sfeir.richercms.main.client.presenter.ValidationPanelPresenter;
 import com.sfeir.richercms.main.client.view.MainPageView;
@@ -163,6 +165,13 @@ public interface MainEventBus extends EventBus {
 	 */
 	@Event( handlers =  MainPagePresenter.class )
 	public void changeInfoPanel(IInformationPanel infoPanel);
+	
+	/**
+	 * Fired by the ReorderPagePanelPresenter to load it in the right place in mainView
+	 * @param reorderPanel : the panel
+	 */
+	@Event( handlers =  MainPagePresenter.class )
+	public void displayReorderPage(IReorderPagePanel reorderPanel);
 
 	/**
 	 * Fired by the TinyMCEPanel to load it in the right place in mainView
@@ -201,4 +210,10 @@ public interface MainEventBus extends EventBus {
 	@Event( handlers =  MainPagePresenter.class )
 	public void displayNewPageInTree();
 
+	/**
+	 * Fired by the Navigation presenter, when the reorderMenu is clicked
+	 * and allows the MainPagePresenter to show the ReorderPanel
+	 */
+	@Event( handlers =  ReorderPagePanelPresenter.class )
+	public void startReorderPanel();
 }

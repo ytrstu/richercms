@@ -118,11 +118,11 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 		VerticalPanel container = new VerticalPanel();
 		container.add(this.Title);
 		container.add(tab);
-		
 		root.add(container);
 
 		this.deasabledWidgets();
 		this.hideAllHelpField();
+		
 		this.initWidget(root);
 	}
 	

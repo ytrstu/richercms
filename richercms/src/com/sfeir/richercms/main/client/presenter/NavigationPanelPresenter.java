@@ -96,7 +96,14 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Ma
 		// commande pour descendre une page dans la liste de fils
 		this.view.getPopUpMenuBar().setDownPageCommand(new Command() {
 			public void execute() {
-				
+				downPageInTree();
+				view.getPopUpMenuBar().hide();
+			}});
+		
+		this.view.getPopUpMenuBar().setReorderPagesCommand(new Command() {
+			public void execute() {
+				eventBus.startReorderPanel();
+				view.getPopUpMenuBar().hide();
 			}});
 	}
 
@@ -217,22 +224,24 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Ma
 		}
 	}
 	
-	private void DownPageInTree() {
+	
+	private void downPageInTree() {
 		TreeItem parent = selectedItem.getParentItem();
 		
-		if(parent != null && parent.getChildCount()!=1 && parent.getChildIndex(selectedItem)!=0) {
+		if(parent != null && parent.getChildCount()!=1 && 
+				parent.getChildIndex(selectedItem) != (parent.getChildCount()-1)) {
 			
-			TreeItem upperTreeItem = parent.getChild(parent.getChildIndex(selectedItem)-1);
+			TreeItem lowerTreeItem = parent.getChild(parent.getChildIndex(selectedItem)+1);
 			Widget display1 = selectedItem.getWidget();
-			Widget display2 = upperTreeItem.getWidget();
+			Widget display2 = lowerTreeItem.getWidget();
 			String key1 = (String)selectedItem.getUserObject();
-			String key2 = (String)upperTreeItem.getUserObject();
+			String key2 = (String)lowerTreeItem.getUserObject();
 			boolean expand1 = selectedItem.getState();
-			boolean expand2 = upperTreeItem.getState();
+			boolean expand2 = lowerTreeItem.getState();
 			ArrayList<TreeItem> childs = new ArrayList<TreeItem>();
 			
 			rpcPage.moveChildPage((String)parent.getUserObject(), (String)selectedItem.getUserObject(), 
-					parent.getChildIndex(upperTreeItem), new AsyncCallback<Void>() {
+					parent.getChildIndex(lowerTreeItem), new AsyncCallback<Void>() {
 				public void onSuccess(Void result) {}
 				public void onFailure(Throwable caught) {}
 			});
@@ -242,15 +251,15 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Ma
 			}
 			
 			selectedItem.removeItems();
-			int nbChild = upperTreeItem.getChildCount();
+			int nbChild = lowerTreeItem.getChildCount();
 			for(int i=0 ; i< nbChild; i++) {
 				// quand le tree node est attaché dans l'autre arbre, il disparait de celui-ci
-				selectedItem.addItem(upperTreeItem.getChild(0));
+				selectedItem.addItem(lowerTreeItem.getChild(0));
 			}
 			
-			upperTreeItem.removeItems();
+			lowerTreeItem.removeItems();
 			for(int i=0 ; i<childs.size() ; i++) {
-				upperTreeItem.addItem(childs.get(i));
+				lowerTreeItem.addItem(childs.get(i));
 			}
 			
 			selectedItem.setWidget(display2);
@@ -258,12 +267,12 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Ma
 			selectedItem.setState(expand2);
 			selectedItem.setSelected(false);
 			
-			upperTreeItem.setWidget(display1);
-			upperTreeItem.setUserObject(key1);
-			upperTreeItem.setState(expand1);
-			upperTreeItem.setSelected(true);
+			lowerTreeItem.setWidget(display1);
+			lowerTreeItem.setUserObject(key1);
+			lowerTreeItem.setState(expand1);
+			lowerTreeItem.setSelected(true);
 			
-			selectedItem = upperTreeItem;
+			selectedItem = lowerTreeItem;
 		}
 	}
 	

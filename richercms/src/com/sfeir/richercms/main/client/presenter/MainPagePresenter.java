@@ -13,6 +13,7 @@ import com.sfeir.richercms.main.client.ArboPageServiceAsync;
 import com.sfeir.richercms.main.client.event.MainEventBus;
 import com.sfeir.richercms.main.client.interfaces.IInformationPanel;
 import com.sfeir.richercms.main.client.interfaces.INavigationPanel;
+import com.sfeir.richercms.main.client.interfaces.IReorderPagePanel;
 import com.sfeir.richercms.main.client.interfaces.ITinyMCEPanel;
 import com.sfeir.richercms.main.client.interfaces.IValidationPanel;
 import com.sfeir.richercms.main.client.interfaces.IdisplayMainPage;
@@ -140,6 +141,10 @@ public class MainPagePresenter extends LazyPresenter<IdisplayMainPage, MainEvent
 	
 	public void onChangeValidationPanel(IValidationPanel validationPanel) {
 		this.view.setValidationPanel(validationPanel);
+	}
+	
+	public void onDisplayReorderPage(IReorderPagePanel reorderPanel) {
+		this.view.displayReorderPanel(reorderPanel);
 	}
 	
 	public void onStartMain() {

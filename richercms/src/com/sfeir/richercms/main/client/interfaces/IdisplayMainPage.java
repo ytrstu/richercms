@@ -41,6 +41,12 @@ public interface IdisplayMainPage extends LazyView {
 	public void setValidationPanel(IValidationPanel validationPanel);
 	
 	/**
+	 * Load the ReorderPanel into the layout of the InformationPanel
+	 * @param reorderPanel : the panel
+	 */
+	public void displayReorderPanel(IReorderPagePanel reorderPanel);
+	
+	/**
 	 * Add a language in the listBox
 	 * @param name : the display name of the language 
 	 * @param key : the key, needed to retrive the page translation in the dataBase

@@ -19,6 +19,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.sfeir.richercms.main.client.MainConstants;
 import com.sfeir.richercms.main.client.interfaces.IInformationPanel;
 import com.sfeir.richercms.main.client.interfaces.INavigationPanel;
+import com.sfeir.richercms.main.client.interfaces.IReorderPagePanel;
 import com.sfeir.richercms.main.client.interfaces.ITinyMCEPanel;
 import com.sfeir.richercms.main.client.interfaces.IValidationPanel;
 import com.sfeir.richercms.main.client.interfaces.IdisplayMainPage;
@@ -141,6 +142,15 @@ public class MainPageView extends ResizeComposite implements IdisplayMainPage {
 		this.listPanel = (InformationPanel)listPanel;
 		this.listPanel.setStyleName("tab-content");
 		this.splitedPanel.addNorth(this.listPanel, this.height/2 -120);
+	}
+	
+	public void displayReorderPanel(IReorderPagePanel reorderPanel) {
+		this.splitedPanel.remove(this.tinyMcePanel);
+		this.splitedPanel.remove(this.listPanel);
+		this.splitedPanel.remove(this.navPanel);
+		this.setNavPanel(this.navPanel);
+		this.splitedPanel.addNorth((ReorderPagePanel)reorderPanel, this.height/2 -120);
+		this.setTinyMcePanel(this.tinyMcePanel);
 	}
 
 	public void setTinyMcePanel(ITinyMCEPanel tinyMcePanel) {

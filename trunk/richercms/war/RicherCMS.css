@@ -2,6 +2,12 @@
 
 
 /** Example rules used by the template application (remove for your app) */
+table {
+	padding:0px;
+	border-collapse:collapse;
+	border-spacing: 0px;
+}
+
 h1 {
   font-size: 2em;
   font-weight: bold;
@@ -32,3 +38,12 @@ h1 {
 #closeButton {
   margin: 15px 6px 6px;
 }
+
+.treeLabel, .treeLabelSelected {
+	padding: 5px;
+}
+
+.treeLabelSelected {
+	background: #D0E4F6;
+}
+

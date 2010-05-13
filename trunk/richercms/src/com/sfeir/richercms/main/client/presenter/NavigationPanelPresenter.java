@@ -37,7 +37,7 @@ import com.sfeir.richercms.main.shared.BeanTranslationPage;
 public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, MainEventBus>{
 
 	private TreeItem selectedItem = null; // current selected Item in tree
-	private TreeItem expandedItem = null; // current exanded Item in tree
+	private TreeItem expandedItem = null; // current expanded Item in tree
 	private ArboPageServiceAsync rpcPage = null;
 	private String rootKey = null;
 	
@@ -112,7 +112,15 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Ma
 	 * @param selectedItem
 	 */
 	public void setSelectedItem(TreeItem selectedItem) {
+		if (this.selectedItem!=null) {
+			HorizontalPanel p =(HorizontalPanel)this.selectedItem.getWidget();
+			Label l = (Label)p.getWidget(1);
+			l.setStyleName("treeLabel");
+		}
 		this.selectedItem = selectedItem;
+		HorizontalPanel p =(HorizontalPanel)selectedItem.getWidget();
+		Label l = (Label)p.getWidget(1);
+		l.setStyleName("treeLabelSelected");
 	}
 	
 	/**
@@ -348,10 +356,11 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Ma
 		Button b = new Button(">");
 		Image img = this.chooseTheGoodImage(bean);
 		HorizontalEventPanel p = new HorizontalEventPanel();
-		
-		p.setSpacing(5);
+		p.setSpacing(0);
 		p.add(img);
-		p.add(new Label(bean.getTranslation().get(0).getUrlName()));
+		Label treeLabel = new Label(bean.getTranslation().get(0).getUrlName());
+		treeLabel.setStyleName("treeLabel");
+		p.add(treeLabel);
 		p.add(b);
 		b.setVisible(false);
 		
@@ -359,7 +368,7 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Ma
 		HorizontalPanel loadingPanel = new HorizontalPanel();
 		loadingPanel.add(new Image("tab_images/wait.gif"));
 		loadingPanel.add(new Label(this.view.getConstants().Loading()));
-		loadingPanel.setSpacing(3);
+		loadingPanel.setSpacing(0);
 		TreeItem LoadingItem = new TreeItem();
 		LoadingItem.setWidget(loadingPanel);
 		LoadingItem.setUserObject(new String("Loading"));

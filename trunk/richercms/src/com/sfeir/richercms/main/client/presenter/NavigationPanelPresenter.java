@@ -102,7 +102,7 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Ma
 		
 		this.view.getPopUpMenuBar().setReorderPagesCommand(new Command() {
 			public void execute() {
-				eventBus.startReorderPanel();
+				eventBus.startReorderPanel((String)selectedItem.getUserObject());
 				view.getPopUpMenuBar().hide();
 			}});
 	}

@@ -215,5 +215,5 @@ public interface MainEventBus extends EventBus {
 	 * and allows the MainPagePresenter to show the ReorderPanel
 	 */
 	@Event( handlers =  ReorderPagePanelPresenter.class )
-	public void startReorderPanel();
+	public void startReorderPanel(String parentKey);
 }

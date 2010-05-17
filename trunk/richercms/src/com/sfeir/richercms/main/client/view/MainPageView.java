@@ -149,7 +149,9 @@ public class MainPageView extends ResizeComposite implements IdisplayMainPage {
 		this.splitedPanel.remove(this.listPanel);
 		this.splitedPanel.remove(this.navPanel);
 		this.setNavPanel(this.navPanel);
-		this.splitedPanel.addNorth((ReorderPagePanel)reorderPanel, this.height/2 -120);
+		ReorderPagePanel panel = (ReorderPagePanel)reorderPanel;
+		panel.setStyleName("tab-content");
+		this.splitedPanel.addNorth(panel, this.height/2 -120);
 		this.setTinyMcePanel(this.tinyMcePanel);
 	}
 

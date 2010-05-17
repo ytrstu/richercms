@@ -13,6 +13,9 @@
 
   <!-- Other module inherits                                      -->
   <inherits name='com.mvp4g.Mvp4gModule'/>
+  <!-- Inherit gwt-dnd support                  				  -->
+  <inherits name='com.allen_sauer.gwt.dnd.gwt-dnd'/>
+  
   
   <!-- Specify the app entry point class.                         -->
   <entry-point class='com.sfeir.richercms.client.RicherCMS'/>

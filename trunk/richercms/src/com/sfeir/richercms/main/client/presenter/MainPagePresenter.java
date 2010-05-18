@@ -109,6 +109,10 @@ public class MainPagePresenter extends LazyPresenter<IdisplayMainPage, MainEvent
 	
 	/////////////////////////////////////////////// EVENT ///////////////////////////////////////////////
 	
+	public void onDisplayNormalPanel() {
+		this.view.displayNormalPanel();
+	}
+	
 	public void onAddPage(String key){
 		this.AddOrModify = 0;
 		this.key = key;
@@ -206,7 +210,27 @@ public class MainPagePresenter extends LazyPresenter<IdisplayMainPage, MainEvent
 		});*/
 	}
 	
+	public void onShowInformationPopUp() {
+		this.view.showWaitPopUp();
+	}
 	
+	public void onHideInformationPopUp() {
+		this.view.hideWaitPopUp();
+	}
+
+	public void onAddSuccessPopUp(String text) {
+		this.view.addLineInPopUp(text, 1);
+	}
+	
+	public void onAddWaitLinePopUp(String text) {
+		this.view.addLineInPopUp(text, 0);
+	}
+	
+	public void onAddErrorLinePopUp(String text) {
+		this.view.addLineInPopUp(text, 2);
+	}
+	
+
 	/**
 	 * used by the framework to instantiate rpcPage 
 	 * @param rpcPage

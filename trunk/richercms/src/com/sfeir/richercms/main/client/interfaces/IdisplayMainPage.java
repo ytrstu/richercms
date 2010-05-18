@@ -47,6 +47,13 @@ public interface IdisplayMainPage extends LazyView {
 	public void displayReorderPanel(IReorderPagePanel reorderPanel);
 	
 	/**
+	 * Display standard panel if it was instanciate after.
+	 * This function is using for re-display panel after a specific panels (reorderPanel, ...)
+	 */
+	public void displayNormalPanel();
+	
+	
+	/**
 	 * Add a language in the listBox
 	 * @param name : the display name of the language 
 	 * @param key : the key, needed to retrive the page translation in the dataBase

@@ -70,4 +70,13 @@ public interface ArboPageService extends RemoteService {
 	 * @param index : the new index ( 0 =< index =< child_count )
 	 */
 	public void moveChildPage(String parentKey,String childKey,int index);
+	
+	/**
+	 * Modify the list of child of a page.
+	 * It can be use for modify the order of children
+	 * Old position 1 to x  ==> Datastore 0 to x-1
+	 * @param key : the key of the current Page
+	 * @param newPositionOrder : list of old position of a page sorting in a new order
+	 */
+	public void updateChildOrder(String key, List<Integer> newPositionOrder);
 }

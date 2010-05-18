@@ -37,6 +37,7 @@ public class MainPageView extends ResizeComposite implements IdisplayMainPage {
 	private NavigationPanel navPanel = null;
 	private InformationPanel listPanel = null;
 	private TinyMCEPanel tinyMcePanel = null;
+	private ReorderPagePanel reoderPanel = null;
 	private ValidationPanel validationPanel = null;
 	private SplitLayoutPanel splitedPanel = null;
 	private MenuBar mainmenu  = null;
@@ -44,6 +45,10 @@ public class MainPageView extends ResizeComposite implements IdisplayMainPage {
 	private ListBox languages = null;
 	private CenterEventPopUp popUp = null;
 	private LayoutPanel finalContainer = null;
+	
+	private LayoutPanel westPanel = null;
+	private LayoutPanel northPanel = null;
+	private LayoutPanel southPanel = null;
 
 	private final int height = Window.getClientHeight()-30;
 	
@@ -125,6 +130,14 @@ public class MainPageView extends ResizeComposite implements IdisplayMainPage {
 	    this.finalContainer.add(this.popUp);
 	    this.finalContainer.add(this.layoutPanel1);
 	    
+	    this.westPanel = new LayoutPanel();
+	    this.northPanel = new LayoutPanel();
+	    this.southPanel = new LayoutPanel();
+	    
+	    this.splitedPanel.addWest(this.westPanel, 168);
+	    this.splitedPanel.addNorth(this.northPanel, this.height/2 -120);
+	    this.splitedPanel.add(southPanel);
+	    
 	    this.initWidget(this.finalContainer);
 	}
 
@@ -135,31 +148,33 @@ public class MainPageView extends ResizeComposite implements IdisplayMainPage {
 	public void setNavPanel(INavigationPanel navPanel) {
 		this.navPanel = (NavigationPanel)navPanel;
 		this.navPanel.setStyleName("tab-content");
-		this.splitedPanel.addWest(this.navPanel, 168);
+		this.westPanel.add(this.navPanel);
 	}
 
 	public void setInfoPanel(IInformationPanel listPanel) {
 		this.listPanel = (InformationPanel)listPanel;
 		this.listPanel.setStyleName("tab-content");
-		this.splitedPanel.addNorth(this.listPanel, this.height/2 -120);
+		this.northPanel.add(this.listPanel);
 	}
 	
 	public void displayReorderPanel(IReorderPagePanel reorderPanel) {
-		this.splitedPanel.remove(this.tinyMcePanel);
-		this.splitedPanel.remove(this.listPanel);
-		this.splitedPanel.remove(this.navPanel);
-		this.setNavPanel(this.navPanel);
-		ReorderPagePanel panel = (ReorderPagePanel)reorderPanel;
-		panel.setStyleName("tab-content");
-		this.splitedPanel.addNorth(panel, this.height/2 -120);
-		this.setTinyMcePanel(this.tinyMcePanel);
+		this.reoderPanel = (ReorderPagePanel)reorderPanel;
+		this.reoderPanel.setStyleName("tab-content");
+		this.northPanel.remove(0);
+		this.northPanel.add(this.reoderPanel);
+	}
+	
+	public void displayNormalPanel(){
+		this.northPanel.remove(0);
+		this.northPanel.add(this.listPanel);
 	}
 
 	public void setTinyMcePanel(ITinyMCEPanel tinyMcePanel) {
 
 		this.tinyMcePanel = (TinyMCEPanel)tinyMcePanel;
 		this.tinyMcePanel.setStyleName("tab-content");
-		this.splitedPanel.add(this.tinyMcePanel);
+		//this.splitedPanel.add(this.tinyMcePanel);
+		this.southPanel.add(this.tinyMcePanel);
 	}
 
 	public void setValidationPanel(IValidationPanel validationPanel) {

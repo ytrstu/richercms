@@ -49,10 +49,19 @@ public interface MainEventBus extends EventBus {
 	public void startPanels();
 	
 	/**
+	 * Fired by the specific Panel (ReorderPanel, ...)
+	 * for re-displaying normal view with standard Panel.
+	 * Warning, you can use this event after a first startPanelsEvent.
+	 */
+	@Event( handlers = MainPagePresenter.class )
+	public void displayNormalPanel();
+	
+	/**
 	 * fired by the NavigationPresenter when the addPage menu is clicked
 	 */
 	@Event( handlers = {MainPagePresenter.class, InformationPanelPresenter.class, ValidationPanelPresenter.class, TinyMCEPanelPresenter.class} )
 	public void addPage(String key);
+	
 	
 	@Event( handlers = {MainPagePresenter.class, InformationPanelPresenter.class, ValidationPanelPresenter.class, TinyMCEPanelPresenter.class} )
 	public void cancelPage();
@@ -216,4 +225,42 @@ public interface MainEventBus extends EventBus {
 	 */
 	@Event( handlers =  ReorderPagePanelPresenter.class )
 	public void startReorderPanel(String parentKey);
+	
+	/**
+	 * Show the popUp who request the user 
+	 * to waited during some action without display 
+	 */
+	@Event( handlers =  MainPagePresenter.class )
+	public void showInformationPopUp();
+	
+	/**
+	 * Hide the popUp who request the user 
+	 * to waited during some action without display 
+	 */
+	@Event( handlers =  MainPagePresenter.class )
+	public void hideInformationPopUp();
+	
+	/**
+	 * Add a new line in the State popUp
+	 * with "Success" state
+	 * @param text : the description of the new state
+	 */
+	@Event( handlers =  MainPagePresenter.class )
+	public void addSuccessPopUp(String text);
+	
+	/**
+	 * Add a new line in the State popUp
+	 * @param text : the description of the new state
+	 * with "Wait" state
+	 */
+	@Event( handlers =  MainPagePresenter.class )
+	public void addWaitLinePopUp(String text);
+	
+	/**
+	 * Add a new line in the State popUp
+	 * @param text : the description of the new state
+	 * with "Fail" state
+	 */
+	@Event( handlers =  MainPagePresenter.class )
+	public void addErrorLinePopUp(String text);
 }

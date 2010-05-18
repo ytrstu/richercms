@@ -195,6 +195,24 @@ public class ServiceArboPageImpl  extends RemoteServiceServlet implements ArboPa
 		 }
 	}
 	
+	public void updateChildOrder(String key, List<Integer> newPositionOrder){
+		PersistenceManager pm = getPersistenceManager();
+		try {
+			 	ArboPage page = pm.getObjectById(ArboPage.class, key);
+			 	
+			 	if(page!=null) {
+			 		ArrayList<String> newOrder = new ArrayList<String>();
+			 		for(Integer i : newPositionOrder) {
+			 			// 1 to x  DataStore : 0 to x-1
+			 			newOrder.add(page.getIdChildArboPage().get(i.intValue()-1));
+			 		}
+			 		page.setIdChildArboPage(newOrder);
+			 	}
+		 }finally{
+				pm.close();
+			 }
+	}
+	
 	public BeanArboPage arboPageToBean(ArboPage ap){
 		BeanArboPage bap = new BeanArboPage(ap.getEncodedKey(),ap.getPublicationStart(), ap.getPublicationFinish());
 		ArrayList<BeanTranslationPage> lst = new ArrayList<BeanTranslationPage>();

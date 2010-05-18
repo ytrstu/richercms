@@ -60,4 +60,8 @@ public class TinyMCEPanel extends ResizeComposite implements ITinyMCEPanel {
 	public void disableEditor() {
 		this.tmce.disable();
 	}
+	
+	public int getHeight() {
+		return this.height;
+	}
 }

@@ -27,5 +27,7 @@ public interface ArboPageServiceAsync {
 	public void getLastChildAdded(String parentKey, AsyncCallback<BeanArboPage> callback);
 	
 	public void moveChildPage(String parentKey,String childKey,int index, AsyncCallback<Void> callback);
+	
+	public void updateChildOrder(String key, List<Integer> newPositionOrder, AsyncCallback<Void> callback);
 }
  

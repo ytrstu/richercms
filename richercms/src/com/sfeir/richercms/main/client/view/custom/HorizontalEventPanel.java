@@ -1,4 +1,4 @@
-package com.sfeir.richercms.main.client.view;
+package com.sfeir.richercms.main.client.view.custom;
 
 import com.google.gwt.event.dom.client.HasMouseOutHandlers;
 import com.google.gwt.event.dom.client.HasMouseOverHandlers;

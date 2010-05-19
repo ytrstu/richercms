@@ -1,51 +1,41 @@
 @CHARSET "UTF-8";
-/* ------------ Example ------------ */
+/* ------------ DropTarget ------------ */
 
 DIV.dragdrop-dropTarget {
   background-color: #CCCCCC; /* gray */
   border: 1px solid black;
 }
 
-/* ------------ AbsolutePositionExample ------------ */
-.demo-AbsolutePositionExample {
-  
-}
-
-/* ------------ GridConstrainedExample ------------ */
-.demo-GridConstrainedExample {
-  
-}
-
-/* ------------ FlexTableRowExample ------------ */
-.demo-FlexTableRowExample .dragdrop-boundary {
+/* ------------ FlexTableRow ------------ */
+.flexTableRow .dragdrop-boundary {
   background-color: #FFFFFF; /* white */
   border: 1px solid black;
 }
 
-.demo-FlexTableRowExample .demo-FlexTableRowExample-table-proxy {
+.flexTableRow .flexTableRow-proxy {
   border: 1px solid blue;
   filter: alpha(opacity = 50);
   opacity: 0.5;
 }
 
-.demo-FlexTableRowExample .demo-flextable .dragdrop-handle {
+.flexTableRow .flextable .dragdrop-handle {
   background: url("tab_images/dndArea.png") no-repeat;
   padding-left: 12px;
 }
 
-.demo-FlexTableRowExample TABLE {
+.flexTableRow TABLE {
   background-color: #FFFFFF; /* white */
 }
 
-.demo-FlexTableRowExample .demo-table-positioner {
+.flexTableRow .table-positioner {
   z-index: 1;
   border-top: 1px solid green;
   margin-top: 1px;
 }
 
-.demo-FlexTableRowExample .dragdrop-selected ,
-.demo-FlexTableRowExample .dragdrop-dragging ,
-.demo-FlexTableRowExample .dragdrop-proxy {
+.flexTableRow .dragdrop-selected ,
+.flexTableRow .dragdrop-dragging ,
+.flexTableRow .dragdrop-proxy {
   filter: alpha(enabled = false);
   opacity: 1.0;
 }

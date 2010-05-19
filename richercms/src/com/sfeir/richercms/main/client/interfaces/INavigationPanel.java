@@ -8,6 +8,7 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.TreeItem;
 import com.mvp4g.client.view.LazyView;
 import com.sfeir.richercms.main.client.MainConstants;
+import com.sfeir.richercms.main.client.interfaces.custom.IPopUpMenuBar;
 
 public interface INavigationPanel extends LazyView{
 

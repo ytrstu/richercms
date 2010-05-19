@@ -1,4 +1,4 @@
-package com.sfeir.richercms.main.client.interfaces;
+package com.sfeir.richercms.main.client.interfaces.custom;
 
 import com.google.gwt.event.dom.client.HasClickHandlers;
 

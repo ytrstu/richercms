@@ -43,6 +43,12 @@ public interface MainConstants extends Constants {
 	  @DefaultStringValue("Delete this page")
 	  String PopUpDelPage();
 	  
+	  @DefaultStringValue("Initial position")
+	  String InitPosition();
+	  
+	  @DefaultStringValue("Creation Date")
+	  String CreationDate();
+	  
 	  @DefaultStringValue("Add")
 	  String BtnAdd();
 	  
@@ -51,6 +57,12 @@ public interface MainConstants extends Constants {
 	  
 	  @DefaultStringValue("Cancel")
 	  String BtnCancel();
+	  
+	  @DefaultStringValue("Reset position")
+	  String BtnResetPos();
+	  
+	  @DefaultStringValue("Apply")
+	  String BtnApply();
 	  
 	  @DefaultStringValue("Unable to destroy the main page")
 	  String IDeletMainPage();
@@ -75,6 +87,9 @@ public interface MainConstants extends Constants {
 	  
 	  @DefaultStringValue("Error retrieving language")
 	  String ERetrievingLg();
+	  
+	  @DefaultStringValue("Error : Build List")
+	  String EBuildList();
 	  
 	  @DefaultStringValue("Backup in progress")
 	  String PopUpSaveInProgress();
@@ -120,4 +135,5 @@ public interface MainConstants extends Constants {
 	  
 	  @DefaultStringValue("Add a child in : ")
 	  String AddPageTitleInformation();
+
 }

@@ -1,11 +1,11 @@
-package com.sfeir.richercms.main.client.view;
+package com.sfeir.richercms.main.client.view.custom;
 
 
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.PopupPanel;
-import com.sfeir.richercms.main.client.interfaces.IPopUpMenuBar;
+import com.sfeir.richercms.main.client.interfaces.custom.IPopUpMenuBar;
 
 /**
  * 

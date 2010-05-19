@@ -33,6 +33,9 @@ public class ArboPage {
 	@Persistent
 	private Date publicationFinish;
 	
+	@Persistent
+	private Date creationDate;
+	
 	//TODO List<Long> idTag;
 	
 	public ArboPage() {
@@ -41,6 +44,7 @@ public class ArboPage {
 		this.idChildArboPage = new ArrayList<String>();
 		this.publicationStart = new Date();
 		this.publicationFinish = new Date();
+		this.creationDate = new Date();
 	}
 	
 	public ArboPage(List<TranslationPage> translation) {
@@ -49,6 +53,7 @@ public class ArboPage {
 		this.translation = translation;
 		this.publicationStart = new Date();
 		this.publicationFinish = new Date();
+		this.creationDate = new Date();
 	}
 	
 	public ArboPage(List<TranslationPage> translation, Date publicationStart, Date publicationFinish) {
@@ -57,6 +62,7 @@ public class ArboPage {
 		this.translation = translation;
 		this.publicationStart = publicationStart;
 		this.publicationFinish = publicationFinish;
+		this.creationDate = new Date();
 	}
 	
 	public ArboPage(List<TranslationPage> translation, List<String> idChildArboPage) {
@@ -65,6 +71,7 @@ public class ArboPage {
 		this.translation = translation;
 		this.publicationStart = new Date();
 		this.publicationFinish = new Date();
+		this.creationDate = new Date();
 	}
 	
 	public ArboPage(List<TranslationPage> translation, List<String> idChildArboPage,
@@ -74,6 +81,7 @@ public class ArboPage {
 		this.translation = translation;
 		this.publicationStart = publicationStart;
 		this.publicationFinish = publicationFinish;
+		this.creationDate = new Date();
 	}
 
 	public String getEncodedKey() {
@@ -116,4 +124,11 @@ public class ArboPage {
 		this.publicationFinish = publicationFinish;
 	}
 
+	public Date getCreationDate() {
+		return creationDate;
+	}
+
+	public void setCreationDate(Date creationDate) {
+		this.creationDate = creationDate;
+	}
 }

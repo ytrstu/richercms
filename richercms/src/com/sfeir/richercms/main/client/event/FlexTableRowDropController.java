@@ -11,13 +11,14 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.InsertPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.sfeir.richercms.main.client.view.custom.FlexTableUtil;
 
 /**
 * Allows one or more table rows to be dropped into an existing table.
 */
 public final class FlexTableRowDropController extends AbstractPositioningDropController {
 
- private static final String CSS_DEMO_TABLE_POSITIONER = "demo-table-positioner";
+ private static final String CSS_TABLE_POSITIONER = "table-positioner";
 
  private FlexTable flexTable;
 
@@ -91,7 +92,7 @@ public final class FlexTableRowDropController extends AbstractPositioningDropCon
 
  Widget newPositioner(DragContext context) {
    Widget p = new SimplePanel();
-   p.addStyleName(CSS_DEMO_TABLE_POSITIONER);
+   p.addStyleName(CSS_TABLE_POSITIONER);
    p.setPixelSize(flexTable.getOffsetWidth(), 1);
    return p;
  }

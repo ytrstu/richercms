@@ -15,7 +15,8 @@ import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
 import com.sfeir.richercms.main.client.MainConstants;
 import com.sfeir.richercms.main.client.interfaces.INavigationPanel;
-import com.sfeir.richercms.main.client.interfaces.IPopUpMenuBar;
+import com.sfeir.richercms.main.client.interfaces.custom.IPopUpMenuBar;
+import com.sfeir.richercms.main.client.view.custom.PopUpMenuBar;
 
 /**
  * Panel containing the tree who represent the architectural view of the site.

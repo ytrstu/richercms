@@ -12,6 +12,7 @@ public class BeanArboPage implements Serializable{
 	List<BeanTranslationPage> translation;
 	private Date publicationStart;
 	private Date publicationFinish;
+	private Date creationDate;
 	
 	public BeanArboPage() {
 		super();
@@ -19,6 +20,7 @@ public class BeanArboPage implements Serializable{
 		this.translation = new ArrayList<BeanTranslationPage>();
 		this.publicationFinish = new Date();
 		this.publicationStart = new Date();
+		this.creationDate = new Date();
 	}
 	
 	public BeanArboPage(String encodedKey) {
@@ -27,14 +29,16 @@ public class BeanArboPage implements Serializable{
 		this.translation = new ArrayList<BeanTranslationPage>();
 		this.publicationFinish = new Date();
 		this.publicationStart = new Date();
+		this.creationDate = new Date();
 	}
 	
-	public BeanArboPage(String encodedKey, Date publicationStart, Date publicationFinish) {
+	public BeanArboPage(String encodedKey, Date publicationStart, Date publicationFinish, Date creationDate) {
 		super();
 		this.encodedKey = encodedKey;
 		this.translation = new ArrayList<BeanTranslationPage>();
 		this.publicationFinish = publicationFinish;
 		this.publicationStart = publicationStart;
+		this.creationDate = creationDate;
 	}
 	
 	public BeanArboPage(List<BeanTranslationPage> translation) {
@@ -43,6 +47,7 @@ public class BeanArboPage implements Serializable{
 		this.translation = translation;
 		this.publicationFinish = new Date();
 		this.publicationStart = new Date();
+		this.creationDate = new Date();
 	}
 	
 	public BeanArboPage(String encodedKey, List<BeanTranslationPage> translation) {
@@ -51,6 +56,7 @@ public class BeanArboPage implements Serializable{
 		this.translation = translation;
 		this.publicationFinish = new Date();
 		this.publicationStart = new Date();
+		this.creationDate = new Date();
 	}
 	
 	public BeanArboPage(String encodedKey, List<BeanTranslationPage> translation,
@@ -60,6 +66,7 @@ public class BeanArboPage implements Serializable{
 		this.translation = translation;
 		this.publicationFinish = publicationFinish;
 		this.publicationStart = publicationStart;
+		this.creationDate = new Date();
 	}
 	
 	public String getEncodedKey() {
@@ -94,7 +101,12 @@ public class BeanArboPage implements Serializable{
 		this.publicationFinish = publicationFinish;
 	}
 	
-	
-	
+	public Date getCreationDate() {
+		return creationDate;
+	}
+
+	public void setCreationDate(Date creationDate) {
+		this.creationDate = creationDate;
+	}
 	
 }

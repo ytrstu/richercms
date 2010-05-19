@@ -27,8 +27,8 @@ import com.sfeir.richercms.client.view.PopUpMessage;
 import com.sfeir.richercms.main.client.ArboPageServiceAsync;
 import com.sfeir.richercms.main.client.event.MainEventBus;
 import com.sfeir.richercms.main.client.interfaces.INavigationPanel;
-import com.sfeir.richercms.main.client.view.HorizontalEventPanel;
 import com.sfeir.richercms.main.client.view.NavigationPanel;
+import com.sfeir.richercms.main.client.view.custom.HorizontalEventPanel;
 import com.sfeir.richercms.main.shared.BeanArboPage;
 import com.sfeir.richercms.main.shared.BeanTranslationPage;
 
@@ -53,7 +53,8 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Ma
 		view.getSelectedEvtTree()
 		.addSelectionHandler(new SelectionHandler<TreeItem>(){
 			public void onSelection(SelectionEvent<TreeItem> event) {
-				setSelectedItem(event.getSelectedItem()); // fait des actions spécifique	
+				setSelectedItem(event.getSelectedItem()); // fait des actions spécifique
+				eventBus.displayNormalPanel();
 				eventBus.displayPage((String) selectedItem.getUserObject());
 			}
 		});

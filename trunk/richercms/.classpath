@@ -10,6 +10,7 @@
 	<classpathentry kind="lib" path="gwtLib/commons-lang-2.5.jar"/>
 	<classpathentry kind="lib" path="gwtLib/mvp4g-1.1.0.jar"/>
 	<classpathentry kind="lib" path="gwtLib/gwt-dnd-3.0.1.jar"/>
+	<classpathentry kind="lib" path="appEngineLib/objectify-2.2.jar"/>
 	<classpathentry kind="con" path="com.google.appengine.eclipse.core.GAE_CONTAINER"/>
 	<classpathentry kind="lib" path="testLib/mockito-all-1.8.4.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>

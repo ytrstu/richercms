@@ -1,30 +1,30 @@
 package com.sfeir.richercms.wizard.server.business;
 
-import javax.jdo.annotations.IdGeneratorStrategy;
-import javax.jdo.annotations.PersistenceCapable;
-import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.PrimaryKey;
+
+import javax.persistence.Id;
+
+import com.googlecode.objectify.annotation.Entity;
+import com.googlecode.objectify.annotation.Unindexed;
 
 
 /**
  * Represent a language
  * @author homberg.g
  */
-@PersistenceCapable
+@Entity(name="Language")
+@Unindexed// or @Unindexed sets default for fields in class; if neither specified, assume @Indexed
 public class Language {
 	
-	@PrimaryKey
-	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
+	@Id
     private Long id;
-	@Persistent
-	private String langue;
-	@Persistent
-	private String tag;
-	@Persistent
-	private boolean selected;
-	@Persistent
-	private int translationID; //permet savoir la position de la traduction associé
 	
+	private String langue;
+	
+	private String tag;
+	
+	private boolean selected;
+	
+	private int translationID; //permet savoir la position de la traduction associé
 	
 	public Language() {
 		this.langue = "";

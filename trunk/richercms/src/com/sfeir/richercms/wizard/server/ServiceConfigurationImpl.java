@@ -1,13 +1,9 @@
 package com.sfeir.richercms.wizard.server;
 
-import java.util.List;
-
-import javax.jdo.PersistenceManager;
-import javax.jdo.PersistenceManagerFactory;
-import javax.jdo.Query;
-
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-import com.sfeir.richercms.server.PMF;
+import com.googlecode.objectify.Objectify;
+import com.googlecode.objectify.ObjectifyService;
+import com.googlecode.objectify.Query;
 import com.sfeir.richercms.wizard.client.ConfigurationService;
 import com.sfeir.richercms.wizard.server.business.Configuration;
 
@@ -19,51 +15,35 @@ import com.sfeir.richercms.wizard.server.business.Configuration;
 @SuppressWarnings("serial")
 public class ServiceConfigurationImpl extends RemoteServiceServlet implements ConfigurationService{
 
-	private static final PersistenceManagerFactory Pmf = PMF.get();
-	private PersistenceManager getPersistenceManager() {
-		return Pmf.getPersistenceManager();
+	static {
+        ObjectifyService.register(Configuration.class);
 	}
 	
 
 	public Boolean SiteIsConfigured() {
 		return new Boolean(this.getConfiguration().isConfigured());
-		//return false;
 	}
 	
-	@SuppressWarnings("unchecked")
 	public void setIsConfigurated(boolean state) {
+		Objectify ofy = ObjectifyService.begin();
+		Query<Configuration> configurations = ofy.query(Configuration.class);
 		
-		PersistenceManager pm = getPersistenceManager();
-		try {
-		    Query q = pm.newQuery(Configuration.class);
-		    List<Configuration> configurations = (List<Configuration>) q.execute();
-		    configurations.get(0).setConfigured(state);
-		    		
-		} finally {
-			pm.close();
-		}
+		Configuration conf = configurations.get();
+		conf.setConfigured(state);
+		ofy.put(conf);   		
 	}
 	
-	
-	
-	@SuppressWarnings("unchecked")
 	private Configuration getConfiguration()
 	{
-		PersistenceManager pm = getPersistenceManager();
-		try {
-		    Query q = pm.newQuery(Configuration.class);
-		    List<Configuration> configurations = (List<Configuration>) q.execute();
+		Objectify ofy = ObjectifyService.begin();
+		Query<Configuration> configurations = ofy.query(Configuration.class);
 		    
-		    if (configurations.size() == 0) {
-		    	Configuration cf = new Configuration();
-		    	pm.makePersistent(cf);
-		    	return cf;
-		    }
-		    else
-		    	return configurations.get(0);
-		    		
-		} finally {
-			pm.close();
-		}
+		if (configurations.countAll() == 0) {
+			Configuration cf = new Configuration();
+			ofy.put(cf);
+			return cf;
+		}else
+			return configurations.get();
 	}
+	
 }

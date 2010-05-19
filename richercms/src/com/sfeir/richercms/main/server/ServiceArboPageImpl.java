@@ -8,6 +8,8 @@ import javax.jdo.PersistenceManagerFactory;
 import javax.jdo.Query;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+import com.googlecode.objectify.Objectify;
+import com.googlecode.objectify.ObjectifyService;
 import com.sfeir.richercms.main.client.ArboPageService;
 import com.sfeir.richercms.main.server.business.ArboPage;
 import com.sfeir.richercms.main.server.business.RootArbo;
@@ -20,7 +22,9 @@ import com.sfeir.richercms.wizard.server.business.Language;
 @SuppressWarnings("serial")
 public class ServiceArboPageImpl  extends RemoteServiceServlet implements ArboPageService {
 
-	
+	static {
+        ObjectifyService.register(Language.class);
+    }
 	private static final PersistenceManagerFactory Pmf = PMF.get();
 	private String keyRoot = null;
 	private int nbTranslation = 1;
@@ -255,16 +259,12 @@ public class ServiceArboPageImpl  extends RemoteServiceServlet implements ArboPa
 	 * Store the number of language in the class variable nbTranslation.
 	 * With that, the application know how many translation are needed.
 	 */
-	@SuppressWarnings("unchecked")
 	private void countLanguage() {
-		PersistenceManager pm = getPersistenceManager();
-		try {
-	        Query q = pm.newQuery(Language.class);
-	        List<Language> languages = (List<Language>) q.execute();
-	        this.nbTranslation = languages.size();
-		}finally{
-			pm.close();
-		}
+		Objectify ofy = ObjectifyService.begin();
+
+		com.googlecode.objectify.Query<Language> lgs = ofy.query(Language.class);
+		this.nbTranslation = lgs.countAll();
+
 	}
 
 }

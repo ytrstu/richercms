@@ -16,12 +16,8 @@ public interface LanguageServiceAsync {
 	public void getLangue(int id, AsyncCallback<BeanLanguageDetails> callback);
 	public void addBasesLanguage(AsyncCallback<Void> callback);
 	public void addLanguage(String language, String tag,AsyncCallback<Void> callback);
-	public void selectLanguages(List<Integer> lstID, AsyncCallback<Void> callback);
 	public void selectLanguage(int id, AsyncCallback<Void> callback);
 	public void deleteLanguages(List<Integer> lstID, AsyncCallback<Void> callback);
 	public void deleteAllLanguages(AsyncCallback<Void> callback);
 	public void deleteLanguage(int id, AsyncCallback<Void> callback);
-	public void setTranslationKey(Long id, int translationID, AsyncCallback<Void> callback);
-	public void isAlreadyTranslated(Long id, AsyncCallback<Integer> callback);
-	public void setAllTranslationID(AsyncCallback<Void> callback);
 }

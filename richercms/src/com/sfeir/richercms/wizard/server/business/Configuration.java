@@ -1,10 +1,10 @@
 package com.sfeir.richercms.wizard.server.business;
 
-import javax.jdo.annotations.IdGeneratorStrategy;
-import javax.jdo.annotations.IdentityType;
-import javax.jdo.annotations.PersistenceCapable;
-import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.PrimaryKey;
+
+import javax.persistence.Id;
+
+import com.googlecode.objectify.annotation.Entity;
+import com.googlecode.objectify.annotation.Unindexed;
 
 
 /**
@@ -12,13 +12,13 @@ import javax.jdo.annotations.PrimaryKey;
  * without the language.
  * @author homberg.g
  */
-@PersistenceCapable(identityType = IdentityType.APPLICATION)
+@Entity(name="Configuration")
+@Unindexed// or @Unindexed sets default for fields in class; if neither specified, assume @Indexed
 public class Configuration {
 
-	@PrimaryKey
-	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
+	@Id
 	private Long id;
-	@Persistent
+
 	private boolean isConfigured;
 	
 	public Configuration() {

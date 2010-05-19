@@ -3,13 +3,11 @@ package com.sfeir.richercms.wizard.server;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.jdo.PersistenceManager;
-import javax.jdo.PersistenceManagerFactory;
-import javax.jdo.Query;
-import javax.jdo.Transaction;
-
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-import com.sfeir.richercms.server.PMF;
+import com.googlecode.objectify.Objectify;
+import com.googlecode.objectify.ObjectifyService;
+import com.googlecode.objectify.Query;
+
 import com.sfeir.richercms.wizard.client.LanguageService;
 import com.sfeir.richercms.wizard.server.business.Language;
 import com.sfeir.richercms.wizard.shared.BeanLanguageDetails;
@@ -21,55 +19,48 @@ import com.sfeir.richercms.wizard.shared.BeanLanguageDetails;
 @SuppressWarnings("serial")
 public class ServiceLangueImpl extends RemoteServiceServlet implements LanguageService{
 
-	private static final PersistenceManagerFactory Pmf = PMF.get();
 	private List<Language> languages = null;
-
-	private PersistenceManager getPersistenceManager() {
-		return Pmf.getPersistenceManager();
-	}
+	
+	static {
+        ObjectifyService.register(Language.class);
+    }
 	
 	/**
 	 * Renvoi les langues disponibles
 	 */
-	@SuppressWarnings("unchecked")
 	public List<BeanLanguageDetails> getLangues() {
 		
-		PersistenceManager pm = getPersistenceManager();
+		Objectify ofy = ObjectifyService.begin();
+		
 		ArrayList<BeanLanguageDetails> lst = new ArrayList<BeanLanguageDetails>();
-	    try {
-	        Query q = pm.newQuery(Language.class);
-	        languages = (List<Language>) q.execute();
-	      
-	        for (Language language : languages) {
-	            lst.add(new BeanLanguageDetails(language.getId(), language.getLangue(),language.getTag(),language.isSelected(), language.getTranslationID()));
-	          }
-        } finally {
-        	pm.close();
+		ArrayList<Language> lgList = new ArrayList<Language>();
+
+    	Query<Language> lgs = ofy.query(Language.class);
+
+        for (Language language : lgs) {
+        	lgList.add(language);
+            lst.add(new BeanLanguageDetails(language.getId(), language.getLangue(),language.getTag(),language.isSelected(), language.getTranslationID()));
         }
+        this.languages = lgList;
 		return lst;
 	}
 	
 
 	public BeanLanguageDetails getLangue(int id) {
 		
-		PersistenceManager pm = getPersistenceManager();
+		Objectify ofy = ObjectifyService.begin();
 		
-		 try
-		 {
-			 Language lg = pm.getObjectById(Language.class, this.languages.get(id).getId());
-			 
-			 if(lg != null)
-				 return new BeanLanguageDetails(lg.getId(), lg.getLangue(), lg.getTag(), lg.isSelected(), lg.getTranslationID());
-			 else
-				 return null;
-		 }finally{
-			 pm.close();
-		 }
+		Language lg = ofy.get(Language.class, this.languages.get(id).getId());
+		 
+		if(lg != null)
+			return new BeanLanguageDetails(lg.getId(), lg.getLangue(), lg.getTag(), lg.isSelected(), lg.getTranslationID());
+		else
+			return null;
 	}
 	
 	public void addBasesLanguage() {
 		
-	    PersistenceManager pm = getPersistenceManager();
+	  /*  PersistenceManager pm = getPersistenceManager();
 	    try {
 	      pm.makePersistent(new Language("Français","fr", false));
 	      pm.makePersistent(new Language("Anglais","en", false));
@@ -77,121 +68,68 @@ public class ServiceLangueImpl extends RemoteServiceServlet implements LanguageS
 	      pm.makePersistent(new Language("Italien", "it", false));
 	    } finally {
 	      pm.close();
-	    }
+	    }*/
 	}
 	
 	public void addLanguage(String language, String tag) {
 		
+		Objectify ofy = ObjectifyService.begin();
 		Language lg = new Language(language, tag);
-		PersistenceManager pm = getPersistenceManager();
-	    try {
-	    	// on ajoute dans le dataStore uniquement s'il n'existe pas d�j�
-	    	if(!this.existingLanguage(language)){
-	    		pm.makePersistent(lg);
-	    	}
-	    } finally {
-	      pm.close();
-	    }
+		
+		if(!this.existingLanguage(language))
+			ofy.put(lg);
 	}
 	
 	public void selectLanguage(int id) {
-		
+	
+		Objectify ofy = ObjectifyService.begin();
 		if(id != -1 && this.languages.size() != 0)
 		{
-			PersistenceManager pm = getPersistenceManager();
+
+			//On d�-selectionne toute les langues
+			for (Language objLanguage : this.languages) {
+				Language lg = ofy.get(Language.class, objLanguage.getId());
+				lg.setSelected(false);
+				ofy.put(lg);
+			}
 			
-			 try
-			 {
-				//On d�-selectionne toute les langues
-				 for (Language objLanguage : this.languages) {
-					Language lg = pm.getObjectById(Language.class, objLanguage.getId());
-					lg.setSelected(false);
-				 }
-		
-				 Language lg = pm.getObjectById(Language.class, this.languages.get(id).getId());
-				 lg.setSelected(true);
-	
-				 
-			 }finally{
-				 pm.close();
-			 }	
+			Language lg = ofy.get(Language.class, this.languages.get(id).getId());
+			lg.setSelected(true);
+			ofy.put(lg);
+			
 			 //when the default language is selected, we can save the index for each language
 			 setAllTranslationID();
 		}
 	}
 	
-	public void selectLanguages(List<Integer> lstID) {
-		
-		PersistenceManager pm = getPersistenceManager();
-		
-		 try
-		 {
-			//On dé-selectionne toute les langues
-			 for (Language objLanguage : this.languages) {
-				Language lg = pm.getObjectById(Language.class, objLanguage.getId());
-				lg.setSelected(false);
-			 }
-	
-			 
-			 // On selectionne uniquement les bonnes langues
-			 for (Integer IDlangue : lstID)
-			 {	
-				 Language lg = pm.getObjectById(Language.class, this.languages.get(IDlangue.intValue()).getId());
-				 lg.setSelected(true);
-			 }
-			 
-		 }finally{
-			 pm.close();
-		 }
-	}
-	
 	public void deleteLanguages(List<Integer> lstID) {
-		
-		PersistenceManager pm = getPersistenceManager();
-		 try {
-			 
-			 for (Integer id : lstID) {
-				 Language lg = pm.getObjectById(Language.class, this.languages.get(id).getId());
-				 pm.deletePersistent(lg);
-			 }
 
-		 }finally{
-			 pm.close();
-		 }
+		Objectify ofy = ObjectifyService.begin();
+		for (Integer id : lstID) {
+			Language lg = ofy.get(Language.class, this.languages.get(id).getId());
+			ofy.delete(lg);
+		}
 	}
 	
-	@SuppressWarnings("unchecked")
 	public void deleteAllLanguages()
 	{
-		PersistenceManager pm = getPersistenceManager();
-		 try {
-		        Query q = pm.newQuery(Language.class);
-		        languages = (List<Language>) q.execute();
+		Objectify ofy = ObjectifyService.begin();
+		Query<Language> lgs = ofy.query(Language.class);
 
-				 for (Language lg : this.languages) {
-					 pm.deletePersistent(lg);
-				 }
-				 
-		 }finally{
-			 pm.close();
+		 for (Language lg : lgs) {
+			 ofy.delete(lg);
 		 }
+
 	}
 	
 	public void deleteLanguage(int id) {
-		
-		PersistenceManager pm = getPersistenceManager();
-		 try {
-				 Language lg = pm.getObjectById(Language.class, this.languages.get(id).getId());
-				 pm.deletePersistent(lg);
-
-		 }finally{
-			 pm.close();
-		 }
+		Objectify ofy = ObjectifyService.begin();
+		Language lg = ofy.get(Language.class, this.languages.get(id).getId());
+		ofy.delete(lg);
 	}
 	
 	private boolean existingLanguage(String lg) {
 		
-		//ArrayList<String> lst = getLangues();
 		 for (Language language : this.languages) {
 			 if(lg.equals(language.getLangue()))
 				 return true;
@@ -199,58 +137,19 @@ public class ServiceLangueImpl extends RemoteServiceServlet implements LanguageS
 		 return false;
 	}
 	
-	public void setTranslationKey(Long id, int translationID){
-		
-		PersistenceManager pm = getPersistenceManager();
-		Transaction tx = pm.currentTransaction();
-		try {
-			tx.begin();
-				Language lg = pm.getObjectById(Language.class, id);
-				lg.setTranslationID(translationID);
-			tx.commit();
-		}finally{
-			if (tx.isActive()) {
-			    tx.rollback();}
-			pm.close();
-		}
-	}
-	
-	public Integer isAlreadyTranslated(Long id) {
-		PersistenceManager pm = getPersistenceManager();
-		Transaction tx = pm.currentTransaction();
-		int translationID;
-		try {
-			tx.begin();
-				Language lg = pm.getObjectById(Language.class, id);
-				translationID = lg.getTranslationID();
-			tx.commit();
-		}finally{
-			if (tx.isActive()) {
-			    tx.rollback();}
-			pm.close();
-		}
-		
-		return new Integer(translationID);
-	}
-	
-	@SuppressWarnings("unchecked")
-	public void setAllTranslationID() {
-		PersistenceManager pm = getPersistenceManager();
-	    try {
-	        Query q = pm.newQuery(Language.class);
-	        languages = (List<Language>) q.execute();   
+	private void setAllTranslationID() {
+		Objectify ofy = ObjectifyService.begin();
+		Query<Language> lgs = ofy.query(Language.class);   
 	        
-	        int i = 0;
-	        for (Language language : languages) {
-	            if(language.isSelected()){
-	            	language.setTranslationID(0);
-	            }else {
-	            	i = i+1;
-	            	language.setTranslationID(i);
-	            }
-	         }
-        } finally {
-        	pm.close();
-        }
+        int i = 0;
+        for (Language language : lgs) {
+            if(language.isSelected()){
+            	language.setTranslationID(0);
+            }else {
+            	i = i+1;
+            	language.setTranslationID(i);
+            }
+            ofy.put(language);
+         }
 	}
 }

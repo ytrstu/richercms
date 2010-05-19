@@ -53,12 +53,17 @@ public class ServiceArboPageImpl  extends RemoteServiceServlet implements ArboPa
 		
 		PersistenceManager pm = getPersistenceManager();
 		 try {
-
     			ArboPage parentPage = pm.getObjectById(ArboPage.class, parentKey);
+    			//remove this node in this parent
     			parentPage.getIdChildArboPage().remove(key);
     			pm.makePersistent(parentPage);
-	    		
-		    	ArboPage arboPage = pm.getObjectById(ArboPage.class, key);
+    
+    			ArboPage arboPage = pm.getObjectById(ArboPage.class, key);
+    			//delete all child
+    			for(String childKey : arboPage.getIdChildArboPage()) {
+    				 deleteArboPage(childKey, arboPage.getEncodedKey());
+    			}
+    			// delete the current page
 				pm.deletePersistent(arboPage);
 
 			 }
@@ -214,7 +219,8 @@ public class ServiceArboPageImpl  extends RemoteServiceServlet implements ArboPa
 	}
 	
 	public BeanArboPage arboPageToBean(ArboPage ap){
-		BeanArboPage bap = new BeanArboPage(ap.getEncodedKey(),ap.getPublicationStart(), ap.getPublicationFinish());
+		BeanArboPage bap = new BeanArboPage(ap.getEncodedKey(),ap.getPublicationStart(), 
+				ap.getPublicationFinish(), ap.getCreationDate());
 		ArrayList<BeanTranslationPage> lst = new ArrayList<BeanTranslationPage>();
 		for(TranslationPage tp : ap.getTranslation()){
 			lst.add(translationPageToBean(tp));}

@@ -1,4 +1,4 @@
-package com.sfeir.richercms.main.client.view;
+package com.sfeir.richercms.main.client.view.custom;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.HasClickHandlers;
@@ -6,7 +6,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.sfeir.richercms.main.client.MainConstants;
-import com.sfeir.richercms.main.client.interfaces.IPopUpTree;
+import com.sfeir.richercms.main.client.interfaces.custom.IPopUpTree;
 
 /**
  * 

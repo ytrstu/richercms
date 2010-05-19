@@ -6,13 +6,14 @@ import com.allen_sauer.gwt.dnd.client.drop.BoundaryDropController;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Widget;
+import com.sfeir.richercms.main.client.view.custom.FlexTableUtil;
 
 /**
  * Allows table rows to dragged by their handle.
  */
 public final class FlexTableRowDragController extends PickupDragController {
 
-  private static final String CSS_DEMO_FLEX_TABLE_ROW_EXAMPLE_TABLE_PROXY = "demo-FlexTableRowExample-table-proxy";
+  private static final String CSS_FLEX_TABLE_ROW_PROXY = "flexTableRow-proxy";
 
   private FlexTable draggableTable;
 
@@ -54,7 +55,7 @@ public final class FlexTableRowDragController extends PickupDragController {
   protected Widget newDragProxy(DragContext context) {
     FlexTable proxy;
     proxy = new FlexTable();
-    proxy.addStyleName(CSS_DEMO_FLEX_TABLE_ROW_EXAMPLE_TABLE_PROXY);
+    proxy.addStyleName(CSS_FLEX_TABLE_ROW_PROXY);
     draggableTable = (FlexTable) context.draggable.getParent();
     dragRow = getWidgetRow(context.draggable, draggableTable);
     FlexTableUtil.copyRow(draggableTable, proxy, dragRow, 0);

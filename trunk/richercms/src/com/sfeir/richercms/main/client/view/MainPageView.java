@@ -23,6 +23,7 @@ import com.sfeir.richercms.main.client.interfaces.IReorderPagePanel;
 import com.sfeir.richercms.main.client.interfaces.ITinyMCEPanel;
 import com.sfeir.richercms.main.client.interfaces.IValidationPanel;
 import com.sfeir.richercms.main.client.interfaces.IdisplayMainPage;
+import com.sfeir.richercms.main.client.view.custom.CenterEventPopUp;
 
 /**
  * Main panel, containing the others (navigation, information and editor)
@@ -165,8 +166,11 @@ public class MainPageView extends ResizeComposite implements IdisplayMainPage {
 	}
 	
 	public void displayNormalPanel(){
-		this.northPanel.remove(0);
-		this.northPanel.add(this.listPanel);
+		// evite le clignotement si on est déja sur en mode normale
+		if(!this.northPanel.getWidget(0).equals(this.listPanel)) {
+			this.northPanel.remove(0);
+			this.northPanel.add(this.listPanel);
+		}
 	}
 
 	public void setTinyMcePanel(ITinyMCEPanel tinyMcePanel) {

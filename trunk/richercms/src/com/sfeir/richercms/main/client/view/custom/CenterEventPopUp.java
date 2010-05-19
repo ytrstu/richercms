@@ -1,4 +1,4 @@
-package com.sfeir.richercms.main.client.view;
+package com.sfeir.richercms.main.client.view.custom;
 
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Image;

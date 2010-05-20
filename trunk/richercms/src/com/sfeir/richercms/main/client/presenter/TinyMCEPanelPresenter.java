@@ -46,11 +46,11 @@ public class TinyMCEPanelPresenter extends LazyPresenter<ITinyMCEPanel, MainEven
 		this.eventBus.changeEditorPanel(this.view);
 	}
 	
-	public void onModifyPage(String key) {
+	public void onModifyPage(Long id) {
 		this.view.enableEditor();
 	}
 	
-	public void onAddPage(String key) {
+	public void onAddPage(Long id) {
 		view.enableEditor();
 		this.view.setContent("");
 	}

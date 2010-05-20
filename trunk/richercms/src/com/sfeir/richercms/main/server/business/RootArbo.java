@@ -1,46 +1,39 @@
 package com.sfeir.richercms.main.server.business;
 
-import javax.jdo.annotations.Extension;
-import javax.jdo.annotations.IdGeneratorStrategy;
-import javax.jdo.annotations.IdentityType;
-import javax.jdo.annotations.PersistenceCapable;
-import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.PrimaryKey;
 
-@PersistenceCapable(identityType = IdentityType.APPLICATION)
+import javax.persistence.Id;
+
+import com.googlecode.objectify.annotation.Entity;
+
+@Entity(name="RootArbo")
 public class RootArbo {
 	
-    @PrimaryKey
-    @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-    @Extension(vendorName="datanucleus", key="gae.encoded-pk", value="true")
-    private String encodedKey;
-    
-	@Persistent
-	private String keyOfRootArboPage;
-	
-	//TODO List<Long> idTag;
+	@Id
+    private Long id;
+
+	private Long idOfRootArboPage;
 	
 	public RootArbo() {
-		this.keyOfRootArboPage = null;
+		this.idOfRootArboPage = null;
 	}
 	
-	public RootArbo(String keyOfRootArboPage) {
-		this.keyOfRootArboPage = keyOfRootArboPage;
+	public RootArbo(Long idOfRootArboPage) {
+		this.idOfRootArboPage = idOfRootArboPage;
 	}
 
-	public String getEncodedKey() {
-		return this.encodedKey;
+	public Long getId() {
+		return this.id;
 	}
 
-	public void setEncodedKey(String encodedKey) {
-		this.encodedKey = encodedKey;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
-	public String getKeyOfRootArboPage() {
-		return keyOfRootArboPage;
+	public Long getIdOfRootArboPage() {
+		return idOfRootArboPage;
 	}
 
-	public void setKeyOfRootArboPage(String keyOfRootArboPage) {
-		this.keyOfRootArboPage = keyOfRootArboPage;
+	public void setIdOfRootArboPage(Long idOfRootArboPage) {
+		this.idOfRootArboPage = idOfRootArboPage;
 	}
 }

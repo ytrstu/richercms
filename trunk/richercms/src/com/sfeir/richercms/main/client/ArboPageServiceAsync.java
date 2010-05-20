@@ -12,22 +12,22 @@ import com.sfeir.richercms.main.shared.BeanArboPage;
  */
 public interface ArboPageServiceAsync {
 
-	public void getChildPages(String ParentKey, boolean isMain, AsyncCallback<List<BeanArboPage>> callback);
+	public void getChildPages(Long ParentId, boolean isMain, AsyncCallback<List<BeanArboPage>> callback);
 	
 	public void getMainArboPage(AsyncCallback<BeanArboPage> callback);
 
-	public void getArboPage(String key, AsyncCallback<BeanArboPage> callback);
+	public void getArboPage(Long id, AsyncCallback<BeanArboPage> callback);
 
-	public void addArboPage(BeanArboPage newArboPage, String parentKey, AsyncCallback<Void> callback);
+	public void addArboPage(BeanArboPage newArboPage, Long parentId, AsyncCallback<Void> callback);
 
 	public void updateArboPage(BeanArboPage p, AsyncCallback<Void> callback);
 
-	public void deleteArboPage(String key, String parentKey, AsyncCallback<Void> callback);
+	public void deleteArboPage(Long id, Long parentId, AsyncCallback<Void> callback);
 
-	public void getLastChildAdded(String parentKey, AsyncCallback<BeanArboPage> callback);
+	public void getLastChildAdded(Long parentId, AsyncCallback<BeanArboPage> callback);
 	
-	public void moveChildPage(String parentKey,String childKey,int index, AsyncCallback<Void> callback);
+	public void moveChildPage(Long parentId, Long childId, int index, AsyncCallback<Void> callback);
 	
-	public void updateChildOrder(String key, List<Integer> newPositionOrder, AsyncCallback<Void> callback);
+	public void updateChildOrder(Long id, List<Integer> newPositionOrder, AsyncCallback<Void> callback);
 }
  

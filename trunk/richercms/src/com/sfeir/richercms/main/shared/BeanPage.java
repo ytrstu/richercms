@@ -8,7 +8,7 @@ import java.util.List;
 @SuppressWarnings("serial")
 public class BeanPage implements Serializable {
 	
-	private String key;
+	private Long id;
 	private String browserTitle;
 	private String pageTitle;
 	private String urlName;
@@ -21,7 +21,7 @@ public class BeanPage implements Serializable {
 	
 	public BeanPage() {
 		super();
-		this.key = "";
+		this.id = null;
 		this.browserTitle = "";
 		this.pageTitle = "";
 		this.urlName = "";
@@ -33,11 +33,11 @@ public class BeanPage implements Serializable {
 		this.subPages = new ArrayList<BeanPage>();
 	}
 
-	public BeanPage(String key, String browserTitle, String pageTitle, String urlName,
+	public BeanPage(Long id, String browserTitle, String pageTitle, String urlName,
 			String description, String keyWord, String publicationStart,
 			String publicationFinish, String content, List<BeanPage> subPages) {
 		super();
-		this.key = key;
+		this.id = id;
 		this.browserTitle = browserTitle;
 		this.pageTitle = pageTitle;
 		this.urlName = urlName;
@@ -49,11 +49,11 @@ public class BeanPage implements Serializable {
 		this.subPages = subPages;
 	}
 	
-	public BeanPage(String key, String browserTitle, String pageTitle, String urlName,
+	public BeanPage(Long id, String browserTitle, String pageTitle, String urlName,
 			String description, String keyWord, String publicationStart,
 			String publicationFinish, String content) {
 		super();
-		this.key = key;
+		this.id = id;
 		this.browserTitle = browserTitle;
 		this.pageTitle = pageTitle;
 		this.urlName = urlName;
@@ -65,12 +65,12 @@ public class BeanPage implements Serializable {
 		this.subPages = new ArrayList<BeanPage>();
 	}
 
-	public String getKey() {
-		return key;
+	public Long getId() {
+		return id;
 	}
 
-	public void setKey(String key) {
-		this.key = key;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getBrowserTitle() {

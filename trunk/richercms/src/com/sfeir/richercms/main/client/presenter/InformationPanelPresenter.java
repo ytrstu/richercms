@@ -1,5 +1,6 @@
 package com.sfeir.richercms.main.client.presenter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -25,6 +26,7 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 	private BeanArboPage currentPage = null;
 	private int translationIndex = 0;
 	private int cpt = 0;
+	private int state = 0; //1 => add; 0=>modify
 	
 	public InformationPanelPresenter() {
 		super();
@@ -91,11 +93,29 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 	 * make a Page and set all field who information is in InformationPanel
 	 * @return a BeanArboPage with all information of the InformationPanel form
 	 */
+	@SuppressWarnings("unused")
 	public BeanArboPage addInformationInPage() {
 		BeanArboPage nBaP = new BeanArboPage();
-		List<BeanTranslationPage> lst = this.currentPage.getTranslation();
-		
+		List<BeanTranslationPage> lst = null;
 		BeanTranslationPage newTranslation = new BeanTranslationPage();
+		
+		if(this.state == 1) { 
+			// on met toutes les translations a vide
+			lst = new ArrayList<BeanTranslationPage>();
+			for(BeanTranslationPage bTp : this.currentPage.getTranslation()) {
+				lst.add(new BeanTranslationPage());
+			}
+		}else { 
+			// 2 => modify; on garde toute les translations
+			lst = this.currentPage.getTranslation();
+			// il nous faut garder l'id de l'anciennen traduction 
+			// pour pouvoir la mettre dans la nouvelle traduction pour l'écrasé
+			// dans la base de donnée
+			newTranslation.setId(this.currentPage.getTranslation()
+					.get(this.translationIndex).getId());
+		}
+		
+
 		newTranslation.setBrowserTitle(view.getBrowserTitle());
 		newTranslation.setContent("");
 		newTranslation.setDescription(view.getDescription());
@@ -173,8 +193,8 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 /////////////////////////////////////////////// EVENT ///////////////////////////////////////////////
 	
 
-	public void onDisplayPage(String key) {
-		this.rpcPage.getArboPage(key, new AsyncCallback<BeanArboPage>() {
+	public void onDisplayPage(Long id) {
+		this.rpcPage.getArboPage(id, new AsyncCallback<BeanArboPage>() {
 			public void onSuccess(BeanArboPage result) {
 				view.deasabledWidgets();
 				displayArboPage(result);
@@ -200,12 +220,13 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 	}
 	
 	
-	public void onAddPage(String key) {
+	public void onAddPage(Long id) {
 		this.translationIndex = 0; //on commence toujours par ajouter la langue par défaut
 		view.setTitle(view.getConstants().AddPageTitleInformation()+view.getTitle());
 		view.clearFields();
 		view.enabledWidgets();
 		view.disableHelp();
+		this.state = 1;
 	}
 	
 	public void onCancelPage() {
@@ -215,8 +236,9 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 		view.setTitle(view.getConstants().DefaultTitleInformation());
 	}
 	
-	public void onModifyPage(String key) {
+	public void onModifyPage(Long id) {
 		view.enabledWidgets();
+		this.state = 2;
 	}
 	
 	public void onSavePage() {

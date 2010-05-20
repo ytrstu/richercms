@@ -25,7 +25,7 @@ public class ReorderPagePanelPresenter extends LazyPresenter<IReorderPagePanel, 
 	private ArboPageServiceAsync rpcPage = null;
 	private FlexTableRowDragController listDragController = null;
 	private FlexTableRowDropController listDropController = null;
-	private String currentPageKey;
+	private Long currentPageId;
 	
 	/**
 	 * Bind the various evt
@@ -50,7 +50,7 @@ public class ReorderPagePanelPresenter extends LazyPresenter<IReorderPagePanel, 
 		        	eventBus.addWaitLinePopUp(view.getConstants().PopUpSaveInProgress());
 	
 		        	// Save the new order in the parentPage
-		        	rpcPage.updateChildOrder(currentPageKey, view.getNewOrder(), 
+		        	rpcPage.updateChildOrder(currentPageId, view.getNewOrder(), 
 		        			new AsyncCallback<Void>() {
 		        		public void onSuccess(Void result) {
 		        			eventBus.addSuccessPopUp(view.getConstants().PopUpSaveFinish());
@@ -75,9 +75,9 @@ public class ReorderPagePanelPresenter extends LazyPresenter<IReorderPagePanel, 
 	        }});
 	}
 	
-	public void addChildInList(String parentKey) {
+	public void addChildInList(Long parentId) {
 		
-		this.rpcPage.getChildPages(parentKey, false,
+		this.rpcPage.getChildPages(parentId, false,
 				new AsyncCallback<List<BeanArboPage>>() {
 			public void onSuccess(List<BeanArboPage> result) {
 				for(BeanArboPage subPage : result) {
@@ -96,10 +96,10 @@ public class ReorderPagePanelPresenter extends LazyPresenter<IReorderPagePanel, 
 	
 	/////////////////////////////////////////////// EVENT ///////////////////////////////////////////////
 	
-	public void onStartReorderPanel(String parentKey) {
-		this.currentPageKey = parentKey;
+	public void onStartReorderPanel(Long parentId) {
+		this.currentPageId = parentId;
 		view.clearList(); // erase the table
-		this.addChildInList(parentKey);
+		this.addChildInList(parentId);
 		this.eventBus.displayReorderPage(this.view);
 		
 	}

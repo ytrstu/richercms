@@ -16,11 +16,11 @@ public interface ArboPageService extends RemoteService {
 	
 	/**
 	 * Return the list containing all webPages child of a parent arboPage, needed to display
-	 * @param ParentKey : the key of the parent ArboPage
+	 * @param ParentId : the id of the parent ArboPage
 	 * @param true if the parent are the main, false either
 	 * @return the list containing all child of the current ParentPage
 	 */
-	public List<BeanArboPage>  getChildPages(String ParentKey, boolean isMain);
+	public List<BeanArboPage>  getChildPages(Long ParentId, boolean isMain);
 	
 	/**
 	 * Get the main ArboPage in a special translation
@@ -30,17 +30,17 @@ public interface ArboPageService extends RemoteService {
 	
 	/**
 	 * Return an ArboPage according his key
-	 * @param key unique id of the ArboPage
+	 * @param id : unique id of the ArboPage
 	 * @return the good ArboPage, null either.
 	 */
-	public BeanArboPage getArboPage(String key);
+	public BeanArboPage getArboPage(Long id);
 	
 	/**
 	 * Add a new ArboPage in the dataStore
 	 * @param newPage : add it in dataStore
-	 * @param parentKey : ID of the parentPage
+	 * @param parentId : ID of the parentPage
 	 */
-	public void addArboPage(BeanArboPage newArboPage, String parentKey);
+	public void addArboPage(BeanArboPage newArboPage, Long parentId);
 	
 	/**
 	 * Modify this page in the datastore
@@ -50,33 +50,33 @@ public interface ArboPageService extends RemoteService {
 	
 	/**
 	 * delete a page and all translation of this page
-	 * @param key : the key of the ArboPage
-	 * @param parentKey : the key of the parent : 
-	 * necessary to erase the key of the deleted child in the parent's child List
+	 * @param id : the id of the ArboPage
+	 * @param parentId : the id of the parent : 
+	 * necessary to erase the id of the deleted child in the parent's child List
 	 */
-	public void deleteArboPage(String key, String parentKey);
+	public void deleteArboPage(Long id, Long parentId);
 	
 	/**
 	 * Return the last ArboPage added in a parentPage.
-	 * @param parentKey : the key of parentPage
+	 * @param parentId : the id of parentPage
 	 * @return the last child or null if the parent are no child
 	 */
-	public BeanArboPage getLastChildAdded(String parentKey);
+	public BeanArboPage getLastChildAdded(Long parentId);
 	
 	/**
 	 * Move a child of a page at a specific index.
-	 * @param parentKey : the key of the parentPage
-	 * @param childKey : the key of the child you need to move
+	 * @param parentId : the id of the parentPage
+	 * @param childId : the id of the child you need to move
 	 * @param index : the new index ( 0 =< index =< child_count )
 	 */
-	public void moveChildPage(String parentKey,String childKey,int index);
+	public void moveChildPage(Long parentId, Long childId, int index);
 	
 	/**
 	 * Modify the list of child of a page.
 	 * It can be use for modify the order of children
 	 * Old position 1 to x  ==> Datastore 0 to x-1
-	 * @param key : the key of the current Page
+	 * @param id : the id of the current Page
 	 * @param newPositionOrder : list of old position of a page sorting in a new order
 	 */
-	public void updateChildOrder(String key, List<Integer> newPositionOrder);
+	public void updateChildOrder(Long Id, List<Integer> newPositionOrder);
 }

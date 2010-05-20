@@ -28,7 +28,7 @@ public class MainPagePresenter extends LazyPresenter<IdisplayMainPage, MainEvent
 	private ArboPageServiceAsync rpcPage = null;
 	private LanguageServiceAsync rpcLanguage = null;
 	private BeanArboPage editingPage = null;
-	private String key = null; // field used to save the key of the current Page
+	private Long id = null; // field used to save the key of the current Page
 	private int AddOrModify = 0; //0 => add, 1=> modify
 	
 	public MainPagePresenter() {
@@ -53,7 +53,7 @@ public class MainPagePresenter extends LazyPresenter<IdisplayMainPage, MainEvent
 		// show the popUp to the user
 		this.view.addLineInPopUp(view.getConstants().PopUpTakeInfo(), 1);
 		this.view.addLineInPopUp(view.getConstants().PopUpSaveInProgress(), 0);
-		this.rpcPage.addArboPage(this.editingPage, this.key, new AsyncCallback<Void>() {
+		this.rpcPage.addArboPage(this.editingPage, this.id, new AsyncCallback<Void>() {
 			public void onSuccess(Void result) {
 				eventBus.AddNewChildInTree(); //reload the new tree
 				view.addLineInPopUp(view.getConstants().PopUpSaveFinish(), 1);
@@ -70,7 +70,7 @@ public class MainPagePresenter extends LazyPresenter<IdisplayMainPage, MainEvent
 		// show the popUp to the user
 		this.view.addLineInPopUp(view.getConstants().PopUpTakeModif(), 1);
 		this.view.addLineInPopUp(view.getConstants().PopUpSaveModifInProg(), 0);
-		this.editingPage.setEncodedKey(this.key);
+		this.editingPage.setId(this.id);
 		this.rpcPage.updateArboPage(this.editingPage, new AsyncCallback<Void>() {
 			public void onSuccess(Void result) {
 				view.addLineInPopUp(view.getConstants().PopUpSaveModifFinish(), 1);
@@ -113,17 +113,17 @@ public class MainPagePresenter extends LazyPresenter<IdisplayMainPage, MainEvent
 		this.view.displayNormalPanel();
 	}
 	
-	public void onAddPage(String key){
+	public void onAddPage(Long id){
 		this.AddOrModify = 0;
-		this.key = key;
+		this.id = id;
 		this.view.disableLanguageBox();
 		this.view.setIndexOfLgToDefault();
 	}
 	
-	public void onModifyPage(String key)
+	public void onModifyPage(Long id)
 	{
 		this.AddOrModify = 1;
-		this.key = key;
+		this.id = id;
 		this.view.enableLanguageBox();
 	}
 	
@@ -201,7 +201,7 @@ public class MainPagePresenter extends LazyPresenter<IdisplayMainPage, MainEvent
 		this.view.hideWaitPopUp();
 	}
 	
-	public void onSetTranslationKeyInLanguage(String TranslationKey) {
+	public void onSetTranslationKeyInLanguage(Long TranslationId) {
 		/*this.rpcLanguage.setTranslationKey(view.getKeyOfSelectedLg(),TranslationKey, new AsyncCallback<Void>() {
 	    	public void onSuccess(Void result) {}
 			public void onFailure(Throwable caught) {

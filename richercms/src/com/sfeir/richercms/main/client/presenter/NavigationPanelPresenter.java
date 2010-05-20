@@ -39,7 +39,7 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Ma
 	private TreeItem selectedItem = null; // current selected Item in tree
 	private TreeItem expandedItem = null; // current expanded Item in tree
 	private ArboPageServiceAsync rpcPage = null;
-	private String rootKey = null;
+	private Long rootId = null;
 	
 	public NavigationPanelPresenter() {
 		super();
@@ -55,7 +55,7 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Ma
 			public void onSelection(SelectionEvent<TreeItem> event) {
 				setSelectedItem(event.getSelectedItem()); // fait des actions spécifique
 				eventBus.displayNormalPanel();
-				eventBus.displayPage((String) selectedItem.getUserObject());
+				eventBus.displayPage((Long) selectedItem.getUserObject());
 			}
 		});
 		
@@ -63,7 +63,8 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Ma
 			public void onOpen(OpenEvent<TreeItem> event) {
 				expandedItem = event.getTarget();
 				// on ajoute les fils uniquement si sa n'a pas déjà été fait
-				if(((String)(expandedItem.getChild(0).getUserObject())).equals("Loading"));
+				if(expandedItem.getChild(0).getUserObject()
+						.getClass().getName().equals(new String("String")));
 					AddChildInTree();
 			}
 		});
@@ -76,14 +77,14 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Ma
 		// commande pour l'ajout d'une sous-page
 		this.view.getPopUpMenuBar().setAddPageCommand(new Command(){
 			public void execute() {
-				NavigationPanelPresenter.this.eventBus.addPage((String) selectedItem.getUserObject());
+				NavigationPanelPresenter.this.eventBus.addPage((Long) selectedItem.getUserObject());
 				view.getPopUpMenuBar().hide();
 			}});
 		
 		// commande pour la modification d'une page
 		this.view.getPopUpMenuBar().setModifyPageCommand(new Command(){
 			public void execute() {
-				NavigationPanelPresenter.this.eventBus.modifyPage((String) selectedItem.getUserObject());
+				NavigationPanelPresenter.this.eventBus.modifyPage((Long) selectedItem.getUserObject());
 				view.getPopUpMenuBar().hide();
 			}});
 		
@@ -103,7 +104,7 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Ma
 		
 		this.view.getPopUpMenuBar().setReorderPagesCommand(new Command() {
 			public void execute() {
-				eventBus.startReorderPanel((String)selectedItem.getUserObject());
+				eventBus.startReorderPanel((Long)selectedItem.getUserObject());
 				view.getPopUpMenuBar().hide();
 			}});
 	}
@@ -130,10 +131,10 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Ma
 	public void deletePage() {	
 		view.getPopUpMenuBar().hide();
 		// on ne delete pas la main Page
-		if(!((String) selectedItem.getUserObject()).equals(rootKey)) {
+		if(!((Long) selectedItem.getUserObject()).equals(rootId)) {
 			// on commence donc la suppression
 			NavigationPanelPresenter.this.eventBus.deletePage();
-			this.rpcPage.deleteArboPage((String)selectedItem.getUserObject(), (String)selectedItem.getParentItem().getUserObject(), new AsyncCallback<Void>() {
+			this.rpcPage.deleteArboPage((Long)selectedItem.getUserObject(), (Long)selectedItem.getParentItem().getUserObject(), new AsyncCallback<Void>() {
 				public void onSuccess(Void result) {
 					view.deleteSelectedTI();
 					selectedItem = selectedItem.getParentItem();
@@ -152,8 +153,8 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Ma
 	 * set the key of the root Page
 	 * @param key
 	 */
-	public void setRootKey(String key){
-		this.rootKey = key;
+	public void setRootKey(Long id){
+		this.rootId = id;
 	}
 	
 	/**
@@ -191,13 +192,13 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Ma
 			TreeItem upperTreeItem = parent.getChild(parent.getChildIndex(selectedItem)-1);
 			Widget display1 = selectedItem.getWidget();
 			Widget display2 = upperTreeItem.getWidget();
-			String key1 = (String)selectedItem.getUserObject();
-			String key2 = (String)upperTreeItem.getUserObject();
+			Long id1 = (Long)selectedItem.getUserObject();
+			Long id2 = (Long)upperTreeItem.getUserObject();
 			boolean expand1 = selectedItem.getState();
 			boolean expand2 = upperTreeItem.getState();
 			ArrayList<TreeItem> childs = new ArrayList<TreeItem>();
 			
-			rpcPage.moveChildPage((String)parent.getUserObject(), (String)selectedItem.getUserObject(), 
+			rpcPage.moveChildPage((Long)parent.getUserObject(), (Long)selectedItem.getUserObject(), 
 					parent.getChildIndex(upperTreeItem), new AsyncCallback<Void>() {
 				public void onSuccess(Void result) {}
 				public void onFailure(Throwable caught) {}
@@ -220,12 +221,12 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Ma
 			}
 			
 			selectedItem.setWidget(display2);
-			selectedItem.setUserObject(key2);
+			selectedItem.setUserObject(id2);
 			selectedItem.setState(expand2);
 			selectedItem.setSelected(false);
 			
 			upperTreeItem.setWidget(display1);
-			upperTreeItem.setUserObject(key1);
+			upperTreeItem.setUserObject(id1);
 			upperTreeItem.setState(expand1);
 			upperTreeItem.setSelected(true);
 			
@@ -243,13 +244,13 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Ma
 			TreeItem lowerTreeItem = parent.getChild(parent.getChildIndex(selectedItem)+1);
 			Widget display1 = selectedItem.getWidget();
 			Widget display2 = lowerTreeItem.getWidget();
-			String key1 = (String)selectedItem.getUserObject();
-			String key2 = (String)lowerTreeItem.getUserObject();
+			Long id1 = (Long)selectedItem.getUserObject();
+			Long id2 = (Long)lowerTreeItem.getUserObject();
 			boolean expand1 = selectedItem.getState();
 			boolean expand2 = lowerTreeItem.getState();
 			ArrayList<TreeItem> childs = new ArrayList<TreeItem>();
 			
-			rpcPage.moveChildPage((String)parent.getUserObject(), (String)selectedItem.getUserObject(), 
+			rpcPage.moveChildPage((Long)parent.getUserObject(), (Long)selectedItem.getUserObject(), 
 					parent.getChildIndex(lowerTreeItem), new AsyncCallback<Void>() {
 				public void onSuccess(Void result) {}
 				public void onFailure(Throwable caught) {}
@@ -272,12 +273,12 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Ma
 			}
 			
 			selectedItem.setWidget(display2);
-			selectedItem.setUserObject(key2);
+			selectedItem.setUserObject(id2);
 			selectedItem.setState(expand2);
 			selectedItem.setSelected(false);
 			
 			lowerTreeItem.setWidget(display1);
-			lowerTreeItem.setUserObject(key1);
+			lowerTreeItem.setUserObject(id1);
 			lowerTreeItem.setState(expand1);
 			lowerTreeItem.setSelected(true);
 			
@@ -298,7 +299,7 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Ma
 	
 
 	public void onAddNewChildInTree() {
-		this.rpcPage.getLastChildAdded((String)this.selectedItem.getUserObject(), 
+		this.rpcPage.getLastChildAdded((Long)this.selectedItem.getUserObject(), 
 				new AsyncCallback<BeanArboPage>() {
 			public void onSuccess(BeanArboPage result) {
 				selectedItem.addItem(makeTreeNode(result));
@@ -314,7 +315,7 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Ma
 	 * Take all child node of the expandedNode and add them in the tree
 	 */
 	public void AddChildInTree(){
-		this.rpcPage.getChildPages((String)this.expandedItem.getUserObject(), false,
+		this.rpcPage.getChildPages((Long)this.expandedItem.getUserObject(), false,
 				new AsyncCallback<List<BeanArboPage>>() {
 			public void onSuccess(List<BeanArboPage> result) {
 				expandedItem.removeItems();//remove loading
@@ -336,7 +337,7 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Ma
 		this.rpcPage.getMainArboPage(new AsyncCallback<BeanArboPage>() {
 	    	public void onSuccess(BeanArboPage result) {
 	    		view.clearTree();
-	    		rootKey = result.getEncodedKey();
+	    		rootId = result.getId();
 	    		view.setTree(makeTreeNode(result));
 
 	    	}
@@ -374,7 +375,7 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Ma
 		LoadingItem.setWidget(loadingPanel);
 		LoadingItem.setUserObject(new String("Loading"));
 		
-		node.setUserObject(bean.getEncodedKey());
+		node.setUserObject(bean.getId());
 		node.setWidget(p);
 		node.addItem(LoadingItem);
 		// utile pour pouvoir enlever le loading au chagement de l'arbre

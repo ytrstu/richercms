@@ -5,7 +5,7 @@ import java.io.Serializable;
 @SuppressWarnings("serial")
 public class BeanTranslationPage implements Serializable {
 	
-    private String encodedKey;
+    private Long id;
 	private String browserTitle;
 	private String pageTitle;
 	private String urlName;
@@ -15,7 +15,7 @@ public class BeanTranslationPage implements Serializable {
 	
 	public BeanTranslationPage() {
 		super();
-		this.encodedKey = null;
+		this.id = null;
 		this.browserTitle = "";
 		this.pageTitle = "";
 		this.urlName = "";
@@ -28,7 +28,7 @@ public class BeanTranslationPage implements Serializable {
 			String pageTitle, String urlName, String description,
 			String keyWord, String content) {
 		super();
-		this.encodedKey = null;
+		this.id = null;
 		this.browserTitle = browserTitle;
 		this.pageTitle = pageTitle;
 		this.urlName = urlName;
@@ -37,11 +37,11 @@ public class BeanTranslationPage implements Serializable {
 		this.content = content;
 	}
 	
-	public BeanTranslationPage(String encodedKey, String browserTitle,
+	public BeanTranslationPage(Long id, String browserTitle,
 			String pageTitle, String urlName, String description,
 			String keyWord, String content) {
 		super();
-		this.encodedKey = encodedKey;
+		this.id = id;
 		this.browserTitle = browserTitle;
 		this.pageTitle = pageTitle;
 		this.urlName = urlName;
@@ -50,12 +50,12 @@ public class BeanTranslationPage implements Serializable {
 		this.content = content;
 	}
 
-	public String getEncodedKey() {
-		return this.encodedKey;
+	public Long getId() {
+		return this.id;
 	}
 
-	public void setEncodedKey(String encodedKey) {
-		this.encodedKey = encodedKey;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getBrowserTitle() {

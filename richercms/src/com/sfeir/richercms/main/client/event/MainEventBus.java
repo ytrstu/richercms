@@ -60,7 +60,7 @@ public interface MainEventBus extends EventBus {
 	 * fired by the NavigationPresenter when the addPage menu is clicked
 	 */
 	@Event( handlers = {MainPagePresenter.class, InformationPanelPresenter.class, ValidationPanelPresenter.class, TinyMCEPanelPresenter.class} )
-	public void addPage(String key);
+	public void addPage(Long id);
 	
 	
 	@Event( handlers = {MainPagePresenter.class, InformationPanelPresenter.class, ValidationPanelPresenter.class, TinyMCEPanelPresenter.class} )
@@ -70,7 +70,7 @@ public interface MainEventBus extends EventBus {
 	 * fired by the NavigationPresenter when the addPage menu is clicked
 	 */
 	@Event( handlers = {MainPagePresenter.class, InformationPanelPresenter.class, ValidationPanelPresenter.class, TinyMCEPanelPresenter.class} )
-	public void modifyPage(String key);
+	public void modifyPage(Long id);
 	
 	/**
 	 * fired by the ValidationPresenter when the saveButton is clicked
@@ -83,7 +83,7 @@ public interface MainEventBus extends EventBus {
 	 * @param Key
 	 */
 	@Event( handlers = {InformationPanelPresenter.class, ValidationPanelPresenter.class} )
-	public void displayPage(String Key);
+	public void displayPage(Long id);
 	
 	/**
 	 * Fired by the NavigationPresenter, for displaying the root Page
@@ -203,7 +203,7 @@ public interface MainEventBus extends EventBus {
 	 * @param TranslationKey
 	 */
 	@Event( handlers =  MainPagePresenter.class )
-	public void setTranslationKeyInLanguage(String TranslationKey);
+	public void setTranslationKeyInLanguage(Long TranslationId);
 	
 	/**
 	 * Fired by the MainPresenter when a new language is selected in the listBox.
@@ -224,7 +224,7 @@ public interface MainEventBus extends EventBus {
 	 * and allows the MainPagePresenter to show the ReorderPanel
 	 */
 	@Event( handlers =  ReorderPagePanelPresenter.class )
-	public void startReorderPanel(String parentKey);
+	public void startReorderPanel(Long parentId);
 	
 	/**
 	 * Show the popUp who request the user 

@@ -1,30 +1,26 @@
 package com.sfeir.richercms.main.server.business;
 
-import javax.jdo.annotations.Extension;
-import javax.jdo.annotations.IdGeneratorStrategy;
-import javax.jdo.annotations.PersistenceCapable;
-import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.PrimaryKey;
-import com.google.appengine.api.datastore.Text;
+import javax.persistence.Id;
 
-@PersistenceCapable
+import com.google.appengine.api.datastore.Text;
+import com.googlecode.objectify.annotation.Entity;
+
+@Entity(name="TranslationPage")
 public class TranslationPage {
 	
-    @PrimaryKey
-    @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-    @Extension(vendorName="datanucleus", key="gae.encoded-pk", value="true")
-    private String encodedKey;
-	@Persistent
+	@Id
+    private Long id;
+
 	private String browserTitle;
-	@Persistent
+
 	private String pageTitle;
-	@Persistent
+
 	private String urlName;
-	@Persistent
+
 	private String description;
-	@Persistent
+
 	private String keyWord;
-	@Persistent
+
 	private Text content;
 	
 	
@@ -48,9 +44,9 @@ public class TranslationPage {
 		this.content = new Text(content);
 	}
 	
-	public TranslationPage(String key, String browserTitle, String pageTitle, String urlName,
+	public TranslationPage(Long id, String browserTitle, String pageTitle, String urlName,
 			String description, String keyWord, String content) {
-		this.encodedKey = key;
+		this.id = id;
 		this.browserTitle = browserTitle;
 		this.pageTitle = pageTitle;
 		this.urlName = urlName;
@@ -59,12 +55,12 @@ public class TranslationPage {
 		this.content = new Text(content);
 	}
 
-	public String getEncodedKey() {
-		return this.encodedKey;
+	public Long getId() {
+		return this.id;
 	}
 
-	public void setEncodedKey(String encodedKey) {
-		this.encodedKey = encodedKey;
+	public void setEncodedKey(Long id) {
+		this.id = id;
 	}
 
 	public String getBrowserTitle() {

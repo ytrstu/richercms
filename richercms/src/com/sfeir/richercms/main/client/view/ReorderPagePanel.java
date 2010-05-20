@@ -171,7 +171,7 @@ public class ReorderPagePanel extends ResizeComposite implements IReorderPagePan
 		for(int i = this.pageLst.getRowCount()-1; i>0 ; i--){
 			pos = new Integer(this.pageLst.getText(i, 1));
 			//pas le bon chiffre à la bonne position
-			while(i != pos.intValue()) {
+			while(i != pos.intValue()-1) {
 				FlexTableUtil.moveRow(this.pageLst, this.pageLst, i, pos.intValue()-1);
 				pos = new Integer(this.pageLst.getText(i, 1));
 			}

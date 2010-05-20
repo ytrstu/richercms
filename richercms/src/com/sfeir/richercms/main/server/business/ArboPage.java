@@ -4,68 +4,56 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.jdo.annotations.Element;
-import javax.jdo.annotations.Extension;
-import javax.jdo.annotations.IdGeneratorStrategy;
-import javax.jdo.annotations.PersistenceCapable;
-import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.PrimaryKey;
-import javax.jdo.annotations.IdentityType;
+import javax.persistence.Id;
+import com.googlecode.objectify.Key;
+import com.googlecode.objectify.annotation.Entity;
 
-@PersistenceCapable(identityType = IdentityType.APPLICATION)
+@Entity(name="ArboPage")
 public class ArboPage {
 	
-    @PrimaryKey
-    @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-    @Extension(vendorName="datanucleus", key="gae.encoded-pk", value="true")
-    private String encodedKey;
-    
-	@Persistent
-	@Element(dependent = "true")
-	private List<TranslationPage> translation;
+    @Id
+    private Long id;
+  
+	private List<Key<TranslationPage>> translation;
 	
-	@Persistent
-	private List<String> idChildArboPage;
+	private List<Long> idChildArboPage;
 	
-	@Persistent
 	private Date publicationStart;
 	
-	@Persistent
 	private Date publicationFinish;
 	
-	@Persistent
 	private Date creationDate;
 	
 	//TODO List<Long> idTag;
 	
 	public ArboPage() {
 		super();
-		this.translation = new ArrayList<TranslationPage>();
-		this.idChildArboPage = new ArrayList<String>();
+		this.translation = new ArrayList<Key<TranslationPage>>();
+		this.idChildArboPage = new ArrayList<Long>();
 		this.publicationStart = new Date();
 		this.publicationFinish = new Date();
 		this.creationDate = new Date();
 	}
 	
-	public ArboPage(List<TranslationPage> translation) {
+	public ArboPage(List<Key<TranslationPage>> translation) {
 		super();
-		this.idChildArboPage = new ArrayList<String>();
+		this.idChildArboPage = new ArrayList<Long>();
 		this.translation = translation;
 		this.publicationStart = new Date();
 		this.publicationFinish = new Date();
 		this.creationDate = new Date();
 	}
 	
-	public ArboPage(List<TranslationPage> translation, Date publicationStart, Date publicationFinish) {
+	public ArboPage(List<Key<TranslationPage>> translation, Date publicationStart, Date publicationFinish) {
 		super();
-		this.idChildArboPage = new ArrayList<String>();
+		this.idChildArboPage = new ArrayList<Long>();
 		this.translation = translation;
 		this.publicationStart = publicationStart;
 		this.publicationFinish = publicationFinish;
 		this.creationDate = new Date();
 	}
 	
-	public ArboPage(List<TranslationPage> translation, List<String> idChildArboPage) {
+	public ArboPage(List<Key<TranslationPage>> translation, List<Long> idChildArboPage) {
 		super();
 		this.idChildArboPage = idChildArboPage;
 		this.translation = translation;
@@ -74,7 +62,7 @@ public class ArboPage {
 		this.creationDate = new Date();
 	}
 	
-	public ArboPage(List<TranslationPage> translation, List<String> idChildArboPage,
+	public ArboPage(List<Key<TranslationPage>> translation, List<Long> idChildArboPage,
 			Date publicationStart, Date publicationFinish) {
 		super();
 		this.idChildArboPage = idChildArboPage;
@@ -84,27 +72,27 @@ public class ArboPage {
 		this.creationDate = new Date();
 	}
 
-	public String getEncodedKey() {
-		return this.encodedKey;
+	public Long getId() {
+		return this.id;
 	}
 
-	public void setEncodedKey(String encodedKey) {
-		this.encodedKey = encodedKey;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
-	public List<TranslationPage> getTranslation() {
+	public List<Key<TranslationPage>> getTranslation() {
 		return this.translation;
 	}
 
-	public void setTranslation(List<TranslationPage> translation) {
+	public void setTranslation(List<Key<TranslationPage>> translation) {
 		this.translation = translation;
 	}
 
-	public List<String> getIdChildArboPage() {
+	public List<Long> getIdChildArboPage() {
 		return this.idChildArboPage;
 	}
 
-	public void setIdChildArboPage(List<String> idChildArboPage) {
+	public void setIdChildArboPage(List<Long> idChildArboPage) {
 		this.idChildArboPage = idChildArboPage;
 	}
 

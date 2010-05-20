@@ -42,7 +42,7 @@ public class ValidationPanelPresenter extends LazyPresenter<IValidationPanel, Ma
 
 	/////////////////////////////////////////////// EVENT ///////////////////////////////////////////////
 	
-	public void onAddPage(String key) {
+	public void onAddPage(Long id) {
 		this.view.setBtnAddText(this.constants.BtnAdd());
 		view.enabledButtons();
 	}
@@ -51,7 +51,7 @@ public class ValidationPanelPresenter extends LazyPresenter<IValidationPanel, Ma
 		view.deasableButtons();
 	}
 	
-	public void onModifyPage(String key) {
+	public void onModifyPage(Long id) {
 		this.view.setBtnAddText(this.constants.BtnModify());
 		view.enabledButtons();
 	}
@@ -60,7 +60,7 @@ public class ValidationPanelPresenter extends LazyPresenter<IValidationPanel, Ma
 		view.deasableButtons();
 	}
 	
-	public void onDisplayPage(String key) {
+	public void onDisplayPage(Long id) {
 		view.deasableButtons();
 	}
 	

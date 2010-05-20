@@ -3,20 +3,17 @@ package com.sfeir.richercms.main.server;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.jdo.PersistenceManager;
-import javax.jdo.PersistenceManagerFactory;
-import javax.jdo.Query;
-
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyService;
+import com.googlecode.objectify.Query;
 import com.sfeir.richercms.main.client.ArboPageService;
 import com.sfeir.richercms.main.server.business.ArboPage;
 import com.sfeir.richercms.main.server.business.RootArbo;
 import com.sfeir.richercms.main.server.business.TranslationPage;
 import com.sfeir.richercms.main.shared.BeanArboPage;
 import com.sfeir.richercms.main.shared.BeanTranslationPage;
-import com.sfeir.richercms.server.PMF;
 import com.sfeir.richercms.wizard.server.business.Language;
 
 @SuppressWarnings("serial")
@@ -24,233 +21,207 @@ public class ServiceArboPageImpl  extends RemoteServiceServlet implements ArboPa
 
 	static {
         ObjectifyService.register(Language.class);
+        ObjectifyService.register(RootArbo.class);
+        ObjectifyService.register(ArboPage.class);
+        ObjectifyService.register(TranslationPage.class);
     }
-	private static final PersistenceManagerFactory Pmf = PMF.get();
-	private String keyRoot = null;
-	private int nbTranslation = 1;
 	
-	private PersistenceManager getPersistenceManager() {
-		return Pmf.getPersistenceManager();
-	}
+	private Long keyRoot = null;
+	private int nbTranslation = 1;
 	
 	public ServiceArboPageImpl(){super();}
 	
-	public void addArboPage(BeanArboPage newArboPage, String parentKey) {
+	public void addArboPage(BeanArboPage newArboPage, Long parentId) {
 		
-		PersistenceManager pm = getPersistenceManager();
-		
-		try {
-			ArboPage nAP = this.BeanToArboPage(newArboPage);
-			pm.makePersistent(nAP);
+		Objectify ofy = ObjectifyService.begin();
+		ArboPage nAP = this.BeanToArboPage(newArboPage);
+		ofy.put(nAP);
 			
-			ArboPage parentPage = pm.getObjectById(ArboPage.class, parentKey);
-			parentPage.getIdChildArboPage().add(nAP.getEncodedKey());
-			pm.makePersistent(parentPage);
-	
-		}
-		finally {
-			pm.close();
-		}	
+		ArboPage parentPage = ofy.get(ArboPage.class, parentId);
+		parentPage.getIdChildArboPage().add(nAP.getId());
+		ofy.put(parentPage);	
 	}
 
-	public void deleteArboPage(String key, String parentKey) {
+	public void deleteArboPage(Long id, Long parentId) {
 		
-		PersistenceManager pm = getPersistenceManager();
-		 try {
-    			ArboPage parentPage = pm.getObjectById(ArboPage.class, parentKey);
-    			//remove this node in this parent
-    			parentPage.getIdChildArboPage().remove(key);
-    			pm.makePersistent(parentPage);
+		Objectify ofy = ObjectifyService.begin();
+
+    	ArboPage parentPage = ofy.get(ArboPage.class, parentId);
+    	//remove this node in this parent
+    	parentPage.getIdChildArboPage().remove(id);
+    	ofy.put(parentPage);
     
-    			ArboPage arboPage = pm.getObjectById(ArboPage.class, key);
-    			//delete all child
-    			for(String childKey : arboPage.getIdChildArboPage()) {
-    				 deleteArboPage(childKey, arboPage.getEncodedKey());
-    			}
-    			// delete the current page
-				pm.deletePersistent(arboPage);
-
-			 }
-		 finally{
-			 pm.close();
-		 }
+    	ArboPage arboPage = ofy.get(ArboPage.class, id);
+    	//delete all child
+    	for(Long childKey : arboPage.getIdChildArboPage()) {
+    		deleteArboPage(childKey, arboPage.getId());
+    	}
+		// delete all translation
+    	ofy.delete(arboPage.getTranslation());
+    	// delete the current page
+		ofy.delete(arboPage);
 	}
 
-	public BeanArboPage getArboPage(String key) {
-		PersistenceManager pm = getPersistenceManager();
-    	BeanArboPage bean;
-    	
-		 try {
-		    	ArboPage page = pm.getObjectById(ArboPage.class, key);
-	    		bean = this.arboPageToBean(page);
+	public BeanArboPage getArboPage(Long id) {
+		Objectify ofy = ObjectifyService.begin();
+    	BeanArboPage bean = null;
 
-		 }finally {
-			pm.close();
-		 }
-
-		 if(bean != null)
-			 return bean;
-		 else
-			 return null;
+		ArboPage page = ofy.get(ArboPage.class, id);
+	    bean = this.arboPageToBean(page);
+	    
+	    return bean;
 	}
 
 	
-	public List<BeanArboPage> getChildPages(String ParentKey, boolean isMain) {
+	public List<BeanArboPage> getChildPages(Long ParentId, boolean isMain) {
 		
-		List<String> childKeys;
-    	ArrayList<BeanArboPage> lst = new ArrayList<BeanArboPage>();
-		PersistenceManager pm = getPersistenceManager();
-		 try {
-				childKeys = pm.getObjectById(ArboPage.class, ParentKey).getIdChildArboPage();
-
-			 	ArboPage childArboPage;
-				for (String key : childKeys){
-					childArboPage = pm.getObjectById(ArboPage.class, key);
-					if(childArboPage != null)
-						lst.add(this.arboPageToBean(childArboPage));
-				}
-			 
-		 }finally {
-			 pm.close();
-		 }
-		 return lst;
+		Objectify ofy = ObjectifyService.begin();
+		List<Long> childIds;
+		ArrayList<BeanArboPage> lst = new ArrayList<BeanArboPage>();
+		
+		childIds = ofy.get(ArboPage.class, ParentId).getIdChildArboPage();
+		
+		ArboPage childArboPage;
+		for (Long id : childIds){
+			childArboPage = ofy.get(ArboPage.class, id);
+			if(childArboPage != null)
+				lst.add(this.arboPageToBean(childArboPage));
+		}
+		return lst;
 	}
 
-	@SuppressWarnings("unchecked")
 	public BeanArboPage getMainArboPage() {
-		PersistenceManager pm = getPersistenceManager();
+		Objectify ofy = ObjectifyService.begin();
     	BeanArboPage bean = null;
-    	try {
-	        Query q = pm.newQuery(RootArbo.class);
-	        List<RootArbo> roots = (List<RootArbo>) q.execute(); 
-	        if(roots.size() == 0){
-	        	countLanguage();
-	        	RootArbo root = new RootArbo();
-	        	ArboPage rootPage = new ArboPage();
-	        	TranslationPage tp = new TranslationPage(); tp.setUrlName("main");
-	        	rootPage.getTranslation().add(tp);
-	        	
-	        	//add empty Translation into the page
-	        	for(int i = 1 ; i<this.nbTranslation ; i++) {
-		        	TranslationPage emptyTP = new TranslationPage();
-		        	rootPage.getTranslation().add(emptyTP);
-	        	}
-	   
-	        	pm.makePersistent(rootPage);
-	        	root.setKeyOfRootArboPage(rootPage.getEncodedKey());
-	        	pm.makePersistent(root);
-	       
-	        	this.keyRoot = rootPage.getEncodedKey();
-	        	bean = this.arboPageToBean(rootPage);
-	        }else {
-	        	this.keyRoot = roots.get(0).getKeyOfRootArboPage();
-	        	bean = this.arboPageToBean(pm.getObjectById(ArboPage.class, this.keyRoot));
-	        }
-        } finally {
-        	pm.close();
+
+    	Query<RootArbo> roots = ofy.query(RootArbo.class);
+    	
+        if(roots.countAll() == 0){
+        	countLanguage();
+        	RootArbo root = new RootArbo();
+        	ArboPage rootPage = new ArboPage();
+        	TranslationPage tp = new TranslationPage(); tp.setUrlName("main");
+        	ofy.put(tp);
+        	Key<TranslationPage> kTp = new Key<TranslationPage>(TranslationPage.class,tp.getId());
+        	rootPage.getTranslation().add(kTp);
+        	
+        	//add empty Translation into the page
+        	for(int i = 1 ; i<this.nbTranslation ; i++) {
+	        	TranslationPage emptyTP = new TranslationPage();
+	        	ofy.put(emptyTP);
+	        	Key<TranslationPage> kEmptyTP = new Key<TranslationPage>(TranslationPage.class,emptyTP.getId());
+	        	rootPage.getTranslation().add(kEmptyTP);
+        	}
+  
+        	ofy.put(rootPage);
+        	root.setIdOfRootArboPage(rootPage.getId());
+        	ofy.put(root);
+       
+        	this.keyRoot = rootPage.getId();
+        	bean = this.arboPageToBean(rootPage);
+        }else {
+        	this.keyRoot = roots.get().getIdOfRootArboPage();
+        	bean = this.arboPageToBean(ofy.get(ArboPage.class, this.keyRoot));
         }
+	        
 		return bean;
 	}
 	
 	public void updateArboPage(BeanArboPage bean) {
+		Objectify ofy = ObjectifyService.begin();
+		ArboPage parentPage = ofy.get(ArboPage.class, bean.getId());
+		parentPage.getTranslation().clear();
 		
-		PersistenceManager pm = getPersistenceManager();
-		 try {
-				ArboPage parentPage = pm.getObjectById(ArboPage.class, bean.getEncodedKey());
-				pm.deletePersistentAll(parentPage.getTranslation());
-				parentPage.getTranslation().clear();
-				for(BeanTranslationPage trans : bean.getTranslation()) {
-					TranslationPage tP = this.BeanToTranslationPage(trans);
-					parentPage.getTranslation().add(tP);
-				}
-				pm.makePersistent(parentPage);
-
-			 }
-		 finally{
-			pm.close();
-		 }
+		for(BeanTranslationPage trans : bean.getTranslation()) {
+				TranslationPage tP = this.BeanToTranslationPage(trans);
+				ofy.put(tP);
+				Key<TranslationPage> kTp = new Key<TranslationPage>(TranslationPage.class, tP.getId());
+				parentPage.getTranslation().add(kTp);
+		}
+		ofy.put(parentPage);
 	}
 	
-	public BeanArboPage getLastChildAdded(String parentKey){
-		PersistenceManager pm = getPersistenceManager();
+	public BeanArboPage getLastChildAdded(Long parentId){
+		Objectify ofy = ObjectifyService.begin();
 		BeanArboPage bean = null;
-		try {
-			 ArboPage parentPage = pm.getObjectById(ArboPage.class, parentKey);
+		ArboPage parentPage = ofy.get(ArboPage.class, parentId);
 			 
-			 if(parentPage.getIdChildArboPage().size() != 0) {
-				 ArboPage LastPageAdded = pm.getObjectById(ArboPage.class, 
-					 parentPage.getIdChildArboPage().get(parentPage.getIdChildArboPage().size() -1));
-
-			 	bean = this.arboPageToBean(LastPageAdded);
-			 }
-		 }finally{
-			pm.close();
-		 }
+		if(parentPage.getIdChildArboPage().size() != 0) {
+			ArboPage LastPageAdded = ofy.get(ArboPage.class, 
+					parentPage.getIdChildArboPage().get(parentPage.getIdChildArboPage().size() -1));
+			bean = this.arboPageToBean(LastPageAdded);
+		}
 		return bean;
 	}
 	
-	public void moveChildPage(String parentKey,String childKey,int index) {
-		PersistenceManager pm = getPersistenceManager();
-		try {
-			 	ArboPage parentPage = pm.getObjectById(ArboPage.class, parentKey);
+	public void moveChildPage(Long parentId, Long childId, int index) {
+		Objectify ofy = ObjectifyService.begin();
+		ArboPage parentPage = ofy.get(ArboPage.class, parentId);
 			 	
-			 	if(parentPage!=null && parentPage.getIdChildArboPage().contains(childKey)){
-				 	parentPage.getIdChildArboPage().remove(childKey);
-				 	parentPage.getIdChildArboPage().add(index, childKey);
-			 	}
-
-		 }finally{
-			pm.close();
-		 }
+		if(parentPage!=null && parentPage.getIdChildArboPage().contains(childId)){
+			parentPage.getIdChildArboPage().remove(childId);
+			parentPage.getIdChildArboPage().add(index, childId);
+			ofy.put(parentPage);
+		}
 	}
 	
-	public void updateChildOrder(String key, List<Integer> newPositionOrder){
-		PersistenceManager pm = getPersistenceManager();
-		try {
-			 	ArboPage page = pm.getObjectById(ArboPage.class, key);
+	public void updateChildOrder(Long id, List<Integer> newPositionOrder){
+		Objectify ofy = ObjectifyService.begin();
+		ArboPage page = ofy.get(ArboPage.class, id);
 			 	
-			 	if(page!=null) {
-			 		ArrayList<String> newOrder = new ArrayList<String>();
-			 		for(Integer i : newPositionOrder) {
-			 			// 1 to x  DataStore : 0 to x-1
-			 			newOrder.add(page.getIdChildArboPage().get(i.intValue()-1));
-			 		}
-			 		page.setIdChildArboPage(newOrder);
-			 	}
-		 }finally{
-				pm.close();
-			 }
+		if(page!=null) {
+			ArrayList<Long> newOrder = new ArrayList<Long>();
+			for(Integer i : newPositionOrder) {
+				// 1 to x  DataStore : 0 to x-1
+			 	newOrder.add(page.getIdChildArboPage().get(i.intValue()-1));
+			}
+			page.setIdChildArboPage(newOrder);
+			ofy.put(page);
+		}
 	}
 	
 	public BeanArboPage arboPageToBean(ArboPage ap){
-		BeanArboPage bap = new BeanArboPage(ap.getEncodedKey(),ap.getPublicationStart(), 
+		Objectify ofy = ObjectifyService.begin();
+		BeanArboPage bap = new BeanArboPage(ap.getId(),ap.getPublicationStart(), 
 				ap.getPublicationFinish(), ap.getCreationDate());
 		ArrayList<BeanTranslationPage> lst = new ArrayList<BeanTranslationPage>();
-		for(TranslationPage tp : ap.getTranslation()){
-			lst.add(translationPageToBean(tp));}
+		for(Key<TranslationPage> kTp : ap.getTranslation()){
+			TranslationPage tp = ofy.get(kTp);
+			lst.add(translationPageToBean(tp));
+		}
 		bap.setTranslation(lst);
 		return bap;
 	}
 	
 	public BeanTranslationPage translationPageToBean(TranslationPage tp) {
-		return new BeanTranslationPage(tp.getEncodedKey(), tp.getBrowserTitle(),tp.getPageTitle(), tp.getUrlName(),
+		return new BeanTranslationPage(tp.getId(), tp.getBrowserTitle(),tp.getPageTitle(), tp.getUrlName(),
 				 tp.getDescription(), tp.getKeyWord(), tp.getContent().getValue());
 	}
 	
+
 	public ArboPage BeanToArboPage(BeanArboPage bAP){
+		Objectify ofy = ObjectifyService.begin();
 		ArboPage ap = new ArboPage();
 		ap.setPublicationStart(bAP.getPublicationStart());
 		ap.setPublicationFinish(bAP.getPublicationFinish());
-		ArrayList<TranslationPage> lst = new ArrayList<TranslationPage>();
+		ArrayList<Key<TranslationPage>> lst = new ArrayList<Key<TranslationPage>>();
+		
 		for(BeanTranslationPage bTp : bAP.getTranslation()){
 			TranslationPage TP = BeanToTranslationPage(bTp);
-			lst.add(TP);}
+			
+			if(TP.getId()== null) {
+				ofy.put(TP);
+			}	
+			
+			Key<TranslationPage> kTp = new Key<TranslationPage>(TranslationPage.class, TP.getId());
+			lst.add(kTp);
+		}
 		ap.setTranslation(lst);
 		return ap;
 	}
 	
 	public TranslationPage BeanToTranslationPage(BeanTranslationPage bTp){
-		return new TranslationPage(bTp.getBrowserTitle(),bTp.getPageTitle(), bTp.getUrlName(),
+		return new TranslationPage(bTp.getId(), bTp.getBrowserTitle(),bTp.getPageTitle(), bTp.getUrlName(),
 				bTp.getDescription(), bTp.getKeyWord(), bTp.getContent());
 	}
 	

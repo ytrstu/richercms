@@ -8,7 +8,7 @@ import java.util.List;
 @SuppressWarnings("serial")
 public class BeanArboPage implements Serializable{
 	
-    private String encodedKey;
+    private Long id;
 	List<BeanTranslationPage> translation;
 	private Date publicationStart;
 	private Date publicationFinish;
@@ -16,25 +16,25 @@ public class BeanArboPage implements Serializable{
 	
 	public BeanArboPage() {
 		super();
-		this.encodedKey = null;
+		this.id = null;
 		this.translation = new ArrayList<BeanTranslationPage>();
 		this.publicationFinish = new Date();
 		this.publicationStart = new Date();
 		this.creationDate = new Date();
 	}
 	
-	public BeanArboPage(String encodedKey) {
+	public BeanArboPage(Long id) {
 		super();
-		this.encodedKey = encodedKey;
+		this.id = id;
 		this.translation = new ArrayList<BeanTranslationPage>();
 		this.publicationFinish = new Date();
 		this.publicationStart = new Date();
 		this.creationDate = new Date();
 	}
 	
-	public BeanArboPage(String encodedKey, Date publicationStart, Date publicationFinish, Date creationDate) {
+	public BeanArboPage(Long id, Date publicationStart, Date publicationFinish, Date creationDate) {
 		super();
-		this.encodedKey = encodedKey;
+		this.id = id;
 		this.translation = new ArrayList<BeanTranslationPage>();
 		this.publicationFinish = publicationFinish;
 		this.publicationStart = publicationStart;
@@ -43,38 +43,38 @@ public class BeanArboPage implements Serializable{
 	
 	public BeanArboPage(List<BeanTranslationPage> translation) {
 		super();
-		this.encodedKey = null;
+		this.id = null;
 		this.translation = translation;
 		this.publicationFinish = new Date();
 		this.publicationStart = new Date();
 		this.creationDate = new Date();
 	}
 	
-	public BeanArboPage(String encodedKey, List<BeanTranslationPage> translation) {
+	public BeanArboPage(Long id, List<BeanTranslationPage> translation) {
 		super();
-		this.encodedKey = encodedKey;
+		this.id = id;
 		this.translation = translation;
 		this.publicationFinish = new Date();
 		this.publicationStart = new Date();
 		this.creationDate = new Date();
 	}
 	
-	public BeanArboPage(String encodedKey, List<BeanTranslationPage> translation,
+	public BeanArboPage(Long id, List<BeanTranslationPage> translation,
 			Date publicationStart, Date publicationFinish) {
 		super();
-		this.encodedKey = encodedKey;
+		this.id = id;
 		this.translation = translation;
 		this.publicationFinish = publicationFinish;
 		this.publicationStart = publicationStart;
 		this.creationDate = new Date();
 	}
 	
-	public String getEncodedKey() {
-		return encodedKey;
+	public Long getId() {
+		return id;
 	}
 	
-	public void setEncodedKey(String encodedKey) {
-		this.encodedKey = encodedKey;
+	public void setId(Long id) {
+		this.id = id;
 	}
 	
 	public List<BeanTranslationPage> getTranslation() {

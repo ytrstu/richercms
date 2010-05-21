@@ -1,6 +1,7 @@
 package com.sfeir.richercms.wizard.client.Interface;
 
 import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.event.dom.client.HasKeyPressHandlers;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.view.LazyView;
 import com.sfeir.richercms.wizard.client.wizardConfigConstants;
@@ -36,6 +37,12 @@ public interface IdisplayPage2 extends LazyView {
 	 * @return The handler of the button Ok on the PopUp
 	 */
 	HasClickHandlers getPopUpBtnOk();
+	
+	/**
+	 * get the Keyboard handler of the button Ok on the PopUp
+	 * @return The Keyboard handler of the button Ok on the PopUp
+	 */
+	HasKeyPressHandlers kBPopUpBtnOk();
 	
 	/**
 	 * get the handler of the button Cancel on the PopUp

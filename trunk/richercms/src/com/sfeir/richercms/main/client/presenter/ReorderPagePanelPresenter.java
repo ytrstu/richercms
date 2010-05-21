@@ -81,7 +81,7 @@ public class ReorderPagePanelPresenter extends LazyPresenter<IReorderPagePanel, 
 				new AsyncCallback<List<BeanArboPage>>() {
 			public void onSuccess(List<BeanArboPage> result) {
 				for(BeanArboPage subPage : result) {
-					Widget w = view.addNewPage(subPage.getTranslation().get(0).getUrlName(), subPage.getCreationDate());
+					Widget w = view.addNewPage(subPage.getTranslation().get(0).getPageTitle(), subPage.getCreationDate());
 					listDragController.makeDraggable(w);
 				}
 				// if no child = do not display the reorderPanel

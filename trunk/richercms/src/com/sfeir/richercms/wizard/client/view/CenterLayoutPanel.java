@@ -111,5 +111,4 @@ public class CenterLayoutPanel extends ResizeComposite {
 		mainPanel.setWidgetTopHeight(borderLayout, top, Style.Unit.PX, height, Style.Unit.PX);
 		
 	}
-	
 }

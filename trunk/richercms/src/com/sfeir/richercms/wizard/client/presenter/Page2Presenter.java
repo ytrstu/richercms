@@ -6,6 +6,9 @@ import java.util.List;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyPressEvent;
+import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.mvp4g.client.annotation.InjectService;
 import com.mvp4g.client.annotation.Presenter;
@@ -74,6 +77,14 @@ public class Page2Presenter extends LazyPresenter<IdisplayPage2, WizardConfigEve
 	        	  view.hidePopUpAddLanguage();// cache le popUp uniquement si une langue a bien �t� ajout�
 	        }
 	      });
+	    
+	    view.kBPopUpBtnOk().addKeyPressHandler(new KeyPressHandler(){
+			public void onKeyPress(KeyPressEvent event) {
+				if(event.getNativeEvent().getKeyCode() == KeyCodes.KEY_ENTER)
+			          if(ajouteLangue())//ajoute la langue si possible
+			        	  view.hidePopUpAddLanguage();// cache le popUp uniquement si une langue a bien �t� ajout�
+			}
+	    	});
 	    
 		// Annulation du PopUp
 	    view.getPopUpBtnCancel().addClickHandler(new ClickHandler() {   

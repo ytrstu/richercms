@@ -139,7 +139,7 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 		this.view.clearFields();
 		
 		//set the title of the panel
-		this.view.setTitle(page.getTranslation().get(0).getUrlName());
+		this.view.setTitle(page.getTranslation().get(0).getPageTitle());
 		
 		if(!isEmpty(page.getTranslation().get(this.translationIndex))) {
 			view.setBrowserTitle(page.getTranslation().get(this.translationIndex).getBrowserTitle());

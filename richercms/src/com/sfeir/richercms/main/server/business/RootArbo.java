@@ -4,8 +4,10 @@ package com.sfeir.richercms.main.server.business;
 import javax.persistence.Id;
 
 import com.googlecode.objectify.annotation.Entity;
+import com.googlecode.objectify.annotation.Unindexed;
 
 @Entity(name="RootArbo")
+@Unindexed
 public class RootArbo {
 	
 	@Id

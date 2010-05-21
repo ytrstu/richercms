@@ -40,6 +40,8 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Ma
 	private TreeItem expandedItem = null; // current expanded Item in tree
 	private ArboPageServiceAsync rpcPage = null;
 	private Long rootId = null;
+	//permet de savoir l'ors de l'ajout des fils dans l'arbre s'il faut sélectionner le dernier fils ou non
+	private boolean selectLastChild = false; 
 	
 	public NavigationPanelPresenter() {
 		super();
@@ -53,9 +55,12 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Ma
 		view.getSelectedEvtTree()
 		.addSelectionHandler(new SelectionHandler<TreeItem>(){
 			public void onSelection(SelectionEvent<TreeItem> event) {
-				setSelectedItem(event.getSelectedItem()); // fait des actions spécifique
 				eventBus.displayNormalPanel();
-				eventBus.displayPage((Long) selectedItem.getUserObject());
+				//évite de recharger les donnée pour rien
+				if(!event.getSelectedItem().equals(selectedItem)){
+					setSelectedItem(event.getSelectedItem()); // fait des actions spécifique
+					eventBus.displayPage((Long) selectedItem.getUserObject());
+				}
 			}
 		});
 		
@@ -299,20 +304,31 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Ma
 	
 
 	public void onAddNewChildInTree() {
-		this.rpcPage.getLastChildAdded((Long)this.selectedItem.getUserObject(), 
-				new AsyncCallback<BeanArboPage>() {
-			public void onSuccess(BeanArboPage result) {
-				selectedItem.addItem(makeTreeNode(result));
-				eventBus.displayNewPageInTree();}
-			public void onFailure(Throwable caught){
-				eventBus.displayNewPageInTree();//even the page are not correctly added, the "add page event" is finished
-				PopUpMessage p = new PopUpMessage(view.getConstants().EAddNewChild());
-				p.show();}
-		});
+		if(this.selectedItem.getState()) {
+			this.rpcPage.getLastChildAdded((Long)this.selectedItem.getUserObject(), 
+					new AsyncCallback<BeanArboPage>() {
+				public void onSuccess(BeanArboPage result) {
+					selectedItem.addItem(makeTreeNode(result));
+					eventBus.displayNewPageInTree();}
+				public void onFailure(Throwable caught){
+					eventBus.displayNewPageInTree();//even the page are not correctly added, the "add page event" is finished
+					PopUpMessage p = new PopUpMessage(view.getConstants().EAddNewChild());
+					p.show();}
+			});
+		}else{
+			 //selection du dernier fils après l'ajout dans l'arbre
+			this.selectLastChild = true;
+			// on étant le noeud père + send event
+			this.selectedItem.setState(true, true);
+			//permet de hide la State PopUp
+			eventBus.displayNewPageInTree();
+
+		}
 	}
 
 	/**
 	 * Take all child node of the expandedNode and add them in the tree
+	 * @param SelectLastChild : true => select the last child; false either.
 	 */
 	public void AddChildInTree(){
 		this.rpcPage.getChildPages((Long)this.expandedItem.getUserObject(), false,
@@ -321,6 +337,12 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Ma
 				expandedItem.removeItems();//remove loading
 				for(BeanArboPage subPage : result) {
 					expandedItem.addItem(makeTreeNode(subPage));
+				}
+				if(selectLastChild){
+					selectLastChild = false; //dans tout les cas on remet a false
+					selectedItem.setSelected(false); //dé-selectionne le noeud courant
+					selectedItem = expandedItem.getChild(expandedItem.getChildCount()-1);
+					selectedItem.setSelected(true); //selectionne le dernier fils
 				}
 			}
 			public void onFailure(Throwable caught){
@@ -360,7 +382,7 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Ma
 		HorizontalEventPanel p = new HorizontalEventPanel();
 		p.setSpacing(0);
 		p.add(img);
-		Label treeLabel = new Label(bean.getTranslation().get(0).getUrlName());
+		Label treeLabel = new Label(bean.getTranslation().get(0).getPageTitle());
 		treeLabel.setStyleName("treeLabel");
 		p.add(treeLabel);
 		p.add(b);
@@ -418,7 +440,7 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Ma
 	}
 	
 	public void onReloadCurrentPageInTree(BeanArboPage modifOnPage) {
-		view.setTextOfSelectedTI(modifOnPage.getTranslation().get(0).getUrlName());
+		view.setTextOfSelectedTI(modifOnPage.getTranslation().get(0).getPageTitle());
 		view.setImageOfSelectedTI(this.chooseTheGoodImage(modifOnPage));
 	}
 		

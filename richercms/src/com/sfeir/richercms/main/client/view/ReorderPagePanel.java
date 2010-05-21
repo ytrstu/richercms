@@ -88,7 +88,7 @@ public class ReorderPagePanel extends ResizeComposite implements IReorderPagePan
 	private void addTableTitle() {
 		this.tableTitle.addStyleName(CSS_PAGE_TABLE);
 		this.tableTitle.setCellSpacing(this.tabCellSpacing);
-		this.tableTitle.setWidget(0, 0, new HTML("<nobr>"+this.constants.UrlName()+"</nobr>"));
+		this.tableTitle.setWidget(0, 0, new HTML("<nobr>"+this.constants.PageTitle()+"</nobr>"));
 		this.tableTitle.setWidget(0, 1, new HTML("<nobr>"+this.constants.InitPosition()+"</nobr>"));
 		this.tableTitle.setWidget(0, 2, new HTML("<nobr>"+this.constants.CreationDate()+"</nobr>"));
 		CellFormatter cellFormater = this.tableTitle.getCellFormatter();

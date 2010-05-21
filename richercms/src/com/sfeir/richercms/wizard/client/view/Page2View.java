@@ -4,6 +4,7 @@ package com.sfeir.richercms.wizard.client.view;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.event.dom.client.HasKeyPressHandlers;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -69,6 +70,11 @@ public class Page2View extends ResizeComposite implements IdisplayPage2 {
 	
 	public HasClickHandlers getPopUpBtnCancel() {
 		return this.popUpAddLanguage.cancel;
+	}
+	
+	public HasKeyPressHandlers kBPopUpBtnOk()
+	{
+		return this.popUpAddLanguage.ok;
 	}
 
 	public void showPopUpAddLanguage() {
@@ -136,6 +142,7 @@ public class Page2View extends ResizeComposite implements IdisplayPage2 {
 		return btnDel;
 	}
 
+
 	public void clearTableLanguage() {
 		this.languageTable.removeAllRows();
 		this.addLanguageTableTitle();
@@ -195,8 +202,6 @@ public class Page2View extends ResizeComposite implements IdisplayPage2 {
 		buttonPanel.add(btnNext);
 		mainContent.add(buttonPanel);
 		mainContent.setWidgetBottomHeight(buttonPanel, 0, Style.Unit.PX, 28, Style.Unit.PX);
-		
-		
 		initWidget(mainPanel);
 	}
 	

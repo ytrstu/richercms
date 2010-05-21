@@ -7,13 +7,15 @@ import java.util.List;
 import javax.persistence.Id;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Entity;
+import com.googlecode.objectify.annotation.Unindexed;
 
 @Entity(name="ArboPage")
+@Unindexed
 public class ArboPage {
 	
     @Id
     private Long id;
-  
+
 	private List<Key<TranslationPage>> translation;
 	
 	private List<Long> idChildArboPage;

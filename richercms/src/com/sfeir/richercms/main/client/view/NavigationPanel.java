@@ -113,4 +113,9 @@ public class NavigationPanel extends ResizeComposite implements INavigationPanel
 	public MainConstants getConstants() {
 		return this.constants;
 	}
+	
+	public void setSelectedItem(TreeItem item) {
+		navigationTree.setSelectedItem(item, true);
+		navigationTree.ensureSelectedItemVisible();
+	}
 }

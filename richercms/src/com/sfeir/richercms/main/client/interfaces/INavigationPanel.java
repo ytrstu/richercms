@@ -64,6 +64,12 @@ public interface INavigationPanel extends LazyView{
 	void deleteSelectedTI();
 	
 	/**
+	 * Set the selected item
+	 * @param item item to be selected
+	 */
+	void setSelectedItem(TreeItem item);
+	
+	/**
 	 * Return the MainConstants. Use this for use translationSystem
 	 * @return the MainConstants
 	 */

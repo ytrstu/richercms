@@ -308,8 +308,11 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Ma
 			this.rpcPage.getLastChildAdded((Long)this.selectedItem.getUserObject(), 
 					new AsyncCallback<BeanArboPage>() {
 				public void onSuccess(BeanArboPage result) {
-					selectedItem.addItem(makeTreeNode(result));
-					eventBus.displayNewPageInTree();}
+					TreeItem newSelected = makeTreeNode(result);
+					selectedItem.addItem(newSelected);
+					eventBus.displayNewPageInTree();
+					view.setSelectedItem(newSelected);
+				}
 				public void onFailure(Throwable caught){
 					eventBus.displayNewPageInTree();//even the page are not correctly added, the "add page event" is finished
 					PopUpMessage p = new PopUpMessage(view.getConstants().EAddNewChild());
@@ -322,7 +325,6 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Ma
 			this.selectedItem.setState(true, true);
 			//permet de hide la State PopUp
 			eventBus.displayNewPageInTree();
-
 		}
 	}
 
@@ -340,9 +342,8 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Ma
 				}
 				if(selectLastChild){
 					selectLastChild = false; //dans tout les cas on remet a false
-					selectedItem.setSelected(false); //dé-selectionne le noeud courant
-					selectedItem = expandedItem.getChild(expandedItem.getChildCount()-1);
-					selectedItem.setSelected(true); //selectionne le dernier fils
+					TreeItem newSelectedItem = expandedItem.getChild(expandedItem.getChildCount()-1);
+					view.setSelectedItem(newSelectedItem);
 				}
 			}
 			public void onFailure(Throwable caught){

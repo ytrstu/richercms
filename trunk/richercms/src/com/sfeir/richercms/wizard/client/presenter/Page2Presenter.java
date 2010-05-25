@@ -78,11 +78,15 @@ public class Page2Presenter extends LazyPresenter<IdisplayPage2, WizardConfigEve
 	        }
 	      });
 	    
-	    view.kBPopUpBtnOk().addKeyPressHandler(new KeyPressHandler(){
+	    //gestion des evt clavier sur la popUp
+	    view.getPopUpKbEvent().addKeyPressHandler(new KeyPressHandler(){
 			public void onKeyPress(KeyPressEvent event) {
-				if(event.getNativeEvent().getKeyCode() == KeyCodes.KEY_ENTER)
-			          if(ajouteLangue())//ajoute la langue si possible
-			        	  view.hidePopUpAddLanguage();// cache le popUp uniquement si une langue a bien �t� ajout�
+				if(event.getNativeEvent().getKeyCode() == KeyCodes.KEY_ENTER) {
+					if(ajouteLangue())//ajoute la langue si possible
+						view.hidePopUpAddLanguage();// cache le popUp uniquement si une langue a bien �t� ajout�
+				}else if (event.getNativeEvent().getKeyCode() == KeyCodes.KEY_ESCAPE){
+					view.hidePopUpAddLanguage();
+				}
 			}
 	    	});
 	    

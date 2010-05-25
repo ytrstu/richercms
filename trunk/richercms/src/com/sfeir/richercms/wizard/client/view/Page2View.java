@@ -72,9 +72,9 @@ public class Page2View extends ResizeComposite implements IdisplayPage2 {
 		return this.popUpAddLanguage.cancel;
 	}
 	
-	public HasKeyPressHandlers kBPopUpBtnOk()
+	public HasKeyPressHandlers getPopUpKbEvent()
 	{
-		return this.popUpAddLanguage.ok;
+		return this.popUpAddLanguage.getKeyboardEvt();
 	}
 
 	public void showPopUpAddLanguage() {

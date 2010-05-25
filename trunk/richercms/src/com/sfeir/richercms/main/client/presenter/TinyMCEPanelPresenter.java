@@ -33,7 +33,7 @@ public class TinyMCEPanelPresenter extends LazyPresenter<ITinyMCEPanel, MainEven
 	/////////////////////////////////////////////// EVENT ///////////////////////////////////////////////
 	
 	public void onDisplayContent(String content) {
-		view.disableEditor();
+		view.displayViewer(content);
 		this.view.setContent(content);
 	}
 	
@@ -42,25 +42,24 @@ public class TinyMCEPanelPresenter extends LazyPresenter<ITinyMCEPanel, MainEven
 	 * @param navPanel 
 	 */
 	public void onStartPanels() {
-		this.view.disableEditor();
+		this.view.displayViewer(this.view.getContent());
 		this.eventBus.changeEditorPanel(this.view);
 	}
 	
 	public void onModifyPage(Long id) {
-		this.view.enableEditor();
+		view.displayEditor(this.view.getContent());
 	}
 	
 	public void onAddPage(Long id) {
-		view.enableEditor();
-		this.view.setContent("");
+		view.displayEditor("");
 	}
 	
 	public void onCancelPage() {
-		view.disableEditor();
+		this.view.displayViewer(this.view.getContent());
 	}
 	
 	public void onSavePage() {
-		view.disableEditor();
+		this.view.displayViewer(this.view.getContent());
 	}
 	
 	public void onCallContent() {

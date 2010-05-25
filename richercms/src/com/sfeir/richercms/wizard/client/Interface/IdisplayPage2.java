@@ -39,10 +39,10 @@ public interface IdisplayPage2 extends LazyView {
 	HasClickHandlers getPopUpBtnOk();
 	
 	/**
-	 * get the Keyboard handler of the button Ok on the PopUp
-	 * @return The Keyboard handler of the button Ok on the PopUp
+	 * get the Keyboard handler of the PopUp
+	 * @return The Keyboard handler of the PopUp
 	 */
-	HasKeyPressHandlers kBPopUpBtnOk();
+	HasKeyPressHandlers getPopUpKbEvent();
 	
 	/**
 	 * get the handler of the button Cancel on the PopUp

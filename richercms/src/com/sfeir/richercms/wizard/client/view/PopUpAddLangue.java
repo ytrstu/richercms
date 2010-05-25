@@ -2,9 +2,11 @@ package com.sfeir.richercms.wizard.client.view;
 
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.HasKeyPressHandlers;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.sfeir.richercms.wizard.client.wizardConfigConstants;
@@ -26,6 +28,7 @@ public class PopUpAddLangue extends DialogBox {
 	private final Label labelTag = new Label(constants.labelTagPopUp());
 	public final TextBox textboxTag = new TextBox(); // public pour le passage des evt au presenter
 	private FlexTable mainPanel = new FlexTable();
+	private FocusPanel keyBoardPanel;
 	
 	
 	/**
@@ -45,11 +48,13 @@ public class PopUpAddLangue extends DialogBox {
     	
 		this.mainPanel.setCellSpacing(3);
 		this.mainPanel.setCellPadding(3);
-			
+		
+		this.keyBoardPanel = new FocusPanel(this.mainPanel);
+		
 		// Set the dialog box's caption.
 		this.setText(this.constants.TextPopUp());  
 		this.center();
-		this.setWidget(this.mainPanel);
+		this.setWidget(this.keyBoardPanel);
 		
 		//hide directly the popUp
 		this.hide();
@@ -78,5 +83,8 @@ public class PopUpAddLangue extends DialogBox {
     	this.textboxLanguage.setFocus(true);
     }
     
+    public HasKeyPressHandlers getKeyboardEvt() {
+    	return this.keyBoardPanel;
+    }
     
   }

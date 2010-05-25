@@ -59,6 +59,5 @@ public class ValidationPanel extends ResizeComposite implements IValidationPanel
 	public void setBtnAddText(String text) {
 		this.btnAdd.setText(text);
 	}
-	
-	
+
 }

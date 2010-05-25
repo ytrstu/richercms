@@ -1,6 +1,5 @@
 package com.sfeir.richercms.main.client.view;
 
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.HasChangeHandlers;
@@ -35,21 +34,20 @@ public class MainPageView extends ResizeComposite implements IdisplayMainPage {
 
 	//gestion des langues
 	private MainConstants constants = GWT.create(MainConstants.class);
-	private NavigationPanel navPanel = null;
-	private InformationPanel listPanel = null;
-	private TinyMCEPanel tinyMcePanel = null;
-	private ReorderPagePanel reoderPanel = null;
-	private ValidationPanel validationPanel = null;
-	private SplitLayoutPanel splitedPanel = null;
+	private LayoutPanel lgAndMenuPanel = null;
+	private SplitLayoutPanel leftRightSpliter = null;
+	private SplitLayoutPanel topBottomSpliter = null;
 	private MenuBar mainmenu  = null;
-	private DockLayoutPanel layoutPanel1 = null;
+	private DockLayoutPanel dispositionPanel = null;
 	private ListBox languages = null;
 	private CenterEventPopUp popUp = null;
 	private LayoutPanel finalContainer = null;
-	
-	private LayoutPanel westPanel = null;
-	private LayoutPanel northPanel = null;
-	private LayoutPanel southPanel = null;
+	// include in the leftRightSpliter 
+	private LayoutPanel leftPanel = null;
+	private LayoutPanel rightPanel = null;
+	// include in the topBottomSpliter
+	private LayoutPanel topPanel = null;
+	private LayoutPanel bottomPanel = null;
 
 	private final int height = Window.getClientHeight()-30;
 	
@@ -66,19 +64,62 @@ public class MainPageView extends ResizeComposite implements IdisplayMainPage {
 	 */
 	public void createView() {
 		
-		this.layoutPanel1 = new DockLayoutPanel(Unit.PX);
-	    this.splitedPanel = new SplitLayoutPanel();
+		this.dispositionPanel = new DockLayoutPanel(Unit.PX);
+	    this.leftRightSpliter = new SplitLayoutPanel();
+	    this.topBottomSpliter = new SplitLayoutPanel();
 	    
 	    // When it's necessary, this popUp is show
 		this.popUp = new CenterEventPopUp(400, 200,"Sauvegarde en cours");
 	    this.popUp.setVisible(false);
 		
+	    this.lgAndMenuPanel = new  LayoutPanel();
+	    this.createLgAndMenu();
+		
+	    //north : language + menu
+	    this.dispositionPanel.addNorth(lgAndMenuPanel, 23);
+	    
+	    // the top and the bottom content of the second Spliter ( topBottomSpliter )
+	    this.topPanel = new LayoutPanel();
+	    this.topPanel.setStyleName("tab-content");
+	    this.bottomPanel = new LayoutPanel();
+	    this.bottomPanel.setStyleName("tab-content");
+	    
+	    // connects the two panels to the topBottomSpliter
+	    this.topBottomSpliter.addNorth(this.topPanel, this.height/2 -120);
+		this.topBottomSpliter.add(this.bottomPanel);
+	    
+	    // the left and the right content of the main Spliter ( leftRightSpliter )
+	    this.leftPanel = new LayoutPanel();
+	    this.leftPanel.setStyleName("tab-content");
+	    this.rightPanel = new LayoutPanel();
+	    this.rightPanel.setStyleName("tab-content");
+	    
+	    // the rightPanel contain all widget of the right part of the topBottomSpliter
+	    this.rightPanel.add(this.topBottomSpliter);
+	    
+	    // connects the two panels to the leftRightSpliter
+	    this.leftRightSpliter.addWest(this.leftPanel, 168);
+	    this.leftRightSpliter.add(this.rightPanel);
+	    
+	    // FINAL : PopUp + dispositionPanel (=> all widget)
+	    this.finalContainer = new LayoutPanel();
+	    this.finalContainer.add(this.popUp);
+	    this.finalContainer.add(this.dispositionPanel);
+	    
+	    // wrap the finalContainer into the resizeComposite
+	    this.initWidget(this.finalContainer);
+	}
+	
+	/**
+	 * Initialise the lgAndMenuPanel with its content
+	 */
+	private void createLgAndMenu() {
 		// liste du choix de la langue
 		this.languages = new ListBox(false);
 		this.languages.setWidth("240px");
 		Label listBoxTitle = new Label("Langue en cours : ");
 		listBoxTitle.setStyleName("languageLabel");
-	    LayoutPanel placmentPanel = new  LayoutPanel();
+	    
 	    
 	    // Create a menu bar
 	    this.mainmenu = new MenuBar();
@@ -110,83 +151,71 @@ public class MainPageView extends ResizeComposite implements IdisplayMainPage {
 	    help.addItem("about richerCMS", new Command(){public void execute(){}});
 	    this.mainmenu.addItem(new MenuItem("Help", help));
 
-
+	    // Create Language Panel
 	    LayoutPanel mainLanguagesPanel = new LayoutPanel();
 	    mainLanguagesPanel.add(listBoxTitle);
 	    mainLanguagesPanel.add(languages);
 	    mainLanguagesPanel.setWidgetLeftRight(listBoxTitle, 0, Unit.PX, 70, Unit.PCT);
 	    mainLanguagesPanel.setWidgetLeftRight(languages, 30, Unit.PCT, 5, Unit.PX);
-	    
-	    placmentPanel.setStyleName("tab-content");
-	    placmentPanel.add(mainmenu);
-	    placmentPanel.add(mainLanguagesPanel);
-	    placmentPanel.setWidgetLeftWidth(mainmenu, 0, Unit.PX, 350, Unit.PX);
-	    placmentPanel.setWidgetRightWidth(mainLanguagesPanel, 0, Unit.PX, 350, Unit.PX);
-	    placmentPanel.setWidgetTopBottom(mainLanguagesPanel, 1, Unit.PX, 1, Unit.PX);
-	    placmentPanel.setWidth("100%");
-			    
-	    this.layoutPanel1.addNorth(placmentPanel, 23);
-	    
-	    this.finalContainer = new LayoutPanel();
-	    this.finalContainer.add(this.popUp);
-	    this.finalContainer.add(this.layoutPanel1);
-	    
-	    this.westPanel = new LayoutPanel();
-	    this.northPanel = new LayoutPanel();
-	    this.southPanel = new LayoutPanel();
-	    
-	    this.splitedPanel.addWest(this.westPanel, 168);
-	    this.splitedPanel.addNorth(this.northPanel, this.height/2 -120);
-	    this.splitedPanel.add(southPanel);
-	    
-	    this.initWidget(this.finalContainer);
+	   
+	    // Add Menu + LanguagePanel
+	    lgAndMenuPanel.setStyleName("tab-content");
+	    lgAndMenuPanel.add(mainmenu);
+	    lgAndMenuPanel.add(mainLanguagesPanel);
+	    lgAndMenuPanel.setWidgetLeftWidth(mainmenu, 0, Unit.PX, 350, Unit.PX);
+	    lgAndMenuPanel.setWidgetRightWidth(mainLanguagesPanel, 0, Unit.PX, 350, Unit.PX);
+	    lgAndMenuPanel.setWidgetTopBottom(mainLanguagesPanel, 1, Unit.PX, 1, Unit.PX);
+	    lgAndMenuPanel.setWidth("100%");
 	}
 
 	public void setConstants(MainConstants constants) {
 		this.constants = constants;
 	}
+	
+	public void setTopPanel() {
+		
+	}
+	public void setBottomPanel() {
+		
+	}
+	public void setLeftPanel() {
+		
+	}
+	public void setRightPanel() {
+		
+	}
 
 	public void setNavPanel(INavigationPanel navPanel) {
-		this.navPanel = (NavigationPanel)navPanel;
-		this.navPanel.setStyleName("tab-content");
-		this.westPanel.add(this.navPanel);
+		this.leftPanel.add((NavigationPanel)navPanel);
 	}
 
 	public void setInfoPanel(IInformationPanel listPanel) {
-		this.listPanel = (InformationPanel)listPanel;
-		this.listPanel.setStyleName("tab-content");
-		this.northPanel.add(this.listPanel);
+		this.topPanel.add((InformationPanel)listPanel);
+		
 	}
 	
 	public void displayReorderPanel(IReorderPagePanel reorderPanel) {
-		this.reoderPanel = (ReorderPagePanel)reorderPanel;
-		this.reoderPanel.setStyleName("tab-content");
-		this.northPanel.remove(0);
-		this.northPanel.add(this.reoderPanel);
+		this.rightPanel.clear();
+		this.rightPanel.add((ReorderPagePanel)reorderPanel);
+		//this.leftRightSpliter.add(this.rightPanel);
 	}
 	
 	public void displayNormalPanel(){
 		// evite le clignotement si on est déja sur en mode normale
-		if(!this.northPanel.getWidget(0).equals(this.listPanel)) {
-			this.northPanel.remove(0);
-			this.northPanel.add(this.listPanel);
+		if(!this.rightPanel.getWidget(0).equals(this.topBottomSpliter)) {
+			this.rightPanel.clear();
+			this.rightPanel.add(this.topBottomSpliter);
 		}
 	}
 
 	public void setTinyMcePanel(ITinyMCEPanel tinyMcePanel) {
-
-		this.tinyMcePanel = (TinyMCEPanel)tinyMcePanel;
-		this.tinyMcePanel.setStyleName("tab-content");
-		//this.splitedPanel.add(this.tinyMcePanel);
-		this.southPanel.add(this.tinyMcePanel);
+		this.bottomPanel.add((TinyMCEPanel)tinyMcePanel);
 	}
 
 	public void setValidationPanel(IValidationPanel validationPanel) {
-		this.validationPanel = (ValidationPanel)validationPanel;
-		this.validationPanel.setStyleName("tab-content");
-		this.layoutPanel1.addSouth(this.validationPanel, 37);
+		this.dispositionPanel.addSouth((ValidationPanel)validationPanel, 37);
 		//ajout de l'élément final : signifie la fin du chargement
-	    this.layoutPanel1.add(this.splitedPanel);
+	    this.dispositionPanel.add(this.leftRightSpliter);
 	}
 	
 	public void addLanguageInListBox(String name, String key, boolean defaultLg) {

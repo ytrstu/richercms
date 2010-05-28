@@ -13,8 +13,8 @@ import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.sfeir.richercms.client.view.PopUpMessage;
 import com.sfeir.richercms.page.client.ArboPageServiceAsync;
-import com.sfeir.richercms.page.client.MainState;
-import com.sfeir.richercms.page.client.event.MainEventBus;
+import com.sfeir.richercms.page.client.PageState;
+import com.sfeir.richercms.page.client.event.PageEventBus;
 import com.sfeir.richercms.page.client.interfaces.IInformationPanel;
 import com.sfeir.richercms.page.client.view.InformationPanel;
 import com.sfeir.richercms.page.shared.BeanArboPage;
@@ -22,13 +22,13 @@ import com.sfeir.richercms.page.shared.BeanTranslationPage;
 
 
 @Presenter( view = InformationPanel.class)
-public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, MainEventBus>{
+public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, PageEventBus>{
 
 	private ArboPageServiceAsync rpcPage = null;
 	private BeanArboPage currentPage = null;
 	private int translationIndex = 0;
 	private int cpt = 0;
-	private MainState state = MainState.display;;
+	private PageState state = PageState.display;;
 	
 	public InformationPanelPresenter() {
 		super();
@@ -101,7 +101,7 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 		List<BeanTranslationPage> lst = null;
 		BeanTranslationPage newTranslation = new BeanTranslationPage();
 		
-		if(this.state == MainState.add) { 
+		if(this.state == PageState.add) { 
 			// on met toutes les translations a vide
 			lst = new ArrayList<BeanTranslationPage>();
 			for(BeanTranslationPage bTp : this.currentPage.getTranslation()) {
@@ -205,7 +205,7 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 				PopUpMessage p = new PopUpMessage(view.getConstants().EGetCurPage());
 				p.show();}
 		});
-		this.state = MainState.display;
+		this.state = PageState.display;
 	}
 	
 	public void onDisplayMainPage() {
@@ -220,7 +220,7 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 				PopUpMessage p = new PopUpMessage(view.getConstants().EGetMainPage());
 				p.show();}
 		});	
-		this.state = MainState.display;
+		this.state = PageState.display;
 	}
 	
 	
@@ -230,7 +230,7 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 		view.clearFields();
 		view.enabledWidgets();
 		view.disableHelp();
-		this.state = MainState.add;
+		this.state = PageState.add;
 		//make a clean BeanArboPage
 		this.currentPage = addInformationInPage();
 		//send clean translation to add new content
@@ -241,12 +241,12 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 		view.deasabledWidgets();
 		view.disableHelp();
 		view.setTitle(view.getConstants().DefaultTitleInformation());
-		this.state = MainState.display;
+		this.state = PageState.display;
 	}
 	
 	public void onModifyPage(Long id) {
 		view.enabledWidgets();
-		this.state = MainState.modify;
+		this.state = PageState.modify;
 	}
 	
 	public void onSavePage() {
@@ -256,14 +256,14 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 	
 	public void onDeletePage() {
 		view.clearFields();
-		this.state = MainState.display;
+		this.state = PageState.display;
 	}
 	
 	public void onCallInfo() {
 		//need the current state to restore them later
-		MainState currentState = this.state;
+		PageState currentState = this.state;
 		//modifymode : modify the translation in the current page
-		this.state = MainState.modify;
+		this.state = PageState.modify;
 		//add the translation in the current page
 		this.currentPage = this.addInformationInPage();
 		//reconfigure the state
@@ -275,16 +275,16 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 	}
 	
 	public void onChangeTranslation(int index) {
-		if(this.state == MainState.modify){//modifyMode
+		if(this.state == PageState.modify){//modifyMode
 			//add the current translation in the page
 			this.currentPage = this.addInformationInPage();
-		}else if(this.state == MainState.add){
+		}else if(this.state == PageState.add){
 			//modifymode : modify a translation in the current page
-			this.state = MainState.modify;
+			this.state = PageState.modify;
 			//add the translation in the current page
 			this.currentPage = this.addInformationInPage();
 			//addMode : necessary to add a page in the datastore
-			this.state = MainState.add;
+			this.state = PageState.add;
 		}
 		// new index selected in the Language list
 		this.translationIndex = index;

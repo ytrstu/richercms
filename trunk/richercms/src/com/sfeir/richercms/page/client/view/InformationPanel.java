@@ -16,7 +16,7 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
-import com.sfeir.richercms.page.client.MainConstants;
+import com.sfeir.richercms.page.client.PageConstants;
 import com.sfeir.richercms.page.client.interfaces.IInformationPanel;
 
 /**
@@ -27,7 +27,7 @@ import com.sfeir.richercms.page.client.interfaces.IInformationPanel;
 public class InformationPanel extends ResizeComposite implements IInformationPanel {
 	
 	//gestion des langues
-	private MainConstants constants = GWT.create(MainConstants.class);
+	private PageConstants constants = GWT.create(PageConstants.class);
 	private boolean help = false; // savoir si on active ou non l'aide pour la traduction
 	
 	private ArrayList<Label> cpyLabelLst = null;
@@ -308,7 +308,7 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 		}
 	}
 	
-	public MainConstants getConstants() {
+	public PageConstants getConstants() {
 		return this.constants;
 	}
 }

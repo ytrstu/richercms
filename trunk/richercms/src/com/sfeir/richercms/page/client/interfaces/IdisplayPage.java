@@ -3,7 +3,7 @@ package com.sfeir.richercms.page.client.interfaces;
 import com.google.gwt.event.dom.client.HasChangeHandlers;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.view.LazyView;
-import com.sfeir.richercms.page.client.MainConstants;
+import com.sfeir.richercms.page.client.PageConstants;
 
 
 /**
@@ -12,7 +12,7 @@ import com.sfeir.richercms.page.client.MainConstants;
  * @author homberg.g
  *
  */
-public interface IdisplayMainPage extends LazyView {
+public interface IdisplayPage extends LazyView {
 
 	Widget asWidget();
 	
@@ -125,6 +125,6 @@ public interface IdisplayMainPage extends LazyView {
 	 * Return the MainConstants. Use this for use translationSystem
 	 * @return the MainConstants
 	 */
-	public MainConstants getConstants();
+	public PageConstants getConstants();
 	
 }

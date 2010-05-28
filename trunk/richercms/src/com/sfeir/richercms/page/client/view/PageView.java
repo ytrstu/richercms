@@ -15,13 +15,13 @@ import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.ResizeComposite;
 import com.google.gwt.user.client.ui.SplitLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.sfeir.richercms.page.client.MainConstants;
+import com.sfeir.richercms.page.client.PageConstants;
 import com.sfeir.richercms.page.client.interfaces.IInformationPanel;
 import com.sfeir.richercms.page.client.interfaces.INavigationPanel;
 import com.sfeir.richercms.page.client.interfaces.IReorderPagePanel;
 import com.sfeir.richercms.page.client.interfaces.ITinyMCEPanel;
 import com.sfeir.richercms.page.client.interfaces.IValidationPanel;
-import com.sfeir.richercms.page.client.interfaces.IdisplayMainPage;
+import com.sfeir.richercms.page.client.interfaces.IdisplayPage;
 import com.sfeir.richercms.page.client.view.custom.CenterEventPopUp;
 
 /**
@@ -30,10 +30,10 @@ import com.sfeir.richercms.page.client.view.custom.CenterEventPopUp;
  * @author homberg.g
  *
  */
-public class MainPageView extends ResizeComposite implements IdisplayMainPage {
+public class PageView extends ResizeComposite implements IdisplayPage {
 
 	//gestion des langues
-	private MainConstants constants = GWT.create(MainConstants.class);
+	private PageConstants constants = GWT.create(PageConstants.class);
 	private LayoutPanel lgAndMenuPanel = null;
 	private SplitLayoutPanel leftRightSpliter = null;
 	private SplitLayoutPanel topBottomSpliter = null;
@@ -51,7 +51,7 @@ public class MainPageView extends ResizeComposite implements IdisplayMainPage {
 
 	private final int height = Window.getClientHeight()-30;
 	
-	public MainPageView() {
+	public PageView() {
 		super();
 	}
 	
@@ -169,7 +169,7 @@ public class MainPageView extends ResizeComposite implements IdisplayMainPage {
 	    lgAndMenuPanel.setWidth("100%");
 	}
 
-	public void setConstants(MainConstants constants) {
+	public void setConstants(PageConstants constants) {
 		this.constants = constants;
 	}
 	
@@ -280,7 +280,7 @@ public class MainPageView extends ResizeComposite implements IdisplayMainPage {
 		this.popUp.AddLine(text, state);
 	}
 		
-	public MainConstants getConstants() {
+	public PageConstants getConstants() {
 		return this.constants;
 	}
 }

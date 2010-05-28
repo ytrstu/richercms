@@ -7,7 +7,7 @@ import com.mvp4g.client.Mvp4gModule;
  * @author homberg.g
  *
  */
-public interface MainModule extends Mvp4gModule {
+public interface PageModule extends Mvp4gModule {
 	
 	public void setParentModule( Mvp4gModule module );
 }

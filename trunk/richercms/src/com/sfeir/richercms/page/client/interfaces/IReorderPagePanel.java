@@ -8,7 +8,7 @@ import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.view.LazyView;
-import com.sfeir.richercms.page.client.MainConstants;
+import com.sfeir.richercms.page.client.PageConstants;
 
 public interface IReorderPagePanel extends LazyView {
 	
@@ -66,7 +66,7 @@ public interface IReorderPagePanel extends LazyView {
 	 * Return the MainConstants. Use this for use translationSystem
 	 * @return the MainConstants
 	 */
-	MainConstants getConstants();
+	PageConstants getConstants();
 	
 	/**
 	 * clear the display PageList

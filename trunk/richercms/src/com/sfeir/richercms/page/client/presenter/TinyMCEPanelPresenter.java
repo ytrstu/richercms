@@ -5,18 +5,18 @@ import java.util.List;
 
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
-import com.sfeir.richercms.page.client.MainState;
-import com.sfeir.richercms.page.client.event.MainEventBus;
+import com.sfeir.richercms.page.client.PageState;
+import com.sfeir.richercms.page.client.event.PageEventBus;
 import com.sfeir.richercms.page.client.interfaces.ITinyMCEPanel;
 import com.sfeir.richercms.page.client.view.TinyMCEPanel;
 import com.sfeir.richercms.page.shared.BeanTranslationPage;
 
 @Presenter( view = TinyMCEPanel.class)
-public class TinyMCEPanelPresenter extends LazyPresenter<ITinyMCEPanel, MainEventBus>{
+public class TinyMCEPanelPresenter extends LazyPresenter<ITinyMCEPanel, PageEventBus>{
 
 	private int indexOfTranslation = 0;
 	private List<BeanTranslationPage> TranslationContents = null;
-	private MainState state = MainState.display;
+	private PageState state = PageState.display;
 	
 	public TinyMCEPanelPresenter() {
 		super();
@@ -35,7 +35,7 @@ public class TinyMCEPanelPresenter extends LazyPresenter<ITinyMCEPanel, MainEven
 	public void onDisplayContent(List<BeanTranslationPage>  translationContents) {
 		this.TranslationContents = translationContents;
 		this.view.displayViewer(this.TranslationContents.get(this.indexOfTranslation).getContent());
-		this.state = MainState.display;
+		this.state = PageState.display;
 	}
 	
 	/**
@@ -45,24 +45,24 @@ public class TinyMCEPanelPresenter extends LazyPresenter<ITinyMCEPanel, MainEven
 	public void onStartPanels() {
 		this.view.displayViewer(this.view.getContent());
 		this.eventBus.changeEditorPanel(this.view);
-		this.state = MainState.display;
+		this.state = PageState.display;
 	}
 	
 	public void onModifyPage(Long id) {
 		view.displayEditor(this.view.getContent());
-		this.state = MainState.modify;
+		this.state = PageState.modify;
 	}
 	
 	public void onAddPage(Long id) {
 		view.displayEditor("");
 		this.indexOfTranslation = 0;
-		this.state = MainState.add;
+		this.state = PageState.add;
 	}
 	
 	public void onCancelPage() {
 		this.view.displayViewer(this.view.getContent());
 		this.indexOfTranslation = 0;
-		this.state = MainState.display;
+		this.state = PageState.display;
 	}
 	
 	public void onSavePage() {
@@ -84,7 +84,7 @@ public class TinyMCEPanelPresenter extends LazyPresenter<ITinyMCEPanel, MainEven
 	
 	public void onChangeTranslation(int index) {
 		
-		if(this.state == MainState.display){
+		if(this.state == PageState.display){
 			this.view.displayViewer(this.TranslationContents.get(index).getContent());
 		}else {
 			// get the current content and add it in the current Translation

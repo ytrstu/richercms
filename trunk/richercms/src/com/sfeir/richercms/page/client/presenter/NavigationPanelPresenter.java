@@ -25,7 +25,7 @@ import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.sfeir.richercms.client.view.PopUpMessage;
 import com.sfeir.richercms.page.client.ArboPageServiceAsync;
-import com.sfeir.richercms.page.client.event.MainEventBus;
+import com.sfeir.richercms.page.client.event.PageEventBus;
 import com.sfeir.richercms.page.client.interfaces.INavigationPanel;
 import com.sfeir.richercms.page.client.view.NavigationPanel;
 import com.sfeir.richercms.page.client.view.custom.ConfirmationBox;
@@ -35,7 +35,7 @@ import com.sfeir.richercms.page.shared.BeanTranslationPage;
 
 
 @Presenter( view = NavigationPanel.class)
-public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, MainEventBus>{
+public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, PageEventBus>{
 
 	private TreeItem selectedItem = null; // current selected Item in tree
 	private TreeItem expandedItem = null; // current expanded Item in tree

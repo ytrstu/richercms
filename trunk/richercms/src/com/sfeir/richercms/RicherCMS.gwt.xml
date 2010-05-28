@@ -27,8 +27,8 @@
   <source path='shared'/>
   <source path='wizard/client'/>
   <source path='wizard/shared'/>
-  <source path='main/client'/>
-  <source path='main/shared'/>
+  <source path='page/client'/>
+  <source path='page/shared'/>
   
     <!-- Supported Language.	-->
   <extend-property name='locale' values='fr'/>

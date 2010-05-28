@@ -43,7 +43,7 @@
   	
   	<servlet>
     	<servlet-name>arboPageServiceServlet</servlet-name>
-    	<servlet-class>com.sfeir.richercms.main.server.ServiceArboPageImpl</servlet-class>
+    	<servlet-class>com.sfeir.richercms.page.server.ServiceArboPageImpl</servlet-class>
   	</servlet>
   	
   	

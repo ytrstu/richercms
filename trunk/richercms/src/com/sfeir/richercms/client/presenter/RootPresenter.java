@@ -31,11 +31,6 @@ public class RootPresenter extends BasePresenter<IrootDisplay, RootEventBus> {
 	public void onLogin() {}
 	
 	/**
-	 * fire with the wizard module module
-	 */
-	public void onStartWizard() {}
-	
-	/**
 	 * fired by the wizardModule when configuration is finished
 	 */
 	public void onWizardFinished(){

@@ -16,9 +16,8 @@ import com.mvp4g.client.event.EventBusWithLookup;
 import com.sfeir.richercms.client.presenter.PageLoginPresenter;
 import com.sfeir.richercms.client.presenter.RootPresenter;
 import com.sfeir.richercms.client.view.RootView;
-import com.sfeir.richercms.page.client.event.PageModule;
 import com.sfeir.richercms.wizard.client.event.WizardModule;
-
+import com.sfeir.richercms.main.MainModule;
 
 /**
  * The main Event bus
@@ -28,7 +27,7 @@ import com.sfeir.richercms.wizard.client.event.WizardModule;
 @Events(startView = RootView.class, debug = true)
 @ChildModules( 
 		{@ChildModule( moduleClass = WizardModule.class, async = true, autoDisplay = false),
-		@ChildModule( moduleClass = PageModule.class, async = true, autoDisplay = false)})
+		@ChildModule( moduleClass = MainModule.class, async = true, autoDisplay = false)})
 public interface RootEventBus extends EventBusWithLookup {
 
 	/**
@@ -41,13 +40,13 @@ public interface RootEventBus extends EventBusWithLookup {
 	/**
 	 * Start the wizard module and forward this event
 	 */
-	@Event(modulesToLoad = WizardModule.class, handlers = RootPresenter.class)
+	@Event(modulesToLoad = WizardModule.class )
 	public void startWizard();
 	
 	/**
 	 * Start the main module and forward this event
 	 */
-	@Event( modulesToLoad = PageModule.class )
+	@Event( modulesToLoad = MainModule.class )
 	public void startMain();
 	
 	/**
@@ -58,12 +57,12 @@ public interface RootEventBus extends EventBusWithLookup {
 	
 	
 	@BeforeLoadChildModule
-	@Event(handlers = RootPresenter.class)
+	@Event(handlers = RootPresenter.class )
 	public void beforeLoadWizard();
 
 	
 	@AfterLoadChildModule
-	@Event(handlers = RootPresenter.class)
+	@Event(handlers = RootPresenter.class )
 	public void afterLoadWizard();
 	
 	

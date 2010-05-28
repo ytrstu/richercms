@@ -5,7 +5,8 @@ import com.mvp4g.client.history.HistoryConverter;
 import com.sfeir.richercms.wizard.client.event.WizardConfigEventBus;
 
 @History
-public class WizardHistoryConverter implements HistoryConverter<Void, WizardConfigEventBus> {
+//public class WizardHistoryConverter implements HistoryConverter<WizardConfigEventBus, Void> {
+public class WizardHistoryConverter implements HistoryConverter<WizardConfigEventBus> {
 
 	public WizardHistoryConverter(){}
 	
@@ -18,5 +19,8 @@ public class WizardHistoryConverter implements HistoryConverter<Void, WizardConf
 	public String convertToToken(String eventType, Void form) {
 		return null;
 	}
+	
+	public void onGoToSecondPage(){}
+	public void onStartWizard(){}
 
 }

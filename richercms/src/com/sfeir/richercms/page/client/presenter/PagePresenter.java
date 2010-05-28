@@ -176,10 +176,10 @@ public class PagePresenter extends LazyPresenter<IdisplayPage, PageEventBus> {
 		this.state = PageState.display;
 	}
 	
-	public void onStartMain() {
+	public void onStartPage() {
 		this.fetchLanguageListBox();
 		this.eventBus.startPanels();
-		eventBus.changeBody(view.asWidget());
+		eventBus.changeMain(view.asWidget());
 	}
 	
 	public void onSavePage() {

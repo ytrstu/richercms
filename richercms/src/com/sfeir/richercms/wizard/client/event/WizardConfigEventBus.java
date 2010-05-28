@@ -6,7 +6,6 @@ import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
 
 import com.mvp4g.client.event.EventBusWithLookup;
-import com.sfeir.richercms.wizard.client.history.WizardHistoryConverter;
 import com.sfeir.richercms.wizard.client.presenter.Page1Presenter;
 import com.sfeir.richercms.wizard.client.presenter.Page2Presenter;
 import com.sfeir.richercms.wizard.client.view.Page1View;
@@ -26,14 +25,16 @@ public interface WizardConfigEventBus extends EventBusWithLookup{
 	/**
 	 * Change view : Page1 => Page2
 	 */
-	@Event(handlers=Page2Presenter.class, historyConverter = WizardHistoryConverter.class)
+	//@Event(handlers=Page2Presenter.class, historyConverter = WizardHistoryConverter.class)
+	@Event(handlers=Page2Presenter.class)
 	public void GoToSecondPage();
 	
 	
 	/**
 	 * Change view : Login => Page1
 	 */
-	@Event(handlers=Page1Presenter.class, historyConverter = WizardHistoryConverter.class)
+	//@Event(handlers=Page1Presenter.class, historyConverter = WizardHistoryConverter.class)
+	@Event(handlers=Page1Presenter.class)
 	public void startWizard();
 	
 	/**

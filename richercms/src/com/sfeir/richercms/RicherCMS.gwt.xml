@@ -25,6 +25,7 @@
   <!-- Specify the paths for translatable code                    -->
   <source path='client'/>
   <source path='shared'/>
+  <source path='main'/>
   <source path='wizard/client'/>
   <source path='wizard/shared'/>
   <source path='page/client'/>

@@ -10,8 +10,9 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.junit.client.GWTTestCase;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.sfeir.richercms.main.shared.BeanArboPage;
-import com.sfeir.richercms.main.shared.BeanTranslationPage;
+import com.sfeir.richercms.page.client.ArboPageService;
+import com.sfeir.richercms.page.client.ArboPageServiceAsync;
+import com.sfeir.richercms.page.shared.BeanArboPage;
 
 public class ArboPageServiceTest  extends GWTTestCase {
 	

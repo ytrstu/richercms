@@ -31,18 +31,18 @@ import com.sfeir.richercms.page.shared.BeanTranslationPage;
 public interface PageEventBus extends EventBus {
 
 	/**
-	 * Display the new view in the rootLayout
+	 * Display the new view in the mainLayout
 	 * @param widget : the new view
 	 */
 	@Event( forwardToParent = true )
-	public void changeBody( Widget widget );
+	public void changeMain( Widget widget );
 	
 	/**
 	 * Start the rootLayout and display the first page.
 	 * 2 presenter are started : RootPresenter and MainPagePresenter(first view to display)
 	 */
 	@Event( handlers = PagePresenter.class )
-	public void startMain();
+	public void startPage();
 	
 	/**
 	 * Started panels and integrates them into the main view

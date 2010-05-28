@@ -5,19 +5,19 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
-import com.sfeir.richercms.page.client.MainConstants;
-import com.sfeir.richercms.page.client.MainState;
-import com.sfeir.richercms.page.client.event.MainEventBus;
+import com.sfeir.richercms.page.client.PageConstants;
+import com.sfeir.richercms.page.client.PageState;
+import com.sfeir.richercms.page.client.event.PageEventBus;
 import com.sfeir.richercms.page.client.interfaces.IValidationPanel;
 import com.sfeir.richercms.page.client.view.ValidationPanel;
 
 
 @Presenter( view = ValidationPanel.class)
-public class ValidationPanelPresenter extends LazyPresenter<IValidationPanel, MainEventBus>{
+public class ValidationPanelPresenter extends LazyPresenter<IValidationPanel, PageEventBus>{
 
 	//gestion des langues
-	private MainConstants constants = GWT.create(MainConstants.class);
-	private MainState state = MainState.display;
+	private PageConstants constants = GWT.create(PageConstants.class);
+	private PageState state = PageState.display;
 	
 	public ValidationPanelPresenter() {
 		super();
@@ -47,34 +47,34 @@ public class ValidationPanelPresenter extends LazyPresenter<IValidationPanel, Ma
 	public void onAddPage(Long id) {
 		this.view.setBtnAddText(this.constants.BtnAdd());
 		view.enabledButtons();
-		this.state = MainState.add;
+		this.state = PageState.add;
 	}
 	
 	public void onCancelPage() {
 		view.deasableButtons();
-		this.state = MainState.display;
+		this.state = PageState.display;
 	}
 	
 	public void onModifyPage(Long id) {
 		this.view.setBtnAddText(this.constants.BtnModify());
 		view.enabledButtons();
-		this.state = MainState.modify;
+		this.state = PageState.modify;
 	}
 	
 	public void onSavePage() {
 		//if the state is not modify
-		if(!this.state.equals(MainState.modify))
+		if(!this.state.equals(PageState.modify))
 			view.deasableButtons();
 	}
 	
 	public void onDisplayPage(Long id) {
 		view.deasableButtons();
-		this.state = MainState.display;
+		this.state = PageState.display;
 	}
 	
 	public void onDisplayMainPage() {
 		view.deasableButtons();
-		this.state = MainState.display;
+		this.state = PageState.display;
 	}
 	
 	/**
@@ -84,6 +84,6 @@ public class ValidationPanelPresenter extends LazyPresenter<IValidationPanel, Ma
 	public void onStartPanels() {
 		this.view.deasableButtons();
 		eventBus.changeValidationPanel(this.view);
-		this.state = MainState.display;
+		this.state = PageState.display;
 	}
 }

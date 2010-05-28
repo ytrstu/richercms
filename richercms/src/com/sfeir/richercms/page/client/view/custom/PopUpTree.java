@@ -5,7 +5,7 @@ import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.PopupPanel;
-import com.sfeir.richercms.page.client.MainConstants;
+import com.sfeir.richercms.page.client.PageConstants;
 import com.sfeir.richercms.page.client.interfaces.custom.IPopUpTree;
 
 /**
@@ -18,7 +18,7 @@ import com.sfeir.richercms.page.client.interfaces.custom.IPopUpTree;
 public class PopUpTree extends PopupPanel implements IPopUpTree {
 
 	// gestion des langues
-	private MainConstants constants = GWT.create(MainConstants.class);
+	private PageConstants constants = GWT.create(PageConstants.class);
 	private Button btnAddPage = new Button(constants.PopUpAddPage());
 	private Button btnDelPage = new Button(constants.PopUpDelPage());
 

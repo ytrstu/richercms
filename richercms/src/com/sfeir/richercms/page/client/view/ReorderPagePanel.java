@@ -17,14 +17,14 @@ import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.HTMLTable.CellFormatter;
-import com.sfeir.richercms.page.client.MainConstants;
+import com.sfeir.richercms.page.client.PageConstants;
 import com.sfeir.richercms.page.client.interfaces.IReorderPagePanel;
 import com.sfeir.richercms.page.client.view.custom.FlexTableUtil;
 
 public class ReorderPagePanel extends ResizeComposite implements IReorderPagePanel {
 
 	//gestion des langues
-	private MainConstants constants = GWT.create(MainConstants.class);
+	private PageConstants constants = GWT.create(PageConstants.class);
 	private FlexTable pageLst = null;
 	private FlexTable tableTitle = null;
     private AbsolutePanel lstPanel = null;
@@ -162,7 +162,7 @@ public class ReorderPagePanel extends ResizeComposite implements IReorderPagePan
 		return this.initPosition;
 	}
 	
-	public MainConstants getConstants() {
+	public PageConstants getConstants() {
 		return this.constants;
 	}
 	

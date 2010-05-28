@@ -6,7 +6,7 @@ import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.dom.client.HasFocusHandlers;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.view.LazyView;
-import com.sfeir.richercms.page.client.MainConstants;
+import com.sfeir.richercms.page.client.PageConstants;
 
 public interface IInformationPanel extends LazyView {
 	
@@ -211,5 +211,5 @@ public interface IInformationPanel extends LazyView {
 	 * Return the MainConstants. Use this for use translationSystem
 	 * @return the MainConstants
 	 */
-	public MainConstants getConstants();
+	public PageConstants getConstants();
 }

@@ -2,7 +2,7 @@ package com.sfeir.richercms.page.client;
 
 import com.google.gwt.i18n.client.Constants;
 
-public interface MainConstants extends Constants {
+public interface PageConstants extends Constants {
 
 	  @DefaultStringValue("Site Explorator")
 	  String TitlePanel1();

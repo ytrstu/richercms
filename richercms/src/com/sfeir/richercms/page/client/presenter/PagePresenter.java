@@ -12,30 +12,30 @@ import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.sfeir.richercms.client.view.PopUpMessage;
 import com.sfeir.richercms.page.client.ArboPageServiceAsync;
-import com.sfeir.richercms.page.client.MainState;
-import com.sfeir.richercms.page.client.event.MainEventBus;
+import com.sfeir.richercms.page.client.PageState;
+import com.sfeir.richercms.page.client.event.PageEventBus;
 import com.sfeir.richercms.page.client.interfaces.IInformationPanel;
 import com.sfeir.richercms.page.client.interfaces.INavigationPanel;
 import com.sfeir.richercms.page.client.interfaces.IReorderPagePanel;
 import com.sfeir.richercms.page.client.interfaces.ITinyMCEPanel;
 import com.sfeir.richercms.page.client.interfaces.IValidationPanel;
-import com.sfeir.richercms.page.client.interfaces.IdisplayMainPage;
-import com.sfeir.richercms.page.client.view.MainPageView;
+import com.sfeir.richercms.page.client.interfaces.IdisplayPage;
+import com.sfeir.richercms.page.client.view.PageView;
 import com.sfeir.richercms.page.client.view.custom.ConfirmationBox;
 import com.sfeir.richercms.page.shared.BeanArboPage;
 import com.sfeir.richercms.wizard.client.LanguageServiceAsync;
 import com.sfeir.richercms.wizard.shared.BeanLanguageDetails;
 
-@Presenter( view = MainPageView.class)
-public class MainPagePresenter extends LazyPresenter<IdisplayMainPage, MainEventBus> {
+@Presenter( view = PageView.class)
+public class PagePresenter extends LazyPresenter<IdisplayPage, PageEventBus> {
 	
 	private ArboPageServiceAsync rpcPage = null;
 	private LanguageServiceAsync rpcLanguage = null;
 	private BeanArboPage editingPage = null;
 	private Long id = null; // field used to save the key of the current Page
-	private MainState state = MainState.display;
+	private PageState state = PageState.display;
 	
-	public MainPagePresenter() {
+	public PagePresenter() {
 		super();
 	}
 	
@@ -114,7 +114,7 @@ public class MainPagePresenter extends LazyPresenter<IdisplayMainPage, MainEvent
 	/////////////////////////////////////////////// EVENT ///////////////////////////////////////////////
 	
 	public void onDisplayNormalPanel() {
-		if(this.state.equals(MainState.display)) {
+		if(this.state.equals(PageState.display)) {
 			view.displayNormalPanel();
 		} else {
 			ConfirmationBox confirmPopUp = new ConfirmationBox("ATTENTION", "Vous etes sur le point de TOUT perdre, mouahaha !!!");
@@ -127,7 +127,7 @@ public class MainPagePresenter extends LazyPresenter<IdisplayMainPage, MainEvent
 	}
 	
 	public void onAddPage(Long id){
-		this.state = MainState.add;
+		this.state = PageState.add;
 		this.id = id;
 		//this.view.disableLanguageBox();
 		this.view.setIndexOfLgToDefault();
@@ -135,7 +135,7 @@ public class MainPagePresenter extends LazyPresenter<IdisplayMainPage, MainEvent
 	
 	public void onModifyPage(Long id)
 	{
-		this.state = MainState.modify;
+		this.state = PageState.modify;
 		this.id = id;
 		this.view.enableLanguageBox();
 	}
@@ -143,7 +143,7 @@ public class MainPagePresenter extends LazyPresenter<IdisplayMainPage, MainEvent
 	public void onCancelPage() {
 		
 		this.view.enableLanguageBox();
-		this.state = MainState.display;
+		this.state = PageState.display;
 	}
 	
 	public void onConfirmCancelPage() {
@@ -173,7 +173,7 @@ public class MainPagePresenter extends LazyPresenter<IdisplayMainPage, MainEvent
 	
 	public void onDisplayReorderPage(IReorderPagePanel reorderPanel) {
 		this.view.displayReorderPanel(reorderPanel);
-		this.state = MainState.display;
+		this.state = PageState.display;
 	}
 	
 	public void onStartMain() {
@@ -189,7 +189,7 @@ public class MainPagePresenter extends LazyPresenter<IdisplayMainPage, MainEvent
 	
 	public void onDisplayNewPageInTree() {
 		this.view.hideWaitPopUp();
-		this.state = MainState.display;
+		this.state = PageState.display;
 	}
 
 	public void onSendInfo(BeanArboPage information) {
@@ -208,9 +208,9 @@ public class MainPagePresenter extends LazyPresenter<IdisplayMainPage, MainEvent
 			i++;
 		}
 		
-		if(this.state.equals(MainState.add ))
+		if(this.state.equals(PageState.add ))
 			this.addPage();
-		else if(this.state.equals(MainState.modify ))
+		else if(this.state.equals(PageState.modify ))
 			this.modifyPage();
 	}
 	

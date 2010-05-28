@@ -7,7 +7,7 @@ import com.google.gwt.event.logical.shared.HasSelectionHandlers;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.TreeItem;
 import com.mvp4g.client.view.LazyView;
-import com.sfeir.richercms.page.client.MainConstants;
+import com.sfeir.richercms.page.client.PageConstants;
 import com.sfeir.richercms.page.client.interfaces.custom.IPopUpMenuBar;
 
 public interface INavigationPanel extends LazyView{
@@ -73,5 +73,5 @@ public interface INavigationPanel extends LazyView{
 	 * Return the MainConstants. Use this for use translationSystem
 	 * @return the MainConstants
 	 */
-	public MainConstants getConstants();
+	public PageConstants getConstants();
 }

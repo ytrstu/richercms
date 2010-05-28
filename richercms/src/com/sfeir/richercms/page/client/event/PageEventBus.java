@@ -12,12 +12,12 @@ import com.sfeir.richercms.page.client.interfaces.IReorderPagePanel;
 import com.sfeir.richercms.page.client.interfaces.ITinyMCEPanel;
 import com.sfeir.richercms.page.client.interfaces.IValidationPanel;
 import com.sfeir.richercms.page.client.presenter.InformationPanelPresenter;
-import com.sfeir.richercms.page.client.presenter.MainPagePresenter;
+import com.sfeir.richercms.page.client.presenter.PagePresenter;
 import com.sfeir.richercms.page.client.presenter.NavigationPanelPresenter;
 import com.sfeir.richercms.page.client.presenter.ReorderPagePanelPresenter;
 import com.sfeir.richercms.page.client.presenter.TinyMCEPanelPresenter;
 import com.sfeir.richercms.page.client.presenter.ValidationPanelPresenter;
-import com.sfeir.richercms.page.client.view.MainPageView;
+import com.sfeir.richercms.page.client.view.PageView;
 import com.sfeir.richercms.page.shared.BeanArboPage;
 import com.sfeir.richercms.page.shared.BeanTranslationPage;
 
@@ -27,8 +27,8 @@ import com.sfeir.richercms.page.shared.BeanTranslationPage;
  * @author homberg.g
  *
  */
-@Events(startView = MainPageView.class, module = MainModule.class, debug = true)
-public interface MainEventBus extends EventBus {
+@Events(startView = PageView.class, module = PageModule.class, debug = true)
+public interface PageEventBus extends EventBus {
 
 	/**
 	 * Display the new view in the rootLayout
@@ -41,7 +41,7 @@ public interface MainEventBus extends EventBus {
 	 * Start the rootLayout and display the first page.
 	 * 2 presenter are started : RootPresenter and MainPagePresenter(first view to display)
 	 */
-	@Event( handlers = MainPagePresenter.class )
+	@Event( handlers = PagePresenter.class )
 	public void startMain();
 	
 	/**
@@ -55,19 +55,19 @@ public interface MainEventBus extends EventBus {
 	 * for re-displaying normal view with standard Panel.
 	 * Warning, you can use this event after a first startPanelsEvent.
 	 */
-	@Event( handlers = MainPagePresenter.class )
+	@Event( handlers = PagePresenter.class )
 	public void displayNormalPanel();
 	
 	/**
 	 * fired by the NavigationPresenter when the addPage menu is clicked
 	 */
-	@Event( handlers = {MainPagePresenter.class, InformationPanelPresenter.class, ValidationPanelPresenter.class, TinyMCEPanelPresenter.class} )
+	@Event( handlers = {PagePresenter.class, InformationPanelPresenter.class, ValidationPanelPresenter.class, TinyMCEPanelPresenter.class} )
 	public void addPage(Long id);
 	
 	/**
 	 * Fired by the MainPagePresenter if the user need realy to abort his work
 	 */
-	@Event( handlers = {MainPagePresenter.class, InformationPanelPresenter.class, ValidationPanelPresenter.class, TinyMCEPanelPresenter.class} )
+	@Event( handlers = {PagePresenter.class, InformationPanelPresenter.class, ValidationPanelPresenter.class, TinyMCEPanelPresenter.class} )
 	public void cancelPage();
 	
 	/**
@@ -76,19 +76,19 @@ public interface MainEventBus extends EventBus {
 	 * This Event is catch by the MainPagePresenter who request user if he would abort
 	 * his previous work.
 	 */
-	@Event( handlers = MainPagePresenter.class)
+	@Event( handlers = PagePresenter.class)
 	public void confirmCancelPage();
 	
 	/**
 	 * fired by the NavigationPresenter when the addPage menu is clicked
 	 */
-	@Event( handlers = {MainPagePresenter.class, InformationPanelPresenter.class, ValidationPanelPresenter.class, TinyMCEPanelPresenter.class} )
+	@Event( handlers = {PagePresenter.class, InformationPanelPresenter.class, ValidationPanelPresenter.class, TinyMCEPanelPresenter.class} )
 	public void modifyPage(Long id);
 	
 	/**
 	 * fired by the ValidationPresenter when the saveButton is clicked
 	 */
-	@Event( handlers =  {MainPagePresenter.class, InformationPanelPresenter.class, ValidationPanelPresenter.class, TinyMCEPanelPresenter.class} )
+	@Event( handlers =  {PagePresenter.class, InformationPanelPresenter.class, ValidationPanelPresenter.class, TinyMCEPanelPresenter.class} )
 	public void savePage();
 	
 	/**
@@ -121,7 +121,7 @@ public interface MainEventBus extends EventBus {
 	 * Fired by the InformationPresenter for Sending the information to save a page (in the mainPresenter)
 	 * @param translation : the list of all translation
 	 */
-	@Event( handlers =  MainPagePresenter.class )
+	@Event( handlers =  PagePresenter.class )
 	public void sendInfo(BeanArboPage information);
 	
 	/**
@@ -135,7 +135,7 @@ public interface MainEventBus extends EventBus {
 	 * Fired by the ContentPresenter for Sending the content to save a page (in the mainPresenter)
 	 * @param translationsContent : content of all Page (modify or not)
 	 */
-	@Event( handlers =  MainPagePresenter.class )
+	@Event( handlers =  PagePresenter.class )
 	public void sendContent(List<String> translationsContent);
 	
 	/**
@@ -164,49 +164,49 @@ public interface MainEventBus extends EventBus {
 	 * Fired by the NavigationPresenter when the DelPage menu is clicked
 	 * * @param state : true if the page is deleted, false either
 	 */
-	@Event( handlers =  {InformationPanelPresenter.class, MainPagePresenter.class} )
+	@Event( handlers =  {InformationPanelPresenter.class, PagePresenter.class} )
 	public void deletePage();
 	
 	/**
 	 * Fired by the NavigationPresenter when a page is delete
 	 * @param state : true if the page is deleted, false etheir
 	 */
-	@Event( handlers =  MainPagePresenter.class )
+	@Event( handlers =  PagePresenter.class )
 	public void deletingPageFinish(boolean state);
 	
 	/**
 	 * Fired by the NavigationPanel to Load it in the right place in mainView
 	 * @param navPanel : the right NavigationPanel
 	 */
-	@Event( handlers =  MainPagePresenter.class )	
+	@Event( handlers =  PagePresenter.class )	
 	public void changeNavPanel(INavigationPanel navPanel);
 
 	/**
 	 * Fired by the InformationPanel to load it in the right place in mainView
 	 * @param infoPanel : the right InformationPanel
 	 */
-	@Event( handlers =  MainPagePresenter.class )
+	@Event( handlers =  PagePresenter.class )
 	public void changeInfoPanel(IInformationPanel infoPanel);
 	
 	/**
 	 * Fired by the ReorderPagePanelPresenter to load it in the right place in mainView
 	 * @param reorderPanel : the panel
 	 */
-	@Event( handlers =  MainPagePresenter.class )
+	@Event( handlers =  PagePresenter.class )
 	public void displayReorderPage(IReorderPagePanel reorderPanel);
 
 	/**
 	 * Fired by the TinyMCEPanel to load it in the right place in mainView
 	 * @param tinyMcePanel : the right TinyMCEPanel
 	 */
-	@Event( handlers =  MainPagePresenter.class )
+	@Event( handlers =  PagePresenter.class )
 	public void changeEditorPanel(ITinyMCEPanel tinyMcePanel);
 	
 	/**
 	 * Fired by the ValidationPanel to load the it in the right place in mainView
 	 * @param validationPanel : the right ValidationPanel
 	 */
-	@Event( handlers =  MainPagePresenter.class )
+	@Event( handlers =  PagePresenter.class )
 	public void changeValidationPanel(IValidationPanel validationPanel);
 	
 	/**
@@ -215,7 +215,7 @@ public interface MainEventBus extends EventBus {
 	 * The mainPresenter save this key in the selected language.
 	 * @param TranslationKey
 	 */
-	@Event( handlers =  MainPagePresenter.class )
+	@Event( handlers =  PagePresenter.class )
 	public void setTranslationKeyInLanguage(Long TranslationId);
 	
 	/**
@@ -229,7 +229,7 @@ public interface MainEventBus extends EventBus {
 	 * Fired by the Navigation presenter, when the new page is added
 	 * and allows the MainPagePresenter to hide the WaitPopUp
 	 */
-	@Event( handlers =  MainPagePresenter.class )
+	@Event( handlers =  PagePresenter.class )
 	public void displayNewPageInTree();
 
 	/**
@@ -243,14 +243,14 @@ public interface MainEventBus extends EventBus {
 	 * Show the popUp who request the user 
 	 * to waited during some action without display 
 	 */
-	@Event( handlers =  MainPagePresenter.class )
+	@Event( handlers =  PagePresenter.class )
 	public void showInformationPopUp();
 	
 	/**
 	 * Hide the popUp who request the user 
 	 * to waited during some action without display 
 	 */
-	@Event( handlers =  MainPagePresenter.class )
+	@Event( handlers =  PagePresenter.class )
 	public void hideInformationPopUp();
 	
 	/**
@@ -258,7 +258,7 @@ public interface MainEventBus extends EventBus {
 	 * with "Success" state
 	 * @param text : the description of the new state
 	 */
-	@Event( handlers =  MainPagePresenter.class )
+	@Event( handlers =  PagePresenter.class )
 	public void addSuccessPopUp(String text);
 	
 	/**
@@ -266,7 +266,7 @@ public interface MainEventBus extends EventBus {
 	 * @param text : the description of the new state
 	 * with "Wait" state
 	 */
-	@Event( handlers =  MainPagePresenter.class )
+	@Event( handlers =  PagePresenter.class )
 	public void addWaitLinePopUp(String text);
 	
 	/**
@@ -274,6 +274,6 @@ public interface MainEventBus extends EventBus {
 	 * @param text : the description of the new state
 	 * with "Fail" state
 	 */
-	@Event( handlers =  MainPagePresenter.class )
+	@Event( handlers =  PagePresenter.class )
 	public void addErrorLinePopUp(String text);
 }

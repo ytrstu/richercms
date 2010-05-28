@@ -1,6 +1,6 @@
 package com.sfeir.richercms.page.client;
 
-public enum MainState {
+public enum PageState {
 	display,
 	add,
 	modify

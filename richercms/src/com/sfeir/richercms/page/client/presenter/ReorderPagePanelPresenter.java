@@ -13,13 +13,13 @@ import com.sfeir.richercms.client.view.PopUpMessage;
 import com.sfeir.richercms.page.client.ArboPageServiceAsync;
 import com.sfeir.richercms.page.client.event.FlexTableRowDragController;
 import com.sfeir.richercms.page.client.event.FlexTableRowDropController;
-import com.sfeir.richercms.page.client.event.MainEventBus;
+import com.sfeir.richercms.page.client.event.PageEventBus;
 import com.sfeir.richercms.page.client.interfaces.IReorderPagePanel;
 import com.sfeir.richercms.page.client.view.ReorderPagePanel;
 import com.sfeir.richercms.page.shared.BeanArboPage;
 
 @Presenter( view = ReorderPagePanel.class)
-public class ReorderPagePanelPresenter extends LazyPresenter<IReorderPagePanel, MainEventBus>{
+public class ReorderPagePanelPresenter extends LazyPresenter<IReorderPagePanel, PageEventBus>{
 
 
 	private ArboPageServiceAsync rpcPage = null;

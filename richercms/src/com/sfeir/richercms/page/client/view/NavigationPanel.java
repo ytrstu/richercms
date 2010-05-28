@@ -13,7 +13,7 @@ import com.google.gwt.user.client.ui.ResizeComposite;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
-import com.sfeir.richercms.page.client.MainConstants;
+import com.sfeir.richercms.page.client.PageConstants;
 import com.sfeir.richercms.page.client.interfaces.INavigationPanel;
 import com.sfeir.richercms.page.client.interfaces.custom.IPopUpMenuBar;
 import com.sfeir.richercms.page.client.view.custom.PopUpMenuBar;
@@ -26,7 +26,7 @@ import com.sfeir.richercms.page.client.view.custom.PopUpMenuBar;
 public class NavigationPanel extends ResizeComposite implements INavigationPanel{
 
 	//gestion des langues
-	private MainConstants constants = GWT.create(MainConstants.class);
+	private PageConstants constants = GWT.create(PageConstants.class);
 	private Tree navigationTree = null;
 	private TreeItem rootItem = null;
 	private PopUpMenuBar menuBar = null;
@@ -110,7 +110,7 @@ public class NavigationPanel extends ResizeComposite implements INavigationPanel
 		this.navigationTree.getSelectedItem().remove();
 	}
 	
-	public MainConstants getConstants() {
+	public PageConstants getConstants() {
 		return this.constants;
 	}
 	

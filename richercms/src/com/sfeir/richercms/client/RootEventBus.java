@@ -16,7 +16,7 @@ import com.mvp4g.client.event.EventBusWithLookup;
 import com.sfeir.richercms.client.presenter.PageLoginPresenter;
 import com.sfeir.richercms.client.presenter.RootPresenter;
 import com.sfeir.richercms.client.view.RootView;
-import com.sfeir.richercms.main.client.event.MainModule;
+import com.sfeir.richercms.page.client.event.MainModule;
 import com.sfeir.richercms.wizard.client.event.WizardModule;
 
 

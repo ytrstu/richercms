@@ -1,9 +1,12 @@
 package com.sfeir.richercms.main.client.event;
 
+import java.util.List;
+
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.event.EventBus;
+import com.sfeir.richercms.main.client.view.MainPageView;
 import com.sfeir.richercms.main.client.interfaces.IInformationPanel;
 import com.sfeir.richercms.main.client.interfaces.INavigationPanel;
 import com.sfeir.richercms.main.client.interfaces.IReorderPagePanel;
@@ -15,8 +18,8 @@ import com.sfeir.richercms.main.client.presenter.NavigationPanelPresenter;
 import com.sfeir.richercms.main.client.presenter.ReorderPagePanelPresenter;
 import com.sfeir.richercms.main.client.presenter.TinyMCEPanelPresenter;
 import com.sfeir.richercms.main.client.presenter.ValidationPanelPresenter;
-import com.sfeir.richercms.main.client.view.MainPageView;
 import com.sfeir.richercms.main.shared.BeanArboPage;
+import com.sfeir.richercms.main.shared.BeanTranslationPage;
 
 
 /**
@@ -27,7 +30,6 @@ import com.sfeir.richercms.main.shared.BeanArboPage;
 @Events(startView = MainPageView.class, module = MainModule.class, debug = true)
 public interface MainEventBus extends EventBus {
 
-	
 	/**
 	 * Display the new view in the rootLayout
 	 * @param widget : the new view
@@ -62,9 +64,20 @@ public interface MainEventBus extends EventBus {
 	@Event( handlers = {MainPagePresenter.class, InformationPanelPresenter.class, ValidationPanelPresenter.class, TinyMCEPanelPresenter.class} )
 	public void addPage(Long id);
 	
-	
+	/**
+	 * Fired by the MainPagePresenter if the user need realy to abort his work
+	 */
 	@Event( handlers = {MainPagePresenter.class, InformationPanelPresenter.class, ValidationPanelPresenter.class, TinyMCEPanelPresenter.class} )
 	public void cancelPage();
+	
+	/**
+	 * Fired by the Validation Panel when the cancel button is clicked 
+	 * or when a other node is selected in the tree of the NavigationPanel.
+	 * This Event is catch by the MainPagePresenter who request user if he would abort
+	 * his previous work.
+	 */
+	@Event( handlers = MainPagePresenter.class)
+	public void confirmCancelPage();
 	
 	/**
 	 * fired by the NavigationPresenter when the addPage menu is clicked
@@ -96,7 +109,7 @@ public interface MainEventBus extends EventBus {
 	 * @param Key
 	 */
 	@Event( handlers = {TinyMCEPanelPresenter.class} )
-	public void displayContent(String content);
+	public void displayContent(List<BeanTranslationPage>  translationContents);
 	
 	/**
 	 * Fired by the ValidationPresenter when the add buton is clicked
@@ -120,10 +133,10 @@ public interface MainEventBus extends EventBus {
 	
 	/**
 	 * Fired by the ContentPresenter for Sending the content to save a page (in the mainPresenter)
-	 * @param content : content of the current Page
+	 * @param translationsContent : content of all Page (modify or not)
 	 */
 	@Event( handlers =  MainPagePresenter.class )
-	public void sendContent(String content);
+	public void sendContent(List<String> translationsContent);
 	
 	/**
 	 * reload all child of a selected ArboPage
@@ -209,7 +222,7 @@ public interface MainEventBus extends EventBus {
 	 * Fired by the MainPresenter when a new language is selected in the listBox.
 	 * @param index : the index of the new translation to display
 	 */
-	@Event( handlers =  InformationPanelPresenter.class )
+	@Event( handlers =  {InformationPanelPresenter.class, TinyMCEPanelPresenter.class} )
 	public void changeTranslation(int index);
 	
 	/**

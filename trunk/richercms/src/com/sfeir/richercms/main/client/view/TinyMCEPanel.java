@@ -4,6 +4,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.ResizeComposite;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import com.sfeir.richercms.main.client.interfaces.ITinyMCEPanel;
 import com.sfeir.richercms.main.client.tinyMCE.TinyMCE;
 
@@ -14,7 +15,7 @@ public class TinyMCEPanel extends ResizeComposite implements ITinyMCEPanel {
 
 	private TinyMCE tmce = null;
 	private final int height = Window.getClientHeight()-30;
-	private HTMLPanel  displayPanel = null;
+	private ScrollPanel  displayPanel = null;
 	private LayoutPanel main = null;
 	/**
 	 * Constructor
@@ -29,7 +30,7 @@ public class TinyMCEPanel extends ResizeComposite implements ITinyMCEPanel {
 	 */
 	public void createView() {
 		this.main = new LayoutPanel();
-		this.displayEditor("");
+		this.displayEditor(""); // first initialization
 		this.initWidget(main);
 	}
 
@@ -47,7 +48,7 @@ public class TinyMCEPanel extends ResizeComposite implements ITinyMCEPanel {
 	
 	public String getContent() {
 		if(this.main.getWidget(0).equals(this.displayPanel))
-			return this.displayPanel.getWidget(0).toString();
+			return this.clearDiv(this.displayPanel.getWidget().toString());
 		else
 			return this.tmce.getText();
 	}
@@ -70,14 +71,27 @@ public class TinyMCEPanel extends ResizeComposite implements ITinyMCEPanel {
 	
 	public void displayEditor(String html) {
 		this.main.clear();
-		this.tmce = new TinyMCE((height/2-50)+"px");
+		this.tmce = new TinyMCE((this.height/2+67)+"px");
 		this.main.add(this.tmce);
 		this.setContent(html);
 	}
 	
 	public void displayViewer(String html) {
 		this.main.clear();
-		this.displayPanel = new HTMLPanel(html);
+		this.displayPanel = new ScrollPanel();
+		HTMLPanel HTMLP = new HTMLPanel(html);
+		this.displayPanel.add(HTMLP);
 		this.main.add(this.displayPanel);
+	}
+	
+	/**
+	 * Remove the div that includes the content after a displaying in the HTMLPanel
+	 * @param content : the content with the div
+	 * @return the same content without unnecessary div
+	 */
+	private String clearDiv(String content) {
+		String newContent = content.replaceAll("^<div[^<]*>", "");
+		String newContent2 = newContent.replaceAll("</div>$", "");
+		return newContent2;
 	}
 }

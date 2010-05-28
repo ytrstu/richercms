@@ -4,6 +4,7 @@ import com.google.gwt.dom.client.Element;
 import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.RequiresResize;
 import com.google.gwt.user.client.ui.TextArea;
+import com.sfeir.richercms.main.client.tinyMCE.TinyMCE;
 
 public class ResizeTinyMCETextArea extends TextArea implements RequiresResize {
 

@@ -13,11 +13,13 @@ import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.sfeir.richercms.client.view.PopUpMessage;
 import com.sfeir.richercms.main.client.ArboPageServiceAsync;
+import com.sfeir.richercms.main.client.MainState;
 import com.sfeir.richercms.main.client.event.MainEventBus;
 import com.sfeir.richercms.main.client.interfaces.IInformationPanel;
 import com.sfeir.richercms.main.client.view.InformationPanel;
 import com.sfeir.richercms.main.shared.BeanArboPage;
 import com.sfeir.richercms.main.shared.BeanTranslationPage;
+
 
 @Presenter( view = InformationPanel.class)
 public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, MainEventBus>{
@@ -26,7 +28,7 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 	private BeanArboPage currentPage = null;
 	private int translationIndex = 0;
 	private int cpt = 0;
-	private int state = 0; //1 => add; 0=>modify
+	private MainState state = MainState.display;;
 	
 	public InformationPanelPresenter() {
 		super();
@@ -99,14 +101,14 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 		List<BeanTranslationPage> lst = null;
 		BeanTranslationPage newTranslation = new BeanTranslationPage();
 		
-		if(this.state == 1) { 
+		if(this.state == MainState.add) { 
 			// on met toutes les translations a vide
 			lst = new ArrayList<BeanTranslationPage>();
 			for(BeanTranslationPage bTp : this.currentPage.getTranslation()) {
 				lst.add(new BeanTranslationPage());
 			}
 		}else { 
-			// 2 => modify; on garde toute les translations
+			// 0 => modify; on garde toute les translations
 			lst = this.currentPage.getTranslation();
 			// il nous faut garder l'id de l'anciennen traduction 
 			// pour pouvoir la mettre dans la nouvelle traduction pour l'écrasé
@@ -149,7 +151,6 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 			view.setPublicationFinish(page.getPublicationFinish());
 			view.setPublicationStart(page.getPublicationStart());
 			view.setUrlName(page.getTranslation().get(this.translationIndex).getUrlName());
-			eventBus.displayContent(page.getTranslation().get(this.translationIndex).getContent());
 		}
 		else {
 			view.setBrowserTitle("");
@@ -159,7 +160,6 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 			view.setPublicationFinish(page.getPublicationFinish());
 			view.setPublicationStart(page.getPublicationStart());
 			view.setUrlName("");
-			eventBus.displayContent(page.getTranslation().get(0).getContent());
 		}
 		
 		// on active l'aide uniquement sur les traductions et pas sur la langue par defaut
@@ -197,13 +197,15 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 		this.rpcPage.getArboPage(id, new AsyncCallback<BeanArboPage>() {
 			public void onSuccess(BeanArboPage result) {
 				view.deasabledWidgets();
-				displayArboPage(result);
 				currentPage = result;
+				displayArboPage(result);
+				eventBus.displayContent(result.getTranslation());
 			}
 			public void onFailure(Throwable caught) {
 				PopUpMessage p = new PopUpMessage(view.getConstants().EGetCurPage());
 				p.show();}
 		});
+		this.state = MainState.display;
 	}
 	
 	public void onDisplayMainPage() {
@@ -212,11 +214,13 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 				view.deasabledWidgets();
 				currentPage = result;
 				displayArboPage(result);
+				eventBus.displayContent(result.getTranslation());
 			}
 			public void onFailure(Throwable caught) {
 				PopUpMessage p = new PopUpMessage(view.getConstants().EGetMainPage());
 				p.show();}
 		});	
+		this.state = MainState.display;
 	}
 	
 	
@@ -226,38 +230,65 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 		view.clearFields();
 		view.enabledWidgets();
 		view.disableHelp();
-		this.state = 1;
+		this.state = MainState.add;
+		//make a clean BeanArboPage
+		this.currentPage = addInformationInPage();
+		//send clean translation to add new content
+		eventBus.displayContent(this.currentPage.getTranslation());
 	}
 	
 	public void onCancelPage() {
-		view.clearFields();
 		view.deasabledWidgets();
 		view.disableHelp();
 		view.setTitle(view.getConstants().DefaultTitleInformation());
+		this.state = MainState.display;
 	}
 	
 	public void onModifyPage(Long id) {
 		view.enabledWidgets();
-		this.state = 2;
+		this.state = MainState.modify;
 	}
 	
 	public void onSavePage() {
-		view.deasabledWidgets();
+		//view.deasabledWidgets();
+		//this.state = MainState.display;
 	}
 	
 	public void onDeletePage() {
 		view.clearFields();
+		this.state = MainState.display;
 	}
 	
 	public void onCallInfo() {
-		BeanArboPage bean = addInformationInPage();
-		this.eventBus.sendInfo(bean);
+		//need the current state to restore them later
+		MainState currentState = this.state;
+		//modifymode : modify the translation in the current page
+		this.state = MainState.modify;
+		//add the translation in the current page
+		this.currentPage = this.addInformationInPage();
+		//reconfigure the state
+		this.state = currentState;
+		//send info
+		this.eventBus.sendInfo(this.currentPage);
 		this.view.hideAllHelpField();
-		view.setTitle(bean.getTranslation().get(0).getUrlName());
+		view.setTitle(this.currentPage.getTranslation().get(0).getUrlName());
 	}
 	
 	public void onChangeTranslation(int index) {
+		if(this.state == MainState.modify){//modifyMode
+			//add the current translation in the page
+			this.currentPage = this.addInformationInPage();
+		}else if(this.state == MainState.add){
+			//modifymode : modify a translation in the current page
+			this.state = MainState.modify;
+			//add the translation in the current page
+			this.currentPage = this.addInformationInPage();
+			//addMode : necessary to add a page in the datastore
+			this.state = MainState.add;
+		}
+		// new index selected in the Language list
 		this.translationIndex = index;
+		// display the new translation
 		this.displayArboPage(this.currentPage);
 	}
 

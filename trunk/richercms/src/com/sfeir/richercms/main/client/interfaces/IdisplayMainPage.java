@@ -126,4 +126,5 @@ public interface IdisplayMainPage extends LazyView {
 	 * @return the MainConstants
 	 */
 	public MainConstants getConstants();
+	
 }

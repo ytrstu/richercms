@@ -1,5 +1,7 @@
 package com.sfeir.richercms.main.client.tinyMCE;
 
+import com.sfeir.richercms.main.client.tinyMCE.FileManagerBox;
+
 
 public class FileManager {
 

@@ -9,13 +9,12 @@ import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.FileUpload;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.sfeir.richercms.main.client.tinyMCE.FileManager;
 
 public class FileManagerBox extends DialogBox {
-	
-	private final TextBox url = new TextBox();
 
 	public FileManagerBox(String urlName) {
         // Set the dialog box's caption.
@@ -27,18 +26,19 @@ public class FileManagerBox extends DialogBox {
         // Enable glass background.
         setGlassEnabled(true);
 
+        
 
         VerticalPanel panel = new VerticalPanel();
         
-        url.setText(urlName);
-        panel.add(url);
+        final FileUpload upload = new FileUpload();
+        panel.add(upload);
         
-        Button ok = new Button("OK");
+        Button ok = new Button("upload");
         ok.addClickHandler(new ClickHandler() {
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				FileManager.setTinyMceUrl(url.getText());
+				FileManager.setTinyMceUrl(upload.getFilename());
 				hide();
 			}
 		});
@@ -66,7 +66,6 @@ public class FileManagerBox extends DialogBox {
         	// associé à la popup du FileManager n'est pas encore crée par GWT.
 			@Override
 			public void execute() {
-				url.setFocus(true);
 				// Récupération de l'id de la popup de tinymce pour ensuite retrouver son z-index
 		        Element eltBody = RootPanel.getBodyElement();
 		        com.google.gwt.dom.client.Element fils = eltBody.getFirstChildElement();

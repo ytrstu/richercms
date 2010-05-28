@@ -55,7 +55,7 @@ public interface MainConstants extends Constants {
 	  @DefaultStringValue("Modify")
 	  String BtnModify();
 	  
-	  @DefaultStringValue("Cancel")
+	  @DefaultStringValue("return")
 	  String BtnCancel();
 	  
 	  @DefaultStringValue("Reset position")

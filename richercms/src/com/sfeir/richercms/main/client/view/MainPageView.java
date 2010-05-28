@@ -71,6 +71,7 @@ public class MainPageView extends ResizeComposite implements IdisplayMainPage {
 	    // When it's necessary, this popUp is show
 		this.popUp = new CenterEventPopUp(400, 200,"Sauvegarde en cours");
 	    this.popUp.setVisible(false);
+
 		
 	    this.lgAndMenuPanel = new  LayoutPanel();
 	    this.createLgAndMenu();

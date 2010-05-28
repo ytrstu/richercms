@@ -31,6 +31,8 @@ import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.ResizeComposite;
 import com.google.gwt.user.client.ui.TextArea;
+import com.sfeir.richercms.main.client.tinyMCE.FileManager;
+import com.sfeir.richercms.main.client.tinyMCE.ResizeTinyMCETextArea;
 
 /**
  * TinyMCE -

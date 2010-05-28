@@ -28,6 +28,7 @@ import com.sfeir.richercms.main.client.ArboPageServiceAsync;
 import com.sfeir.richercms.main.client.event.MainEventBus;
 import com.sfeir.richercms.main.client.interfaces.INavigationPanel;
 import com.sfeir.richercms.main.client.view.NavigationPanel;
+import com.sfeir.richercms.main.client.view.custom.ConfirmationBox;
 import com.sfeir.richercms.main.client.view.custom.HorizontalEventPanel;
 import com.sfeir.richercms.main.shared.BeanArboPage;
 import com.sfeir.richercms.main.shared.BeanTranslationPage;
@@ -77,7 +78,13 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Ma
 		// commande pour la suppression d'une page
 		this.view.getPopUpMenuBar().setDelPageCommand(new Command(){
 			public void execute() {
-				deletePage();
+				view.getPopUpMenuBar().hide();
+				ConfirmationBox confirmPopUp = new ConfirmationBox("ATTENTION", "Etes-vous sûr de vouloir supprimer cette page et toutes ses sous-pages");
+				confirmPopUp.getClickOkEvt().addClickHandler(new ClickHandler() {
+					public void onClick(ClickEvent event) {
+						deletePage();
+					}		
+				});	
 			}});
 		// commande pour l'ajout d'une sous-page
 		this.view.getPopUpMenuBar().setAddPageCommand(new Command(){

@@ -10,7 +10,8 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 
-public class HorizontalEventPanel extends HorizontalPanel implements HasMouseOverHandlers, HasMouseOutHandlers {
+public class HorizontalEventPanel extends HorizontalPanel implements
+		HasMouseOverHandlers, HasMouseOutHandlers {
 
 	public HorizontalEventPanel() {
 		super();

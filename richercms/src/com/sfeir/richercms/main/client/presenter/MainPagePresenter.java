@@ -4,12 +4,15 @@ import java.util.List;
 
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.mvp4g.client.annotation.InjectService;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.sfeir.richercms.client.view.PopUpMessage;
 import com.sfeir.richercms.main.client.ArboPageServiceAsync;
+import com.sfeir.richercms.main.client.MainState;
 import com.sfeir.richercms.main.client.event.MainEventBus;
 import com.sfeir.richercms.main.client.interfaces.IInformationPanel;
 import com.sfeir.richercms.main.client.interfaces.INavigationPanel;
@@ -18,6 +21,7 @@ import com.sfeir.richercms.main.client.interfaces.ITinyMCEPanel;
 import com.sfeir.richercms.main.client.interfaces.IValidationPanel;
 import com.sfeir.richercms.main.client.interfaces.IdisplayMainPage;
 import com.sfeir.richercms.main.client.view.MainPageView;
+import com.sfeir.richercms.main.client.view.custom.ConfirmationBox;
 import com.sfeir.richercms.main.shared.BeanArboPage;
 import com.sfeir.richercms.wizard.client.LanguageServiceAsync;
 import com.sfeir.richercms.wizard.shared.BeanLanguageDetails;
@@ -29,7 +33,7 @@ public class MainPagePresenter extends LazyPresenter<IdisplayMainPage, MainEvent
 	private LanguageServiceAsync rpcLanguage = null;
 	private BeanArboPage editingPage = null;
 	private Long id = null; // field used to save the key of the current Page
-	private int AddOrModify = 0; //0 => add, 1=> modify
+	private MainState state = MainState.display;
 	
 	public MainPagePresenter() {
 		super();
@@ -110,25 +114,45 @@ public class MainPagePresenter extends LazyPresenter<IdisplayMainPage, MainEvent
 	/////////////////////////////////////////////// EVENT ///////////////////////////////////////////////
 	
 	public void onDisplayNormalPanel() {
-		this.view.displayNormalPanel();
+		if(this.state.equals(MainState.display)) {
+			view.displayNormalPanel();
+		} else {
+			ConfirmationBox confirmPopUp = new ConfirmationBox("ATTENTION", "Vous etes sur le point de TOUT perdre, mouahaha !!!");
+			confirmPopUp.getClickOkEvt().addClickHandler(new ClickHandler() {
+				public void onClick(ClickEvent event) {
+					view.displayNormalPanel();
+				}		
+			});
+		}
 	}
 	
 	public void onAddPage(Long id){
-		this.AddOrModify = 0;
+		this.state = MainState.add;
 		this.id = id;
-		this.view.disableLanguageBox();
+		//this.view.disableLanguageBox();
 		this.view.setIndexOfLgToDefault();
 	}
 	
 	public void onModifyPage(Long id)
 	{
-		this.AddOrModify = 1;
+		this.state = MainState.modify;
 		this.id = id;
 		this.view.enableLanguageBox();
 	}
 	
 	public void onCancelPage() {
+		
 		this.view.enableLanguageBox();
+		this.state = MainState.display;
+	}
+	
+	public void onConfirmCancelPage() {
+		ConfirmationBox confirmPopUp = new ConfirmationBox("ATTENTION", "Etes-vous sûr de vouloir quiter la tâche en cours ?");
+		confirmPopUp.getClickOkEvt().addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				eventBus.cancelPage();
+			}		
+		});
 	}
 	
 	public void onChangeNavPanel(INavigationPanel navPanel) {
@@ -149,6 +173,7 @@ public class MainPagePresenter extends LazyPresenter<IdisplayMainPage, MainEvent
 	
 	public void onDisplayReorderPage(IReorderPagePanel reorderPanel) {
 		this.view.displayReorderPanel(reorderPanel);
+		this.state = MainState.display;
 	}
 	
 	public void onStartMain() {
@@ -164,6 +189,7 @@ public class MainPagePresenter extends LazyPresenter<IdisplayMainPage, MainEvent
 	
 	public void onDisplayNewPageInTree() {
 		this.view.hideWaitPopUp();
+		this.state = MainState.display;
 	}
 
 	public void onSendInfo(BeanArboPage information) {
@@ -174,18 +200,18 @@ public class MainPagePresenter extends LazyPresenter<IdisplayMainPage, MainEvent
 		this.eventBus.callContent();
 	}
 	
-	public void onSendContent(String content) {
-		this.editingPage.getTranslation().get(view.getIndexOfCurrentLg()).setContent(content);
-		switch(this.AddOrModify) {
-			case 0 :
-				this.addPage();
-				break;
-			case 1 :
-				this.modifyPage();
-				break;
-			default :
-				break;
+	public void onSendContent(List<String> translationsContent) {
+		int i = 0;
+		for(String content : translationsContent) {
+			// insert all content in new TranslationPages
+			this.editingPage.getTranslation().get(i).setContent(content);
+			i++;
 		}
+		
+		if(this.state.equals(MainState.add ))
+			this.addPage();
+		else if(this.state.equals(MainState.modify ))
+			this.modifyPage();
 	}
 	
 	public void onDeletePage() {

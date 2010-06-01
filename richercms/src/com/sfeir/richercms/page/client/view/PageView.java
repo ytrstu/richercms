@@ -15,6 +15,8 @@ import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.ResizeComposite;
 import com.google.gwt.user.client.ui.SplitLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.sfeir.richercms.image.client.interfaces.IImagePanel;
+import com.sfeir.richercms.image.client.view.ImagePanel;
 import com.sfeir.richercms.page.client.PageConstants;
 import com.sfeir.richercms.page.client.interfaces.IInformationPanel;
 import com.sfeir.richercms.page.client.interfaces.INavigationPanel;
@@ -48,6 +50,8 @@ public class PageView extends ResizeComposite implements IdisplayPage {
 	// include in the topBottomSpliter
 	private LayoutPanel topPanel = null;
 	private LayoutPanel bottomPanel = null;
+	
+	private MenuItem Image = null;
 
 	private final int height = Window.getClientHeight()-30;
 	
@@ -133,6 +137,8 @@ public class PageView extends ResizeComposite implements IdisplayPage {
 	    // Create the editing menu
 	    MenuBar edition = new MenuBar(true);
 	    edition.setAnimationEnabled(true);
+	    this.Image = new MenuItem("Image ...", new Command(){public void execute(){}});
+	    edition.addItem(this.Image);
 	    edition.addItem("Save", new Command(){public void execute(){}});
 	    edition.addItem("Clear", new Command(){public void execute(){}});
 	    edition.addItem("...", new Command(){public void execute(){}});
@@ -282,5 +288,14 @@ public class PageView extends ResizeComposite implements IdisplayPage {
 		
 	public PageConstants getConstants() {
 		return this.constants;
+	}
+
+	public void setImageCommand(Command cmd) {
+		this.Image.setCommand(cmd);
+	}
+	
+	public void displayImagePanel(IImagePanel p){
+		this.rightPanel.clear();
+		this.rightPanel.add((ImagePanel)p);
 	}
 }

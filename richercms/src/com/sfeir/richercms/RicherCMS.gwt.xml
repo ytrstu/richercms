@@ -30,6 +30,12 @@
   <source path='wizard/shared'/>
   <source path='page/client'/>
   <source path='page/shared'/>
+  <source path='image/client'/>
+  <source path='image/shared'/>
+  
+   <!-- Available Services -->
+  <servlet path="/upload" class="com.sfeir.richercms.image.server.FileUploadServlet" />
+  <servlet path="/thumbnail" class="com.sfeir.richercms.image.server.ThumbNailServlet" />
   
     <!-- Supported Language.	-->
   <extend-property name='locale' values='fr'/>

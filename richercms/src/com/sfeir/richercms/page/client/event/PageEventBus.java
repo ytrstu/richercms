@@ -5,6 +5,8 @@ import java.util.List;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
+import com.mvp4g.client.annotation.module.ChildModule;
+import com.mvp4g.client.annotation.module.ChildModules;
 import com.mvp4g.client.event.EventBus;
 import com.sfeir.richercms.page.client.interfaces.IInformationPanel;
 import com.sfeir.richercms.page.client.interfaces.INavigationPanel;
@@ -20,6 +22,8 @@ import com.sfeir.richercms.page.client.presenter.ValidationPanelPresenter;
 import com.sfeir.richercms.page.client.view.PageView;
 import com.sfeir.richercms.page.shared.BeanArboPage;
 import com.sfeir.richercms.page.shared.BeanTranslationPage;
+import com.sfeir.richercms.image.client.event.ImageMobule;
+import com.sfeir.richercms.image.client.interfaces.IImagePanel;
 
 
 /**
@@ -28,6 +32,8 @@ import com.sfeir.richercms.page.shared.BeanTranslationPage;
  *
  */
 @Events(startView = PageView.class, module = PageModule.class, debug = true)
+@ChildModules( 
+		@ChildModule( moduleClass = ImageMobule.class, async = true, autoDisplay = false))
 public interface PageEventBus extends EventBus {
 
 	/**
@@ -276,4 +282,17 @@ public interface PageEventBus extends EventBus {
 	 */
 	@Event( handlers =  PagePresenter.class )
 	public void addErrorLinePopUp(String text);
+	
+	/**
+	 * Fired by the PagePresenter, when the corresponding entryMenu is clicked
+	 */
+	@Event( modulesToLoad = ImageMobule.class )
+	public void startImagePanel();
+	
+	/**
+	 * Fired by the ImagePanelPresenter, to display it in the mainPage
+	 * @param p
+	 */
+	@Event( handlers =  PagePresenter.class )
+	public void displayImagePanel(IImagePanel p);
 }

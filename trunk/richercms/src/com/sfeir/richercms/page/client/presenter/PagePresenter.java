@@ -6,11 +6,13 @@ import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.mvp4g.client.annotation.InjectService;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.sfeir.richercms.client.view.PopUpMessage;
+import com.sfeir.richercms.image.client.interfaces.IImagePanel;
 import com.sfeir.richercms.page.client.ArboPageServiceAsync;
 import com.sfeir.richercms.page.client.PageState;
 import com.sfeir.richercms.page.client.event.PageEventBus;
@@ -50,6 +52,11 @@ public class PagePresenter extends LazyPresenter<IdisplayPage, PageEventBus> {
 				eventBus.changeTranslation(view.getIndexOfCurrentLg());
 			}
 	    	});
+		
+		view.setImageCommand(new Command(){
+			public void execute() {
+				eventBus.startImagePanel();
+		}});
 	}
 	
 	
@@ -173,6 +180,11 @@ public class PagePresenter extends LazyPresenter<IdisplayPage, PageEventBus> {
 	
 	public void onDisplayReorderPage(IReorderPagePanel reorderPanel) {
 		this.view.displayReorderPanel(reorderPanel);
+		this.state = PageState.display;
+	}
+	
+	public void onDisplayImagePanel(IImagePanel p) {
+		this.view.displayImagePanel(p);
 		this.state = PageState.display;
 	}
 	

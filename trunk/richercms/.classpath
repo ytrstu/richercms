@@ -14,7 +14,7 @@
 	<classpathentry kind="lib" path="gwtLib/gin-1.0.jar"/>
 	<classpathentry kind="lib" path="gwtLib/guice-2.0.jar"/>
 	<classpathentry kind="lib" path="gwtLib/mvp4g-1.2.0-SNAPSHOT.jar"/>
-	<classpathentry kind="con" path="com.google.appengine.eclipse.core.GAE_CONTAINER"/>
 	<classpathentry kind="lib" path="testLib/mockito-all-1.8.4.jar"/>
+	<classpathentry kind="con" path="com.google.appengine.eclipse.core.GAE_CONTAINER"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

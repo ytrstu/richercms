@@ -16,10 +16,6 @@
     	<servlet-class>com.esial.richercms.server.PageServiceImpl</servlet-class>
   	</servlet>
   	
-  	<servlet>
-    	<servlet-name>uploadServlet</servlet-name>
-    	<servlet-class>com.esial.richercms.server.FileUploadServlet</servlet-class>
-  	</servlet>
   	
   	<servlet>
   		<servlet-name>statService</servlet-name>
@@ -46,7 +42,22 @@
     	<servlet-class>com.sfeir.richercms.page.server.ServiceArboPageImpl</servlet-class>
   	</servlet>
   	
+  	<servlet>
+    	<servlet-name>uploadServlet</servlet-name>
+    	<servlet-class>com.sfeir.richercms.image.server.FileUploadServlet</servlet-class>
+  	</servlet>
   	
+  	<servlet>
+    	<servlet-name>thumbNailServlet</servlet-name>
+    	<servlet-class>com.sfeir.richercms.image.server.ThumbNailServlet</servlet-class>
+  	</servlet>
+  	
+ 	<servlet>
+    	<servlet-name>fileServiceServlet</servlet-name>
+    	<servlet-class>com.sfeir.richercms.image.server.ServiceFileImpl</servlet-class>
+  	</servlet>
+  	
+
   
  	<servlet-mapping>
   		<servlet-name>userService</servlet-name>
@@ -56,11 +67,6 @@
 	<servlet-mapping>
     	<servlet-name>pageService</servlet-name>
     	<url-pattern>/RichercmsEsial/pages</url-pattern>
-  	</servlet-mapping>
-
-  	<servlet-mapping>
-    	<servlet-name>uploadServlet</servlet-name>
-    	<url-pattern>/RichercmsEsial/upload</url-pattern>
   	</servlet-mapping>
   
 	<servlet-mapping>
@@ -87,6 +93,23 @@
   		<servlet-name>arboPageServiceServlet</servlet-name>
   		<url-pattern>/RicherCMS/arboPageService</url-pattern>
 	</servlet-mapping>
+	
+	<servlet-mapping>
+  		<servlet-name>fileServiceServlet</servlet-name>
+  		<url-pattern>/RicherCMS/fileService</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+    	<servlet-name>uploadServlet</servlet-name>
+    	<url-pattern>/RicherCMS/upload</url-pattern>
+  	</servlet-mapping>
+  	
+  	<servlet-mapping>
+    	<servlet-name>thumbNailServlet</servlet-name>
+    	<url-pattern>/RicherCMS/thumbnail</url-pattern>
+  	</servlet-mapping>
+  	
+
   
   
   

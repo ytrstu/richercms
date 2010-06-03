@@ -53,9 +53,14 @@ public class PagePresenter extends LazyPresenter<IdisplayPage, PageEventBus> {
 			}
 	    	});
 		
-		view.setImageCommand(new Command(){
+		view.setImageToolCommand(new Command(){
 			public void execute() {
 				eventBus.startImagePanel();
+		}});
+		
+		view.setPageToolCommand(new Command(){
+			public void execute() {
+				view.reDisplayPageView();
 		}});
 	}
 	

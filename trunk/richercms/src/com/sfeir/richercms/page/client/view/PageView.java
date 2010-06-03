@@ -37,7 +37,9 @@ public class PageView extends ResizeComposite implements IdisplayPage {
 	//gestion des langues
 	private PageConstants constants = GWT.create(PageConstants.class);
 	private LayoutPanel lgAndMenuPanel = null;
-	private SplitLayoutPanel leftRightSpliter = null;
+	private LayoutPanel toolPanel = null; //contain current tool => pageTool, imageTool, ...
+	private LayoutPanel southPanel = null; //contain widget displaying in the south  => ValidationPanel, ...
+	private SplitLayoutPanel leftRightSpliter = null; // page tool
 	private SplitLayoutPanel topBottomSpliter = null;
 	private MenuBar mainmenu  = null;
 	private DockLayoutPanel dispositionPanel = null;
@@ -51,7 +53,8 @@ public class PageView extends ResizeComposite implements IdisplayPage {
 	private LayoutPanel topPanel = null;
 	private LayoutPanel bottomPanel = null;
 	
-	private MenuItem Image = null;
+	private MenuItem imageTool = null;
+	private MenuItem pageTool = null;
 
 	private final int height = Window.getClientHeight()-30;
 	
@@ -69,6 +72,10 @@ public class PageView extends ResizeComposite implements IdisplayPage {
 	public void createView() {
 		
 		this.dispositionPanel = new DockLayoutPanel(Unit.PX);
+		this.dispositionPanel.addStyleName("disposition-panel");
+		this.toolPanel = new LayoutPanel();
+		this.southPanel = new LayoutPanel();
+		
 	    this.leftRightSpliter = new SplitLayoutPanel();
 	    this.topBottomSpliter = new SplitLayoutPanel();
 	    
@@ -105,6 +112,13 @@ public class PageView extends ResizeComposite implements IdisplayPage {
 	    // connects the two panels to the leftRightSpliter
 	    this.leftRightSpliter.addWest(this.leftPanel, 168);
 	    this.leftRightSpliter.add(this.rightPanel);
+	    this.toolPanel.add(this.leftRightSpliter);
+	    
+	    //add panel containing south's widgets
+	    this.dispositionPanel.addSouth(this.southPanel, 37);
+	    //add panel containing the current tool
+	    this.dispositionPanel.add(this.toolPanel);
+	    
 	    
 	    // FINAL : PopUp + dispositionPanel (=> all widget)
 	    this.finalContainer = new LayoutPanel();
@@ -130,19 +144,26 @@ public class PageView extends ResizeComposite implements IdisplayPage {
 	    this.mainmenu = new MenuBar();
 	    mainmenu.setStyleName("mainMenuBar");
 	    this.mainmenu.setAutoOpen(true);
-	    this.mainmenu.setWidth("200px");
+	    this.mainmenu.setWidth("300px");
 	    this.mainmenu.setHeight("20px");
 	    this.mainmenu.setAnimationEnabled(true);
 	    
 	    // Create the editing menu
 	    MenuBar edition = new MenuBar(true);
 	    edition.setAnimationEnabled(true);
-	    this.Image = new MenuItem("Image ...", new Command(){public void execute(){}});
-	    edition.addItem(this.Image);
 	    edition.addItem("Save", new Command(){public void execute(){}});
 	    edition.addItem("Clear", new Command(){public void execute(){}});
 	    edition.addItem("...", new Command(){public void execute(){}});
 	    this.mainmenu.addItem(new MenuItem("Edition", edition));
+	    
+	    //Create the tool menu
+	    MenuBar tools = new MenuBar(true);
+	    tools.setAnimationEnabled(true);
+	    this.pageTool = new MenuItem("Page ...", new Command(){public void execute(){}});
+	    this.imageTool = new MenuItem("Image ...", new Command(){public void execute(){}});
+	    tools.addItem(this.pageTool);
+	    tools.addItem(this.imageTool);
+	    this.mainmenu.addItem(new MenuItem("Tools", tools));
 	    
 	    // Create the setting menu
 	    MenuBar setting = new MenuBar(true);
@@ -220,9 +241,9 @@ public class PageView extends ResizeComposite implements IdisplayPage {
 	}
 
 	public void setValidationPanel(IValidationPanel validationPanel) {
-		this.dispositionPanel.addSouth((ValidationPanel)validationPanel, 37);
+		this.southPanel.add((ValidationPanel)validationPanel);
 		//ajout de l'élément final : signifie la fin du chargement
-	    this.dispositionPanel.add(this.leftRightSpliter);
+	   // this.dispositionPanel.add(this.leftRightSpliter);
 	}
 	
 	public void addLanguageInListBox(String name, String key, boolean defaultLg) {
@@ -290,12 +311,21 @@ public class PageView extends ResizeComposite implements IdisplayPage {
 		return this.constants;
 	}
 
-	public void setImageCommand(Command cmd) {
-		this.Image.setCommand(cmd);
+	public void setImageToolCommand(Command cmd) {
+		this.imageTool.setCommand(cmd);
+	}
+	
+	public void setPageToolCommand(Command cmd) {
+		this.pageTool.setCommand(cmd);
 	}
 	
 	public void displayImagePanel(IImagePanel p){
-		this.rightPanel.clear();
-		this.rightPanel.add((ImagePanel)p);
+		this.toolPanel.clear();
+		this.toolPanel.add((ImagePanel)p);
+	}
+	
+	public void reDisplayPageView() {
+		this.toolPanel.clear();
+		this.toolPanel.add(this.leftRightSpliter);
 	}
 }

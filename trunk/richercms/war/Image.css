@@ -1,0 +1,22 @@
+.unlinkThumb-table {
+  border: 1px solid red;
+}
+
+.unlinkThumb-cell {
+  border: 1px solid black;
+  text-align:center;
+}
+
+.linkThumb-table {
+  border: 1px solid red;
+}
+
+.linkThumb-cell {
+  border: 1px solid black;
+  text-align:center;
+}
+
+.image-zone .dragdrop-boundary {
+  background-color: #F8F8F8; /* light gray */
+  border: 1px solid black;
+}

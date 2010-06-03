@@ -53,7 +53,7 @@ public class AddPanelPresenter extends LazyPresenter<IAddPanel, ImageEventBus> {
 		});
 	}
 	
-	public void onStartAddPanel() {
+	public void onStartPanels() {
 		eventBus.showInformationPopUp();
 		displayThumbNails();
 		this.eventBus.displayAddPanel(this.view);

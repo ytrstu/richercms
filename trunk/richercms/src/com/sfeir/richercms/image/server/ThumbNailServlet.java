@@ -37,7 +37,7 @@ public class ThumbNailServlet extends HttpServlet  {
 		String id = req.getParameter("id");
 		MemoryFileItem mfi = getMemoryFileItem(new Long(id));
 		if(mfi != null) {
-			Image thumb = resizeImg(ImagesServiceFactory.makeImage(mfi.get()), 200, 200);
+			Image thumb = resizeImg(ImagesServiceFactory.makeImage(mfi.get()), 100, 100);
 			
 			resp.setContentType(mfi.getContentType());
 			ServletOutputStream outStream = resp.getOutputStream();

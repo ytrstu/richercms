@@ -7,6 +7,7 @@ import com.google.gwt.user.client.ui.TabLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.sfeir.richercms.image.client.interfaces.IAddPanel;
 import com.sfeir.richercms.image.client.interfaces.IImagePanel;
+import com.sfeir.richercms.image.client.interfaces.ILinkPanel;
 
 /**
  * Panel needed to manage image 
@@ -40,6 +41,12 @@ public class ImagePanel extends ResizeComposite implements IImagePanel{
 	}
 	
 	public void setAddPanel(IAddPanel p) {
+		this.addPanel.clear();	
 		this.addPanel.add((AddPanel) p);
+	}
+	
+	public void setLinkPanel(ILinkPanel p) {
+		this.linkPanel.clear();
+		this.linkPanel.add((LinkPanel) p);
 	}
 }

@@ -6,6 +6,10 @@ DIV.dragdrop-dropTarget {
   border: 1px solid black;
 }
 
+DIV.dragdrop-dropTarget-engage {
+  background: #BCDEFF; /* lighter blue */
+}
+
 /* ------------ FlexTableRow ------------ */
 .flexTableRow .dragdrop-boundary {
   background-color: #FFFFFF; /* white */

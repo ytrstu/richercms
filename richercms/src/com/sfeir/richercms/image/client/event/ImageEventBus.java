@@ -6,8 +6,10 @@ import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.event.EventBus;
 import com.sfeir.richercms.image.client.interfaces.IAddPanel;
 import com.sfeir.richercms.image.client.interfaces.IImagePanel;
+import com.sfeir.richercms.image.client.interfaces.ILinkPanel;
 import com.sfeir.richercms.image.client.presenter.AddPanelPresenter;
 import com.sfeir.richercms.image.client.presenter.ImagePanelPresenter;
+import com.sfeir.richercms.image.client.presenter.LinkPanelPresenter;
 import com.sfeir.richercms.image.client.view.ImagePanel;
 
 @Events(startView = ImagePanel.class, module = ImageMobule.class, debug = true)
@@ -27,10 +29,10 @@ public interface ImageEventBus extends EventBus {
 	public void startImagePanel();
 	
 	/**
-	 * Fired by the ImagePanelPresenter to display the AddPanel
+	 * Fired by the ImagePanelPresenter to display AddPanel and LinkPanel
 	 */
-	@Event( handlers = AddPanelPresenter.class )
-	public void startAddPanel();
+	@Event( handlers = {AddPanelPresenter.class, LinkPanelPresenter.class} )
+	public void startPanels();
 	
 	/**
 	 * Fired by the AddPanelPresenter when the panel is ready to display
@@ -39,9 +41,13 @@ public interface ImageEventBus extends EventBus {
 	@Event( handlers = ImagePanelPresenter.class )
 	public void displayAddPanel(IAddPanel p);
 	
+	/**
+	 * Fired by the LinkPanelPresenter when the panel is ready to display
+	 * @param p : the LinkPanel to display
+	 */
+	@Event( handlers = ImagePanelPresenter.class )
+	public void displayLinkPanel(ILinkPanel p);
 	
-	
-
 	@Event( forwardToParent = true  )
 	public void showInformationPopUp();
 	

@@ -23,6 +23,11 @@
     background-color: #FFFFFF;
 }
 
+.disposition-panel {
+	border-bottom: 1px solid #aaaaaa; 
+    background-color: #FFFFFF;
+}
+
 .gwt-SplitLayoutPanel { 
 }
 

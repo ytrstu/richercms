@@ -55,6 +55,13 @@ public interface IdisplayPage extends LazyView {
 	public void displayNormalPanel();
 	
 	/**
+	 * Display page view with all standard panel
+	 * This function need all panel instanciate after this call.
+	 * This function is using for re-display pageView after a specific tool(ImageTool, ...)
+	 */
+	public void reDisplayPageView();
+	
+	/**
 	 * Display image Panel into the main Layout, to take a maximum of place
 	 * @param p
 	 */
@@ -135,10 +142,17 @@ public interface IdisplayPage extends LazyView {
 	public PageConstants getConstants();
 	
 	/**
-	 * Add a specific command when the ImageEntry is clicked
+	 * Add a specific command when the ImageToolEntry is clicked
 	 * in the menuBar
 	 * @param cmd
 	 */
-	public void setImageCommand(Command cmd);
+	public void setImageToolCommand(Command cmd);
+	
+	/**
+	 * Add a specific command when the PageToolEntry is clicked
+	 * in the menuBar
+	 * @param cmd
+	 */
+	public void setPageToolCommand(Command cmd);
 	
 }

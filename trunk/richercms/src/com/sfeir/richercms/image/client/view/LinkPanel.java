@@ -1,7 +1,10 @@
 package com.sfeir.richercms.image.client.view;
 
+import com.allen_sauer.gwt.dnd.client.PickupDragController;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.ui.AbsolutePanel;
+import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.ResizeComposite;
@@ -9,10 +12,15 @@ import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.sfeir.richercms.image.client.Thumb;
+import com.sfeir.richercms.image.client.interfaces.IImageTreePanel;
 import com.sfeir.richercms.image.client.interfaces.ILinkPanel;
+import com.sfeir.richercms.page.client.view.custom.TreePanel;
 
 public class LinkPanel  extends ResizeComposite implements ILinkPanel {
 
+	private DockLayoutPanel mainPanel = null;
+	private LayoutPanel leftPanel = null;
+	private LayoutPanel rightPanel = null;
 	private FlexTable unLinkImgPanel = null;
 	private FlexTable leftLinkImgPanel = null;
 	private static final String thumbnailUrl = GWT.getModuleBaseURL() + "thumbnail";
@@ -30,6 +38,11 @@ public class LinkPanel  extends ResizeComposite implements ILinkPanel {
 	 * Create the widget and attached all component
 	 */
 	public void createView() {
+		
+		this.mainPanel = new DockLayoutPanel(Unit.PX);
+		this.leftPanel = new LayoutPanel();
+		this.rightPanel = new LayoutPanel();
+		
 	    // use the boundary panel as this composite's widget
 	    this.boundaryPanel = new AbsolutePanel();
 	    this.boundaryPanel.setPixelSize(800,700);
@@ -48,9 +61,10 @@ public class LinkPanel  extends ResizeComposite implements ILinkPanel {
 		boundaryPanel.add(scrollLeftLinkPanel,0,0);
 		boundaryPanel.add(scrollUnLinkPanel,0,500);
 		
-		LayoutPanel p = new LayoutPanel();
-		p.add(this.boundaryPanel);
-		this.initWidget(p);
+		this.mainPanel.addEast(this.rightPanel, 170);
+		this.mainPanel.addWest(this.leftPanel, 170);
+		this.mainPanel.add(this.boundaryPanel);
+		this.initWidget(this.mainPanel);
 		this.addStyleName("image-zone");
 
 	}
@@ -79,13 +93,15 @@ public class LinkPanel  extends ResizeComposite implements ILinkPanel {
 
 	@SuppressWarnings("static-access")
 	public SimplePanel addThumbnail(Long id) {
-		int line = 0;
+		int col = -1;
 		
 		if(this.nbCurrentRow != -1 )
-			line = this.leftLinkImgPanel.getCellCount(0);
+			col = this.leftLinkImgPanel.getCellCount(this.nbCurrentRow);
 		
-		if((this.nbCurrentRow == -1) || (this.nbCurrentRow == this.NB_THUMB_PER_LINE))
-			this.nbCurrentRow = 0;
+		if((this.nbCurrentRow == -1)||(col == this.NB_THUMB_PER_LINE)){
+			this.nbCurrentRow ++;
+			col = 0;
+		}
 	
 			
         SimplePanel thumbcontainer = new SimplePanel();
@@ -97,10 +113,9 @@ public class LinkPanel  extends ResizeComposite implements ILinkPanel {
             thumbcontainer.setWidget(thumb);
         }
         
-        this.leftLinkImgPanel.setWidget(line,this.nbCurrentRow,thumbcontainer);
-        this.leftLinkImgPanel.getCellFormatter().setStyleName(line,this.nbCurrentRow,"linkThumb-cell");
+        this.leftLinkImgPanel.setWidget(this.nbCurrentRow,col,thumbcontainer);
+        this.leftLinkImgPanel.getCellFormatter().setStyleName(this.nbCurrentRow,col,"linkThumb-cell");
                 
-        this.nbCurrentRow ++;
         
        return thumbcontainer;
 	}
@@ -115,5 +130,15 @@ public class LinkPanel  extends ResizeComposite implements ILinkPanel {
 		this.unLinkImgPanel.clear();
 		this.unLinkImgPanel.removeAllRows();
 		this.nbCurrentRow =-1;
+	}
+
+
+	public void displayLeftTree(IImageTreePanel p) {
+		this.leftPanel.clear();
+		this.leftPanel.add((TreePanel)p);
+	}
+	
+	public FlexTable getUnlinkTable(){
+		return this.unLinkImgPanel;
 	}
 }

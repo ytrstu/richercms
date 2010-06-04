@@ -180,6 +180,19 @@ public class ServiceArboPageImpl  extends RemoteServiceServlet implements ArboPa
 		}
 	}
 	
+	public List<Long> getLinkedImage(Long id){
+		Objectify ofy = ObjectifyService.begin();
+		ArboPage page = ofy.get(ArboPage.class, id);
+		return page.getIdLinkedImages();
+	}
+	
+	public void modifyLinkedImage(Long pageID, List<Long> linkedImageIds){
+		Objectify ofy = ObjectifyService.begin();
+		ArboPage page = ofy.get(ArboPage.class, pageID);
+		page.setIdLinkedImages(linkedImageIds);
+		ofy.put(page);
+	}
+	
 	public BeanArboPage arboPageToBean(ArboPage ap){
 		Objectify ofy = ObjectifyService.begin();
 		BeanArboPage bap = new BeanArboPage(ap.getId(),ap.getPublicationStart(), 
@@ -189,6 +202,7 @@ public class ServiceArboPageImpl  extends RemoteServiceServlet implements ArboPa
 			TranslationPage tp = ofy.get(kTp);
 			lst.add(translationPageToBean(tp));
 		}
+		bap.setIdLinkedImages(ap.getIdLinkedImages());
 		bap.setTranslation(lst);
 		return bap;
 	}
@@ -216,7 +230,10 @@ public class ServiceArboPageImpl  extends RemoteServiceServlet implements ArboPa
 			Key<TranslationPage> kTp = new Key<TranslationPage>(TranslationPage.class, TP.getId());
 			lst.add(kTp);
 		}
+		
 		ap.setTranslation(lst);
+		ap.setIdLinkedImages(bAP.getIdLinkedImages());
+		
 		return ap;
 	}
 	

@@ -1,6 +1,7 @@
 package com.sfeir.richercms.image.client.event;
 
 import com.google.gwt.user.client.ui.SimplePanel;
+import com.sfeir.richercms.image.client.Thumb;
 
 import com.allen_sauer.gwt.dnd.client.DragContext;
 import com.allen_sauer.gwt.dnd.client.VetoDragException;
@@ -13,9 +14,11 @@ import com.allen_sauer.gwt.dnd.client.drop.SimpleDropController;
 public class SetWidgetDropController extends SimpleDropController {
 
   private final SimplePanel dropTarget;
+  private ImageEventBus eventBus;
 
-  public SetWidgetDropController(SimplePanel dropTarget) {
+  public SetWidgetDropController(SimplePanel dropTarget, ImageEventBus eventBus) {
     super(dropTarget);
+    this.eventBus = eventBus;
     this.dropTarget = dropTarget;
   }
   
@@ -25,8 +28,13 @@ public class SetWidgetDropController extends SimpleDropController {
 	  }
 
   public void onDrop(DragContext context) {
-    dropTarget.setWidget(context.draggable);
-    super.onDrop(context);
+	  Thumb img =(Thumb)context.draggable;
+	  img.setPath("test");
+	dropTarget.setWidget(context.draggable);
+	this.eventBus.linkAndAddSlot();
+
+	super.onDrop(context);
+
   }
 
   public void onPreviewDrop(DragContext context) throws VetoDragException {
@@ -35,4 +43,5 @@ public class SetWidgetDropController extends SimpleDropController {
     }
     super.onPreviewDrop(context);
   }
+
 }

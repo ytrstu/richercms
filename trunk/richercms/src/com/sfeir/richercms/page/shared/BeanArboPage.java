@@ -10,6 +10,7 @@ public class BeanArboPage implements Serializable{
 	
     private Long id;
 	List<BeanTranslationPage> translation;
+	private List<Long> idLinkedImages;
 	private Date publicationStart;
 	private Date publicationFinish;
 	private Date creationDate;
@@ -18,6 +19,7 @@ public class BeanArboPage implements Serializable{
 		super();
 		this.id = null;
 		this.translation = new ArrayList<BeanTranslationPage>();
+		this.idLinkedImages = new ArrayList<Long>();
 		this.publicationFinish = new Date();
 		this.publicationStart = new Date();
 		this.creationDate = new Date();
@@ -27,6 +29,7 @@ public class BeanArboPage implements Serializable{
 		super();
 		this.id = id;
 		this.translation = new ArrayList<BeanTranslationPage>();
+		this.idLinkedImages = new ArrayList<Long>();
 		this.publicationFinish = new Date();
 		this.publicationStart = new Date();
 		this.creationDate = new Date();
@@ -36,6 +39,7 @@ public class BeanArboPage implements Serializable{
 		super();
 		this.id = id;
 		this.translation = new ArrayList<BeanTranslationPage>();
+		this.idLinkedImages = new ArrayList<Long>();
 		this.publicationFinish = publicationFinish;
 		this.publicationStart = publicationStart;
 		this.creationDate = creationDate;
@@ -45,6 +49,7 @@ public class BeanArboPage implements Serializable{
 		super();
 		this.id = null;
 		this.translation = translation;
+		this.idLinkedImages = new ArrayList<Long>();
 		this.publicationFinish = new Date();
 		this.publicationStart = new Date();
 		this.creationDate = new Date();
@@ -54,6 +59,7 @@ public class BeanArboPage implements Serializable{
 		super();
 		this.id = id;
 		this.translation = translation;
+		this.idLinkedImages = new ArrayList<Long>();
 		this.publicationFinish = new Date();
 		this.publicationStart = new Date();
 		this.creationDate = new Date();
@@ -64,6 +70,7 @@ public class BeanArboPage implements Serializable{
 		super();
 		this.id = id;
 		this.translation = translation;
+		this.idLinkedImages = new ArrayList<Long>();
 		this.publicationFinish = publicationFinish;
 		this.publicationStart = publicationStart;
 		this.creationDate = new Date();
@@ -108,5 +115,12 @@ public class BeanArboPage implements Serializable{
 	public void setCreationDate(Date creationDate) {
 		this.creationDate = creationDate;
 	}
-	
+
+	public List<Long> getIdLinkedImages() {
+		return idLinkedImages;
+	}
+
+	public void setIdLinkedImages(List<Long> idLinkedImages) {
+		this.idLinkedImages = idLinkedImages;
+	}
 }

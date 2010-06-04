@@ -4,7 +4,6 @@ import com.google.gwt.event.dom.client.HasChangeHandlers;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.view.LazyView;
-import com.sfeir.richercms.image.client.interfaces.IImagePanel;
 import com.sfeir.richercms.page.client.PageConstants;
 
 
@@ -62,10 +61,10 @@ public interface IdisplayPage extends LazyView {
 	public void reDisplayPageView();
 	
 	/**
-	 * Display image Panel into the main Layout, to take a maximum of place
-	 * @param p
+	 * Load the imageManager's Panel into the layout of the InformationPanel
+	 * @param imageMPanel : the panel
 	 */
-	public void displayImagePanel(IImagePanel p);
+	public void displayImagePanel(IImageManager imageMPanel);
 	
 	/**
 	 * Add a language in the listBox

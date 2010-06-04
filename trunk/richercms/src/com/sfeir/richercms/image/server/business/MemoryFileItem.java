@@ -16,16 +16,16 @@ import org.apache.commons.fileupload.FileItem;
 
 import com.google.appengine.api.datastore.Blob;
 import com.googlecode.objectify.annotation.Entity;
-import com.googlecode.objectify.annotation.Unindexed;
 
 @Entity(name="MemoryFileItem")
-@Unindexed
 public class MemoryFileItem implements FileItem {
 
     private static final long serialVersionUID = 6873943621309250882L;
         
     @Id
     protected Long id;
+    
+    private String path;
     
     private String fieldName;
     
@@ -45,6 +45,7 @@ public class MemoryFileItem implements FileItem {
     
     public MemoryFileItem(){
 	    this.fieldName = null;
+	    this.path = null;
 	    this.contentType = null;
 	    this.isFormField = false;
 	    this.fileName = null;
@@ -56,6 +57,7 @@ public class MemoryFileItem implements FileItem {
     public MemoryFileItem(String fieldName, String contentType, boolean isFormField,
                     String fileName, int maxSize){
             this.fieldName = fieldName;
+            this.path = null;
             this.contentType = contentType;
             this.isFormField = isFormField;
             this.fileName = fileName;
@@ -182,4 +184,12 @@ public class MemoryFileItem implements FileItem {
     public String getName() {
         return fileName;
     }
+
+	public String getPath() {
+		return path;
+	}
+
+	public void setPath(String path) {
+		this.path = path;
+	}
 }

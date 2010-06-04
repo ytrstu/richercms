@@ -18,6 +18,8 @@ public interface IPopUpMenuBar {
 	
 	void setReorderPagesCommand(Command cmd);
 	
+	void setManageImagesCommand(Command cmd);
+	
 	void show();
 	
 	void hide();

@@ -22,6 +22,7 @@ public class PopUpMenuBar extends PopupPanel implements IPopUpMenuBar {
 	private MenuItem upPage = null;
 	private MenuItem downPage = null;
 	private MenuItem reorderPages = null;
+	private MenuItem manageImages = null;
 
 	public PopUpMenuBar() {
 		super(true);
@@ -57,6 +58,11 @@ public class PopUpMenuBar extends PopupPanel implements IPopUpMenuBar {
 				;
 			}
 		});
+		this.manageImages = new MenuItem("Manage images", true, new Command() {
+			public void execute() {
+				;
+			}
+		});
 
 		this.popupMenuBar.addItem(this.modifyPage);
 		this.popupMenuBar.addItem(this.addPage);
@@ -64,6 +70,7 @@ public class PopUpMenuBar extends PopupPanel implements IPopUpMenuBar {
 		this.popupMenuBar.addItem(this.upPage);
 		this.popupMenuBar.addItem(this.downPage);
 		this.popupMenuBar.addItem(this.reorderPages);
+		this.popupMenuBar.addItem(this.manageImages);
 
 		this.popupMenuBar.setVisible(true);
 		this.popupMenuBar.setAnimationEnabled(true);
@@ -97,6 +104,10 @@ public class PopUpMenuBar extends PopupPanel implements IPopUpMenuBar {
 
 	public void setReorderPagesCommand(Command cmd) {
 		this.reorderPages.setCommand(cmd);
+	}
+	
+	public void setManageImagesCommand(Command cmd) {
+		this.manageImages.setCommand(cmd);
 	}
 
 }

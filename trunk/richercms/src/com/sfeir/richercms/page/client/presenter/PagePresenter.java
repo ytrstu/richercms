@@ -12,10 +12,10 @@ import com.mvp4g.client.annotation.InjectService;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.sfeir.richercms.client.view.PopUpMessage;
-import com.sfeir.richercms.image.client.interfaces.IImagePanel;
 import com.sfeir.richercms.page.client.ArboPageServiceAsync;
 import com.sfeir.richercms.page.client.PageState;
 import com.sfeir.richercms.page.client.event.PageEventBus;
+import com.sfeir.richercms.page.client.interfaces.IImageManager;
 import com.sfeir.richercms.page.client.interfaces.IInformationPanel;
 import com.sfeir.richercms.page.client.interfaces.INavigationPanel;
 import com.sfeir.richercms.page.client.interfaces.IReorderPagePanel;
@@ -55,7 +55,7 @@ public class PagePresenter extends LazyPresenter<IdisplayPage, PageEventBus> {
 		
 		view.setImageToolCommand(new Command(){
 			public void execute() {
-				eventBus.startImagePanel();
+				//eventBus.startImagePanel();
 		}});
 		
 		view.setPageToolCommand(new Command(){
@@ -188,7 +188,7 @@ public class PagePresenter extends LazyPresenter<IdisplayPage, PageEventBus> {
 		this.state = PageState.display;
 	}
 	
-	public void onDisplayImagePanel(IImagePanel p) {
+	public void onDisplayImageManager(IImageManager p) {
 		this.view.displayImagePanel(p);
 		this.state = PageState.display;
 	}

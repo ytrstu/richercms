@@ -15,9 +15,8 @@ import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.ResizeComposite;
 import com.google.gwt.user.client.ui.SplitLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.sfeir.richercms.image.client.interfaces.IImagePanel;
-import com.sfeir.richercms.image.client.view.ImagePanel;
 import com.sfeir.richercms.page.client.PageConstants;
+import com.sfeir.richercms.page.client.interfaces.IImageManager;
 import com.sfeir.richercms.page.client.interfaces.IInformationPanel;
 import com.sfeir.richercms.page.client.interfaces.INavigationPanel;
 import com.sfeir.richercms.page.client.interfaces.IReorderPagePanel;
@@ -37,9 +36,9 @@ public class PageView extends ResizeComposite implements IdisplayPage {
 	//gestion des langues
 	private PageConstants constants = GWT.create(PageConstants.class);
 	private LayoutPanel lgAndMenuPanel = null;
-	private LayoutPanel toolPanel = null; //contain current tool => pageTool, imageTool, ...
-	private LayoutPanel southPanel = null; //contain widget displaying in the south  => ValidationPanel, ...
-	private SplitLayoutPanel leftRightSpliter = null; // page tool
+	private LayoutPanel rightSouthPanel = null; //contain widget displaying in the south  => ValidationPanel, ...
+	private LayoutPanel rightNorthPanel = null; // page tool => tiny + information | reorderPanel | ImageManager
+	private SplitLayoutPanel leftRightSpliter = null; //tiny + information
 	private SplitLayoutPanel topBottomSpliter = null;
 	private MenuBar mainmenu  = null;
 	private DockLayoutPanel dispositionPanel = null;
@@ -48,7 +47,7 @@ public class PageView extends ResizeComposite implements IdisplayPage {
 	private LayoutPanel finalContainer = null;
 	// include in the leftRightSpliter 
 	private LayoutPanel leftPanel = null;
-	private LayoutPanel rightPanel = null;
+	private DockLayoutPanel rightPanel = null;
 	// include in the topBottomSpliter
 	private LayoutPanel topPanel = null;
 	private LayoutPanel bottomPanel = null;
@@ -73,8 +72,8 @@ public class PageView extends ResizeComposite implements IdisplayPage {
 		
 		this.dispositionPanel = new DockLayoutPanel(Unit.PX);
 		this.dispositionPanel.addStyleName("disposition-panel");
-		this.toolPanel = new LayoutPanel();
-		this.southPanel = new LayoutPanel();
+		this.rightSouthPanel = new LayoutPanel();
+		this.rightNorthPanel = new LayoutPanel();
 		
 	    this.leftRightSpliter = new SplitLayoutPanel();
 	    this.topBottomSpliter = new SplitLayoutPanel();
@@ -103,21 +102,23 @@ public class PageView extends ResizeComposite implements IdisplayPage {
 	    // the left and the right content of the main Spliter ( leftRightSpliter )
 	    this.leftPanel = new LayoutPanel();
 	    this.leftPanel.setStyleName("tab-content");
-	    this.rightPanel = new LayoutPanel();
+	    this.rightPanel = new DockLayoutPanel(Unit.PX);
 	    this.rightPanel.setStyleName("tab-content");
 	    
+	    //add panel containing south's widgets
+	    this.rightPanel.addSouth(this.rightSouthPanel, 37);
+	    
 	    // the rightPanel contain all widget of the right part of the topBottomSpliter
-	    this.rightPanel.add(this.topBottomSpliter);
+	    this.rightNorthPanel.add(this.topBottomSpliter);
+	    this.rightPanel.add(this.rightNorthPanel);
 	    
 	    // connects the two panels to the leftRightSpliter
 	    this.leftRightSpliter.addWest(this.leftPanel, 168);
 	    this.leftRightSpliter.add(this.rightPanel);
-	    this.toolPanel.add(this.leftRightSpliter);
 	    
-	    //add panel containing south's widgets
-	    this.dispositionPanel.addSouth(this.southPanel, 37);
+
 	    //add panel containing the current tool
-	    this.dispositionPanel.add(this.toolPanel);
+	    this.dispositionPanel.add(this.leftRightSpliter);
 	    
 	    
 	    // FINAL : PopUp + dispositionPanel (=> all widget)
@@ -223,16 +224,16 @@ public class PageView extends ResizeComposite implements IdisplayPage {
 	}
 	
 	public void displayReorderPanel(IReorderPagePanel reorderPanel) {
-		this.rightPanel.clear();
-		this.rightPanel.add((ReorderPagePanel)reorderPanel);
+		this.rightNorthPanel.clear();
+		this.rightNorthPanel.add((ReorderPagePanel)reorderPanel);
 		//this.leftRightSpliter.add(this.rightPanel);
 	}
 	
 	public void displayNormalPanel(){
 		// evite le clignotement si on est déja sur en mode normale
-		if(!this.rightPanel.getWidget(0).equals(this.topBottomSpliter)) {
-			this.rightPanel.clear();
-			this.rightPanel.add(this.topBottomSpliter);
+		if(!this.rightNorthPanel.getWidget(0).equals(this.topBottomSpliter)) {
+			this.rightNorthPanel.clear();
+			this.rightNorthPanel.add(this.topBottomSpliter);
 		}
 	}
 
@@ -241,7 +242,7 @@ public class PageView extends ResizeComposite implements IdisplayPage {
 	}
 
 	public void setValidationPanel(IValidationPanel validationPanel) {
-		this.southPanel.add((ValidationPanel)validationPanel);
+		this.rightSouthPanel.add((ValidationPanel)validationPanel);
 		//ajout de l'élément final : signifie la fin du chargement
 	   // this.dispositionPanel.add(this.leftRightSpliter);
 	}
@@ -319,13 +320,15 @@ public class PageView extends ResizeComposite implements IdisplayPage {
 		this.pageTool.setCommand(cmd);
 	}
 	
-	public void displayImagePanel(IImagePanel p){
-		this.toolPanel.clear();
-		this.toolPanel.add((ImagePanel)p);
+	public void displayImagePanel(IImageManager imageMPanel) {
+		this.rightNorthPanel.clear();
+		this.rightNorthPanel.add((ImageManager)imageMPanel);
 	}
 	
 	public void reDisplayPageView() {
-		this.toolPanel.clear();
-		this.toolPanel.add(this.leftRightSpliter);
+		//this.toolPanel.clear();
+		//this.toolPanel.add(this.leftRightSpliter);
 	}
+
+
 }

@@ -17,4 +17,6 @@ public interface FileService  extends RemoteService {
 	public List<Long> getUnlikedFile();
 	
 	public List<byte[]> getUnLinkedThumbnails();
+	
+	public List<String> getFile(String path);
 }

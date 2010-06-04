@@ -59,4 +59,19 @@ public class ServiceFileImpl   extends RemoteServiceServlet implements FileServi
 		}
 		return thumbNails;
 	}
+	
+	public List<String> getFile(String path) {
+		ArrayList<String> pathLst = new ArrayList<String>();
+		
+		Objectify ofy = ObjectifyService.begin();
+		Query<MemoryFileItem> files  = ofy.query(MemoryFileItem.class).filter("path =", path);
+		
+		for(MemoryFileItem file: files){
+			String currentPath = file.getPath();
+			currentPath = currentPath+file.getFileName();
+			pathLst.add(currentPath);
+		}
+		
+		return pathLst;
+	}
 }

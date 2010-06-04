@@ -44,7 +44,7 @@ public class LinkPanelPresenter extends LazyPresenter<ILinkPanel,ImageEventBus> 
 	}
 	
 	public void onDisplayLinkedThumbs(Long pageID) {
-		this.rpcPage.getLinkedImage(pageID, new AsyncCallback<List<Long>>() {
+		/*this.rpcPage.getLinkedImage(pageID, new AsyncCallback<List<Long>>() {
 			public void onFailure(Throwable caught) {}
 			public void onSuccess(List<Long> result) {
 				for (Long id : result) {
@@ -53,7 +53,7 @@ public class LinkPanelPresenter extends LazyPresenter<ILinkPanel,ImageEventBus> 
 				addLeftLinkThumbs(null);
 			}
 
-		});
+		});*/
 	}
 	
 	public void onLinkAndAddSlot() {

@@ -6,9 +6,11 @@ import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.event.EventBus;
 import com.sfeir.richercms.image.client.interfaces.IAddPanel;
 import com.sfeir.richercms.image.client.interfaces.IImagePanel;
+import com.sfeir.richercms.image.client.interfaces.IImageTreePanel;
 import com.sfeir.richercms.image.client.interfaces.ILinkPanel;
 import com.sfeir.richercms.image.client.presenter.AddPanelPresenter;
 import com.sfeir.richercms.image.client.presenter.ImagePanelPresenter;
+import com.sfeir.richercms.image.client.presenter.ImageTreePanelPresenter;
 import com.sfeir.richercms.image.client.presenter.LinkPanelPresenter;
 import com.sfeir.richercms.image.client.view.ImagePanel;
 
@@ -66,4 +68,21 @@ public interface ImageEventBus extends EventBus {
 
 	@Event( forwardToParent = true )
 	public void addErrorLinePopUp(String text);
+	
+	@Event( handlers = ImageTreePanelPresenter.class )
+	public void startLeftTreePanel();
+	
+	@Event( handlers = LinkPanelPresenter.class )
+	public void displayLeftTree(IImageTreePanel p);
+	
+	/**
+	 * Fired by the ImageTreePanelPresenter to Display all 
+	 * images linked with the selected page
+	 * @param pageID : id we need to display linked Thumbs
+	 */
+	@Event( handlers = LinkPanelPresenter.class )
+	public void displayLinkedThumbs(Long pageID);
+	
+	@Event( handlers = LinkPanelPresenter.class )
+	public void linkAndAddSlot();
 }

@@ -29,5 +29,9 @@ public interface ArboPageServiceAsync {
 	public void moveChildPage(Long parentId, Long childId, int index, AsyncCallback<Void> callback);
 	
 	public void updateChildOrder(Long id, List<Integer> newPositionOrder, AsyncCallback<Void> callback);
+	
+	public void getLinkedImage(Long id, AsyncCallback<List<Long>> callback);
+	
+	public void modifyLinkedImage(Long pageID, List<Long> linkedImageIds, AsyncCallback<Void> callback);
 }
  

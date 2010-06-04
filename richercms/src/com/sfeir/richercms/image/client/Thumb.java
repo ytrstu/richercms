@@ -10,13 +10,13 @@ public class Thumb extends Image{
 	public Thumb(){
 		super();
 		this.id = null;
-		this.path = null;
+		this.path = new String("");
 	}
 	
 	public Thumb(String URL, Long id){
 		super(URL);
 		this.id = id;
-		this.path = null;
+		this.path = new String("");
 	}
 	
 	public Thumb(String URL, Long id, String path){
@@ -51,7 +51,7 @@ public class Thumb extends Image{
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((path == null) ? 0 : path.hashCode());
+		//result = prime * result + ((path == null) ? 0 : path.hashCode());
 		return result;
 	}
 
@@ -68,11 +68,11 @@ public class Thumb extends Image{
 				return false;
 		} else if (!id.equals(other.id))
 			return false;
-		if (path == null) {
+		/*if (path == null) {
 			if (other.path != null)
 				return false;
 		} else if (!path.equals(other.path))
-			return false;
+			return false;*/
 		return true;
 	}
 	

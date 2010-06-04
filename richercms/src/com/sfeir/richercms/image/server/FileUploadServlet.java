@@ -13,9 +13,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyService;
-import com.googlecode.objectify.Query;
 import com.sfeir.richercms.image.server.business.MemoryFileItem;
-import com.sfeir.richercms.image.server.business.UnlinkedFile;
 
 public class FileUploadServlet extends HttpServlet {
 
@@ -23,6 +21,7 @@ public class FileUploadServlet extends HttpServlet {
 	 * 
 	 */
 	private static final long serialVersionUID = 132039883431151234L;
+	private String path;
 
 	static {
         ObjectifyService.register(MemoryFileItem.class);
@@ -39,9 +38,7 @@ public class FileUploadServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 	throws ServletException, IOException {
 		if (ServletFileUpload.isMultipartContent(req)) {
-			
 			MemoryFileItemFactory factory = new MemoryFileItemFactory();
-
 			ServletFileUpload upload = new ServletFileUpload(factory);
 			resp.setContentType("text/plain");
 			upload.setSizeMax(1024*1024); // 1 MB
@@ -49,16 +46,17 @@ public class FileUploadServlet extends HttpServlet {
 			List<MemoryFileItem> items;
 			
 			Objectify ofy = ObjectifyService.begin();
-			Query<UnlinkedFile> unlinkedFile = ofy.query(UnlinkedFile.class);
 			
 			try {
 				items = upload.parseRequest(req);
 				for(MemoryFileItem item : items) {
-					item.commit();
-					ofy.put(item);
-					UnlinkedFile uFile = unlinkedFile.get();
-					uFile.getIdUnlinkedImg().add(item.getId());
-					ofy.put(uFile);	
+					if(item.getFieldName().equals("uploadFormElement")){
+						item.commit();
+						item.setPath(path);
+						ofy.put(item);
+					}else {
+						this.path = item.getFieldName();
+					}
 				}
 			} catch (FileUploadException e) {
 				// TODO Auto-generated catch block

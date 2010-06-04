@@ -5,14 +5,14 @@ import java.util.List;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
-import com.mvp4g.client.annotation.module.ChildModule;
-import com.mvp4g.client.annotation.module.ChildModules;
 import com.mvp4g.client.event.EventBus;
+import com.sfeir.richercms.page.client.interfaces.IImageManager;
 import com.sfeir.richercms.page.client.interfaces.IInformationPanel;
 import com.sfeir.richercms.page.client.interfaces.INavigationPanel;
 import com.sfeir.richercms.page.client.interfaces.IReorderPagePanel;
 import com.sfeir.richercms.page.client.interfaces.ITinyMCEPanel;
 import com.sfeir.richercms.page.client.interfaces.IValidationPanel;
+import com.sfeir.richercms.page.client.presenter.ImageManagerPresenter;
 import com.sfeir.richercms.page.client.presenter.InformationPanelPresenter;
 import com.sfeir.richercms.page.client.presenter.PagePresenter;
 import com.sfeir.richercms.page.client.presenter.NavigationPanelPresenter;
@@ -22,8 +22,6 @@ import com.sfeir.richercms.page.client.presenter.ValidationPanelPresenter;
 import com.sfeir.richercms.page.client.view.PageView;
 import com.sfeir.richercms.page.shared.BeanArboPage;
 import com.sfeir.richercms.page.shared.BeanTranslationPage;
-import com.sfeir.richercms.image.client.event.ImageMobule;
-import com.sfeir.richercms.image.client.interfaces.IImagePanel;
 
 
 /**
@@ -32,8 +30,6 @@ import com.sfeir.richercms.image.client.interfaces.IImagePanel;
  *
  */
 @Events(startView = PageView.class, module = PageModule.class, debug = true)
-@ChildModules( 
-		@ChildModule( moduleClass = ImageMobule.class, async = true, autoDisplay = false))
 public interface PageEventBus extends EventBus {
 
 	/**
@@ -286,13 +282,28 @@ public interface PageEventBus extends EventBus {
 	/**
 	 * Fired by the PagePresenter, when the corresponding entryMenu is clicked
 	 */
-	@Event( modulesToLoad = ImageMobule.class )
-	public void startImagePanel();
+	//@Event( modulesToLoad = ImageMobule.class )
+	//public void startImagePanel();
+	
+	/**
+	 * Fired by the NavigationPresenter, when the reorderMenu is clicked
+	 * and allows the MainPagePresenter to show the ReorderPanel
+	 * @param path : the virtual path, use to load image
+	 */
+	@Event( handlers =  ImageManagerPresenter.class )
+	public void startImagePanel(String path);
+	
+	/**
+	 * Fired by the ImageManagerPresenter, to display it in the mainPage
+	 * @param p : the ImageManager's panel
+	 */
+	@Event( handlers =  PagePresenter.class )
+	public void displayImageManager(IImageManager p);
 	
 	/**
 	 * Fired by the ImagePanelPresenter, to display it in the mainPage
 	 * @param p
 	 */
-	@Event( handlers =  PagePresenter.class )
-	public void displayImagePanel(IImagePanel p);
+	//@Event( handlers =  PagePresenter.class )
+	//public void displayImagePanel(IImagePanel p);
 }

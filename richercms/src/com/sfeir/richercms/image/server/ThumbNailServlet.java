@@ -1,7 +1,6 @@
 package com.sfeir.richercms.image.server;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -34,8 +33,8 @@ public class ThumbNailServlet extends HttpServlet  {
 
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) 
 	throws ServletException, IOException {
-		String id = req.getParameter("id");
-		MemoryFileItem mfi = getMemoryFileItem(new Long(id));
+		String id = req.getParameter("path");
+		MemoryFileItem mfi = getMemoryFileItem(id);
 		if(mfi != null) {
 			Image thumb = resizeImg(ImagesServiceFactory.makeImage(mfi.get()), 100, 100);
 			
@@ -52,29 +51,24 @@ public class ThumbNailServlet extends HttpServlet  {
 	}
 	
 	
-	
-	private List<Long> getUnlikedFile() {
+	private MemoryFileItem getMemoryFileItem(String path) {
+		int lastSlash = path.lastIndexOf("/");
+		String fileName = path.substring(lastSlash+1);
+		String PagePath = path.substring(0,lastSlash+1);
+		
 		Objectify ofy = ObjectifyService.begin();
+		Query<MemoryFileItem> files  = ofy.query(MemoryFileItem.class).filter("path =", PagePath);
 		
-		Query<UnlinkedFile> unlinkedFile = ofy.query(UnlinkedFile.class);
-		
-		if(unlinkedFile.countAll() == 0) {
-			UnlinkedFile uFile = new UnlinkedFile();
-			ofy.put(uFile);
-			return uFile.getIdUnlinkedImg();
-		}else {
-			return unlinkedFile.get().getIdUnlinkedImg();
-		}
-	}
-	
-	private MemoryFileItem getMemoryFileItem(Long id) {
-		List<Long> lst = this.getUnlikedFile();
-		if(lst.size() != 0) {
-			Objectify ofy = ObjectifyService.begin();
-			return ofy.get(MemoryFileItem.class, id);
+		if(files.countAll() != 0) {
+			for(MemoryFileItem file : files){
+				if(file.getFileName().equals(fileName))
+					return files.get();
+			}
 		}
 		return null;
 	}
+	
+
 	
 	private Image resizeImg(Image oldImage, int height, int width) {
 		ImagesService imagesService = ImagesServiceFactory.getImagesService();

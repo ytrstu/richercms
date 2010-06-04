@@ -2,6 +2,7 @@ package com.sfeir.richercms.page.server;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.googlecode.objectify.Key;
@@ -180,17 +181,20 @@ public class ServiceArboPageImpl  extends RemoteServiceServlet implements ArboPa
 		}
 	}
 	
-	public List<Long> getLinkedImage(Long id){
-		Objectify ofy = ObjectifyService.begin();
-		ArboPage page = ofy.get(ArboPage.class, id);
-		return page.getIdLinkedImages();
-	}
 	
-	public void modifyLinkedImage(Long pageID, List<Long> linkedImageIds){
+	public String getPath(List<Long> ids) {
 		Objectify ofy = ObjectifyService.begin();
-		ArboPage page = ofy.get(ArboPage.class, pageID);
-		page.setIdLinkedImages(linkedImageIds);
-		ofy.put(page);
+		Map<Long,ArboPage> res = ofy.get(ArboPage.class, ids);
+		String path = "";
+		Long translationId;
+		//reverse exploring
+		for(int i = ids.size(); i>0 ; i--) {
+			//get Default Translation
+			translationId = res.get(ids.get(i-1)).getTranslation().get(0).getId();
+			//add the URLName in path
+			path = path+ofy.get(TranslationPage.class, translationId).getUrlName()+"/";
+		}
+		return path;
 	}
 	
 	public BeanArboPage arboPageToBean(ArboPage ap){
@@ -202,7 +206,6 @@ public class ServiceArboPageImpl  extends RemoteServiceServlet implements ArboPa
 			TranslationPage tp = ofy.get(kTp);
 			lst.add(translationPageToBean(tp));
 		}
-		bap.setIdLinkedImages(ap.getIdLinkedImages());
 		bap.setTranslation(lst);
 		return bap;
 	}
@@ -232,7 +235,6 @@ public class ServiceArboPageImpl  extends RemoteServiceServlet implements ArboPa
 		}
 		
 		ap.setTranslation(lst);
-		ap.setIdLinkedImages(bAP.getIdLinkedImages());
 		
 		return ap;
 	}

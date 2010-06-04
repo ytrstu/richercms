@@ -42,7 +42,7 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Pa
 	private ArboPageServiceAsync rpcPage = null;
 	private Long rootId = null;
 	//permet de savoir l'ors de l'ajout des fils dans l'arbre s'il faut sélectionner le dernier fils ou non
-	private boolean selectLastChild = false; 
+	private boolean selectLastChild = false;
 	
 	public NavigationPanelPresenter() {
 		super();
@@ -113,10 +113,16 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Pa
 				downPageInTree();
 				view.getPopUpMenuBar().hide();
 			}});
-		
+		// commande pour afficher l'outil de reorganisation des fils
 		this.view.getPopUpMenuBar().setReorderPagesCommand(new Command() {
 			public void execute() {
 				eventBus.startReorderPanel((Long)selectedItem.getUserObject());
+				view.getPopUpMenuBar().hide();
+			}});
+		// commande pour afficher l'outilgestion des images
+		this.view.getPopUpMenuBar().setManageImagesCommand(new Command() {
+			public void execute() {
+				createPath();
 				view.getPopUpMenuBar().hide();
 			}});
 	}
@@ -296,6 +302,25 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Pa
 			
 			selectedItem = lowerTreeItem;
 		}
+	}
+	
+	private void createPath() {
+		ArrayList<Long> ids = new ArrayList<Long>();
+		ids.add((Long)this.selectedItem.getUserObject());
+		TreeItem currentItem = this.selectedItem.getParentItem();
+		
+		while(currentItem != null) {
+			ids.add((Long)currentItem.getUserObject());
+			currentItem = currentItem.getParentItem();
+		}
+		
+		this.rpcPage.getPath(ids, new AsyncCallback<String>() {
+			public void onFailure(Throwable caught) {}
+			public void onSuccess(String result) {
+				eventBus.startImagePanel(result);
+				}
+			
+		});
 	}
 	
 	///////////////////////////////////////// ACTION ON THE TREE /////////////////////////////////////////

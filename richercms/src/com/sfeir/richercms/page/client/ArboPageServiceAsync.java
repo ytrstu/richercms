@@ -30,8 +30,6 @@ public interface ArboPageServiceAsync {
 	
 	public void updateChildOrder(Long id, List<Integer> newPositionOrder, AsyncCallback<Void> callback);
 	
-	public void getLinkedImage(Long id, AsyncCallback<List<Long>> callback);
-	
-	public void modifyLinkedImage(Long pageID, List<Long> linkedImageIds, AsyncCallback<Void> callback);
+	public void getPath(List<Long> ids, AsyncCallback<String> callback);
 }
  

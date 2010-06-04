@@ -81,16 +81,9 @@ public interface ArboPageService extends RemoteService {
 	public void updateChildOrder(Long Id, List<Integer> newPositionOrder);
 	
 	/**
-	 * Return ids of all image linked with a page.
-	 * @param id : id of the page
-	 * @return list of Image Ids
+	 * Take a list of id and build a path with ArboPage URL name
+	 * @param ids : list of id => leaf to root
+	 * @return path : "rootUrlName/.../leafUrlName/"
 	 */
-	public List<Long> getLinkedImage(Long id);
-	
-	/**
-	 * Modify the Linked Image List in a specific page
-	 * @param pageID : id of the page
-	 * @param linkedImageIds : new list of linkedImage
-	 */
-	public void modifyLinkedImage(Long pageID, List<Long> linkedImageIds);
+	public String getPath(List<Long> ids);
 }

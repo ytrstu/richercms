@@ -20,8 +20,6 @@ public class ArboPage {
 	
 	private List<Long> idChildArboPage;
 	
-	private List<Long> idLinkedImages;
-	
 	private Date publicationStart;
 	
 	private Date publicationFinish;
@@ -34,7 +32,6 @@ public class ArboPage {
 		super();
 		this.translation = new ArrayList<Key<TranslationPage>>();
 		this.idChildArboPage = new ArrayList<Long>();
-		this.idLinkedImages = new ArrayList<Long>();
 		this.publicationStart = new Date();
 		this.publicationFinish = new Date();
 		this.creationDate = new Date();
@@ -43,7 +40,6 @@ public class ArboPage {
 	public ArboPage(List<Key<TranslationPage>> translation) {
 		super();
 		this.idChildArboPage = new ArrayList<Long>();
-		this.idLinkedImages = new ArrayList<Long>();
 		this.translation = translation;
 		this.publicationStart = new Date();
 		this.publicationFinish = new Date();
@@ -53,7 +49,6 @@ public class ArboPage {
 	public ArboPage(List<Key<TranslationPage>> translation, Date publicationStart, Date publicationFinish) {
 		super();
 		this.idChildArboPage = new ArrayList<Long>();
-		this.idLinkedImages = new ArrayList<Long>();
 		this.translation = translation;
 		this.publicationStart = publicationStart;
 		this.publicationFinish = publicationFinish;
@@ -63,7 +58,6 @@ public class ArboPage {
 	public ArboPage(List<Key<TranslationPage>> translation, List<Long> idChildArboPage) {
 		super();
 		this.idChildArboPage = idChildArboPage;
-		this.idLinkedImages = new ArrayList<Long>();
 		this.translation = translation;
 		this.publicationStart = new Date();
 		this.publicationFinish = new Date();
@@ -74,7 +68,6 @@ public class ArboPage {
 			Date publicationStart, Date publicationFinish) {
 		super();
 		this.idChildArboPage = idChildArboPage;
-		this.idLinkedImages = new ArrayList<Long>();
 		this.translation = translation;
 		this.publicationStart = publicationStart;
 		this.publicationFinish = publicationFinish;
@@ -129,11 +122,4 @@ public class ArboPage {
 		this.creationDate = creationDate;
 	}
 
-	public List<Long> getIdLinkedImages() {
-		return idLinkedImages;
-	}
-
-	public void setIdLinkedImages(List<Long> idLinkedImages) {
-		this.idLinkedImages = idLinkedImages;
-	}
 }

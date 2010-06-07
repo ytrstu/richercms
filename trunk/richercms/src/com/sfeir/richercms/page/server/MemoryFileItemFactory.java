@@ -1,9 +1,9 @@
-package com.sfeir.richercms.image.server;
+package com.sfeir.richercms.page.server;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileItemFactory;
 
-import com.sfeir.richercms.image.server.business.MemoryFileItem;
+import com.sfeir.richercms.page.server.business.MemoryFileItem;
 
 public class MemoryFileItemFactory implements FileItemFactory {
 

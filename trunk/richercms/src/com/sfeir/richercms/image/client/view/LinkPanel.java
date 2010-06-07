@@ -11,9 +11,9 @@ import com.google.gwt.user.client.ui.ResizeComposite;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.sfeir.richercms.image.client.Thumb;
 import com.sfeir.richercms.image.client.interfaces.IImageTreePanel;
 import com.sfeir.richercms.image.client.interfaces.ILinkPanel;
+import com.sfeir.richercms.page.client.Thumb;
 import com.sfeir.richercms.page.client.view.custom.TreePanel;
 
 public class LinkPanel  extends ResizeComposite implements ILinkPanel {

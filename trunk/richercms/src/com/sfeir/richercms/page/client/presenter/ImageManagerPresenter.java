@@ -11,10 +11,11 @@ import com.google.gwt.user.client.ui.FormPanel.SubmitEvent;
 import com.mvp4g.client.annotation.InjectService;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
-import com.sfeir.richercms.image.client.FileServiceAsync;
+import com.sfeir.richercms.page.client.FileServiceAsync;
 import com.sfeir.richercms.page.client.event.PageEventBus;
 import com.sfeir.richercms.page.client.interfaces.IImageManager;
 import com.sfeir.richercms.page.client.view.ImageManager;
+import com.sfeir.richercms.page.shared.BeanFile;
 
 @Presenter( view = ImageManager.class )
 public class ImageManagerPresenter extends LazyPresenter<IImageManager, PageEventBus> {
@@ -62,14 +63,14 @@ public class ImageManagerPresenter extends LazyPresenter<IImageManager, PageEven
 	private void displayThumbNails() {
 		/*eventBus.addWaitLinePopUp("refresh thumbs");*/
 		this.view.clearThumbNails();
-		this.rpcFile.getFile(this.view.getCurrentPath(), new AsyncCallback<List<String>>(){
+		this.rpcFile.getFile(this.view.getCurrentPath(), new AsyncCallback<List<BeanFile>>(){
 			public void onFailure(Throwable caught) {
 				/*eventBus.addErrorLinePopUp("ERROR during loading thumbs");
 				eventBus.hideInformationPopUp();*/
 			}
-			public void onSuccess(List<String> result) {
-				for(String path : result){
-					view.addThumbnail(path);
+			public void onSuccess(List<BeanFile> result) {
+				for(BeanFile bean : result){
+					addThumbNail(bean);
 				}
 				//eventBus.addSuccessPopUp("thumbs successfuly loaded");
 				//eventBus.hideInformationPopUp();
@@ -77,6 +78,26 @@ public class ImageManagerPresenter extends LazyPresenter<IImageManager, PageEven
 		});
 		eventBus.hideInformationPopUp();
 	}
+	
+	private void addThumbNail(final BeanFile  bean) {
+		this.view.addThumbnail(bean.getPath()+bean.getFileName())
+			.addClickHandler(new ClickHandler(){
+				public void onClick(ClickEvent event) {
+					rpcFile.deleteFile(bean.getId(), new AsyncCallback<Void>(){
+						public void onFailure(Throwable caught) {
+						}
+						public void onSuccess(Void result) {
+							displayThumbNails();
+						}
+					});
+			}});
+		
+		this.view.onThumbClick().addClickHandler(new ClickHandler(){
+			public void onClick(ClickEvent event) {
+				view.showPopUpImgPreview(bean.getPath()+bean.getFileName());
+			}});
+	}
+	
 	/**
 	 * used by the framework to instantiate rpcFile 
 	 * @param rpcFile

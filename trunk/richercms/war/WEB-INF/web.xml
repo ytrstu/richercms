@@ -44,17 +44,22 @@
   	
   	<servlet>
     	<servlet-name>uploadServlet</servlet-name>
-    	<servlet-class>com.sfeir.richercms.image.server.FileUploadServlet</servlet-class>
+    	<servlet-class>com.sfeir.richercms.page.server.FileUploadServlet</servlet-class>
   	</servlet>
   	
   	<servlet>
     	<servlet-name>thumbNailServlet</servlet-name>
-    	<servlet-class>com.sfeir.richercms.image.server.ThumbNailServlet</servlet-class>
+    	<servlet-class>com.sfeir.richercms.page.server.ThumbNailServlet</servlet-class>
   	</servlet>
   	
  	<servlet>
     	<servlet-name>fileServiceServlet</servlet-name>
-    	<servlet-class>com.sfeir.richercms.image.server.ServiceFileImpl</servlet-class>
+    	<servlet-class>com.sfeir.richercms.page.server.ServiceFileImpl</servlet-class>
+  	</servlet>
+  	
+  	<servlet>
+    	<servlet-name>imageServlet</servlet-name>
+    	<servlet-class>com.sfeir.richercms.page.server.DisplayImageServlet</servlet-class>
   	</servlet>
   	
 
@@ -109,10 +114,12 @@
     	<url-pattern>/RicherCMS/thumbnail</url-pattern>
   	</servlet-mapping>
   	
+  	<servlet-mapping>
+    	<servlet-name>imageServlet</servlet-name>
+    	<url-pattern>/RicherCMS/image</url-pattern>
+  	</servlet-mapping>
+  
 
-  
-  
-  
 	<!-- Default page to serve -->
 	<welcome-file-list>
 		<welcome-file>RicherCMS.jsp</welcome-file>

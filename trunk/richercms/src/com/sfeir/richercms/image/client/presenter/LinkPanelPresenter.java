@@ -8,13 +8,13 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.mvp4g.client.annotation.InjectService;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
-import com.sfeir.richercms.image.client.FileServiceAsync;
 import com.sfeir.richercms.image.client.event.ImageEventBus;
 import com.sfeir.richercms.image.client.event.SetWidgetDropController;
 import com.sfeir.richercms.image.client.interfaces.IImageTreePanel;
 import com.sfeir.richercms.image.client.interfaces.ILinkPanel;
 import com.sfeir.richercms.image.client.view.LinkPanel;
 import com.sfeir.richercms.page.client.ArboPageServiceAsync;
+import com.sfeir.richercms.page.client.FileServiceAsync;
 
 @Presenter( view = LinkPanel.class)
 public class LinkPanelPresenter extends LazyPresenter<ILinkPanel,ImageEventBus> {

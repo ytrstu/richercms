@@ -1,4 +1,4 @@
-package com.sfeir.richercms.image.server.business;
+package com.sfeir.richercms.page.server.business;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -25,7 +25,7 @@ public class MemoryFileItem implements FileItem {
     @Id
     protected Long id;
     
-    private String path;
+    private String path; //path + fileName
     
     private String fieldName;
     

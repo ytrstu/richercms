@@ -34,8 +34,9 @@
   <source path='image/shared'/>
   
    <!-- Available Services -->
-  <servlet path="/upload" class="com.sfeir.richercms.image.server.FileUploadServlet" />
-  <servlet path="/thumbnail" class="com.sfeir.richercms.image.server.ThumbNailServlet" />
+  <servlet path="/upload" class="com.sfeir.richercms.page.server.FileUploadServlet" />
+  <servlet path="/thumbnail" class="com.sfeir.richercms.page.server.ThumbNailServlet" />
+  <servlet path="/image" class="com.sfeir.richercms.page.server.DisplayImageServlet" />
   
     <!-- Supported Language.	-->
   <extend-property name='locale' values='fr'/>

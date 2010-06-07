@@ -1,4 +1,4 @@
-package com.sfeir.richercms.image.server;
+package com.sfeir.richercms.page.server;
 
 import java.io.IOException;
 import java.util.List;
@@ -13,7 +13,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyService;
-import com.sfeir.richercms.image.server.business.MemoryFileItem;
+import com.sfeir.richercms.page.server.business.MemoryFileItem;
 
 public class FileUploadServlet extends HttpServlet {
 

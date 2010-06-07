@@ -7,7 +7,6 @@ import com.google.gwt.user.client.ui.FileUpload;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.FormPanel;
 import com.google.gwt.user.client.ui.Hidden;
-import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.ResizeComposite;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -15,7 +14,9 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteEvent;
 import com.google.gwt.user.client.ui.FormPanel.SubmitEvent;
 import com.sfeir.richercms.page.client.PageConstants;
+import com.sfeir.richercms.page.client.Thumb;
 import com.sfeir.richercms.page.client.interfaces.IImageManager;
+import com.sfeir.richercms.page.client.view.custom.PopUpImagePreview;
 
 /**
  * ImageManager panel in the manView, use add image using the path of Page
@@ -30,10 +31,12 @@ public class ImageManager extends ResizeComposite implements IImageManager {
 	private VerticalPanel panel;
 	private static final String urlActionUP = GWT.getModuleBaseURL() + "upload";
 	private static final String thumbnailUrl = GWT.getModuleBaseURL() + "thumbnail";
+	private static final String imageUrl = GWT.getModuleBaseURL() + "image";
 	private FlowPanel thumbsPanel = null;
 	private Button btnSend = null;
 	private Hidden path = null;
 	private FormPanel form = null;
+	private PopUpImagePreview popUpImg = null;
 	
 	
 	public Widget asWidget() {	
@@ -49,6 +52,8 @@ public class ImageManager extends ResizeComposite implements IImageManager {
 		VerticalPanel submitPanel = new VerticalPanel();
 		this.path = new Hidden();
 		this.thumbsPanel = new FlowPanel();
+		this.thumbsPanel.addStyleName("thumbsPanel");
+		
 		this.panel.add(this.thumbsPanel);
 		this.btnSend = new Button("envoi");
 		
@@ -90,17 +95,23 @@ public class ImageManager extends ResizeComposite implements IImageManager {
 				}
 			});
 			
-			
-			
 			LayoutPanel p = new LayoutPanel();
 			p.add(this.panel);
 			this.initWidget(p);
 		}
 		
 		@SuppressWarnings("static-access")
-		public void addThumbnail(String p){
-			this.thumbsPanel.add(new Image(
-					this.thumbnailUrl+"?path="+p));
+		public HasClickHandlers addThumbnail(String p) {
+			Thumb img = new Thumb(this.thumbnailUrl+"?path="+p,null,p);
+			this.thumbsPanel.add(img);
+			
+			//handle the click on the delete btn
+			return img.btnClickEvent();
+		}
+		
+		public HasClickHandlers onThumbClick() {
+			Thumb thumb = (Thumb)this.thumbsPanel.getWidget(this.thumbsPanel.getWidgetCount()-1);
+			return thumb.imageClickEvent();
 		}
 		
 		public HasClickHandlers onSendBtnclick() {
@@ -132,5 +143,12 @@ public class ImageManager extends ResizeComposite implements IImageManager {
 		public void setCurrentPath(String path) {
 			this.path.setName(path);
 		}
-
+		
+		public void showPopUpImgPreview(String path){
+			if(popUpImg!=null)
+				popUpImg.hide();
+			
+			popUpImg = new PopUpImagePreview(this.imageUrl+"?path="+path);
+			popUpImg.center();
+		}
 }

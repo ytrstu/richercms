@@ -16,7 +16,9 @@ public interface IImageManager  extends LazyView {
 	 */
 	public PageConstants getConstants();
 	
-	void addThumbnail(String Path);
+	HasClickHandlers addThumbnail(String Path);
+
+	HasClickHandlers onThumbClick();
 	
 	HasClickHandlers onSendBtnclick();
 	
@@ -29,4 +31,6 @@ public interface IImageManager  extends LazyView {
 	void setCurrentPath(String path);
 	
 	String getCurrentPath();
+	
+	void showPopUpImgPreview(String path);
 }

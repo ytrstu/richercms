@@ -11,10 +11,10 @@ import com.google.gwt.user.client.ui.FormPanel.SubmitEvent;
 import com.mvp4g.client.annotation.InjectService;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
-import com.sfeir.richercms.image.client.FileServiceAsync;
 import com.sfeir.richercms.image.client.event.ImageEventBus;
 import com.sfeir.richercms.image.client.interfaces.IAddPanel;
 import com.sfeir.richercms.image.client.view.AddPanel;
+import com.sfeir.richercms.page.client.FileServiceAsync;
 
 @Presenter( view = AddPanel.class )
 public class AddPanelPresenter extends LazyPresenter<IAddPanel, ImageEventBus> {

@@ -157,5 +157,10 @@ public class FileMbox extends DialogBox implements IFileMBox{
 		this.thumbPanel.clear();
 		this.thumbPanel.add((ThumbsPanel)p);
 	}
+	
+	public void center(){
+		this.verrue();
+		super.center();
+	}
 
 }

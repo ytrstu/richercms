@@ -1,4 +1,4 @@
-package com.sfeir.richercms.page.client.view;
+package com.sfeir.richercms.page.client.tinyMCE.view;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.HasClickHandlers;
@@ -7,24 +7,19 @@ import com.google.gwt.user.client.ui.FileUpload;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.FormPanel;
 import com.google.gwt.user.client.ui.Hidden;
-import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.ResizeComposite;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteEvent;
 import com.google.gwt.user.client.ui.FormPanel.SubmitEvent;
 import com.sfeir.richercms.page.client.PageConstants;
 import com.sfeir.richercms.page.client.Thumb;
-import com.sfeir.richercms.page.client.interfaces.IImageManager;
+import com.sfeir.richercms.page.client.tinyMCE.interfaces.IThumbsPanel;
 import com.sfeir.richercms.page.client.view.custom.PopUpImagePreview;
 
-/**
- * ImageManager panel in the manView, use add image using the path of Page
- * @author homberg.g
- *
- */
-public class ImageManager extends ResizeComposite implements IImageManager {
-	
+public class ThumbsPanel extends ResizeComposite implements IThumbsPanel{
+
 	//gestion des langues
 	private PageConstants constants = GWT.create(PageConstants.class);
 	
@@ -52,7 +47,7 @@ public class ImageManager extends ResizeComposite implements IImageManager {
 		VerticalPanel submitPanel = new VerticalPanel();
 		this.path = new Hidden();
 		this.thumbsPanel = new FlowPanel();
-		this.thumbsPanel.addStyleName("thumbsPanel");
+		//this.thumbsPanel.addStyleName("thumbsPanel");
 		
 		this.panel.add(this.thumbsPanel);
 		this.btnSend = new Button("envoi");
@@ -77,7 +72,6 @@ public class ImageManager extends ResizeComposite implements IImageManager {
 		form.setWidget(submitPanel);
 		
 		panel.add(form);
-		
 		// Ajout d'un bouton de soumission pour le formulaire
 		this.panel.add(this.btnSend);
 		
@@ -95,7 +89,7 @@ public class ImageManager extends ResizeComposite implements IImageManager {
 				}
 			});
 			
-			LayoutPanel p = new LayoutPanel();
+			ScrollPanel p = new ScrollPanel();
 			p.add(this.panel);
 			this.initWidget(p);
 		}
@@ -151,5 +145,8 @@ public class ImageManager extends ResizeComposite implements IImageManager {
 			
 			popUpImg = new PopUpImagePreview(this.imageUrl+"?path="+path);
 			popUpImg.center();
+		
 		}
+	
+
 }

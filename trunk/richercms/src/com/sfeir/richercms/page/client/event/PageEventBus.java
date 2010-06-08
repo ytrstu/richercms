@@ -19,6 +19,11 @@ import com.sfeir.richercms.page.client.presenter.NavigationPanelPresenter;
 import com.sfeir.richercms.page.client.presenter.ReorderPagePanelPresenter;
 import com.sfeir.richercms.page.client.presenter.TinyMCEPanelPresenter;
 import com.sfeir.richercms.page.client.presenter.ValidationPanelPresenter;
+import com.sfeir.richercms.page.client.tinyMCE.interfaces.IImageTreePanel;
+import com.sfeir.richercms.page.client.tinyMCE.interfaces.IThumbsPanel;
+import com.sfeir.richercms.page.client.tinyMCE.presenter.FileMBoxPresenter;
+import com.sfeir.richercms.page.client.tinyMCE.presenter.ImageTreePanelPresenter;
+import com.sfeir.richercms.page.client.tinyMCE.presenter.ThumbsPanelPresenter;
 import com.sfeir.richercms.page.client.view.PageView;
 import com.sfeir.richercms.page.shared.BeanArboPage;
 import com.sfeir.richercms.page.shared.BeanTranslationPage;
@@ -306,4 +311,28 @@ public interface PageEventBus extends EventBus {
 	 */
 	//@Event( handlers =  PagePresenter.class )
 	//public void displayImagePanel(IImagePanel p);
+	
+	
+	@Event( handlers =  FileMBoxPresenter.class )
+	public void startTinyPopUp();
+	
+	/**
+	 * Fired by the FileManager to create his TreePanel
+	 */
+	@Event( handlers = {ImageTreePanelPresenter.class, ThumbsPanelPresenter.class} )
+	public void tinyPopUpStartPanels();
+	
+	/**
+	 * Fired by the ImageTreePanelPresenter to display the image tree view
+	 */
+	@Event( handlers =  FileMBoxPresenter.class )
+	public void tinyPopUpDisplayTreePanel(IImageTreePanel p);
+	
+	@Event( handlers =  FileMBoxPresenter.class )
+	public void tinyPopUpDisplayThumbsPanel(IThumbsPanel p);
+	
+	@Event( handlers =  ThumbsPanelPresenter.class )
+	public void displayThumbsInPopUp(String path);
+	
+	
 }

@@ -31,6 +31,7 @@ import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.ResizeComposite;
 import com.google.gwt.user.client.ui.TextArea;
+import com.sfeir.richercms.page.client.event.PageEventBus;
 import com.sfeir.richercms.page.client.tinyMCE.FileManager;
 import com.sfeir.richercms.page.client.tinyMCE.ResizeTinyMCETextArea;
 
@@ -126,6 +127,12 @@ public class TinyMCE extends ResizeComposite {
         setTextAreaToTinyMCE(id);
         focusMCE(id);
 		FileManager.init();
+    }
+    
+    @SuppressWarnings("static-access")
+	public void setEventBus(PageEventBus eventBus){
+    	FileManager fm = new FileManager();
+    	fm.evtBus = eventBus;
     }
 
     /**

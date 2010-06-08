@@ -6,6 +6,7 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.view.LazyView;
+import com.sfeir.richercms.page.client.tinyMCE.interfaces.IImageTreePanel;
 
 public interface ILinkPanel extends LazyView{
 

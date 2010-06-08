@@ -1,16 +1,18 @@
 package com.sfeir.richercms.page.client.tinyMCE;
 
-import com.sfeir.richercms.page.client.tinyMCE.FileManagerBox;
+import com.sfeir.richercms.page.client.event.PageEventBus;
 
 
 public class FileManager {
 
+	public static PageEventBus evtBus = null;
+	
 	/**
 	 * Méthode statique d'ouverture de la popup
 	 * @return Pour les tests retourne une chaine affiché dans le champ url de TinyMCE
 	 */
 	public static String loadFileName(final String url) {
-		new FileManagerBox(url).show();
+		FileManager.evtBus.startTinyPopUp();
 		return "Appel de GWT via Javascript";
 	}
 

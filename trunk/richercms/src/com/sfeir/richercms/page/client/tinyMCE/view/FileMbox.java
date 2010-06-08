@@ -1,4 +1,4 @@
-package com.sfeir.richercms.page.client.tinyMCE;
+package com.sfeir.richercms.page.client.tinyMCE.view;
 
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -9,45 +9,69 @@ import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
-import com.google.gwt.user.client.ui.FileUpload;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.ScrollPanel;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.sfeir.richercms.page.client.tinyMCE.FileManager;
+import com.google.gwt.user.client.ui.Widget;
+import com.sfeir.richercms.page.client.tinyMCE.interfaces.IFileMBox;
+import com.sfeir.richercms.page.client.tinyMCE.interfaces.IImageTreePanel;
+import com.sfeir.richercms.page.client.tinyMCE.interfaces.IThumbsPanel;
+import com.sfeir.richercms.page.client.view.custom.TreePanel;
 
-public class FileManagerBox extends DialogBox {
+public class FileMbox extends DialogBox implements IFileMBox{
 
-	public FileManagerBox(String urlName) {
-        // Set the dialog box's caption.
-        setText("File manager");
-
+	SimplePanel treePanel = null;
+	SimplePanel thumbPanel = null;
+	VerticalPanel mainContainer = null;
+	HorizontalPanel treeAndThumbs = null;
+	
+	public Widget asWidget() {	
+		return this;
+	}
+	
+	public void createView() {
+		
         // Enable animation.
         setAnimationEnabled(true);
-
         // Enable glass background.
         setGlassEnabled(true);
-
-        
-
-        VerticalPanel panel = new VerticalPanel();
-        
-        final FileUpload upload = new FileUpload();
-        panel.add(upload);
-        
-        Button ok = new Button("upload");
-        ok.addClickHandler(new ClickHandler() {
-			
-			@Override
-			public void onClick(ClickEvent event) {
-				FileManager.setTinyMceUrl(upload.getFilename());
-				hide();
-			}
-		});
-        panel.add(ok);
-        setWidget(panel);
-        
         setStyleName("fileManagerPopup");
         setGlassStyleName("fileManagerGlassPopup");
-        setGlassEnabled(true);
+		setSize("500px", "500px");
+		
+		this.treePanel = new SimplePanel();
+		this.treePanel.setHeight("400px");
+		this.treePanel.setWidth("200px");
+		this.thumbPanel = new SimplePanel();
+		this.thumbPanel.setHeight("400px");
+		this.thumbPanel.setWidth("300px");
+		this.treeAndThumbs = new HorizontalPanel();
+		this.treeAndThumbs.add(this.treePanel);
+		this.treeAndThumbs.add(this.thumbPanel);
+		
+        Button ok = new Button("upload");
+        ok.addClickHandler(new ClickHandler() {
+        	public void onClick(ClickEvent event) {
+        		//FileManager.setTinyMceUrl(upload.getFilename());
+        		hide();
+        	}
+        });
+        this.mainContainer = new VerticalPanel();
+        this.mainContainer.add(this.treeAndThumbs);
+        this.mainContainer.add(ok);
+
+        setWidget(this.mainContainer);
+        
+        //place the popUp
+        //this.popUpPosition();
+
+        // creation de la verrue
+        this.verrue();
+	}
+	
+	private void popUpPosition(){
         int top =  Window.getClientHeight()/2-150;
         int left = Window.getClientWidth()/2-150;
         if (top<0) {
@@ -57,8 +81,10 @@ public class FileManagerBox extends DialogBox {
         	left = 0;
         }
         setPopupPosition(left, top);
-        
-        // Verrue pour que la popup soit au dessus de tinyMce
+	}
+	
+	private void verrue() {
+		// Verrue pour que la popup soit au dessus de tinyMce
         final Element elt = this.getStyleElement();
         DeferredCommand.addCommand(new Command() {
 			
@@ -120,8 +146,16 @@ public class FileManagerBox extends DialogBox {
 			}
 		});
         // Fin de la verrue
-        
-        
-        setModal(true);
-      }
+	}
+	
+	public void displayLeftTree(IImageTreePanel p) {
+		this.treePanel.clear();
+		this.treePanel.add((TreePanel)p);
+	}
+	
+	public void displayThumbs(IThumbsPanel p) {
+		this.thumbPanel.clear();
+		this.thumbPanel.add((ThumbsPanel)p);
+	}
+
 }

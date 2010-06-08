@@ -5,6 +5,7 @@ import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.ResizeComposite;
 import com.google.gwt.user.client.ui.ScrollPanel;
+import com.sfeir.richercms.page.client.event.PageEventBus;
 import com.sfeir.richercms.page.client.interfaces.ITinyMCEPanel;
 import com.sfeir.richercms.page.client.tinyMCE.TinyMCE;
 
@@ -93,5 +94,9 @@ public class TinyMCEPanel extends ResizeComposite implements ITinyMCEPanel {
 		String newContent = content.replaceAll("^<div[^<]*>", "");
 		String newContent2 = newContent.replaceAll("</div>$", "");
 		return newContent2;
+	}
+	
+	public void addEventBusInTiny(PageEventBus eventBus) {
+		this.tmce.setEventBus(eventBus);
 	}
 }

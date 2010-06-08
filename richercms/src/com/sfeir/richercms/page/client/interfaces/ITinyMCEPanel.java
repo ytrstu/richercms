@@ -1,6 +1,7 @@
 package com.sfeir.richercms.page.client.interfaces;
 
 import com.mvp4g.client.view.LazyView;
+import com.sfeir.richercms.page.client.event.PageEventBus;
 
 public interface ITinyMCEPanel extends LazyView{
 
@@ -47,4 +48,6 @@ public interface ITinyMCEPanel extends LazyView{
 	 * @param html : the html String to display
 	 */
 	void displayViewer(String html);
+	
+	void addEventBusInTiny(PageEventBus eventBus);
 }

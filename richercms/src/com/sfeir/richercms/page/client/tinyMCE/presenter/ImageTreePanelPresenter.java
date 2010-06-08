@@ -1,5 +1,6 @@
-package com.sfeir.richercms.image.client.presenter;
+package com.sfeir.richercms.page.client.tinyMCE.presenter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gwt.event.logical.shared.OpenEvent;
@@ -15,15 +16,15 @@ import com.mvp4g.client.annotation.InjectService;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.sfeir.richercms.client.view.PopUpMessage;
-import com.sfeir.richercms.image.client.event.ImageEventBus;
-import com.sfeir.richercms.image.client.interfaces.IImageTreePanel;
-import com.sfeir.richercms.image.client.view.ImageTreePanel;
 import com.sfeir.richercms.page.client.ArboPageServiceAsync;
+import com.sfeir.richercms.page.client.event.PageEventBus;
+import com.sfeir.richercms.page.client.tinyMCE.interfaces.IImageTreePanel;
+import com.sfeir.richercms.page.client.tinyMCE.view.ImageTreePanel;
 import com.sfeir.richercms.page.client.view.custom.HorizontalEventPanel;
 import com.sfeir.richercms.page.shared.BeanArboPage;
 
 @Presenter( view =ImageTreePanel.class)
-public class ImageTreePanelPresenter  extends LazyPresenter<IImageTreePanel,ImageEventBus>{
+public class ImageTreePanelPresenter  extends LazyPresenter<IImageTreePanel,PageEventBus>{
 
 	private TreeItem expandedItem = null; // current expanded Item in tree
 	private TreeItem selectedItem = null; // current selected Item in tree
@@ -39,7 +40,7 @@ public class ImageTreePanelPresenter  extends LazyPresenter<IImageTreePanel,Imag
 		.addSelectionHandler(new SelectionHandler<TreeItem>(){
 			public void onSelection(SelectionEvent<TreeItem> event) {
 				setSelectedItem(event.getSelectedItem()); // fait des actions spécifique (surtout css)
-				eventBus.displayLinkedThumbs((Long)selectedItem.getUserObject());
+				createPath();
 			}
 		});
 		
@@ -54,9 +55,9 @@ public class ImageTreePanelPresenter  extends LazyPresenter<IImageTreePanel,Imag
 		});
 	}
 	
-	public void onStartLeftTreePanel(){
+	public void onTinyPopUpStartPanels(){
 		this.createTree();
-		this.eventBus.displayLeftTree(this.view);
+		this.eventBus.tinyPopUpDisplayTreePanel(this.view);
 	}
 	
 	/**
@@ -142,6 +143,25 @@ public class ImageTreePanelPresenter  extends LazyPresenter<IImageTreePanel,Imag
 		HorizontalPanel p =(HorizontalPanel)selectedItem.getWidget();
 		Label l = (Label)p.getWidget(1);
 		l.setStyleName("treeLabelSelected");
+	}
+	
+	private void createPath() {
+		ArrayList<Long> ids = new ArrayList<Long>();
+		ids.add((Long)this.selectedItem.getUserObject());
+		TreeItem currentItem = this.selectedItem.getParentItem();
+		
+		while(currentItem != null) {
+			ids.add((Long)currentItem.getUserObject());
+			currentItem = currentItem.getParentItem();
+		}
+		
+		this.rpcPage.getPath(ids, new AsyncCallback<String>() {
+			public void onFailure(Throwable caught) {}
+			public void onSuccess(String result) {
+				eventBus.displayThumbsInPopUp(result);
+				}
+			
+		});
 	}
 	
 	/**

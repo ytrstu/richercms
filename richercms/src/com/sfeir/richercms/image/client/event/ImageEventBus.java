@@ -6,13 +6,13 @@ import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.event.EventBus;
 import com.sfeir.richercms.image.client.interfaces.IAddPanel;
 import com.sfeir.richercms.image.client.interfaces.IImagePanel;
-import com.sfeir.richercms.image.client.interfaces.IImageTreePanel;
 import com.sfeir.richercms.image.client.interfaces.ILinkPanel;
 import com.sfeir.richercms.image.client.presenter.AddPanelPresenter;
 import com.sfeir.richercms.image.client.presenter.ImagePanelPresenter;
-import com.sfeir.richercms.image.client.presenter.ImageTreePanelPresenter;
 import com.sfeir.richercms.image.client.presenter.LinkPanelPresenter;
 import com.sfeir.richercms.image.client.view.ImagePanel;
+import com.sfeir.richercms.page.client.tinyMCE.interfaces.IImageTreePanel;
+import com.sfeir.richercms.page.client.tinyMCE.presenter.ImageTreePanelPresenter;
 
 @Events(startView = ImagePanel.class, module = ImageMobule.class, debug = true)
 public interface ImageEventBus extends EventBus {

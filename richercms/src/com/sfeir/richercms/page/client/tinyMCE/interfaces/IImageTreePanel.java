@@ -1,4 +1,4 @@
-package com.sfeir.richercms.image.client.interfaces;
+package com.sfeir.richercms.page.client.tinyMCE.interfaces;
 
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.view.LazyView;

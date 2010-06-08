@@ -43,6 +43,7 @@ public class TinyMCEPanelPresenter extends LazyPresenter<ITinyMCEPanel, PageEven
 	 * @param navPanel 
 	 */
 	public void onStartPanels() {
+		this.view.addEventBusInTiny(this.eventBus);
 		this.view.displayViewer(this.view.getContent());
 		this.eventBus.changeEditorPanel(this.view);
 		this.state = PageState.display;

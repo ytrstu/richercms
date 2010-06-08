@@ -40,23 +40,27 @@ public class Thumb extends HorizontalEventPanel {
 	}
 	
 	private void setUp(String URL) {
+
+		this.addStyleName("thumb");
 		this.img = new Image(URL);	
 		this.btn = new Button("-");
+		this.btn.setVisible(false);
 		
 		this.addMouseOverHandler(new MouseOverHandler(){
 			public void onMouseOver(MouseOverEvent event) {
-				if(!btn.isAttached())
-					Thumb.this.add(btn);
+				if(!btn.isVisible())
+					btn.setVisible(true);
 			}
 		});
 		this.addMouseOutHandler(new MouseOutHandler() {
 			public void onMouseOut(MouseOutEvent event) {
-				if(btn.isAttached())
-					Thumb.this.remove(btn);
+				if(btn.isVisible())
+					btn.setVisible(false);
 			}
 		});
 		
 		this.add(this.img);
+		this.add(this.btn);
 		
 	}
 	

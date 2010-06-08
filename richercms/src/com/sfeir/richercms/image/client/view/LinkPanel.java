@@ -1,6 +1,5 @@
 package com.sfeir.richercms.image.client.view;
 
-import com.allen_sauer.gwt.dnd.client.PickupDragController;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.ui.AbsolutePanel;
@@ -11,9 +10,9 @@ import com.google.gwt.user.client.ui.ResizeComposite;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.sfeir.richercms.image.client.interfaces.IImageTreePanel;
 import com.sfeir.richercms.image.client.interfaces.ILinkPanel;
 import com.sfeir.richercms.page.client.Thumb;
+import com.sfeir.richercms.page.client.tinyMCE.interfaces.IImageTreePanel;
 import com.sfeir.richercms.page.client.view.custom.TreePanel;
 
 public class LinkPanel  extends ResizeComposite implements ILinkPanel {

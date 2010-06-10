@@ -60,10 +60,17 @@ public interface PageEventBus extends EventBus {
 	/**
 	 * Fired by the specific Panel (ReorderPanel, ...)
 	 * for re-displaying normal view with standard Panel.
-	 * Warning, you can use this event after a first startPanelsEvent.
+	 * Warning, you can use this event only after a first startPanelsEvent.
 	 */
 	@Event( handlers = PagePresenter.class )
 	public void displayNormalPanel();
+	
+	/**
+	 * Fired by the PagePresenter to allows the navigation panel to display
+	 * the last page selected after an DisplayNormalPanel event
+	 */
+	@Event( handlers = NavigationPanelPresenter.class )
+	public void displayCurrentPage();
 	
 	/**
 	 * fired by the NavigationPresenter when the addPage menu is clicked
@@ -328,11 +335,32 @@ public interface PageEventBus extends EventBus {
 	@Event( handlers =  FileMBoxPresenter.class )
 	public void tinyPopUpDisplayTreePanel(IImageTreePanel p);
 	
+	/**
+	 * Fired by the ThumbsPanelPresenter to display the thumbPanel view
+	 * @param p
+	 */
 	@Event( handlers =  FileMBoxPresenter.class )
 	public void tinyPopUpDisplayThumbsPanel(IThumbsPanel p);
 	
+	/**
+	 * Fired by the ImageTreePanelPresenter when a node is selected in the tree
+	 * Allows the ThumbsPanelPresenter to dissplay thumbnails include in this page
+	 * @param path : Path of the page : /page1/page1.1/page1.1.3
+	 */
 	@Event( handlers =  ThumbsPanelPresenter.class )
 	public void displayThumbsInPopUp(String path);
 	
+	/**
+	 * Fired by the FileMBoxManager, when the ok button is clicked
+	 * Request the ThumbsPanelPresenter to send the path of the selected thumb
+	 */
+	@Event( handlers = ThumbsPanelPresenter.class)
+	public void callPath();
 	
+	/**
+	 * FIred by the ThumbsPanelPresenter to send the path of the selected thumb
+	 * @param path : Image's path : /page1/page1.1/image3.png
+	 */
+	@Event( handlers =  FileMBoxPresenter.class )
+	public void sendPath(String path);
 }

@@ -5,6 +5,7 @@ import com.sfeir.richercms.page.client.event.PageEventBus;
 
 public class FileManager {
 
+	// PageEventBus, it's necessary to pass it to call the FileBoxManager
 	public static PageEventBus evtBus = null;
 	
 	/**
@@ -13,7 +14,7 @@ public class FileManager {
 	 */
 	public static String loadFileName(final String url) {
 		FileManager.evtBus.startTinyPopUp();
-		return "Appel de GWT via Javascript";
+		return "";
 	}
 
 	/**

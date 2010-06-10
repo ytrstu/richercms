@@ -1,7 +1,7 @@
 package com.sfeir.richercms.image.client.event;
 
 import com.google.gwt.user.client.ui.SimplePanel;
-import com.sfeir.richercms.page.client.Thumb;
+import com.sfeir.richercms.page.client.view.custom.thumb.Thumb;
 
 import com.allen_sauer.gwt.dnd.client.DragContext;
 import com.allen_sauer.gwt.dnd.client.VetoDragException;

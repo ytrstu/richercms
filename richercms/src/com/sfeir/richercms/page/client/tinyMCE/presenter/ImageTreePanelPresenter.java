@@ -23,6 +23,11 @@ import com.sfeir.richercms.page.client.tinyMCE.view.ImageTreePanel;
 import com.sfeir.richercms.page.client.view.custom.HorizontalEventPanel;
 import com.sfeir.richercms.page.shared.BeanArboPage;
 
+/**
+ * Presenter of the ImageTreePanel view
+ * @author homberg.g
+ *
+ */
 @Presenter( view =ImageTreePanel.class)
 public class ImageTreePanelPresenter  extends LazyPresenter<IImageTreePanel,PageEventBus>{
 

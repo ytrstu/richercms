@@ -1,31 +1,40 @@
 package com.sfeir.richercms.page.client.tinyMCE.view;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DeferredCommand;
 import com.google.gwt.user.client.Element;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.sfeir.richercms.page.client.PageConstants;
 import com.sfeir.richercms.page.client.tinyMCE.interfaces.IFileMBox;
 import com.sfeir.richercms.page.client.tinyMCE.interfaces.IImageTreePanel;
 import com.sfeir.richercms.page.client.tinyMCE.interfaces.IThumbsPanel;
 import com.sfeir.richercms.page.client.view.custom.TreePanel;
 
-public class FileMbox extends DialogBox implements IFileMBox{
+/**
+ * 
+ * @author homberg.g
+ *
+ */
+public class FileMbox extends DialogBox implements IFileMBox {
 
+	//gestion des langues
+	private PageConstants constants = GWT.create(PageConstants.class);
 	SimplePanel treePanel = null;
 	SimplePanel thumbPanel = null;
 	VerticalPanel mainContainer = null;
 	HorizontalPanel treeAndThumbs = null;
+	private Button ok ;
 	
 	public Widget asWidget() {	
 		return this;
@@ -41,46 +50,42 @@ public class FileMbox extends DialogBox implements IFileMBox{
         setGlassStyleName("fileManagerGlassPopup");
 		setSize("500px", "500px");
 		
+		// the treePanel at left
 		this.treePanel = new SimplePanel();
 		this.treePanel.setHeight("400px");
 		this.treePanel.setWidth("200px");
+		
+		// the thumbPanel at right
 		this.thumbPanel = new SimplePanel();
 		this.thumbPanel.setHeight("400px");
 		this.thumbPanel.setWidth("300px");
+		
+		//top of the popUp
 		this.treeAndThumbs = new HorizontalPanel();
+		this.treeAndThumbs.addStyleName("thumbsPanel");
+		this.treeAndThumbs.setBorderWidth(5);
+		this.treePanel.addStyleName("paddingPanel");
 		this.treeAndThumbs.add(this.treePanel);
+		this.thumbPanel.addStyleName("paddingPanel");
 		this.treeAndThumbs.add(this.thumbPanel);
 		
-        Button ok = new Button("upload");
-        ok.addClickHandler(new ClickHandler() {
-        	public void onClick(ClickEvent event) {
-        		//FileManager.setTinyMceUrl(upload.getFilename());
-        		hide();
-        	}
-        });
+		//bottom of the popUp
+        this.ok = new Button("upload");
+        
+        Label title = new Label(this.constants.PopUpImgTitle());
+        title.setStyleName("informationTitle");
+        
+        //main container
         this.mainContainer = new VerticalPanel();
+        this.mainContainer.add(title);
         this.mainContainer.add(this.treeAndThumbs);
         this.mainContainer.add(ok);
+        this.mainContainer.setCellHorizontalAlignment(ok, HasHorizontalAlignment.ALIGN_CENTER);
 
         setWidget(this.mainContainer);
-        
-        //place the popUp
-        //this.popUpPosition();
 
         // creation de la verrue
         this.verrue();
-	}
-	
-	private void popUpPosition(){
-        int top =  Window.getClientHeight()/2-150;
-        int left = Window.getClientWidth()/2-150;
-        if (top<0) {
-        	top = 0;
-        }
-        if (left<0) {
-        	left = 0;
-        }
-        setPopupPosition(left, top);
 	}
 	
 	private void verrue() {
@@ -156,6 +161,10 @@ public class FileMbox extends DialogBox implements IFileMBox{
 	public void displayThumbs(IThumbsPanel p) {
 		this.thumbPanel.clear();
 		this.thumbPanel.add((ThumbsPanel)p);
+	}
+	
+	public HasClickHandlers onOkClick() {
+		return this.ok;
 	}
 	
 	public void center(){

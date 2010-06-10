@@ -1,14 +1,18 @@
 package com.sfeir.richercms.page.client.view.custom;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.LoadEvent;
 import com.google.gwt.event.dom.client.LoadHandler;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.PopupPanel;
+import com.sfeir.richercms.page.client.PageConstants;
 
 public class PopUpImagePreview extends PopupPanel{
 
+	//gestion des langues
+	private PageConstants constants = GWT.create(PageConstants.class);
 	private Image img;
 	
 	public PopUpImagePreview(String URL) {
@@ -29,7 +33,7 @@ public class PopUpImagePreview extends PopupPanel{
 				PopUpImagePreview.this.center();
 			}});
 	    
-	    this.setTitle("click to close");
+	    this.setTitle(constants.MsgClick2Close());
 	    
 	}
 }

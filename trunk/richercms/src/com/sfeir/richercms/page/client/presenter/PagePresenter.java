@@ -128,11 +128,17 @@ public class PagePresenter extends LazyPresenter<IdisplayPage, PageEventBus> {
 	public void onDisplayNormalPanel() {
 		if(this.state.equals(PageState.display)) {
 			view.displayNormalPanel();
+			eventBus.displayCurrentPage();
 		} else {
 			ConfirmationBox confirmPopUp = new ConfirmationBox("ATTENTION", "Vous etes sur le point de TOUT perdre, mouahaha !!!");
 			confirmPopUp.getClickOkEvt().addClickHandler(new ClickHandler() {
 				public void onClick(ClickEvent event) {
 					view.displayNormalPanel();
+					// on demande donc au navigation panel de fair afficher la dernière page selectionné
+					// voir la page qui vien d'être cliqué
+					eventBus.displayCurrentPage();
+					//repasse en mode display
+					state = PageState.display;
 				}		
 			});
 		}

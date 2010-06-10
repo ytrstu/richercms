@@ -227,8 +227,15 @@ td.datePickerMonth {
 	float:left;
 	margin-right: 10px;
 }
+.thumb:focus {
+	border:5px solid #D0E4F6;
+}
 
 .thumbsPanel {
 	float:left;
 	border:3px solid #D0E4F6;
+}
+
+.paddingPanel {
+	padding:10px;
 }

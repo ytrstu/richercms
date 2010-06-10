@@ -16,7 +16,7 @@ public class ValidationPanel extends ResizeComposite implements IValidationPanel
 	private PageConstants constants = GWT.create(PageConstants.class);
 	
 	private Button btnAdd = new Button(constants.BtnAdd());
-	private Button btnCancel = new Button(constants.BtnCancel());
+	private Button btnCancel = new Button(constants.BtnReturn());
 	
 	public ValidationPanel() {
 		super();

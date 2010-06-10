@@ -56,13 +56,22 @@ public interface PageConstants extends Constants {
 	  String BtnModify();
 	  
 	  @DefaultStringValue("return")
-	  String BtnCancel();
+	  String BtnReturn();
 	  
 	  @DefaultStringValue("Reset position")
 	  String BtnResetPos();
 	  
 	  @DefaultStringValue("Apply")
 	  String BtnApply();
+	  
+	  @DefaultStringValue("Upload !")
+	  String BtnUpload();
+	  
+	  @DefaultStringValue("Ok")
+	  String BtnOk();
+	  
+	  @DefaultStringValue("Cancel")
+	  String BtnCancel();
 	  
 	  @DefaultStringValue("Unable to destroy the main page")
 	  String IDeletMainPage();
@@ -135,5 +144,46 @@ public interface PageConstants extends Constants {
 	  
 	  @DefaultStringValue("Add a child in : ")
 	  String AddPageTitleInformation();
-
+	  
+	  @DefaultStringValue("Image in : ")
+	  String ThumbTitle();
+	  
+	  @DefaultStringValue("Upload an new Image")	  
+	  String UploadTitle();
+	  
+	  @DefaultStringValue("Click to Close")
+	  String MsgClick2Close();
+	  
+	  @DefaultStringValue("click to delete this image")
+	  String MsgClick2DeleteImg();
+	  
+	  @DefaultStringValue("Click to display in real size")
+	  String MsgClick2DisplayIRS();
+	  
+	  @DefaultStringValue("click to select this image")
+	  String MsgClick2Select();
+	  
+	  @DefaultStringValue("Select an image")
+	  String PopUpImgTitle();
+	  
+	  @DefaultStringValue("sending the current image")
+	  String MsgSendImage();
+	  
+	  @DefaultStringValue("saved image !")
+	  String MsgImageSaved();
+	  
+	  @DefaultStringValue("refresh thumbs")
+	  String MsgRefreshThumb();
+	  
+	  @DefaultStringValue("ERROR during loading thumbs")
+	  String MsgErrorLoadThumbs();
+	  
+	  @DefaultStringValue("thumbs successfuly loaded")
+	  String MsgSuccessLoadThumbs();
+	  
+	  @DefaultStringValue("No image found")
+	  String MsgErrorImgNotFound();
+	  
+	  @DefaultStringValue("Are you sure you want to delete this image?")
+	  String MsgSuppImg();
 }

@@ -1,5 +1,6 @@
 package com.sfeir.richercms.page.client.view.custom;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
@@ -10,11 +11,14 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.sfeir.richercms.page.client.PageConstants;
 
 public class ConfirmationBox extends DialogBox {
 
-	private Button btnOk = new Button("ok");
-	private Button btncancel = new Button("cancel");
+	//gestion des langues
+	private PageConstants constants = GWT.create(PageConstants.class);
+	private Button btnOk = new Button(constants.BtnOk());
+	private Button btncancel = new Button(constants.BtnCancel());
 
 	public ConfirmationBox(String title, String text) {
 

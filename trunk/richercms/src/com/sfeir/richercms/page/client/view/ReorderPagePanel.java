@@ -46,7 +46,7 @@ public class ReorderPagePanel extends ResizeComposite implements IReorderPagePan
 		
 		
 		this.initPosition = new Button(this.constants.BtnResetPos());
-		this.cancel = new Button(this.constants.BtnCancel());
+		this.cancel = new Button(this.constants.BtnReturn());
 		this.apply = new Button(this.constants.BtnApply());
 		
 		HorizontalPanel btnPanel = new HorizontalPanel();

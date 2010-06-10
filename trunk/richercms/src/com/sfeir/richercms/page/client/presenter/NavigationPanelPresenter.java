@@ -43,6 +43,8 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Pa
 	private Long rootId = null;
 	//permet de savoir l'ors de l'ajout des fils dans l'arbre s'il faut sélectionner le dernier fils ou non
 	private boolean selectLastChild = false;
+	//permet de savoir si c'est un nouvelle objet qui est selectionné ou non
+	private boolean sameItemSelected = false;
 	
 	public NavigationPanelPresenter() {
 		super();
@@ -56,12 +58,14 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Pa
 		view.getSelectedEvtTree()
 		.addSelectionHandler(new SelectionHandler<TreeItem>(){
 			public void onSelection(SelectionEvent<TreeItem> event) {
-				eventBus.displayNormalPanel();
 				//évite de recharger les donnée pour rien
 				if(!event.getSelectedItem().equals(selectedItem)){
-					setSelectedItem(event.getSelectedItem()); // fait des actions spécifique
-					eventBus.displayPage((Long) selectedItem.getUserObject());
+					sameItemSelected = false;
+				}else {
+					sameItemSelected = true;
 				}
+				setSelectedItem(event.getSelectedItem()); // fait des actions spécifique
+				eventBus.displayNormalPanel();
 			}
 		});
 		
@@ -334,7 +338,6 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Pa
 		this.AddChildInTree();
 	}
 	
-
 	public void onAddNewChildInTree() {
 		if(this.selectedItem.getState()) {
 			this.rpcPage.getLastChildAdded((Long)this.selectedItem.getUserObject(), 
@@ -475,6 +478,12 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Pa
 	public void onReloadCurrentPageInTree(BeanArboPage modifOnPage) {
 		view.setTextOfSelectedTI(modifOnPage.getTranslation().get(0).getPageTitle());
 		view.setImageOfSelectedTI(this.chooseTheGoodImage(modifOnPage));
+	}
+	
+	public void onDisplayCurrentPage() {
+		// on recharge uniquement si le nouvelle objet selectionné et différent de l'ancien
+		if(!this.sameItemSelected)
+			eventBus.displayPage((Long) selectedItem.getUserObject());
 	}
 		
 	/**

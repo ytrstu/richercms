@@ -44,4 +44,8 @@ public interface IFileMBox extends LazyView{
 	 * @return EVENT
 	 */
 	HasClickHandlers onOkClick();
+	
+	public void setTitle(String title);
+	
+	public void setDefaultTitle();
 }

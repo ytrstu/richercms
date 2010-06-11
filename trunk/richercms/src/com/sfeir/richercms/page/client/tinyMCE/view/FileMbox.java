@@ -34,6 +34,7 @@ public class FileMbox extends DialogBox implements IFileMBox {
 	SimplePanel thumbPanel = null;
 	VerticalPanel mainContainer = null;
 	HorizontalPanel treeAndThumbs = null;
+	Label title = null;
 	private Button ok ;
 	
 	public Widget asWidget() {	
@@ -70,16 +71,17 @@ public class FileMbox extends DialogBox implements IFileMBox {
 		this.treeAndThumbs.add(this.thumbPanel);
 		
 		//bottom of the popUp
-        this.ok = new Button("upload");
+        this.ok = new Button(this.constants.BtnOk());
         
-        Label title = new Label(this.constants.PopUpImgTitle());
-        title.setStyleName("informationTitle");
+        this.title = new Label();
+        this.setDefaultTitle();
+        this.title.setStyleName("informationTitle");
         
         //main container
         this.mainContainer = new VerticalPanel();
-        this.mainContainer.add(title);
+        this.mainContainer.add(this.title);
         this.mainContainer.add(this.treeAndThumbs);
-        this.mainContainer.add(ok);
+        this.mainContainer.add(this.ok);
         this.mainContainer.setCellHorizontalAlignment(ok, HasHorizontalAlignment.ALIGN_CENTER);
 
         setWidget(this.mainContainer);
@@ -172,4 +174,11 @@ public class FileMbox extends DialogBox implements IFileMBox {
 		super.center();
 	}
 
+	public void setTitle(String title) {
+		this.title.setText(title);
+	}
+	
+	public void setDefaultTitle() {
+		this.title.setText(this.constants.PopUpImgTitle());
+	}
 }

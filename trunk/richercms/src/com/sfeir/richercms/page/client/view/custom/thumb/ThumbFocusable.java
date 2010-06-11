@@ -9,6 +9,8 @@ public class ThumbFocusable extends FocusPanel{
 	//gestion des langues
 	private PageConstants constants = GWT.create(PageConstants.class);
 	private Thumb img;
+	private int width = 100;
+	private int height = 100;
 	
 	public ThumbFocusable(){
 		super();
@@ -27,8 +29,17 @@ public class ThumbFocusable extends FocusPanel{
 		this.img = new Thumb(URL, id, path);
 		setUp();
 	}
+	
+	public ThumbFocusable(String URL, Long id, String path, int width, int height){
+		super();
+		this.width = width;
+		this.height = height;
+		this.img = new Thumb(URL, id, path);
+		setUp();
+	}
 
 	private void setUp() {
+		this.setSize(this.width+"px", this.height+"px");
 		this.img.setTitle(this.constants.MsgClick2Select());
 		this.addStyleName("thumb");
 		this.setWidget(img);

@@ -27,7 +27,6 @@ import com.sfeir.richercms.page.shared.BeanFile;
 public class ThumbsPanelPresenter extends LazyPresenter<IThumbsPanel,PageEventBus> {
 	
 	private FileServiceAsync rpcFile = null;
-	private String selectedImgPath= "";
 	
 	public void bindView() {
 		this.view.onSendBtnclick().addClickHandler(new ClickHandler() {
@@ -58,13 +57,11 @@ public class ThumbsPanelPresenter extends LazyPresenter<IThumbsPanel,PageEventBu
 	}
 	
 	public void onDisplayThumbsInPopUp(String path){
-		this.selectedImgPath = "";
 		this.view.setCurrentPath(path);
 		this.displayThumbNails(false);
-	}
-	
-	public void onCallPath() {
-		this.eventBus.sendPath(this.selectedImgPath);
+		
+		//no thumbs was selected
+		this.eventBus.selectThumbs("");
 	}
 	
 	private void displayThumbNails(final boolean justLast) {
@@ -96,9 +93,8 @@ public class ThumbsPanelPresenter extends LazyPresenter<IThumbsPanel,PageEventBu
 	}
 	
 	public void setSelectedImgPath(String path){
-		this.selectedImgPath = path;
+		this.eventBus.selectThumbs(path);
 	}
-	
 	
 	/**
 	 * used by the framework to instantiate rpcFile 

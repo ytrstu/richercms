@@ -148,7 +148,7 @@ public interface PageConstants extends Constants {
 	  @DefaultStringValue("Image in : ")
 	  String ThumbTitle();
 	  
-	  @DefaultStringValue("Upload an new Image")	  
+	  @DefaultStringValue("Upload a new image with a maximum size of 1 Mb (png, jpg,...)")	  
 	  String UploadTitle();
 	  
 	  @DefaultStringValue("Click to Close")

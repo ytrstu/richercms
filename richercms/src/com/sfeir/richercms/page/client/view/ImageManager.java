@@ -1,8 +1,10 @@
 package com.sfeir.richercms.page.client.view;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.event.dom.client.HasMouseDownHandlers;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FileUpload;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -30,9 +32,11 @@ public class ImageManager extends ResizeComposite implements IImageManager {
 	private PageConstants constants = GWT.create(PageConstants.class);
 	
 	private LayoutPanel panel;
-	private static final String urlActionUP = GWT.getModuleBaseURL() + "upload";
-	private static final String thumbnailUrl = GWT.getModuleBaseURL() + "thumbnail";
-	private static final String imageUrl = GWT.getModuleBaseURL() + "image";
+	private static final int thumbsWidth = 100;
+	private static final int thumbsHeight = 100;
+	private static final String urlActionUP = GWT.getModuleName() + "/upload"; // up a file
+	private static final String thumbnailUrl = GWT.getModuleName() + 
+						"/thumbnail?width="+thumbsWidth+"&height="+thumbsHeight; // display a thumbnail
 	private FlowPanel thumbsPanel = null;
 	private Button btnSend = null;
 	private Hidden path = null;
@@ -87,6 +91,7 @@ public class ImageManager extends ResizeComposite implements IImageManager {
 		//form.setWidget(panel);
 		
 		final FileUpload upload = new FileUpload();
+		upload.setTitle("Store only image like png, jpg, tif, ... With a maximum size of 1 MB");
 		upload.setName("uploadFormElement");
 		
 		submitPanel.add(this.path);
@@ -104,14 +109,14 @@ public class ImageManager extends ResizeComposite implements IImageManager {
 		
 	@SuppressWarnings("static-access")
 	public HasClickHandlers addThumbnail(String p) {
-		ThumbAndBtn img = new ThumbAndBtn(this.thumbnailUrl+"?path="+p,null,p);
+		ThumbAndBtn img = new ThumbAndBtn(this.thumbnailUrl+"&path="+p,null,p,thumbsWidth,thumbsHeight);
 		this.thumbsPanel.add(img);
 		
 		//handle the click on the delete btn
 		return img.btnClickEvent();
 	}
 	
-	public HasClickHandlers onThumbClick() {
+	public HasMouseDownHandlers onThumbClick() {
 		ThumbAndBtn thumb = (ThumbAndBtn)this.thumbsPanel.getWidget(this.thumbsPanel.getWidgetCount()-1);
 		return thumb.imageClickEvent();
 	}
@@ -151,7 +156,12 @@ public class ImageManager extends ResizeComposite implements IImageManager {
 		if(popUpImg!=null)
 			popUpImg.hide();
 		
-		popUpImg = new PopUpImagePreview(this.imageUrl+"?path="+path);
+		popUpImg = new PopUpImagePreview(path);
 		popUpImg.center();
+	}
+	
+	public void deleteThumb(Element thumb){
+		thumb.getParentNode().getParentNode()
+			.getParentNode().getParentNode().removeFromParent();
 	}
 }

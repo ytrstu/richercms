@@ -351,16 +351,9 @@ public interface PageEventBus extends EventBus {
 	public void displayThumbsInPopUp(String path);
 	
 	/**
-	 * Fired by the FileMBoxManager, when the ok button is clicked
-	 * Request the ThumbsPanelPresenter to send the path of the selected thumb
-	 */
-	@Event( handlers = ThumbsPanelPresenter.class)
-	public void callPath();
-	
-	/**
-	 * FIred by the ThumbsPanelPresenter to send the path of the selected thumb
+	 * Fired by the ThumbsPanelPresenter to send the path of the selected thumb
 	 * @param path : Image's path : /page1/page1.1/image3.png
 	 */
 	@Event( handlers =  FileMBoxPresenter.class )
-	public void sendPath(String path);
+	public void selectThumbs(String path);
 }

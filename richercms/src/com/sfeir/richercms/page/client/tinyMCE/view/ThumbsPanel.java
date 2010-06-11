@@ -31,8 +31,11 @@ public class ThumbsPanel extends ResizeComposite implements IThumbsPanel{
 	private PageConstants constants = GWT.create(PageConstants.class);
 	
 	private LayoutPanel panel;
-	private static final String urlActionUP = GWT.getModuleBaseURL() + "upload"; // up a file
-	private static final String thumbnailUrl = GWT.getModuleBaseURL() + "thumbnail"; // display a thumbnail
+	private static final int thumbsWidth = 100;
+	private static final int thumbsHeight = 100;
+	private static final String urlActionUP = GWT.getModuleName() + "/upload"; // up a file
+	private static final String thumbnailUrl = GWT.getModuleName() + 
+						"/thumbnail?width="+thumbsWidth+"&height="+thumbsHeight; // display a thumbnail
 	private FlowPanel thumbsPanel = null;
 	private Button btnSend = null; // send the form
 	private Hidden path = null;
@@ -58,7 +61,7 @@ public class ThumbsPanel extends ResizeComposite implements IThumbsPanel{
 		thumbScroll.add(this.thumbsPanel);
 		this.panel.add(thumbScroll);
 		this.panel.setWidgetTopHeight(thumbScroll,0,Unit.PX,300,Unit.PX);
-		this.panel.setWidgetLeftRight(thumbScroll, 10, Unit.PCT, 10, Unit.PCT);
+		this.panel.setWidgetLeftRight(thumbScroll, 8, Unit.PCT, 8, Unit.PCT);
 		
 		this.btnSend = new Button("envoi");
 		// Creation du panel contenant le formulaire
@@ -88,27 +91,13 @@ public class ThumbsPanel extends ResizeComposite implements IThumbsPanel{
 		this.panel.add(this.btnSend);
 		this.panel.setWidgetTopHeight(this.btnSend,350,Unit.PX,30,Unit.PX);
 		this.panel.setWidgetLeftRight(this.btnSend, 40, Unit.PCT, 40, Unit.PCT);
-		
-		// Ajout d'un evenement declenche pendant la soumission du formulaire
-		form.addSubmitHandler(new FormPanel.SubmitHandler() {
-			public void onSubmit(SubmitEvent event) {
-				System.out.println("form.addSubmitHandler");
-			}
-		});
-		
-		// Ajout d'un evenement declenche a la fin de l'upload
-		form.addSubmitCompleteHandler(new FormPanel.SubmitCompleteHandler() {
-			public void onSubmitComplete(SubmitCompleteEvent event) {
-				System.out.println("form.addSubmitCompleteHandler");
-				}
-			});
 			
 		this.initWidget(this.panel);
 	}
 		
 	@SuppressWarnings("static-access")
 	public HasClickHandlers addThumbnail(String p) {
-		ThumbFocusable thumb = new ThumbFocusable(this.thumbnailUrl+"?path="+p,null,p);
+		ThumbFocusable thumb = new ThumbFocusable(this.thumbnailUrl+"&path="+p,null,p,thumbsWidth,thumbsHeight);
 		this.thumbsPanel.add(thumb);
 		return thumb;
 	}

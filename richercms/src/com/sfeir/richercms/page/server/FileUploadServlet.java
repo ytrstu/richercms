@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.fileupload.FileUploadBase.SizeLimitExceededException;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import com.googlecode.objectify.Objectify;
@@ -51,15 +52,23 @@ public class FileUploadServlet extends HttpServlet {
 				items = upload.parseRequest(req);
 				for(MemoryFileItem item : items) {
 					if(item.getFieldName().equals("uploadFormElement")){
-						item.commit();
-						item.setPath(path);
-						ofy.put(item);
+						if(item.getContentType().contains("image/")){
+							item.commit();
+							item.setPath(path);
+							ofy.put(item);
+						}else{
+							resp.sendError(HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE,
+									"You can just save image");
+						}
+							
 					}else {
 						this.path = item.getFieldName();
 					}
 				}
+			} catch (SizeLimitExceededException e) {
+				resp.sendError(HttpServletResponse.SC_REQUEST_ENTITY_TOO_LARGE,
+					"Image too large(< or = at 1 mo");
 			} catch (FileUploadException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		} else {

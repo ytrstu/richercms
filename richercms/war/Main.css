@@ -188,7 +188,8 @@ td.datePickerMonth {
 	background-repeat: no-repeat;
 }
 
-.mainButtonPanel {
+.mainButtonPanel,
+.fileMBoxBtnPanel{
 	padding-top : 5px;
 	text-align: center;
 }
@@ -223,6 +224,7 @@ td.datePickerMonth {
 	direction:ltr;
 	text-align :center;
 }
+
 .thumb {
 	float:left;
 	margin-right: 10px;

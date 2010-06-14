@@ -33,10 +33,18 @@ public class ThumbNailServlet extends HttpServlet  {
 
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) 
 	throws ServletException, IOException {
+		Image thumb;
 		String id = req.getParameter("path");
+		int width = new Integer(req.getParameter("width")).intValue();
+		int height = new Integer(req.getParameter("height")).intValue();
 		MemoryFileItem mfi = getMemoryFileItem(id);
 		if(mfi != null) {
-			Image thumb = resizeImg(ImagesServiceFactory.makeImage(mfi.get()), 100, 100);
+			
+			thumb= ImagesServiceFactory.makeImage(mfi.get());
+	
+			//if img is to big
+			if((thumb.getHeight() > height) || (thumb.getWidth() > width))
+				thumb = resizeImg(ImagesServiceFactory.makeImage(mfi.get()), height, width);
 			
 			resp.setContentType(mfi.getContentType());
 			ServletOutputStream outStream = resp.getOutputStream();

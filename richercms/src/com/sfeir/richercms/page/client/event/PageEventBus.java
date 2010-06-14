@@ -6,6 +6,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.event.EventBus;
+import com.sfeir.richercms.page.client.PageState;
 import com.sfeir.richercms.page.client.interfaces.IImageManager;
 import com.sfeir.richercms.page.client.interfaces.IInformationPanel;
 import com.sfeir.richercms.page.client.interfaces.INavigationPanel;
@@ -68,9 +69,10 @@ public interface PageEventBus extends EventBus {
 	/**
 	 * Fired by the PagePresenter to allows the navigation panel to display
 	 * the last page selected after an DisplayNormalPanel event
+	 * @param state : State of the application
 	 */
 	@Event( handlers = NavigationPanelPresenter.class )
-	public void displayCurrentPage();
+	public void displayCurrentPage(PageState state);
 	
 	/**
 	 * fired by the NavigationPresenter when the addPage menu is clicked
@@ -319,15 +321,29 @@ public interface PageEventBus extends EventBus {
 	//@Event( handlers =  PagePresenter.class )
 	//public void displayImagePanel(IImagePanel p);
 	
-	
-	@Event( handlers =  FileMBoxPresenter.class )
-	public void startTinyPopUp();
+	/**
+	 * Fired by the FileManager to display the FileMBox
+	 * But the FileMbox need to know what page is selected to open the right node
+	 * Andso the NavigationPanelPresenter catch this event end fired a startTinyPopUp with 
+	 * the id of the selectedPage
+	 */
+	@Event( handlers =  NavigationPanelPresenter.class )
+	public void loadFileManager();
 	
 	/**
-	 * Fired by the FileManager to create his TreePanel
+	 * Fired by the NavigationPanelPresenter with the id of the selected page
+	 * in order to open the corresponding node in the popUp
+	 * @param pathId : the recusive path ids
+	 */
+	@Event( handlers =  FileMBoxPresenter.class )
+	public void startTinyPopUp(List<Long> pathId);
+	
+	/**
+	 * Fired by the FileManager to create his TreePanel and the thumbsView
+	 * @param pathId : the recusive path ids
 	 */
 	@Event( handlers = {ImageTreePanelPresenter.class, ThumbsPanelPresenter.class} )
-	public void tinyPopUpStartPanels();
+	public void tinyPopUpStartPanels(List<Long> pathId);
 	
 	/**
 	 * Fired by the ImageTreePanelPresenter to display the image tree view
@@ -356,4 +372,10 @@ public interface PageEventBus extends EventBus {
 	 */
 	@Event( handlers =  FileMBoxPresenter.class )
 	public void selectThumbs(String path);
+	
+	/**
+	 * Fired by the PagePresenter, to enable return button of the validationPanel
+	 */
+	@Event( handlers =  ValidationPanelPresenter.class )
+	public void enableReturnBtn();
 }

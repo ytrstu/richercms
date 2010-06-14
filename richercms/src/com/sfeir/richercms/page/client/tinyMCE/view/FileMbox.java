@@ -8,6 +8,7 @@ import com.google.gwt.user.client.DeferredCommand;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
@@ -30,12 +31,13 @@ public class FileMbox extends DialogBox implements IFileMBox {
 
 	//gestion des langues
 	private PageConstants constants = GWT.create(PageConstants.class);
-	SimplePanel treePanel = null;
-	SimplePanel thumbPanel = null;
-	VerticalPanel mainContainer = null;
-	HorizontalPanel treeAndThumbs = null;
-	Label title = null;
-	private Button ok ;
+	private SimplePanel treePanel = null;
+	private SimplePanel thumbPanel = null;
+	private VerticalPanel mainContainer = null;
+	private HorizontalPanel treeAndThumbs = null;
+	private Label title = null;
+	private Button ok  = null;
+	private Button cancel = null;
 	
 	public Widget asWidget() {	
 		return this;
@@ -72,6 +74,13 @@ public class FileMbox extends DialogBox implements IFileMBox {
 		
 		//bottom of the popUp
         this.ok = new Button(this.constants.BtnOk());
+        this.cancel = new Button(this.constants.BtnCancel());
+        
+        //button Panel
+        FlowPanel btnPanel = new FlowPanel();
+        btnPanel.addStyleName("fileMBoxBtnPanel");
+        btnPanel.add(this.ok);
+        btnPanel.add(this.cancel);
         
         this.title = new Label();
         this.setDefaultTitle();
@@ -81,7 +90,7 @@ public class FileMbox extends DialogBox implements IFileMBox {
         this.mainContainer = new VerticalPanel();
         this.mainContainer.add(this.title);
         this.mainContainer.add(this.treeAndThumbs);
-        this.mainContainer.add(this.ok);
+        this.mainContainer.add(btnPanel);
         this.mainContainer.setCellHorizontalAlignment(ok, HasHorizontalAlignment.ALIGN_CENTER);
 
         setWidget(this.mainContainer);
@@ -167,6 +176,10 @@ public class FileMbox extends DialogBox implements IFileMBox {
 	
 	public HasClickHandlers onOkClick() {
 		return this.ok;
+	}
+	
+	public HasClickHandlers onCancelClick() {
+		return this.cancel;
 	}
 	
 	public void center(){

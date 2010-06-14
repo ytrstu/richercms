@@ -33,6 +33,7 @@ public class DisplayImageServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) 
 	throws ServletException, IOException {
 		String id = req.getParameter("path");
+		String test = req.getRequestURI();
 		MemoryFileItem mfi = getMemoryFileItem(id);
 		if(mfi != null) {
 			Image thumb = ImagesServiceFactory.makeImage(mfi.get());

@@ -43,6 +43,10 @@ public class ValidationPanel extends ResizeComposite implements IValidationPanel
 		this.btnCancel.setEnabled(true);
 	}
 	
+	public void enabledReturnBtn(){
+		this.btnCancel.setEnabled(true);
+	}
+	
 	public void deasableButtons() {
 		this.btnAdd.setEnabled(false);
 		this.btnCancel.setEnabled(false);

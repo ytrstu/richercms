@@ -45,6 +45,12 @@ public interface IFileMBox extends LazyView{
 	 */
 	HasClickHandlers onOkClick();
 	
+	/**
+	 * Return the click handler on the cancel button.
+	 * @return EVENT
+	 */
+	HasClickHandlers onCancelClick();
+	
 	public void setTitle(String title);
 	
 	public void setDefaultTitle();

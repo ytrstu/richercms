@@ -126,23 +126,24 @@ public class PagePresenter extends LazyPresenter<IdisplayPage, PageEventBus> {
 	/////////////////////////////////////////////// EVENT ///////////////////////////////////////////////
 	
 	public void onDisplayNormalPanel() {
+
 		if(this.state.equals(PageState.display)) {
 			view.displayNormalPanel();
-			eventBus.displayCurrentPage();
-		} else {
+		}else if(!this.state.equals(PageState.manageImage)){//modify or add but no in manageImage mode
 			ConfirmationBox confirmPopUp = new ConfirmationBox("ATTENTION", "Vous etes sur le point de TOUT perdre, mouahaha !!!");
 			confirmPopUp.getClickOkEvt().addClickHandler(new ClickHandler() {
 				public void onClick(ClickEvent event) {
 					view.displayNormalPanel();
-					// on demande donc au navigation panel de fair afficher la dernière page selectionné
-					// voir la page qui vien d'être cliqué
-					eventBus.displayCurrentPage();
 					//repasse en mode display
 					state = PageState.display;
 				}		
 			});
 		}
+		// on demande donc au navigation panel de fair afficher la dernière page selectionné
+		// voir la page qui vien d'être cliqué
+		eventBus.displayCurrentPage(state);
 	}
+
 	
 	public void onAddPage(Long id){
 		this.state = PageState.add;
@@ -162,6 +163,7 @@ public class PagePresenter extends LazyPresenter<IdisplayPage, PageEventBus> {
 		
 		this.view.enableLanguageBox();
 		this.state = PageState.display;
+		this.eventBus.displayNormalPanel();
 	}
 	
 	public void onConfirmCancelPage() {
@@ -196,7 +198,8 @@ public class PagePresenter extends LazyPresenter<IdisplayPage, PageEventBus> {
 	
 	public void onDisplayImageManager(IImageManager p) {
 		this.view.displayImagePanel(p);
-		this.state = PageState.display;
+		this.state = PageState.manageImage;
+		this.eventBus.enableReturnBtn(); // enable the return button of the ValidationPanel
 	}
 	
 	public void onStartPage() {

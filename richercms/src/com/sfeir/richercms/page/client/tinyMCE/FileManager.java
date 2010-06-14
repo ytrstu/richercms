@@ -13,7 +13,7 @@ public class FileManager {
 	 * @return Pour les tests retourne une chaine affiché dans le champ url de TinyMCE
 	 */
 	public static String loadFileName(final String url) {
-		FileManager.evtBus.startTinyPopUp();
+		FileManager.evtBus.loadFileManager();
 		return "";
 	}
 

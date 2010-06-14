@@ -36,6 +36,8 @@ public interface IImageManager  extends LazyView {
 	
 	void showPopUpImgPreview(String path);
 	
+	void setTitle(String title);
+	
 	/**
 	 * Delete a thumb into the view
 	 * @param thumb : element return by the click Event.

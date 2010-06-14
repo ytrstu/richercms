@@ -11,6 +11,11 @@ public interface IValidationPanel extends LazyView {
 	void enabledButtons();
 	
 	/**
+	 * Enable the return button
+	 */
+	void enabledReturnBtn();
+	
+	/**
 	 * Disable all buttons include in this Panel
 	 */
 	void deasableButtons();

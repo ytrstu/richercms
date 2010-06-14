@@ -25,6 +25,7 @@ import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.sfeir.richercms.client.view.PopUpMessage;
 import com.sfeir.richercms.page.client.ArboPageServiceAsync;
+import com.sfeir.richercms.page.client.PageState;
 import com.sfeir.richercms.page.client.event.PageEventBus;
 import com.sfeir.richercms.page.client.interfaces.INavigationPanel;
 import com.sfeir.richercms.page.client.view.NavigationPanel;
@@ -54,7 +55,6 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Pa
 	 * Bind the various evt
 	 */ 
 	public void bindView() {
-		
 		view.getSelectedEvtTree()
 		.addSelectionHandler(new SelectionHandler<TreeItem>(){
 			public void onSelection(SelectionEvent<TreeItem> event) {
@@ -123,7 +123,7 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Pa
 				eventBus.startReorderPanel((Long)selectedItem.getUserObject());
 				view.getPopUpMenuBar().hide();
 			}});
-		// commande pour afficher l'outilgestion des images
+		// commande pour afficher l'outil de gestion des images
 		this.view.getPopUpMenuBar().setManageImagesCommand(new Command() {
 			public void execute() {
 				createPath();
@@ -309,6 +309,23 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Pa
 	}
 	
 	private void createPath() {
+		//get the id Path : ids[0] = selected Node ... ids[max] : root
+		List<Long> ids = this.getIdPath();
+		this.rpcPage.getPath(ids, new AsyncCallback<String>() {
+			public void onFailure(Throwable caught) {}
+			public void onSuccess(String result) {
+				eventBus.startImagePanel(result);
+				}
+			
+		});
+	}
+	
+	/**
+	 * Create a list containing the path of the selectedNode
+	 * this list contains id in a recursive order.
+	 * @return ids : ids[0] = selected Node => ids[max] : root of the tree ('=>' represent intermediate nodes)
+	 */
+	private List<Long> getIdPath() {
 		ArrayList<Long> ids = new ArrayList<Long>();
 		ids.add((Long)this.selectedItem.getUserObject());
 		TreeItem currentItem = this.selectedItem.getParentItem();
@@ -318,13 +335,7 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Pa
 			currentItem = currentItem.getParentItem();
 		}
 		
-		this.rpcPage.getPath(ids, new AsyncCallback<String>() {
-			public void onFailure(Throwable caught) {}
-			public void onSuccess(String result) {
-				eventBus.startImagePanel(result);
-				}
-			
-		});
+		return ids;
 	}
 	
 	///////////////////////////////////////// ACTION ON THE TREE /////////////////////////////////////////
@@ -480,10 +491,19 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Pa
 		view.setImageOfSelectedTI(this.chooseTheGoodImage(modifOnPage));
 	}
 	
-	public void onDisplayCurrentPage() {
+	public void onDisplayCurrentPage(PageState state) {
 		// on recharge uniquement si le nouvelle objet selectionné et différent de l'ancien
-		if(!this.sameItemSelected)
-			eventBus.displayPage((Long) selectedItem.getUserObject());
+		if(!this.sameItemSelected){
+			if(state.equals(PageState.manageImage))
+				this.createPath();//display new thumbs
+			else
+				eventBus.displayPage((Long) selectedItem.getUserObject());
+		}
+	}
+	
+	//display the FileMbox PopUp with the good node opened
+	public void onLoadFileManager() {
+		this.eventBus.startTinyPopUp(this.getIdPath());
 	}
 		
 	/**

@@ -34,6 +34,8 @@ public class ImageTreePanelPresenter  extends LazyPresenter<IImageTreePanel,Page
 	private TreeItem expandedItem = null; // current expanded Item in tree
 	private TreeItem selectedItem = null; // current selected Item in tree
 	private ArboPageServiceAsync rpcPage = null;
+	private List<Long> pathId; // the path to display a childNode in the tree
+	private int pathPosition = 1; // useful to display the path to access a childNode
 	
 	/**
 	 * Bind the various evt
@@ -55,30 +57,59 @@ public class ImageTreePanelPresenter  extends LazyPresenter<IImageTreePanel,Page
 				// on ajoute les fils uniquement si sa n'a pas déjà été fait
 				if(expandedItem.getChild(0).getUserObject()
 						.getClass().getName().equals(new String("String")));
-					AddChildInTree();
+					AddChildInTree(-1);
 			}
 		});
 	}
 	
-	public void onTinyPopUpStartPanels(){
-		this.createTree();
+	public void onTinyPopUpStartPanels(List<Long> pathId){
+		this.pathId = pathId;
+		this.pathPosition =pathId.size()-1;
+		// we need to display a child node who you are the path.
+		this.createTree(true);
 		this.eventBus.tinyPopUpDisplayTreePanel(this.view);
+
 	}
 	
 	/**
 	 * Create the tree at the begin of the application
+	 * @param select : true : display a path, false : display just the root
 	 */
-	public void createTree() {
+	public void createTree(final boolean select) {
 		this.rpcPage.getMainArboPage(new AsyncCallback<BeanArboPage>() {
 	    	public void onSuccess(BeanArboPage result) {
 	    		view.clearTree();
-	    		view.setTree(makeTreeNode(result));
-
+	    		if(select){
+		    		selectedItem = makeTreeNode(result);
+		    		view.setTree(selectedItem);
+		    		expandPath();
+	    		}else {
+	    			view.setTree(makeTreeNode(result));
+	    		}
 	    	}
 			public void onFailure(Throwable caught){
 				PopUpMessage p = new PopUpMessage(view.getConstants().ECreateTree());
 				p.show();}
 			});
+	}
+	
+	/**
+	 * this method was called to display a childNode in the tree 
+	 * and expand all the path to access this treeItem
+	 * (Mechanism necessary to manage Asynchronous call)
+	 */
+	private void expandPath() {
+
+		
+		if (this.pathPosition == -1){
+			view.setSelectedItem(this.selectedItem);
+		}else {
+			this.expandedItem = this.selectedItem;
+			this.expandedItem.setState(true, false);
+			this.AddChildInTree(pathId.get(this.pathPosition));
+		}
+		
+		this.pathPosition--;
 	}
 	
 	/**
@@ -116,16 +147,25 @@ public class ImageTreePanelPresenter  extends LazyPresenter<IImageTreePanel,Page
 	
 	/**
 	 * Take all child node of the expandedNode and add them in the tree
-	 * @param SelectLastChild : true => select the last child; false either.
+	 * @param select : set -1 to use the default function. Either, the id of a child in the expandedItem.
+	 * if this node is detected, the expandPath function is called.
 	 */
-	public void AddChildInTree(){
-		this.rpcPage.getChildPages((Long)this.expandedItem.getUserObject(), false,
+	public void AddChildInTree(final long select){
+		this.rpcPage.getChildPages((Long)expandedItem.getUserObject(), false,
 				new AsyncCallback<List<BeanArboPage>>() {
 			public void onSuccess(List<BeanArboPage> result) {
 				expandedItem.removeItems();//remove loading
 				for(BeanArboPage subPage : result) {
-					expandedItem.addItem(makeTreeNode(subPage));
+					if(subPage.getId().longValue() == select){
+						selectedItem = makeTreeNode(subPage);
+						expandedItem.addItem(selectedItem);
+					}else{
+						expandedItem.addItem(makeTreeNode(subPage));
+					}
+				
 				}
+				if(select != -1)
+					expandPath();
 			}
 			public void onFailure(Throwable caught){
 				PopUpMessage p = new PopUpMessage(view.getConstants().EBuildTree());

@@ -151,7 +151,6 @@ public class ImageManager extends ResizeComposite implements IImageManager {
 		this.path.setName(path);
 	}
 	
-	@SuppressWarnings("static-access")
 	public void showPopUpImgPreview(String path){
 		if(popUpImg!=null)
 			popUpImg.hide();
@@ -163,5 +162,9 @@ public class ImageManager extends ResizeComposite implements IImageManager {
 	public void deleteThumb(Element thumb){
 		thumb.getParentNode().getParentNode()
 			.getParentNode().getParentNode().removeFromParent();
+	}
+	
+	public void setTitle(String title) {
+		this.thumbtitle.setText(this.constants.ThumbTitle()+" "+title);
 	}
 }

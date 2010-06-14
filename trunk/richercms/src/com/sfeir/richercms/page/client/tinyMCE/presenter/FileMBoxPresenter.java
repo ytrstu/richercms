@@ -1,6 +1,8 @@
 package com.sfeir.richercms.page.client.tinyMCE.presenter;
 
 
+import java.util.List;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -35,10 +37,16 @@ public class FileMBoxPresenter extends LazyPresenter<IFileMBox,PageEventBus>{
         		view.hide();
         	}
         });
+		
+		this.view.onCancelClick().addClickHandler(new ClickHandler() {
+        	public void onClick(ClickEvent event) {
+        		view.hide();
+        	}
+        });
 	}
 	
-	public void onStartTinyPopUp(){
-		this.eventBus.tinyPopUpStartPanels();
+	public void onStartTinyPopUp(List<Long> pathId){
+		this.eventBus.tinyPopUpStartPanels(pathId);
 		this.view.setDefaultTitle();
 	}
 	

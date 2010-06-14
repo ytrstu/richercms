@@ -71,6 +71,7 @@ public class ImageManagerPresenter extends LazyPresenter<IImageManager, PageEven
 	
 	public void onStartImagePanel(String path) {
 		this.view.setCurrentPath(path);
+		this.view.setTitle(path);
 		this.displayThumbNails(false);
 		this.eventBus.displayImageManager(this.view);
 	}

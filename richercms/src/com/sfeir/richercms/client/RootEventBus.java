@@ -16,6 +16,7 @@ import com.mvp4g.client.event.EventBusWithLookup;
 import com.sfeir.richercms.client.presenter.PageLoginPresenter;
 import com.sfeir.richercms.client.presenter.RootPresenter;
 import com.sfeir.richercms.client.view.RootView;
+import com.sfeir.richercms.shared.BeanUser;
 import com.sfeir.richercms.wizard.client.event.WizardModule;
 import com.sfeir.richercms.main.MainModule;
 
@@ -38,6 +39,13 @@ public interface RootEventBus extends EventBusWithLookup {
 	public void changeBody( Widget widget );
 	
 	/**
+	 * Fired by the PageLoginPresenter to set user in the rootPresenter
+	 * @param usr
+	 */
+	@Event( handlers = RootPresenter.class )
+	public void setUsr(BeanUser usr);
+	
+	/**
 	 * Start the wizard module and forward this event
 	 */
 	@Event(modulesToLoad = WizardModule.class )
@@ -47,7 +55,7 @@ public interface RootEventBus extends EventBusWithLookup {
 	 * Start the main module and forward this event
 	 */
 	@Event( modulesToLoad = MainModule.class )
-	public void startMain();
+	public void startMain(BeanUser usr);
 	
 	/**
 	 * Event send by the wizard module when the configuration is finished

@@ -7,6 +7,7 @@ import com.mvp4g.client.presenter.LazyPresenter;
 import com.sfeir.richercms.main.MainEventBus;
 import com.sfeir.richercms.main.interfaces.IMainDisplay;
 import com.sfeir.richercms.main.view.MainView;
+import com.sfeir.richercms.shared.BeanUser;
 
 @Presenter( view = MainView.class )
 public class MainPresenter extends LazyPresenter<IMainDisplay, MainEventBus> {
@@ -17,8 +18,8 @@ public class MainPresenter extends LazyPresenter<IMainDisplay, MainEventBus> {
 	 */ 
 	public void bindView() { }
 	
-	public void onStartMain(){
-		eventBus.startPage();
+	public void onStartMain(BeanUser usr){
+		eventBus.startPage(usr);
 		eventBus.changeBody(this.view.asWidget());
 	}
 	

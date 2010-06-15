@@ -8,6 +8,7 @@ import com.mvp4g.client.presenter.BasePresenter;
 import com.sfeir.richercms.client.RootEventBus;
 import com.sfeir.richercms.client.interfaces.IrootDisplay;
 import com.sfeir.richercms.client.view.RootView;
+import com.sfeir.richercms.shared.BeanUser;
 
 
 
@@ -19,6 +20,8 @@ import com.sfeir.richercms.client.view.RootView;
 @Presenter( view = RootView.class )
 public class RootPresenter extends BasePresenter<IrootDisplay, RootEventBus> {
 
+	private BeanUser usr;
+	
 	public void onChangeBody( Widget newPage ) {
 		Panel body = view.getBody();
 		body.clear();
@@ -34,7 +37,7 @@ public class RootPresenter extends BasePresenter<IrootDisplay, RootEventBus> {
 	 * fired by the wizardModule when configuration is finished
 	 */
 	public void onWizardFinished(){
-		eventBus.startMain();
+		eventBus.startMain(this.usr);
 	}
 
 	public void onBeforeLoadWizard() {
@@ -43,5 +46,9 @@ public class RootPresenter extends BasePresenter<IrootDisplay, RootEventBus> {
 	
 	public void onAfterLoadWizard() {
 		view.hidePopUpWait();
+	}
+	
+	public void onSetUsr(BeanUser usr) {
+		this.usr = usr;
 	}
 }

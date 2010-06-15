@@ -55,6 +55,10 @@ a, a:visited, a:hover {
   	background : url("/tab_images/signIn.png") no-repeat;
 }
 
+.anchor-account{
+  	background : url("/tab_images/google_logo.png") no-repeat;
+}
+
 .anchor-login:hover{
 	color : #CCCFFF;
 }

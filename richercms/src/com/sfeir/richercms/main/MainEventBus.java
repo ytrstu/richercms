@@ -9,6 +9,7 @@ import com.mvp4g.client.event.EventBusWithLookup;
 import com.sfeir.richercms.main.presenter.MainPresenter;
 import com.sfeir.richercms.main.view.MainView;
 import com.sfeir.richercms.page.client.event.PageModule;
+import com.sfeir.richercms.shared.BeanUser;
 
 @Events(startView = MainView.class, module = MainModule.class, debug = true)
 @ChildModules( 
@@ -26,8 +27,8 @@ public interface MainEventBus extends EventBusWithLookup {
 	public void changeMain(Widget widget);
 	
 	@Event( handlers = MainPresenter.class)
-	public void startMain();
+	public void startMain(BeanUser usr);
 	
 	@Event( modulesToLoad = PageModule.class)
-	public void startPage();
+	public void startPage(BeanUser usr);
 }

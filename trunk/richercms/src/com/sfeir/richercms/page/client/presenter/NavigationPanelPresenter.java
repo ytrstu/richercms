@@ -40,8 +40,8 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Pa
 
 	private TreeItem selectedItem = null; // current selected Item in tree
 	private TreeItem expandedItem = null; // current expanded Item in tree
+	private TreeItem rootItem = null;
 	private ArboPageServiceAsync rpcPage = null;
-	private Long rootId = null;
 	//permet de savoir l'ors de l'ajout des fils dans l'arbre s'il faut sélectionner le dernier fils ou non
 	private boolean selectLastChild = false;
 	//permet de savoir si c'est un nouvelle objet qui est selectionné ou non
@@ -65,7 +65,7 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Pa
 					sameItemSelected = true;
 				}
 				setSelectedItem(event.getSelectedItem()); // fait des actions spécifique
-				eventBus.displayNormalPanel();
+				eventBus.displayCurrentStatePanel();
 			}
 		});
 		
@@ -153,7 +153,7 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Pa
 	public void deletePage() {	
 		view.getPopUpMenuBar().hide();
 		// on ne delete pas la main Page
-		if(!((Long) selectedItem.getUserObject()).equals(rootId)) {
+		if(!((Long) selectedItem.getUserObject()).equals((Long)rootItem.getUserObject())) {
 			// on commence donc la suppression
 			NavigationPanelPresenter.this.eventBus.deletePage();
 			this.rpcPage.deleteArboPage((Long)selectedItem.getUserObject(), (Long)selectedItem.getParentItem().getUserObject(), new AsyncCallback<Void>() {
@@ -171,13 +171,6 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Pa
 		}
 	}
 	
-	/**
-	 * set the key of the root Page
-	 * @param key
-	 */
-	public void setRootKey(Long id){
-		this.rootId = id;
-	}
 	
 	/**
 	 * Choose the good image to display in the tree
@@ -406,8 +399,8 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Pa
 		this.rpcPage.getMainArboPage(new AsyncCallback<BeanArboPage>() {
 	    	public void onSuccess(BeanArboPage result) {
 	    		view.clearTree();
-	    		rootId = result.getId();
-	    		view.setTree(makeTreeNode(result));
+	    		rootItem = makeTreeNode(result);
+	    		view.setTree(rootItem);
 
 	    	}
 			public void onFailure(Throwable caught){
@@ -494,9 +487,12 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Pa
 	public void onDisplayCurrentPage(PageState state) {
 		// on recharge uniquement si le nouvelle objet selectionné et différent de l'ancien
 		if(!this.sameItemSelected){
-			if(state.equals(PageState.manageImage))
+			if(state.equals(PageState.manageImage)) {
+				if(this.selectedItem == null){ // if no page selected, select the root by default
+					this.setSelectedItem(this.rootItem);	
+				}
 				this.createPath();//display new thumbs
-			else
+			}else
 				eventBus.displayPage((Long) selectedItem.getUserObject());
 		}
 	}

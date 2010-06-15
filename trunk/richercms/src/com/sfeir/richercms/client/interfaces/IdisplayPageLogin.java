@@ -30,4 +30,16 @@ public interface IdisplayPageLogin extends LazyView {
 	 * Hide the popUp use during loading
 	 */
 	public void hidePopUpWait();
+	
+	/**
+	 * Show the information popUp, who invite user to reconnect with an
+	 * another google account if he had one
+	 * @param email : email that he tried to connect with
+	 */
+	public void notAuthorized(String email,String urlLogIn);
+	
+	/**
+	 * Hide the RecopopUp and detached id from the view
+	 */
+	public void destroyRecoPopUp();
 }

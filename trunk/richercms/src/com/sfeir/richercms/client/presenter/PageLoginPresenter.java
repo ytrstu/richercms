@@ -11,6 +11,7 @@ import com.sfeir.richercms.client.UserInfoServiceAsync;
 import com.sfeir.richercms.client.interfaces.IdisplayPageLogin;
 import com.sfeir.richercms.client.view.PageLoginView;
 import com.sfeir.richercms.client.view.PopUpMessage;
+import com.sfeir.richercms.shared.BeanUser;
 import com.sfeir.richercms.shared.BeanUserInfo;
 import com.sfeir.richercms.wizard.client.ConfigurationServiceAsync;
 
@@ -44,20 +45,8 @@ public class PageLoginPresenter extends LazyPresenter<IdisplayPageLogin, RootEve
 			public void onSuccess(BeanUserInfo result) {
 				//on test si il est loggé ou s'il faut le faire passer par la page de login
 				if(result.isLoggedIn()) {
-					//on test pour voir si il faut lancer le wizard ou alord directement le main
-					rpcConfigurationService.SiteIsConfigured(new AsyncCallback<Boolean>() {
-						public void onFailure(Throwable error) {
-							PopUpMessage p = new PopUpMessage("Connection test confguration failed");
-							p.show();
-						}
-
-						public void onSuccess(Boolean result) {
-							if(result.booleanValue())
-								eventBus.startMain();
-							else
-								eventBus.startWizard();
-						}
-					});	
+					// on test si l'utilisateur est bien inscrit dans la base de donnée ou non
+					connection(result);
 				}
 				else {
 					view.getSignInLink().setHref(result.getLoginUrl());
@@ -67,6 +56,42 @@ public class PageLoginPresenter extends LazyPresenter<IdisplayPageLogin, RootEve
 			}
 		});
 		
+	}
+	
+	private void connection(final BeanUserInfo usrInfo) {
+		rpcLoginService.isAutorized(usrInfo, new AsyncCallback<BeanUser>() {
+			public void onFailure(Throwable caught) {
+
+			}
+			public void onSuccess(BeanUser result) {
+				// si non null alors tout est ok pour lancer l'application
+				if(result!= null)
+					startRicherCMS(result);
+				else{
+					view.notAuthorized(usrInfo.getEmailAddress(),usrInfo.getLogoutUrl());
+					eventBus.changeBody(view.asWidget());
+				}
+			}
+		});
+	}
+	
+	private void startRicherCMS(final BeanUser usr) {
+		
+		//on test pour voir si il faut lancer le wizard ou alord directement le main
+		rpcConfigurationService.SiteIsConfigured(new AsyncCallback<Boolean>() {
+			public void onFailure(Throwable error) {
+				PopUpMessage p = new PopUpMessage("Connection test confguration failed");
+				p.show();
+			}
+
+			public void onSuccess(Boolean result) {
+				eventBus.setUsr(usr);
+				if(result.booleanValue())		
+					eventBus.startMain(usr);
+				else
+					eventBus.startWizard();
+			}
+		});	
 	}
 	
 	/**

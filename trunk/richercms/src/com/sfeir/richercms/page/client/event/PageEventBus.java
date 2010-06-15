@@ -28,6 +28,7 @@ import com.sfeir.richercms.page.client.tinyMCE.presenter.ThumbsPanelPresenter;
 import com.sfeir.richercms.page.client.view.PageView;
 import com.sfeir.richercms.page.shared.BeanArboPage;
 import com.sfeir.richercms.page.shared.BeanTranslationPage;
+import com.sfeir.richercms.shared.BeanUser;
 
 
 /**
@@ -50,7 +51,7 @@ public interface PageEventBus extends EventBus {
 	 * 2 presenter are started : RootPresenter and MainPagePresenter(first view to display)
 	 */
 	@Event( handlers = PagePresenter.class )
-	public void startPage();
+	public void startPage(BeanUser usr);
 	
 	/**
 	 * Started panels and integrates them into the main view
@@ -60,11 +61,11 @@ public interface PageEventBus extends EventBus {
 	
 	/**
 	 * Fired by the specific Panel (ReorderPanel, ...)
-	 * for re-displaying normal view with standard Panel.
+	 * for re-displaying view correponding to the current state.
 	 * Warning, you can use this event only after a first startPanelsEvent.
 	 */
 	@Event( handlers = PagePresenter.class )
-	public void displayNormalPanel();
+	public void displayCurrentStatePanel();
 	
 	/**
 	 * Fired by the PagePresenter to allows the navigation panel to display

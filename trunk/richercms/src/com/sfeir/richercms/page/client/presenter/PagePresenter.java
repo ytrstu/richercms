@@ -6,7 +6,10 @@ import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.CloseEvent;
+import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.user.client.Command;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.mvp4g.client.annotation.InjectService;
 import com.mvp4g.client.annotation.Presenter;
@@ -25,6 +28,7 @@ import com.sfeir.richercms.page.client.interfaces.IdisplayPage;
 import com.sfeir.richercms.page.client.view.PageView;
 import com.sfeir.richercms.page.client.view.custom.ConfirmationBox;
 import com.sfeir.richercms.page.shared.BeanArboPage;
+import com.sfeir.richercms.shared.BeanUser;
 import com.sfeir.richercms.wizard.client.LanguageServiceAsync;
 import com.sfeir.richercms.wizard.shared.BeanLanguageDetails;
 
@@ -33,6 +37,7 @@ public class PagePresenter extends LazyPresenter<IdisplayPage, PageEventBus> {
 	
 	private ArboPageServiceAsync rpcPage = null;
 	private LanguageServiceAsync rpcLanguage = null;
+	private BeanUser usr;
 	private BeanArboPage editingPage = null;
 	private Long id = null; // field used to save the key of the current Page
 	private PageState state = PageState.display;
@@ -55,13 +60,21 @@ public class PagePresenter extends LazyPresenter<IdisplayPage, PageEventBus> {
 		
 		view.setImageToolCommand(new Command(){
 			public void execute() {
-				//eventBus.startImagePanel();
+				state = PageState.manageImage;
+				eventBus.displayCurrentStatePanel();
 		}});
 		
 		view.setPageToolCommand(new Command(){
 			public void execute() {
-				view.reDisplayPageView();
+				if(state != PageState.display)
+					eventBus.confirmCancelPage();
+				//eventBus.displayCurrentStatePanel();
 		}});
+		
+		Window.addCloseHandler(new CloseHandler<Window>(){
+			public void onClose(CloseEvent<Window> event) {
+			}
+		});
 	}
 	
 	
@@ -125,23 +138,24 @@ public class PagePresenter extends LazyPresenter<IdisplayPage, PageEventBus> {
 	
 	/////////////////////////////////////////////// EVENT ///////////////////////////////////////////////
 	
-	public void onDisplayNormalPanel() {
+	public void onDisplayCurrentStatePanel() {
 
-		if(this.state.equals(PageState.display)) {
+		switch(this.state){
+		case display :
 			view.displayNormalPanel();
-		}else if(!this.state.equals(PageState.manageImage)){//modify or add but no in manageImage mode
-			ConfirmationBox confirmPopUp = new ConfirmationBox("ATTENTION", "Vous etes sur le point de TOUT perdre, mouahaha !!!");
-			confirmPopUp.getClickOkEvt().addClickHandler(new ClickHandler() {
-				public void onClick(ClickEvent event) {
-					view.displayNormalPanel();
-					//repasse en mode display
-					state = PageState.display;
-				}		
-			});
+			// on demande donc au navigation panel de fair afficher la dernière page selectionné
+			// voir la page qui vien d'être cliqué
+			eventBus.displayCurrentPage(state);
+			break;
+		case modify :
+		case add :
+				eventBus.confirmCancelPage();
+			break;
+		case manageImage :
+			// on demande donc au navigation panel de fair afficher la dernière page selectionné
+			// voir la page qui vien d'être cliqué
+			eventBus.displayCurrentPage(state);
 		}
-		// on demande donc au navigation panel de fair afficher la dernière page selectionné
-		// voir la page qui vien d'être cliqué
-		eventBus.displayCurrentPage(state);
 	}
 
 	
@@ -163,7 +177,7 @@ public class PagePresenter extends LazyPresenter<IdisplayPage, PageEventBus> {
 		
 		this.view.enableLanguageBox();
 		this.state = PageState.display;
-		this.eventBus.displayNormalPanel();
+		this.eventBus.displayCurrentStatePanel();
 	}
 	
 	public void onConfirmCancelPage() {
@@ -202,7 +216,8 @@ public class PagePresenter extends LazyPresenter<IdisplayPage, PageEventBus> {
 		this.eventBus.enableReturnBtn(); // enable the return button of the ValidationPanel
 	}
 	
-	public void onStartPage() {
+	public void onStartPage(BeanUser usr) {
+		this.usr = usr;
 		this.fetchLanguageListBox();
 		this.eventBus.startPanels();
 		eventBus.changeMain(view.asWidget());

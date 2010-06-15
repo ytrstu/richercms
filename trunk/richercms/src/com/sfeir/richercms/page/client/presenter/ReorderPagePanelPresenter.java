@@ -54,7 +54,7 @@ public class ReorderPagePanelPresenter extends LazyPresenter<IReorderPagePanel, 
 		        			new AsyncCallback<Void>() {
 		        		public void onSuccess(Void result) {
 		        			eventBus.addSuccessPopUp(view.getConstants().PopUpSaveFinish());
-		        			eventBus.displayNormalPanel();
+		        			eventBus.displayCurrentStatePanel();
 		        			eventBus.reloadChildInTree();
 		        			eventBus.hideInformationPopUp();
 		    			}
@@ -66,7 +66,7 @@ public class ReorderPagePanelPresenter extends LazyPresenter<IReorderPagePanel, 
 	     
 	     view.getCancelClick().addClickHandler(new ClickHandler() {  
 		        public void onClick(ClickEvent event) {
-		        	eventBus.displayNormalPanel();
+		        	eventBus.displayCurrentStatePanel();
 	        }});
 	     
 	     view.getResetClick().addClickHandler(new ClickHandler() {  
@@ -86,7 +86,7 @@ public class ReorderPagePanelPresenter extends LazyPresenter<IReorderPagePanel, 
 				}
 				// if no child = do not display the reorderPanel
 				if(result.size()==0)
-					eventBus.displayNormalPanel();
+					eventBus.displayCurrentStatePanel();
 			}
 			public void onFailure(Throwable caught){
 				PopUpMessage p = new PopUpMessage(view.getConstants().EBuildList());

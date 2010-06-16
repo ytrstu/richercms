@@ -12,6 +12,7 @@ import com.sfeir.richercms.page.client.interfaces.IInformationPanel;
 import com.sfeir.richercms.page.client.interfaces.INavigationPanel;
 import com.sfeir.richercms.page.client.interfaces.IReorderPagePanel;
 import com.sfeir.richercms.page.client.interfaces.ITinyMCEPanel;
+import com.sfeir.richercms.page.client.interfaces.IUserManager;
 import com.sfeir.richercms.page.client.interfaces.IValidationPanel;
 import com.sfeir.richercms.page.client.presenter.ImageManagerPresenter;
 import com.sfeir.richercms.page.client.presenter.InformationPanelPresenter;
@@ -19,6 +20,7 @@ import com.sfeir.richercms.page.client.presenter.PagePresenter;
 import com.sfeir.richercms.page.client.presenter.NavigationPanelPresenter;
 import com.sfeir.richercms.page.client.presenter.ReorderPagePanelPresenter;
 import com.sfeir.richercms.page.client.presenter.TinyMCEPanelPresenter;
+import com.sfeir.richercms.page.client.presenter.UserManagerPresenter;
 import com.sfeir.richercms.page.client.presenter.ValidationPanelPresenter;
 import com.sfeir.richercms.page.client.tinyMCE.interfaces.IImageTreePanel;
 import com.sfeir.richercms.page.client.tinyMCE.interfaces.IThumbsPanel;
@@ -315,12 +317,6 @@ public interface PageEventBus extends EventBus {
 	@Event( handlers =  PagePresenter.class )
 	public void displayImageManager(IImageManager p);
 	
-	/**
-	 * Fired by the ImagePanelPresenter, to display it in the mainPage
-	 * @param p
-	 */
-	//@Event( handlers =  PagePresenter.class )
-	//public void displayImagePanel(IImagePanel p);
 	
 	/**
 	 * Fired by the FileManager to display the FileMBox
@@ -379,4 +375,18 @@ public interface PageEventBus extends EventBus {
 	 */
 	@Event( handlers =  ValidationPanelPresenter.class )
 	public void enableReturnBtn();
+	
+	/**
+	 * Fired by the PagePresenter, when the userSettings entry menu is clicked
+	 * Allows the UserManagerPresenter to display his view.
+	 */
+	@Event( handlers =  UserManagerPresenter.class )
+	public void startUserManager();
+	
+	/**
+	 * Fired by the UserManagerPresenter, to display it in the mainPage
+	 * @param p : the displayUser's panel
+	 */
+	@Event( handlers =  PagePresenter.class )
+	public void displayUserManager(IUserManager p);
 }

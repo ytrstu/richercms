@@ -186,4 +186,28 @@ public interface PageConstants extends Constants {
 	  
 	  @DefaultStringValue("Are you sure you want to delete this image?")
 	  String MsgSuppImg();
+	  
+	  @DefaultStringValue("logOut")
+	  String LogOutAnchor();
+	  
+	  @DefaultStringValue("Current language : ")
+	  String LanguageListBox();
+	  
+	  @DefaultStringValue("Email adress")
+	  String UserTitleColumn1();
+	  
+	  @DefaultStringValue("NickName")
+	  String UserTitleColumn2();
+	  
+	  @DefaultStringValue("State")
+	  String UserTitleColumn3();
+	  
+	  @DefaultStringValue("Locked page")
+	  String UserTitleColumn4();
+	  
+	  @DefaultStringValue("administrator")
+	  String UserTitleColumn5();
+	  
+	  @DefaultStringValue("delete user")
+	  String UserTitleColumn6();
 }

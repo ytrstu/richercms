@@ -1,5 +1,7 @@
 package com.sfeir.richercms.client;
 
+import java.util.List;
+
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.sfeir.richercms.shared.BeanUser;
@@ -37,8 +39,9 @@ public interface UserInfoService extends RemoteService {
 	 * Add a new user in the datastore.
 	 * Just the mail is necessary. After the first connection, 
 	 * others information are updated
+	 * @return id of the new User; null if the user is already in the datastore
 	 */
-	public void addUser(String email);
+	public Long addUser(String email);
 	
 	/**
 	 * this method is use when a user logout.
@@ -54,4 +57,9 @@ public interface UserInfoService extends RemoteService {
 	 */
 	public void UserAdminChange(Long id, boolean admin);
 	
+	/**
+	 * Return all users 
+	 * @return list with all users
+	 */
+	public List<BeanUser> getUsers();
 }

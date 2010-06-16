@@ -1,5 +1,156 @@
 package com.sfeir.richercms.page.client.view;
 
-public class UserManager {
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.DockLayoutPanel;
+import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.LayoutPanel;
+import com.google.gwt.user.client.ui.PushButton;
+import com.google.gwt.user.client.ui.RadioButton;
+import com.google.gwt.user.client.ui.ResizeComposite;
+import com.google.gwt.user.client.ui.ScrollPanel;
+import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.HTMLTable.CellFormatter;
+import com.sfeir.richercms.page.client.PageConstants;
+import com.sfeir.richercms.page.client.interfaces.IUserManager;
 
+public class UserManager  extends ResizeComposite implements IUserManager {
+	
+	//gestion des langues
+	private PageConstants constants = GWT.create(PageConstants.class);
+	private DockLayoutPanel mainContainer;
+	private FlexTable userTable;
+	private Button addNewUser;
+	private TextBox newEmailAdress;
+	public Widget asWidget() {
+		return this;
+	}
+
+	public void createView() {
+		this.mainContainer = new DockLayoutPanel(Unit.PX);
+		
+		//title
+		Label title = new Label("Gestion des utilisateur");
+		title.setStyleName("informationTitle");
+		this.mainContainer.addNorth(title, 60);
+		
+		//userTable
+		this.userTable = new FlexTable();
+		this.userTable.addStyleName("userTable");
+		this.userTable.setCellPadding(5);
+		this.userTable.setBorderWidth(2);
+		this.addUserTableTitle();
+
+		//AddUserPanel
+		LayoutPanel addUserPanel = new LayoutPanel();
+		Label titleAdd = new Label("Ajouter un nouvelle utilisateur");
+		titleAdd.setStyleName("informationTitle");
+		Label intitule = new Label("Nouvelle adresse email : ");
+		this.newEmailAdress = new TextBox();
+		this.addNewUser = new Button("Ajouté cette utilisateur");
+		
+		//title : add new User
+		addUserPanel.add(titleAdd);
+		addUserPanel.setWidgetTopHeight(titleAdd, 5, Unit.PX, 20, Unit.PCT);
+		
+		//label for the textBox
+		addUserPanel.add(intitule);
+		addUserPanel.setWidgetTopHeight(intitule, 51, Unit.PCT, 30, Unit.PCT);
+		addUserPanel.setWidgetLeftWidth(intitule, 20, Unit.PX, 150, Unit.PX);
+		
+		addUserPanel.add(this.newEmailAdress);
+		addUserPanel.setWidgetTopHeight(this.newEmailAdress, 50, Unit.PCT, 30, Unit.PCT);
+		addUserPanel.setWidgetLeftWidth(this.newEmailAdress, 170, Unit.PX, 200, Unit.PX);
+		addUserPanel.add(this.addNewUser);
+		addUserPanel.setWidgetTopHeight(this.addNewUser, 45, Unit.PCT, 20, Unit.PCT);
+		addUserPanel.setWidgetLeftWidth(this.addNewUser, 380, Unit.PX, 100, Unit.PX);
+		
+		this.mainContainer.addSouth(addUserPanel, 200);
+		
+		ScrollPanel scrollUser = new ScrollPanel();
+		scrollUser.setWidget(this.userTable);
+		this.mainContainer.add(scrollUser);
+		
+		this.initWidget(this.mainContainer);
+	}
+	
+	/**
+	 * add title of each columns of the Language table
+	 */
+	private void addUserTableTitle() {
+		CellFormatter cellFormater = this.userTable.getCellFormatter();
+		cellFormater.setStyleName(0, 0, "userTableHeader");
+		cellFormater.setStyleName(0, 1, "userTableHeader");
+		cellFormater.setStyleName(0, 2, "userTableHeader");
+		cellFormater.setStyleName(0, 3, "userTableHeader");
+		cellFormater.setStyleName(0, 4, "userTableHeader");
+		cellFormater.setStyleName(0, 5, "userTableHeader");
+		this.userTable.setText(0, 0, this.constants.UserTitleColumn1());
+		this.userTable.setText(0, 1, this.constants.UserTitleColumn2());
+		this.userTable.setText(0, 2, this.constants.UserTitleColumn3());
+		this.userTable.setText(0, 3, this.constants.UserTitleColumn4());
+		this.userTable.setText(0, 4, this.constants.UserTitleColumn5());
+		this.userTable.setText(0, 5, this.constants.UserTitleColumn6());
+	}
+	
+	public void clearUserTable() {
+		this.userTable.removeAllRows();
+		this.addUserTableTitle();
+	}
+	
+	public void clearAddUserTextBox() {
+		this.addNewUser.setText("");
+	}
+	
+	public void addLine(String email, String nickName, 
+			String state, boolean admin) {
+		PushButton btnDel = new PushButton( new Image("tab_images/Delete-icon.png"));
+		int numRow = this.userTable.getRowCount();
+		Label labelState = new Label(state);
+		
+		if(state.equals("OnLine"))
+			labelState.addStyleName("onLineText");
+		else
+			labelState.addStyleName("offLineText");
+		
+		
+		this.userTable.setText(numRow, 0, email);
+		this.userTable.setText(numRow, 1, nickName);
+		this.userTable.setWidget(numRow, 2, labelState);
+		this.userTable.setWidget(numRow, 3, LockedPage());
+		this.userTable.setWidget(numRow, 4, adminWidget(numRow,admin));
+		this.userTable.setWidget(numRow, 5, btnDel);
+	}
+
+	private Widget adminWidget(int numRow, boolean admin){
+		RadioButton yes = new RadioButton("row"+numRow,"yes");
+		RadioButton no = new RadioButton("row"+numRow,"no");
+		VerticalPanel p = new VerticalPanel();
+		p.add(yes);p.add(no);
+		
+		if(admin)
+			yes.setValue(true);
+		else
+			no.setValue(true);
+		
+		return p;
+	}
+	
+	private Widget LockedPage() {
+		return new Label("pas encore");
+	}
+
+	public HasClickHandlers onAddNewUserClick() {
+		return this.addNewUser;
+	}
+	
+	public String getNewEmail() {
+		return this.newEmailAdress.getText();
+	}
 }

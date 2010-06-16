@@ -3,10 +3,13 @@ package com.sfeir.richercms.page.client.view;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.HasChangeHandlers;
+import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.ListBox;
@@ -21,6 +24,7 @@ import com.sfeir.richercms.page.client.interfaces.IInformationPanel;
 import com.sfeir.richercms.page.client.interfaces.INavigationPanel;
 import com.sfeir.richercms.page.client.interfaces.IReorderPagePanel;
 import com.sfeir.richercms.page.client.interfaces.ITinyMCEPanel;
+import com.sfeir.richercms.page.client.interfaces.IUserManager;
 import com.sfeir.richercms.page.client.interfaces.IValidationPanel;
 import com.sfeir.richercms.page.client.interfaces.IdisplayPage;
 import com.sfeir.richercms.page.client.view.custom.CenterEventPopUp;
@@ -35,25 +39,28 @@ public class PageView extends ResizeComposite implements IdisplayPage {
 
 	//gestion des langues
 	private PageConstants constants = GWT.create(PageConstants.class);
-	private LayoutPanel lgAndMenuPanel = null;
-	private LayoutPanel rightSouthPanel = null; //contain widget displaying in the south  => ValidationPanel, ...
-	private LayoutPanel rightNorthPanel = null; // page tool => tiny + information | reorderPanel | ImageManager
-	private SplitLayoutPanel leftRightSpliter = null; //tiny + information
-	private SplitLayoutPanel topBottomSpliter = null;
-	private MenuBar mainmenu  = null;
-	private DockLayoutPanel dispositionPanel = null;
-	private ListBox languages = null;
-	private CenterEventPopUp popUp = null;
-	private LayoutPanel finalContainer = null;
+	private LayoutPanel lgAndMenuPanel;
+	private LayoutPanel rightSouthPanel; //contain widget displaying in the south  => ValidationPanel, ...
+	private LayoutPanel rightNorthPanel; // page tool => tiny + information | reorderPanel | ImageManager
+	private SplitLayoutPanel leftRightSpliter; //tiny + information
+	private SplitLayoutPanel topBottomSpliter;
+	private MenuBar mainmenu;
+	private DockLayoutPanel dispositionPanel;
+	private ListBox languages;
+    private Label pseudo;
+    private Anchor logOut;
+	private CenterEventPopUp popUp;
+	private LayoutPanel finalContainer;
 	// include in the leftRightSpliter 
-	private LayoutPanel leftPanel = null;
-	private DockLayoutPanel rightPanel = null;
+	private LayoutPanel leftPanel;
+	private DockLayoutPanel rightPanel;
 	// include in the topBottomSpliter
-	private LayoutPanel topPanel = null;
-	private LayoutPanel bottomPanel = null;
+	private LayoutPanel topPanel;
+	private LayoutPanel bottomPanel;
 	
-	private MenuItem imageTool = null;
-	private MenuItem pageTool = null;
+	private MenuItem imageTool;
+	private MenuItem pageTool;
+	private MenuItem userSettings;
 
 	private final int height = Window.getClientHeight()-30;
 	
@@ -137,13 +144,17 @@ public class PageView extends ResizeComposite implements IdisplayPage {
 		// liste du choix de la langue
 		this.languages = new ListBox(false);
 		this.languages.setWidth("240px");
-		Label listBoxTitle = new Label("Langue en cours : ");
+		Label listBoxTitle = new Label(this.constants.LanguageListBox());
 		listBoxTitle.setStyleName("languageLabel");
-	    
+		
+		//patie utilisateur
+		this.pseudo = new Label();
+	    pseudo.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
+	    this.logOut = new Anchor(this.constants.LogOutAnchor());
 	    
 	    // Create a menu bar
 	    this.mainmenu = new MenuBar();
-	    mainmenu.setStyleName("mainMenuBar");
+	    this.mainmenu.setStyleName("mainMenuBar");
 	    this.mainmenu.setAutoOpen(true);
 	    this.mainmenu.setWidth("300px");
 	    this.mainmenu.setHeight("20px");
@@ -169,6 +180,8 @@ public class PageView extends ResizeComposite implements IdisplayPage {
 	    // Create the setting menu
 	    MenuBar setting = new MenuBar(true);
 	    setting.setAnimationEnabled(true);
+	    this.userSettings = new MenuItem("User", new Command(){public void execute(){}});
+	    setting.addItem(this.userSettings);
 	    setting.addItem("Site Languages", new Command(){public void execute(){}});
 	    setting.addItem("Reconfigure", new Command(){public void execute(){}});
 	    this.mainmenu.addItem(new MenuItem("Setting", setting));
@@ -183,16 +196,26 @@ public class PageView extends ResizeComposite implements IdisplayPage {
 	    // Create Language Panel
 	    LayoutPanel mainLanguagesPanel = new LayoutPanel();
 	    mainLanguagesPanel.add(listBoxTitle);
-	    mainLanguagesPanel.add(languages);
+	    mainLanguagesPanel.add(this.languages);
 	    mainLanguagesPanel.setWidgetLeftRight(listBoxTitle, 0, Unit.PX, 70, Unit.PCT);
-	    mainLanguagesPanel.setWidgetLeftRight(languages, 30, Unit.PCT, 5, Unit.PX);
+	    mainLanguagesPanel.setWidgetLeftRight(this.languages, 32, Unit.PCT, 5, Unit.PX);
+	    
+	    LayoutPanel userPanel = new LayoutPanel();
+	    userPanel.add(this.pseudo);
+	    userPanel.add(this.logOut);
+	    userPanel.setWidgetRightWidth(this.pseudo, 32, Unit.PCT, 70, Unit.PCT);
+	    userPanel.setWidgetRightWidth(this.logOut, 5, Unit.PX, 30, Unit.PCT);
+	    
 	   
 	    // Add Menu + LanguagePanel
 	    lgAndMenuPanel.setStyleName("tab-content");
-	    lgAndMenuPanel.add(mainmenu);
+	    lgAndMenuPanel.add(this.mainmenu);
+	    lgAndMenuPanel.add(userPanel);
 	    lgAndMenuPanel.add(mainLanguagesPanel);
-	    lgAndMenuPanel.setWidgetLeftWidth(mainmenu, 0, Unit.PX, 350, Unit.PX);
-	    lgAndMenuPanel.setWidgetRightWidth(mainLanguagesPanel, 0, Unit.PX, 350, Unit.PX);
+	    lgAndMenuPanel.setWidgetLeftWidth(this.mainmenu, 0, Unit.PX, 350, Unit.PX);
+	    lgAndMenuPanel.setWidgetRightWidth(userPanel, 0, Unit.PX, 300, Unit.PX);
+	    lgAndMenuPanel.setWidgetTopBottom(userPanel, 1, Unit.PX, 1, Unit.PX);
+	    lgAndMenuPanel.setWidgetRightWidth(mainLanguagesPanel, 300, Unit.PX, 360, Unit.PX);
 	    lgAndMenuPanel.setWidgetTopBottom(mainLanguagesPanel, 1, Unit.PX, 1, Unit.PX);
 	    lgAndMenuPanel.setWidth("100%");
 	}
@@ -230,6 +253,10 @@ public class PageView extends ResizeComposite implements IdisplayPage {
 	}
 	
 	public void displayNormalPanel(){
+		if(this.dispositionPanel.getWidgetIndex(this.leftRightSpliter) == -1){
+			this.dispositionPanel.addNorth(lgAndMenuPanel, 23);
+			this.dispositionPanel.add(this.leftRightSpliter);
+		}
 		// evite le clignotement si on est déja sur en mode normale
 		if(!this.rightNorthPanel.getWidget(0).equals(this.topBottomSpliter)) {
 			this.rightNorthPanel.clear();
@@ -259,6 +286,10 @@ public class PageView extends ResizeComposite implements IdisplayPage {
 	
 	public HasChangeHandlers onChangeSelectedLg() {
 		return this.languages;
+	}
+	
+	public HasClickHandlers onLogOutClick() {
+		return this.logOut;
 	}
 	
 	public String getKeyOfSelectedLg() {
@@ -320,14 +351,31 @@ public class PageView extends ResizeComposite implements IdisplayPage {
 		this.pageTool.setCommand(cmd);
 	}
 	
+	public void setUserSettingsCommand(Command cmd) {
+		this.userSettings.setCommand(cmd);
+	}
+	
 	public void displayImagePanel(IImageManager imageMPanel) {
 		this.rightNorthPanel.clear();
 		this.rightNorthPanel.add((ImageManager)imageMPanel);
 	}
 	
+	public void displayUserManager(IUserManager userManagerPanel) {
+		this.dispositionPanel.remove(this.leftRightSpliter);
+		this.dispositionPanel.add((UserManager)userManagerPanel);
+	}
+	
 	public void reDisplayPageView() {
 		//this.toolPanel.clear();
 		//this.toolPanel.add(this.leftRightSpliter);
+	}
+	
+	public void setLogOutAnchor(String url) {
+		this.logOut.setHref(url);
+	}
+	
+	public void setPseudo(String name){
+		this.pseudo.setText(name+" | ");
 	}
 
 

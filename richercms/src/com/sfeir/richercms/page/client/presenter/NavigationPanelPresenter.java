@@ -485,14 +485,16 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Pa
 	}
 	
 	public void onDisplayCurrentPage(PageState state) {
+		
+		// if no page selected, select the root by default
+		if(this.selectedItem == null)
+			this.setSelectedItem(this.rootItem);
+		
 		// on recharge uniquement si le nouvelle objet selectionné et différent de l'ancien
 		if(!this.sameItemSelected){
-			if(state.equals(PageState.manageImage)) {
-				if(this.selectedItem == null){ // if no page selected, select the root by default
-					this.setSelectedItem(this.rootItem);	
-				}
+			if(state.equals(PageState.manageImage)) 
 				this.createPath();//display new thumbs
-			}else
+			else
 				eventBus.displayPage((Long) selectedItem.getUserObject());
 		}
 	}

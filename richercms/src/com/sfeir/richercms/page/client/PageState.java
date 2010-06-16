@@ -5,4 +5,5 @@ public enum PageState {
 	add,
 	modify,
 	manageImage,
+	manageUser,
 }

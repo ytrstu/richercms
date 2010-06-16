@@ -14,6 +14,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.mvp4g.client.annotation.InjectService;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
+import com.sfeir.richercms.client.UserInfoServiceAsync;
 import com.sfeir.richercms.client.view.PopUpMessage;
 import com.sfeir.richercms.page.client.ArboPageServiceAsync;
 import com.sfeir.richercms.page.client.PageState;
@@ -23,6 +24,7 @@ import com.sfeir.richercms.page.client.interfaces.IInformationPanel;
 import com.sfeir.richercms.page.client.interfaces.INavigationPanel;
 import com.sfeir.richercms.page.client.interfaces.IReorderPagePanel;
 import com.sfeir.richercms.page.client.interfaces.ITinyMCEPanel;
+import com.sfeir.richercms.page.client.interfaces.IUserManager;
 import com.sfeir.richercms.page.client.interfaces.IValidationPanel;
 import com.sfeir.richercms.page.client.interfaces.IdisplayPage;
 import com.sfeir.richercms.page.client.view.PageView;
@@ -36,6 +38,7 @@ import com.sfeir.richercms.wizard.shared.BeanLanguageDetails;
 public class PagePresenter extends LazyPresenter<IdisplayPage, PageEventBus> {
 	
 	private ArboPageServiceAsync rpcPage = null;
+	private UserInfoServiceAsync rpcUser = null;
 	private LanguageServiceAsync rpcLanguage = null;
 	private BeanUser usr;
 	private BeanArboPage editingPage = null;
@@ -68,11 +71,25 @@ public class PagePresenter extends LazyPresenter<IdisplayPage, PageEventBus> {
 			public void execute() {
 				if(state != PageState.display)
 					eventBus.confirmCancelPage();
-				//eventBus.displayCurrentStatePanel();
 		}});
+		
+		view.setUserSettingsCommand(new Command(){
+			public void execute() {
+				state = PageState.manageUser;
+				view.disableLanguageBox();
+					eventBus.startUserManager();
+		}});
+		
 		
 		Window.addCloseHandler(new CloseHandler<Window>(){
 			public void onClose(CloseEvent<Window> event) {
+				disconnectUser();
+			}
+		});
+		
+		this.view.onLogOutClick().addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {	
+				disconnectUser();
 			}
 		});
 	}
@@ -133,6 +150,13 @@ public class PagePresenter extends LazyPresenter<IdisplayPage, PageEventBus> {
 			public void onFailure(Throwable caught) {
 	        	PopUpMessage p = new PopUpMessage(view.getConstants().ERetrievingLg());
 	        	p.show();}
+		});
+	}
+	
+	private void disconnectUser() {
+		this.rpcUser.logOutUser(this.usr.getId(), new AsyncCallback<Void>() {
+			public void onFailure(Throwable caught) {;}
+			public void onSuccess(Void result) {;}
 		});
 	}
 	
@@ -213,11 +237,19 @@ public class PagePresenter extends LazyPresenter<IdisplayPage, PageEventBus> {
 	public void onDisplayImageManager(IImageManager p) {
 		this.view.displayImagePanel(p);
 		this.state = PageState.manageImage;
+		this.view.disableLanguageBox();
 		this.eventBus.enableReturnBtn(); // enable the return button of the ValidationPanel
 	}
 	
 	public void onStartPage(BeanUser usr) {
 		this.usr = usr;
+		// we d'ont display de right part of the adress mail (only if the user does not fil the nickName field)
+		if(this.usr.getNickname().contains("@"))
+			this.view.setPseudo(this.usr.getNickname().split("@")[0]);
+		else
+			this.view.setPseudo(this.usr.getNickname());
+			
+		this.view.setLogOutAnchor(this.usr.getLogoutUrl());
 		this.fetchLanguageListBox();
 		this.eventBus.startPanels();
 		eventBus.changeMain(view.asWidget());
@@ -297,6 +329,10 @@ public class PagePresenter extends LazyPresenter<IdisplayPage, PageEventBus> {
 		this.view.addLineInPopUp(text, 2);
 	}
 	
+	public void onDisplayUserManager(IUserManager p) {
+		this.view.displayUserManager(p);
+	}
+	
 
 	/**
 	 * used by the framework to instantiate rpcPage 
@@ -314,5 +350,14 @@ public class PagePresenter extends LazyPresenter<IdisplayPage, PageEventBus> {
 	@InjectService
 	public void setLanguageService( LanguageServiceAsync rpcLanguage ) {
 		this.rpcLanguage = rpcLanguage;
+	}
+	
+	/**
+	 * used by the framework to instantiate rpcLanguage
+	 * @param rpcUser
+	 */
+	@InjectService
+	public void setUserInfoService( UserInfoServiceAsync rpcUser ) {
+		this.rpcUser = rpcUser;
 	}
 }

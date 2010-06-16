@@ -43,18 +43,3 @@ DIV.dragdrop-dropTarget-engage {
   filter: alpha(enabled = false);
   opacity: 1.0;
 }
-
-.pageTable {
-	border-top: 1px solid #BBBBBB;
-	border-left: 1px solid #BBBBBB;
-	text-align:center;
-}
-
-.pageTable td {
-	border-bottom: 1px solid #BBBBBB;
-	border-right: 1px solid #BBBBBB;
-}
-
-.pageTableHeader {
-	background-color: #E8D2FF;
-}

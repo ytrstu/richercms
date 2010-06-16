@@ -1,5 +1,8 @@
 package com.sfeir.richercms.server;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
@@ -48,6 +51,7 @@ public class ServiceUserInfoImpl extends RemoteServiceServlet implements UserInf
 	
 	public BeanUser isAutorized(BeanUserInfo usrInfo){
 		Objectify ofy = ObjectifyService.begin();
+		BeanUser beanUsr = null;
 		
 		Query<CmsUser> users  = ofy.query(CmsUser.class).filter("emailAddress =", usrInfo.getEmailAddress());
 		
@@ -56,7 +60,8 @@ public class ServiceUserInfoImpl extends RemoteServiceServlet implements UserInf
 			CmsUser usr = this.userInfoTocmsUser(usrInfo);
 			usr.setLoggedIn(true);// now the user is connected
 			ofy.put(usr);
-			return this.cmsUserToBean(usr);
+			beanUsr = this.cmsUserToBean(usr);
+			beanUsr.setLogoutUrl(usrInfo.getLogoutUrl()); // useful to disconnect user
 		}else if(users.countAll() != 0){
 			CmsUser usr = users.get();
 			//set his nickName the first times and if it was different
@@ -65,10 +70,11 @@ public class ServiceUserInfoImpl extends RemoteServiceServlet implements UserInf
 			usr.setLoggedIn(true);// now the user is connected
 			ofy.put(usr);
 			
-			return this.cmsUserToBean(usr);
+			beanUsr = this.cmsUserToBean(usr);
+			beanUsr.setLogoutUrl(usrInfo.getLogoutUrl()); // useful to disconnect user
 		}
 		
-		return null;
+		return beanUsr;
 	}
 	
 	public void modifyUser(BeanUser user){
@@ -76,13 +82,22 @@ public class ServiceUserInfoImpl extends RemoteServiceServlet implements UserInf
 		ofy.put(this.BeanToCmsUser(user));
 	}
 	
-	public void addUser(String email){
+	public Long addUser(String email){
 		Objectify ofy = ObjectifyService.begin();
 		
+		Query<CmsUser> testUnique  = ofy.query(CmsUser.class).filter("emailAddress =", email);
+
+		//test if this user are not already added in the datastore
+        if(testUnique.countAll() != 0)
+        	return null;
+    
+        
 		CmsUser newUsr = new CmsUser();
 		newUsr.setEmailAddress(email);
 		
 		ofy.put(newUsr);
+		
+		return newUsr.getId();
 	}
 	
 	public void logOutUser(Long id){
@@ -99,6 +114,19 @@ public class ServiceUserInfoImpl extends RemoteServiceServlet implements UserInf
 		CmsUser usr = ofy.get(CmsUser.class, id);
 		usr.setAdmin(admin);
 		ofy.put(usr);
+	}
+	
+	public List<BeanUser> getUsers() {
+		ArrayList<BeanUser> lst = new ArrayList<BeanUser>();
+		
+		Objectify ofy = ObjectifyService.begin();
+		
+    	Query<CmsUser> users = ofy.query(CmsUser.class);
+
+        for (CmsUser usr : users) {
+        	lst.add(cmsUserToBean(usr));
+        }
+        return lst;
 	}
 	
 	private CmsUser BeanToCmsUser(BeanUser BeanUsr) {

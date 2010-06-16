@@ -10,6 +10,7 @@ public class BeanUser implements Serializable{
 	private String nickname;
 	private boolean loggedIn;
 	private boolean isAdmin;	
+	private String logoutUrl; // uniquement remplis l'ors de la connection d'un utilisateur
 		
 	public BeanUser() {
 		super();
@@ -17,6 +18,7 @@ public class BeanUser implements Serializable{
 		this.nickname = "";
 		this.loggedIn = false;
 		this.isAdmin = false;
+		this.logoutUrl = null;
 	}
 	
 	public BeanUser(String emailAddress, String nickname,
@@ -26,6 +28,7 @@ public class BeanUser implements Serializable{
 		this.nickname = nickname;
 		this.loggedIn = false;
 		this.isAdmin = isAdmin;
+		this.logoutUrl = null;
 	}
 	
 	public BeanUser(String emailAddress, String nickname,
@@ -35,6 +38,7 @@ public class BeanUser implements Serializable{
 		this.nickname = nickname;
 		this.loggedIn = loggedIn;
 		this.isAdmin = isAdmin;
+		this.logoutUrl = null;
 	}
 	
 	public BeanUser(Long id, String emailAddress, String nickname,
@@ -45,6 +49,7 @@ public class BeanUser implements Serializable{
 		this.nickname = nickname;
 		this.loggedIn = loggedIn;
 		this.isAdmin = isAdmin;
+		this.logoutUrl = null;
 	}
 	
 	public Long getId() {
@@ -76,5 +81,13 @@ public class BeanUser implements Serializable{
 	}
 	public void setAdmin(boolean isAdmin) {
 		this.isAdmin = isAdmin;
+	}
+
+	public String getLogoutUrl() {
+		return logoutUrl;
+	}
+
+	public void setLogoutUrl(String logoutUrl) {
+		this.logoutUrl = logoutUrl;
 	}
 }

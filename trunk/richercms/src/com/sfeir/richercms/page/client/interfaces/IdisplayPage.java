@@ -1,6 +1,7 @@
 package com.sfeir.richercms.page.client.interfaces;
 
 import com.google.gwt.event.dom.client.HasChangeHandlers;
+import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.view.LazyView;
@@ -67,6 +68,12 @@ public interface IdisplayPage extends LazyView {
 	public void displayImagePanel(IImageManager imageMPanel);
 	
 	/**
+	 * Load the UserManager's Panel into the dispositionPanel Container
+	 * @param userManagerPanel
+	 */
+	public void displayUserManager(IUserManager userManagerPanel);
+	
+	/**
 	 * Add a language in the listBox
 	 * @param name : the display name of the language 
 	 * @param key : the key, needed to retrive the page translation in the dataBase
@@ -79,6 +86,12 @@ public interface IdisplayPage extends LazyView {
 	 * @return the Event
 	 */
 	public HasChangeHandlers onChangeSelectedLg();
+	
+	/**
+	 * When user click on the logOut Anchor
+	 * @return the Event
+	 */
+	public HasClickHandlers onLogOutClick();
 	
 	/**
 	 * Return the key of the language, its the key of the associated language in the datastore.
@@ -153,5 +166,26 @@ public interface IdisplayPage extends LazyView {
 	 * @param cmd
 	 */
 	public void setPageToolCommand(Command cmd);
+	
+	/**
+	 * Add a specific command when the userSettingsEntry is clicked
+	 * in the menuBar
+	 * @param cmd
+	 */
+	public void setUserSettingsCommand(Command cmd);
+	
+	/**
+	 * Set the url of the logOut Anchor.
+	 * this URL is set in the beanUser, set during the connection.
+	 * Only this BeanUser contain the good Url to disconnect user
+	 * @param url : the url
+	 */
+	public void setLogOutAnchor(String url);
+	
+	/**
+	 * set value of nickname
+	 * @param name : pseudo
+	 */
+	public void setPseudo(String name);
 	
 }

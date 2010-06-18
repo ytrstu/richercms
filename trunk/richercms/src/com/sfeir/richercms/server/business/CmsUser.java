@@ -3,16 +3,20 @@ package com.sfeir.richercms.server.business;
 import javax.persistence.Id;
 
 import com.googlecode.objectify.annotation.Entity;
+import com.googlecode.objectify.annotation.Indexed;
+import com.googlecode.objectify.annotation.Unindexed;
 
 /**
  * Represent a user
  * @author homberg.g
  */
 @Entity(name="User")
+@Unindexed
 public class CmsUser {
 
 	@Id
     private Long id;
+	@Indexed 
 	private String emailAddress;
 	private String nickname;
 	private boolean loggedIn;

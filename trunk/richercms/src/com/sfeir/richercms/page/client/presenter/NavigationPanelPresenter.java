@@ -25,6 +25,7 @@ import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.sfeir.richercms.client.view.PopUpMessage;
 import com.sfeir.richercms.page.client.ArboPageServiceAsync;
+import com.sfeir.richercms.page.client.LockState;
 import com.sfeir.richercms.page.client.PageState;
 import com.sfeir.richercms.page.client.event.PageEventBus;
 import com.sfeir.richercms.page.client.interfaces.INavigationPanel;
@@ -42,10 +43,14 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Pa
 	private TreeItem expandedItem = null; // current expanded Item in tree
 	private TreeItem rootItem = null;
 	private ArboPageServiceAsync rpcPage = null;
+	// permet de savoir si on doit affiché les btn au survol dans l'arbo
+	private boolean dispBtnInTree = true;
 	//permet de savoir l'ors de l'ajout des fils dans l'arbre s'il faut sélectionner le dernier fils ou non
 	private boolean selectLastChild = false;
 	//permet de savoir si c'est un nouvelle objet qui est selectionné ou non
 	private boolean sameItemSelected = false;
+	//dernière état affiché (vars uniquement changé dans la fonction onDisplayCurrentPage
+	private PageState dispState;
 	
 	public NavigationPanelPresenter() {
 		super();
@@ -59,13 +64,21 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Pa
 		.addSelectionHandler(new SelectionHandler<TreeItem>(){
 			public void onSelection(SelectionEvent<TreeItem> event) {
 				//évite de recharger les donnée pour rien
-				if(!event.getSelectedItem().equals(selectedItem)){
+				if(!event.getSelectedItem().equals(selectedItem))
 					sameItemSelected = false;
-				}else {
+				else 
 					sameItemSelected = true;
-				}
+				
 				setSelectedItem(event.getSelectedItem()); // fait des actions spécifique
-				eventBus.displayCurrentStatePanel();
+				
+				// l'arbo est aussi utilisé dans le userManger, mais il ne doit pas réagir à sa 
+				if(dispState != PageState.manageImage){
+					//vérification des locks puis affichage dans l'event retour
+					eventBus.verifyPageLock((Long)event.getSelectedItem().getUserObject(), LockState.display);
+					view.getPopUpMenuBar().hide();
+				}else {
+					createPath();
+				}
 			}
 		});
 		
@@ -76,6 +89,8 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Pa
 				if(expandedItem.getChild(0).getUserObject()
 						.getClass().getName().equals(new String("String")));
 					AddChildInTree();
+					
+				view.getPopUpMenuBar().hide();
 			}
 		});
 		
@@ -87,6 +102,7 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Pa
 				confirmPopUp.getClickOkEvt().addClickHandler(new ClickHandler() {
 					public void onClick(ClickEvent event) {
 						deletePage();
+						view.getPopUpMenuBar().hide();
 					}		
 				});	
 			}});
@@ -100,7 +116,9 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Pa
 		// commande pour la modification d'une page
 		this.view.getPopUpMenuBar().setModifyPageCommand(new Command(){
 			public void execute() {
-				NavigationPanelPresenter.this.eventBus.modifyPage((Long) selectedItem.getUserObject());
+				// demande de savoir l'état de la page et donc si on peut la modifié
+				NavigationPanelPresenter.this.eventBus.
+					verifyPageLock((Long) selectedItem.getUserObject(), LockState.modify);
 				view.getPopUpMenuBar().hide();
 			}});
 		
@@ -156,11 +174,15 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Pa
 		if(!((Long) selectedItem.getUserObject()).equals((Long)rootItem.getUserObject())) {
 			// on commence donc la suppression
 			NavigationPanelPresenter.this.eventBus.deletePage();
-			this.rpcPage.deleteArboPage((Long)selectedItem.getUserObject(), (Long)selectedItem.getParentItem().getUserObject(), new AsyncCallback<Void>() {
-				public void onSuccess(Void result) {
-					view.deleteSelectedTI();
-					selectedItem = selectedItem.getParentItem();
-					eventBus.deletingPageFinish(true); // suppression finis : on peut hide la popUp
+			this.rpcPage.deleteArboPage((Long)selectedItem.getUserObject(), (Long)selectedItem.getParentItem().getUserObject(), new AsyncCallback<Boolean>() {
+				public void onSuccess(Boolean result) {
+					if(result){
+						view.deleteSelectedTI();
+						selectedItem = selectedItem.getParentItem();
+						eventBus.deletingPageFinish(true); // suppression finis : on peut hide la popUp
+					} else {
+						eventBus.deletingPageFinish(false); // suppression n'a pas eu lieu
+					}
 				}
 				public void onFailure(Throwable caught) {
 					eventBus.deletingPageFinish(false);}
@@ -457,7 +479,8 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Pa
 			public void onMouseOver(MouseOverEvent event) {
 				HorizontalEventPanel p = (HorizontalEventPanel)event.getSource();
 				Button b = (Button)p.getWidget(2); // img in 0, the label in 0, and the button in 1
-				b.setVisible(true);
+				if(dispBtnInTree)
+					b.setVisible(true);
 			}
 		});
 		
@@ -484,18 +507,40 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Pa
 		view.setImageOfSelectedTI(this.chooseTheGoodImage(modifOnPage));
 	}
 	
+	/**
+	 * Function call by the Validation presenter when you click on the modify btn
+	 */
+	public void onGoInModification(){
+		// if no page selected, select the root by default
+		if(this.selectedItem == null)
+			this.setSelectedItem(this.rootItem);
+		
+		this.eventBus.verifyPageLock((Long) selectedItem.getUserObject(), LockState.modify);
+	}
+	
 	public void onDisplayCurrentPage(PageState state) {
 		
 		// if no page selected, select the root by default
 		if(this.selectedItem == null)
 			this.setSelectedItem(this.rootItem);
-		
-		// on recharge uniquement si le nouvelle objet selectionné et différent de l'ancien
-		if(!this.sameItemSelected){
-			if(state.equals(PageState.manageImage)) 
-				this.createPath();//display new thumbs
-			else
+		dispState = state;
+		switch(state) {
+		case manageImage:
+			this.dispBtnInTree = false;
+			this.createPath();//display new thumbs
+			break;
+		case manageUser:
+			this.eventBus.startUserManager();
+			break;
+		case display:
+			this.dispBtnInTree = true;
+			if(!this.sameItemSelected)
 				eventBus.displayPage((Long) selectedItem.getUserObject());
+			break;
+		case modify:
+			this.dispBtnInTree = true;
+			NavigationPanelPresenter.this.eventBus.modifyPage((Long) selectedItem.getUserObject());
+			break;
 		}
 	}
 	
@@ -503,6 +548,7 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Pa
 	public void onLoadFileManager() {
 		this.eventBus.startTinyPopUp(this.getIdPath());
 	}
+	
 		
 	/**
 	 * used by the framework to instantiate rpcPage 

@@ -1,11 +1,14 @@
 package com.sfeir.richercms.page.client.view;
 
+
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.LayoutPanel;
@@ -17,6 +20,7 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.HTMLTable.CellFormatter;
+import com.sfeir.richercms.page.client.ImageAndId;
 import com.sfeir.richercms.page.client.PageConstants;
 import com.sfeir.richercms.page.client.interfaces.IUserManager;
 
@@ -28,6 +32,10 @@ public class UserManager  extends ResizeComposite implements IUserManager {
 	private FlexTable userTable;
 	private Button addNewUser;
 	private TextBox newEmailAdress;
+	
+	private VerticalPanel currentLockedPage;
+	private VerticalPanel currentAdminPanel;
+	
 	public Widget asWidget() {
 		return this;
 	}
@@ -108,8 +116,13 @@ public class UserManager  extends ResizeComposite implements IUserManager {
 		this.addNewUser.setText("");
 	}
 	
-	public void addLine(String email, String nickName, 
-			String state, boolean admin) {
+	public void addLine(String email, String nickName, String state) {
+		// j'instancie les 2 panneaux et je les add vide dans la table
+		// c'est les 2 fonction : addAdminWidget et addLockedPage qui les remplirons
+		// c'est aussi c'est fonction qui vont laisser la main au presenter pour gèrer les events
+		this.currentLockedPage = new VerticalPanel();
+		this.currentAdminPanel = new VerticalPanel();
+		
 		PushButton btnDel = new PushButton( new Image("tab_images/Delete-icon.png"));
 		int numRow = this.userTable.getRowCount();
 		Label labelState = new Label(state);
@@ -123,27 +136,34 @@ public class UserManager  extends ResizeComposite implements IUserManager {
 		this.userTable.setText(numRow, 0, email);
 		this.userTable.setText(numRow, 1, nickName);
 		this.userTable.setWidget(numRow, 2, labelState);
-		this.userTable.setWidget(numRow, 3, LockedPage());
-		this.userTable.setWidget(numRow, 4, adminWidget(numRow,admin));
+		this.userTable.setWidget(numRow, 3, this.currentLockedPage);
+		this.userTable.setWidget(numRow, 4, this.currentAdminPanel);
 		this.userTable.setWidget(numRow, 5, btnDel);
 	}
 
-	private Widget adminWidget(int numRow, boolean admin){
+	public void addAdminWidget(boolean admin) {
+		int numRow = this.userTable.getRowCount()-1;
 		RadioButton yes = new RadioButton("row"+numRow,"yes");
 		RadioButton no = new RadioButton("row"+numRow,"no");
-		VerticalPanel p = new VerticalPanel();
-		p.add(yes);p.add(no);
+		
+		this.currentAdminPanel.add(yes);
+		this.currentAdminPanel.add(no);
 		
 		if(admin)
 			yes.setValue(true);
 		else
 			no.setValue(true);
-		
-		return p;
 	}
 	
-	private Widget LockedPage() {
-		return new Label("pas encore");
+	public HasClickHandlers addLockedPage(Long pageId, String pagename) {
+		HorizontalPanel p = new HorizontalPanel();
+		p.add(new Label(pagename));
+		ImageAndId img = new ImageAndId("/tab_images/trans.png",pageId);
+		img.addStyleName("lockedStyle");
+		p.add(img);
+		
+		this.currentLockedPage.add(p);
+		return img;
 	}
 
 	public HasClickHandlers onAddNewUserClick() {

@@ -212,4 +212,10 @@ public interface IInformationPanel extends LazyView {
 	 * @return the MainConstants
 	 */
 	public PageConstants getConstants();
+	
+	/**
+	 * Set the lock label with the pseudo of user
+	 * @param pseudo : pseudo of user who modify the page
+	 */
+	public void setlockInfo(String pseudo);
 }

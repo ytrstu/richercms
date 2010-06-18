@@ -14,6 +14,7 @@ public class BeanArboPage implements Serializable{
 	private Date publicationStart;
 	private Date publicationFinish;
 	private Date creationDate;
+	private Long idUserInModif;
 	
 	public BeanArboPage() {
 		super();
@@ -23,6 +24,7 @@ public class BeanArboPage implements Serializable{
 		this.publicationFinish = new Date();
 		this.publicationStart = new Date();
 		this.creationDate = new Date();
+		this.idUserInModif = null;
 	}
 	
 	public BeanArboPage(Long id) {
@@ -33,6 +35,7 @@ public class BeanArboPage implements Serializable{
 		this.publicationFinish = new Date();
 		this.publicationStart = new Date();
 		this.creationDate = new Date();
+		this.idUserInModif = null;
 	}
 	
 	public BeanArboPage(Long id, Date publicationStart, Date publicationFinish, Date creationDate) {
@@ -43,6 +46,7 @@ public class BeanArboPage implements Serializable{
 		this.publicationFinish = publicationFinish;
 		this.publicationStart = publicationStart;
 		this.creationDate = creationDate;
+		this.idUserInModif = null;
 	}
 	
 	public BeanArboPage(List<BeanTranslationPage> translation) {
@@ -53,6 +57,7 @@ public class BeanArboPage implements Serializable{
 		this.publicationFinish = new Date();
 		this.publicationStart = new Date();
 		this.creationDate = new Date();
+		this.idUserInModif = null;
 	}
 	
 	public BeanArboPage(Long id, List<BeanTranslationPage> translation) {
@@ -63,6 +68,7 @@ public class BeanArboPage implements Serializable{
 		this.publicationFinish = new Date();
 		this.publicationStart = new Date();
 		this.creationDate = new Date();
+		this.idUserInModif = null;
 	}
 	
 	public BeanArboPage(Long id, List<BeanTranslationPage> translation,
@@ -74,6 +80,7 @@ public class BeanArboPage implements Serializable{
 		this.publicationFinish = publicationFinish;
 		this.publicationStart = publicationStart;
 		this.creationDate = new Date();
+		this.idUserInModif = null;
 	}
 	
 	public Long getId() {
@@ -122,5 +129,13 @@ public class BeanArboPage implements Serializable{
 
 	public void setIdLinkedImages(List<Long> idLinkedImages) {
 		this.idLinkedImages = idLinkedImages;
+	}
+
+	public Long getIdUserInModif() {
+		return idUserInModif;
+	}
+
+	public void setIdUserInModif(Long idUserInModif) {
+		this.idUserInModif = idUserInModif;
 	}
 }

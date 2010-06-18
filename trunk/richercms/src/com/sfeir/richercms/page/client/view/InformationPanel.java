@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.dom.client.HasFocusHandlers;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.ResizeComposite;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TextBox;
@@ -34,6 +36,7 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 	private ArrayList<Button> cpyButtonLst = null;
 
 	private Label Title = null;
+	private Label lock = null;
 	private TextBox tBrowserTitle = null;
 	private TextBox tPageTitle = null;
 	private TextBox tUrlName = null;
@@ -52,6 +55,8 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 	public void createView() {
 		this.Title = new Label(this.constants.DefaultTitleInformation());
 		this.Title.setStyleName("informationTitle");
+		
+		this.lock = new Label("test");
 		
 		this.cpyLabelLst = new ArrayList<Label>();
 		this.cpyButtonLst = new ArrayList<Button>();
@@ -75,7 +80,7 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 		}
 		
 		HorizontalPanel p;
-		ScrollPanel root = new ScrollPanel();
+		ScrollPanel scroll = new ScrollPanel();
 		FlexTable tab = new FlexTable();
 		tab.setCellSpacing(10);
 		
@@ -118,12 +123,21 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 		VerticalPanel container = new VerticalPanel();
 		container.add(this.Title);
 		container.add(tab);
+		
+		LayoutPanel root = new LayoutPanel();
 		root.add(container);
+		root.add(this.lock);
+		root.setWidgetLeftWidth(container, 10, Unit.PX, 350, Unit.PX);
+		root.setWidgetTopHeight(container, 10, Unit.PX, 250, Unit.PX);
+		root.setWidgetRightWidth(this.lock, 10, Unit.PX, 300, Unit.PX);
+		root.setWidgetTopHeight(this.lock, 10, Unit.PX, 70, Unit.PX);
 
 		this.deasabledWidgets();
 		this.hideAllHelpField();
+
 		
-		this.initWidget(root);
+		scroll.add(root);
+		this.initWidget(scroll);
 	}
 	
 	public void enabledWidgets() {
@@ -200,6 +214,13 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 
 	public void setPageTitle(String pageTitle) {
 		this.tPageTitle.setText(pageTitle);
+	}
+	
+	public void setlockInfo(String pseudo) {
+		if(pseudo.length() == 0)
+			this.lock.setText("");
+		else
+			this.lock.setText("en cours de modification par : "+pseudo);
 	}
 
 	public void setPublicationFinish(Date publicationFinish) {

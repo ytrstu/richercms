@@ -43,24 +43,28 @@ public class ServiceArboPageImpl  extends RemoteServiceServlet implements ArboPa
 		ofy.put(parentPage);	
 	}
 
-	public void deleteArboPage(Long id, Long parentId) {
-		
-		Objectify ofy = ObjectifyService.begin();
-
-    	ArboPage parentPage = ofy.get(ArboPage.class, parentId);
-    	//remove this node in this parent
-    	parentPage.getIdChildArboPage().remove(id);
-    	ofy.put(parentPage);
-    
-    	ArboPage arboPage = ofy.get(ArboPage.class, id);
-    	//delete all child
-    	for(Long childKey : arboPage.getIdChildArboPage()) {
-    		deleteArboPage(childKey, arboPage.getId());
-    	}
-		// delete all translation
-    	ofy.delete(arboPage.getTranslation());
-    	// delete the current page
-		ofy.delete(arboPage);
+	public boolean deleteArboPage(Long id, Long parentId) {
+		// test if this page wasn't lock by another user
+		if(this.lockPageInfo(id) == null){
+			Objectify ofy = ObjectifyService.begin();
+	
+	    	ArboPage parentPage = ofy.get(ArboPage.class, parentId);
+	    	//remove this node in this parent
+	    	parentPage.getIdChildArboPage().remove(id);
+	    	ofy.put(parentPage);
+	    
+	    	ArboPage arboPage = ofy.get(ArboPage.class, id);
+	    	//delete all child
+	    	for(Long childKey : arboPage.getIdChildArboPage()) {
+	    		deleteArboPage(childKey, arboPage.getId());
+	    	}
+			// delete all translation
+	    	ofy.delete(arboPage.getTranslation());
+	    	// delete the current page
+			ofy.delete(arboPage);
+			return true;
+		}
+		return false;
 	}
 
 	public BeanArboPage getArboPage(Long id) {
@@ -197,10 +201,67 @@ public class ServiceArboPageImpl  extends RemoteServiceServlet implements ArboPa
 		return path;
 	}
 	
+	public Long lockThisPage(Long pageId,Long userId) {
+		Objectify ofy = ObjectifyService.begin();
+
+		ArboPage page = ofy.get(ArboPage.class, pageId);
+		if(page != null){
+			if(page.getIdUserInModif().intValue() == -1) {
+				page.setIdUserInModif(userId);
+				ofy.put(page);
+			} else {
+				return page.getIdUserInModif();
+			}
+		}
+		return null;
+	}
+	
+	public Long lockPageInfo(Long pageId){
+		Objectify ofy = ObjectifyService.begin();
+		ArboPage page = ofy.get(ArboPage.class, pageId);
+		
+		if(page != null) {
+			if(page.getIdUserInModif().intValue() == -1) 
+				return null;
+			else 
+				return page.getIdUserInModif();
+		}
+		return null;
+	}
+	
+	public void unlockThisPage(Long pageId) {
+		Objectify ofy = ObjectifyService.begin();
+		ArboPage page = ofy.get(ArboPage.class, pageId);
+		
+		if(page != null) {
+			page.setIdUserInModif(new Long(-1));
+			ofy.put(page);
+		}
+	}
+	
+	public List<BeanArboPage> getAllLockedPages() {
+		ArrayList<BeanArboPage> lst = new ArrayList<BeanArboPage>();
+		Objectify ofy = ObjectifyService.begin();
+		
+		// -1 ==> page unlocked
+		Query<ArboPage> lockedPages  = ofy.query(ArboPage.class).filter("idUserInModif !=", -1);
+		
+		for(ArboPage lockedPage :lockedPages){
+			lst.add(this.arboPageToBean(lockedPage));
+		}
+		
+		return lst;
+	}
+	
 	public BeanArboPage arboPageToBean(ArboPage ap){
 		Objectify ofy = ObjectifyService.begin();
 		BeanArboPage bap = new BeanArboPage(ap.getId(),ap.getPublicationStart(), 
 				ap.getPublicationFinish(), ap.getCreationDate());
+		
+		//if IdUserInModif == -1 we return null
+		if(ap.getIdUserInModif().intValue() != -1)
+			bap.setIdUserInModif(ap.getIdUserInModif());
+		
 		ArrayList<BeanTranslationPage> lst = new ArrayList<BeanTranslationPage>();
 		for(Key<TranslationPage> kTp : ap.getTranslation()){
 			TranslationPage tp = ofy.get(kTp);

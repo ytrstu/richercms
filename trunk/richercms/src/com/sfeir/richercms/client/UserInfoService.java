@@ -62,4 +62,11 @@ public interface UserInfoService extends RemoteService {
 	 * @return list with all users
 	 */
 	public List<BeanUser> getUsers();
+	
+	/**
+	 * return an user
+	 * @param id : id of the user
+	 * @return null if user no exist, his bean either
+	 */
+	public BeanUser getUser(Long id);
 }

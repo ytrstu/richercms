@@ -9,9 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.appengine.api.images.Image;
-import com.google.appengine.api.images.ImagesService;
 import com.google.appengine.api.images.ImagesServiceFactory;
-import com.google.appengine.api.images.Transform;
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.Query;
@@ -33,7 +31,6 @@ public class DisplayImageServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) 
 	throws ServletException, IOException {
 		String id = req.getParameter("path");
-		String test = req.getRequestURI();
 		MemoryFileItem mfi = getMemoryFileItem(id);
 		if(mfi != null) {
 			Image thumb = ImagesServiceFactory.makeImage(mfi.get());

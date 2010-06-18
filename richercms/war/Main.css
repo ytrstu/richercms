@@ -274,3 +274,14 @@ td.datePickerMonth {
 	direction:ltr;
 	text-align :center;
 }
+
+.lockedStyle {
+	cursor: pointer;
+	background : url("/tab_images/lock.png"); 
+}
+.lockedStyle:hover {
+	cursor: pointer;
+    background : url("/tab_images/unlock.png"); 
+}
+    
+    

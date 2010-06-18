@@ -254,6 +254,7 @@ public class PageView extends ResizeComposite implements IdisplayPage {
 	
 	public void displayNormalPanel(){
 		if(this.dispositionPanel.getWidgetIndex(this.leftRightSpliter) == -1){
+			this.dispositionPanel.clear();
 			this.dispositionPanel.addNorth(lgAndMenuPanel, 23);
 			this.dispositionPanel.add(this.leftRightSpliter);
 		}

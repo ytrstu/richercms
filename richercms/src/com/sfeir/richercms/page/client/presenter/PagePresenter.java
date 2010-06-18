@@ -17,6 +17,7 @@ import com.mvp4g.client.presenter.LazyPresenter;
 import com.sfeir.richercms.client.UserInfoServiceAsync;
 import com.sfeir.richercms.client.view.PopUpMessage;
 import com.sfeir.richercms.page.client.ArboPageServiceAsync;
+import com.sfeir.richercms.page.client.LockState;
 import com.sfeir.richercms.page.client.PageState;
 import com.sfeir.richercms.page.client.event.PageEventBus;
 import com.sfeir.richercms.page.client.interfaces.IImageManager;
@@ -63,21 +64,17 @@ public class PagePresenter extends LazyPresenter<IdisplayPage, PageEventBus> {
 		
 		view.setImageToolCommand(new Command(){
 			public void execute() {
-				state = PageState.manageImage;
-				eventBus.displayCurrentStatePanel();
+				changeState(PageState.manageImage);
 		}});
 		
 		view.setPageToolCommand(new Command(){
 			public void execute() {
-				if(state != PageState.display)
-					eventBus.confirmCancelPage();
+				changeState(PageState.display);
 		}});
 		
 		view.setUserSettingsCommand(new Command(){
 			public void execute() {
-				state = PageState.manageUser;
-				view.disableLanguageBox();
-					eventBus.startUserManager();
+				changeState(PageState.manageUser);
 		}});
 		
 		
@@ -154,6 +151,13 @@ public class PagePresenter extends LazyPresenter<IdisplayPage, PageEventBus> {
 	}
 	
 	private void disconnectUser() {
+		// unlock page if it was in modify mode
+		if(this.state.equals(PageState.modify))
+			this.rpcPage.unlockThisPage(this.id, new AsyncCallback<Void>() {
+				public void onFailure(Throwable caught) {;}
+				public void onSuccess(Void result) {;}
+			});
+		
 		this.rpcUser.logOutUser(this.usr.getId(), new AsyncCallback<Void>() {
 			public void onFailure(Throwable caught) {;}
 			public void onSuccess(Void result) {;}
@@ -163,25 +167,31 @@ public class PagePresenter extends LazyPresenter<IdisplayPage, PageEventBus> {
 	/////////////////////////////////////////////// EVENT ///////////////////////////////////////////////
 	
 	public void onDisplayCurrentStatePanel() {
-
-		switch(this.state){
-		case display :
-			view.displayNormalPanel();
-			// on demande donc au navigation panel de fair afficher la dernière page selectionné
-			// voir la page qui vien d'être cliqué
-			eventBus.displayCurrentPage(state);
-			break;
+		changeState(this.state);
+	}
+	
+	/**
+	 * Allows you to change State.
+	 * If you would just display the currentState panel, 
+	 * add the current state into the newState var.
+	 * @param newState : new State.
+	 */
+	private void changeState(PageState newState){
+		
+		switch(this.state) {
 		case modify :
 		case add :
-				eventBus.confirmCancelPage();
+			eventBus.confirmCancelPage(newState,true);
 			break;
+		case manageUser:
 		case manageImage :
-			// on demande donc au navigation panel de fair afficher la dernière page selectionné
-			// voir la page qui vien d'être cliqué
+			view.disableLanguageBox();
+		case display :
+			this.state = newState;
+			view.displayNormalPanel();
 			eventBus.displayCurrentPage(state);
 		}
 	}
-
 	
 	public void onAddPage(Long id){
 		this.state = PageState.add;
@@ -197,20 +207,48 @@ public class PagePresenter extends LazyPresenter<IdisplayPage, PageEventBus> {
 		this.view.enableLanguageBox();
 	}
 	
-	public void onCancelPage() {
-		
+	public void onCancelPage(PageState newState) {		
 		this.view.enableLanguageBox();
-		this.state = PageState.display;
-		this.eventBus.displayCurrentStatePanel();
+		this.state = newState;
+		this.changeState(newState);
 	}
 	
-	public void onConfirmCancelPage() {
-		ConfirmationBox confirmPopUp = new ConfirmationBox("ATTENTION", "Etes-vous sûr de vouloir quiter la tâche en cours ?");
-		confirmPopUp.getClickOkEvt().addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent event) {
-				eventBus.cancelPage();
-			}		
-		});
+	public void onConfirmCancelPage(final PageState newState, boolean withMsg) {
+		switch(this.state){
+			case modify:
+			case add :
+				if(withMsg){//display a popUp to confirm cancel
+					ConfirmationBox confirmPopUp = new ConfirmationBox("ATTENTION",
+													this.view.getConstants().ConfirmCancelMsg());
+					
+					confirmPopUp.getClickOkEvt().addClickHandler(new ClickHandler() {
+						public void onClick(ClickEvent event) {
+							// unlock page if its necessary
+							rpcPage.unlockThisPage(id, new AsyncCallback<Void>() {
+								public void onFailure(Throwable caught) {}
+								public void onSuccess(Void result) {
+									// avertit tout les presenter qu'il faut cancel
+									eventBus.cancelPage(newState);
+								}
+							});
+						}		
+					});
+				}else{// just unlock and send the cancelPage event
+					rpcPage.unlockThisPage(id, new AsyncCallback<Void>() {
+						public void onFailure(Throwable caught) {}
+						public void onSuccess(Void result) {
+							// avertit tout les presenter qu'il faut cancel
+							eventBus.cancelPage(newState);
+						}
+					});
+				}
+				break;
+			case manageImage:
+			case manageUser:
+			case display:
+				eventBus.cancelPage(newState);
+		}
+
 	}
 	
 	public void onChangeNavPanel(INavigationPanel navPanel) {
@@ -300,14 +338,6 @@ public class PagePresenter extends LazyPresenter<IdisplayPage, PageEventBus> {
 		this.view.hideWaitPopUp();
 	}
 	
-	public void onSetTranslationKeyInLanguage(Long TranslationId) {
-		/*this.rpcLanguage.setTranslationKey(view.getKeyOfSelectedLg(),TranslationKey, new AsyncCallback<Void>() {
-	    	public void onSuccess(Void result) {}
-			public void onFailure(Throwable caught) {
-	        	PopUpMessage p = new PopUpMessage("Error retrieving on setting translationKey");
-	        	p.show();}
-		});*/
-	}
 	
 	public void onShowInformationPopUp() {
 		this.view.showWaitPopUp();
@@ -331,6 +361,54 @@ public class PagePresenter extends LazyPresenter<IdisplayPage, PageEventBus> {
 	
 	public void onDisplayUserManager(IUserManager p) {
 		this.view.displayUserManager(p);
+	}
+	
+	public void onVerifyPageLock(Long pageId, final LockState lockState) {
+		switch(lockState){
+		case delete :
+		case modify :
+			// if any user block this page, this page was locked
+			this.rpcPage.lockThisPage(pageId, this.usr.getId(), new AsyncCallback<Long>() {
+				public void onFailure(Throwable caught){}
+				public void onSuccess(Long result) {
+					// null => page unlock
+					if(result == null){
+						eventBus.pageLockState(null);
+						changeState(PageState.modify);
+					}else
+						rpcUser.getUser(result, new AsyncCallback<BeanUser>() {
+							public void onFailure(Throwable caught) {}
+							public void onSuccess(BeanUser result) {
+								eventBus.pageLockState(result.getNickname());
+							}
+						});
+				}
+			});
+			break;
+		case display :
+			// just display if an user lock this page
+			this.rpcPage.lockPageInfo(pageId, new AsyncCallback<Long>() {
+				public void onFailure(Throwable caught){}
+				public void onSuccess(Long result) {
+					// null => page unlock
+					if(result == null){
+						eventBus.pageLockState(null);
+						// we can modify !!
+						eventBus.enableModifyBtn();
+					}else{
+						// we cannot modify !!
+						eventBus.disableModifyBtn();
+						rpcUser.getUser(result, new AsyncCallback<BeanUser>() {
+							public void onFailure(Throwable caught) {}
+							public void onSuccess(BeanUser result) {
+								eventBus.pageLockState(result.getNickname());
+							}
+						});
+					}
+						changeState(PageState.display);
+				}
+			});
+		}
 	}
 	
 

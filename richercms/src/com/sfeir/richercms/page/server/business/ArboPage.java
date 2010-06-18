@@ -7,6 +7,7 @@ import java.util.List;
 import javax.persistence.Id;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Entity;
+import com.googlecode.objectify.annotation.Indexed;
 import com.googlecode.objectify.annotation.Unindexed;
 
 @Entity(name="ArboPage")
@@ -26,6 +27,9 @@ public class ArboPage {
 	
 	private Date creationDate;
 	
+	@Indexed 
+	private Long idUserInModif;
+	
 	//TODO List<Long> idTag;
 	
 	public ArboPage() {
@@ -35,6 +39,7 @@ public class ArboPage {
 		this.publicationStart = new Date();
 		this.publicationFinish = new Date();
 		this.creationDate = new Date();
+		this.idUserInModif = new Long(-1);
 	}
 	
 	public ArboPage(List<Key<TranslationPage>> translation) {
@@ -44,6 +49,7 @@ public class ArboPage {
 		this.publicationStart = new Date();
 		this.publicationFinish = new Date();
 		this.creationDate = new Date();
+		this.idUserInModif = new Long(-1);
 	}
 	
 	public ArboPage(List<Key<TranslationPage>> translation, Date publicationStart, Date publicationFinish) {
@@ -53,6 +59,7 @@ public class ArboPage {
 		this.publicationStart = publicationStart;
 		this.publicationFinish = publicationFinish;
 		this.creationDate = new Date();
+		this.idUserInModif = new Long(-1);
 	}
 	
 	public ArboPage(List<Key<TranslationPage>> translation, List<Long> idChildArboPage) {
@@ -62,6 +69,7 @@ public class ArboPage {
 		this.publicationStart = new Date();
 		this.publicationFinish = new Date();
 		this.creationDate = new Date();
+		this.idUserInModif = new Long(-1);
 	}
 	
 	public ArboPage(List<Key<TranslationPage>> translation, List<Long> idChildArboPage,
@@ -72,6 +80,18 @@ public class ArboPage {
 		this.publicationStart = publicationStart;
 		this.publicationFinish = publicationFinish;
 		this.creationDate = new Date();
+		this.idUserInModif = new Long(-1);
+	}
+	
+	public ArboPage(List<Key<TranslationPage>> translation, List<Long> idChildArboPage,
+			Date publicationStart, Date publicationFinish, Long idUserInModif) {
+		super();
+		this.idChildArboPage = idChildArboPage;
+		this.translation = translation;
+		this.publicationStart = publicationStart;
+		this.publicationFinish = publicationFinish;
+		this.creationDate = new Date();
+		this.idUserInModif = idUserInModif;
 	}
 
 	public Long getId() {
@@ -120,6 +140,14 @@ public class ArboPage {
 
 	public void setCreationDate(Date creationDate) {
 		this.creationDate = creationDate;
+	}
+
+	public Long getIdUserInModif() {
+		return idUserInModif;
+	}
+
+	public void setIdUserInModif(Long idUserInModif) {
+		this.idUserInModif = idUserInModif;
 	}
 
 }

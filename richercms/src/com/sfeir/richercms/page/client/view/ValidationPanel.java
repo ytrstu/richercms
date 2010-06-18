@@ -17,6 +17,8 @@ public class ValidationPanel extends ResizeComposite implements IValidationPanel
 	
 	private Button btnAdd = new Button(constants.BtnAdd());
 	private Button btnCancel = new Button(constants.BtnReturn());
+	private Button modifyAndRetrun = new Button(constants.BtnModifyAndRetrun());
+	private Button modify = new Button(constants.BtnModify());
 	
 	public ValidationPanel() {
 		super();
@@ -29,8 +31,10 @@ public class ValidationPanel extends ResizeComposite implements IValidationPanel
 		
 		FlowPanel buttonPanel = new FlowPanel();
 		buttonPanel.addStyleName("mainButtonPanel");
-		buttonPanel.add(btnAdd);
-		buttonPanel.add(btnCancel);
+		buttonPanel.add(this.btnAdd);
+		buttonPanel.add(this.modifyAndRetrun);
+		buttonPanel.add(this.modify);
+		buttonPanel.add(this.btnCancel);
 
 		LayoutPanel p = new LayoutPanel();
 		p.add(buttonPanel);
@@ -38,26 +42,62 @@ public class ValidationPanel extends ResizeComposite implements IValidationPanel
 		this.initWidget(p);
 	}
 
-	public void enabledButtons() {
-		this.btnAdd.setEnabled(true);
-		this.btnCancel.setEnabled(true);
+	public void showModifyButtons() {
+		this.btnAdd.setVisible(true);
+		this.modifyAndRetrun.setVisible(true);
+		this.btnCancel.setVisible(true);
+		this.modify.setVisible(false);
 	}
 	
-	public void enabledReturnBtn(){
-		this.btnCancel.setEnabled(true);
+	public void showJustModifyBtn() {
+		this.btnAdd.setVisible(false);
+		this.modifyAndRetrun.setVisible(false);
+		this.btnCancel.setVisible(false);
+		this.modify.setVisible(true);
 	}
 	
-	public void deasableButtons() {
-		this.btnAdd.setEnabled(false);
-		this.btnCancel.setEnabled(false);
+	public void showAddButtons() {
+		this.btnAdd.setVisible(true);
+		this.modifyAndRetrun.setVisible(false);
+		this.btnCancel.setVisible(true);
+		this.modify.setVisible(false);
+	}
+	
+	public void showReturnBtn(){
+		this.modify.setEnabled(true);
+		this.btnCancel.setVisible(true);
+		this.modify.setVisible(false);
+	}
+	
+	public void hideButtons() {
+		this.btnAdd.setVisible(false);
+		this.modifyAndRetrun.setVisible(false);
+		this.btnCancel.setVisible(false);
+		this.modify.setVisible(false);
+	}
+	
+	public void enableModifyBtn() {
+		this.modify.setEnabled(true);
 	}
 
+	public void disableModifyBtn() {
+		this.modify.setEnabled(false);
+	}
+	
 	public HasClickHandlers getClicBtnAdd() {
 		return this.btnAdd;
 	}
 
 	public HasClickHandlers getClicBtnCancel() {
 		return this.btnCancel;
+	}
+	
+	public HasClickHandlers getClicBtnSaveAndQ() {
+		return this.modifyAndRetrun;
+	}
+	
+	public HasClickHandlers getClicBtnModify() {
+		return this.modify;
 	}
 	
 	public void setBtnAddText(String text) {

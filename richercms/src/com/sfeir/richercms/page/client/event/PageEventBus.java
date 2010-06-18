@@ -6,6 +6,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.event.EventBus;
+import com.sfeir.richercms.page.client.LockState;
 import com.sfeir.richercms.page.client.PageState;
 import com.sfeir.richercms.page.client.interfaces.IImageManager;
 import com.sfeir.richercms.page.client.interfaces.IInformationPanel;
@@ -85,18 +86,23 @@ public interface PageEventBus extends EventBus {
 	
 	/**
 	 * Fired by the MainPagePresenter if the user need realy to abort his work
+	 * Don't use this event to erase a cancelEvent. use confirmCancelPage.
+	 * @param newState : the state you need to place application
 	 */
 	@Event( handlers = {PagePresenter.class, InformationPanelPresenter.class, ValidationPanelPresenter.class, TinyMCEPanelPresenter.class} )
-	public void cancelPage();
+	public void cancelPage(PageState newState);
 	
 	/**
 	 * Fired by the Validation Panel when the cancel button is clicked 
 	 * or when a other node is selected in the tree of the NavigationPanel.
 	 * This Event is catch by the MainPagePresenter who request user if he would abort
 	 * his previous work.
+	 * 
+	 * @param newState : the state you need to place application
+	 * @param withMsg : true if you need a confirmationPopUp, false either
 	 */
 	@Event( handlers = PagePresenter.class)
-	public void confirmCancelPage();
+	public void confirmCancelPage(PageState newState, boolean withMsg);
 	
 	/**
 	 * fired by the NavigationPresenter when the addPage menu is clicked
@@ -227,15 +233,6 @@ public interface PageEventBus extends EventBus {
 	 */
 	@Event( handlers =  PagePresenter.class )
 	public void changeValidationPanel(IValidationPanel validationPanel);
-	
-	/**
-	 * Fired by the NavigationPanelPresenter if the translation key of the language who you need a translation
-	 * are null. Andso, a new translation are created in the database and this event send this key to the presenter.
-	 * The mainPresenter save this key in the selected language.
-	 * @param TranslationKey
-	 */
-	@Event( handlers =  PagePresenter.class )
-	public void setTranslationKeyInLanguage(Long TranslationId);
 	
 	/**
 	 * Fired by the MainPresenter when a new language is selected in the listBox.
@@ -389,4 +386,44 @@ public interface PageEventBus extends EventBus {
 	 */
 	@Event( handlers =  PagePresenter.class )
 	public void displayUserManager(IUserManager p);
+	
+	/**
+	 * Fired by a panel to know if this page is locked
+	 * PagePresenter Handle this event, because, some panels 
+	 * must be called if this page was locked
+	 * @param pageId : id of the page to test
+	 * @param state : the new state needed by the user
+	 */
+	@Event( handlers =  PagePresenter.class )
+	public void verifyPageLock(Long pageId, LockState state);
+	
+	/**
+	 * event Fired by the PagePresenter to manage correctly
+	 * the lock event : InformationPage display the user who lock
+	 * and the NavigationPanelPresenter thorws different action or not.
+	 * @param userName : the nickName of the user
+	 */
+	@Event( handlers =  {InformationPanelPresenter.class})
+	public void pageLockState(String userName);
+	
+	/**
+	 * Fired by the pagePresenter to disable modify Button
+	 * if the current page is locked
+	 */
+	@Event( handlers =  {ValidationPanelPresenter.class})
+	public void disableModifyBtn();
+	
+	/**
+	 * Fired by the pagePresenter to enable modify Button
+	 * if the current page is unlocked
+	 */
+	@Event( handlers =  {ValidationPanelPresenter.class})
+	public void enableModifyBtn();
+	
+	/**
+	 * Fired by the ValidationPanelPresenter when you click on the modify btn
+	 * this function test if the page was not locked and lock the page if its possible
+	 */
+	@Event( handlers =  NavigationPanelPresenter.class )
+	public void goInModification();
 }

@@ -116,7 +116,11 @@
   	
   	<servlet-mapping>
     	<servlet-name>imageServlet</servlet-name>
-    	<url-pattern>/RicherCMS/image</url-pattern>
+    	<url-pattern>/RicherCMS/image/*</url-pattern>
+  	</servlet-mapping>
+  	<servlet-mapping>
+    	<servlet-name>imageServlet</servlet-name>
+    	<url-pattern>/image/*</url-pattern>
   	</servlet-mapping>
   
 

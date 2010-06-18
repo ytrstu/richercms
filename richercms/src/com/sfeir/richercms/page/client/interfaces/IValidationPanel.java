@@ -6,19 +6,29 @@ import com.mvp4g.client.view.LazyView;
 public interface IValidationPanel extends LazyView {
 
 	/**
-	 * Enable all buttons include in this Panel
+	 * Show all buttons include in this Panel and show the save and quit btn
 	 */
-	void enabledButtons();
+	void showModifyButtons();
 	
 	/**
-	 * Enable the return button
+	 * Show just the modify button. Use this one to active modification on a page
 	 */
-	void enabledReturnBtn();
+	void showJustModifyBtn();
 	
 	/**
-	 * Disable all buttons include in this Panel
+	 * Show the return button
 	 */
-	void deasableButtons();
+	void showReturnBtn();
+	
+	/**
+	 * Show add btn, return btn and hide the save and quit btn
+	 */
+	void showAddButtons();
+	
+	/**
+	 * hide all buttons include in this Panel
+	 */
+	void hideButtons();
 	
 	/**
 	 * Necessary to handle ClickEvent on the Add Button
@@ -33,8 +43,30 @@ public interface IValidationPanel extends LazyView {
 	HasClickHandlers getClicBtnCancel();
 	
 	/**
+	 * Necessary to handle ClickEvent on the save and quit btn
+	 * @return EventHandler
+	 */
+	HasClickHandlers getClicBtnSaveAndQ();
+	
+	/**
+	 * Necessary to handle ClickEvent on the modify button
+	 * @return EventHandler
+	 */
+	HasClickHandlers getClicBtnModify();
+	
+	/**
 	 *  Change the text of the btn
 	 * @param text : the newText
 	 */
 	void setBtnAddText(String text);
+	
+	/**
+	 * Enable modify btn
+	 */
+	void enableModifyBtn();
+
+	/**
+	 * Disable modify btn
+	 */
+	void disableModifyBtn();
 }

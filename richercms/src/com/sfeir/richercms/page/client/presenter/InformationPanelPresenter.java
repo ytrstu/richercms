@@ -237,11 +237,11 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 		eventBus.displayContent(this.currentPage.getTranslation());
 	}
 	
-	public void onCancelPage() {
+	public void onCancelPage(PageState newState) {
 		view.deasabledWidgets();
 		view.disableHelp();
 		view.setTitle(view.getConstants().DefaultTitleInformation());
-		this.state = PageState.display;
+		this.state = newState;
 	}
 	
 	public void onModifyPage(Long id) {
@@ -290,6 +290,13 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 		this.translationIndex = index;
 		// display the new translation
 		this.displayArboPage(this.currentPage);
+	}
+	
+	public void onPageLockState(String userName) {
+		if(userName == null)
+			this.view.setlockInfo("");
+		else
+			this.view.setlockInfo(userName);
 	}
 
 	/**

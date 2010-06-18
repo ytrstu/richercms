@@ -26,4 +26,6 @@ public interface UserInfoServiceAsync {
 	public void UserAdminChange(Long id, boolean admin, AsyncCallback<Void> async);
 	
 	public void getUsers(AsyncCallback<List<BeanUser>> async);
+	
+	public void getUser(Long id, AsyncCallback<BeanUser> async);
 }

@@ -129,6 +129,16 @@ public class ServiceUserInfoImpl extends RemoteServiceServlet implements UserInf
         return lst;
 	}
 	
+	public BeanUser getUser(Long id){
+		Objectify ofy = ObjectifyService.begin();
+		
+		CmsUser usr = ofy.get(CmsUser.class, id);
+		if(usr != null)
+			return cmsUserToBean(usr);
+		else
+			return null;
+	}
+	
 	private CmsUser BeanToCmsUser(BeanUser BeanUsr) {
 		return new CmsUser(BeanUsr.getId(),BeanUsr.getEmailAddress(), 
 				BeanUsr.getNickname(),BeanUsr.isLoggedIn(), BeanUsr.isAdmin());

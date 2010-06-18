@@ -54,7 +54,7 @@ public interface ArboPageService extends RemoteService {
 	 * @param parentId : the id of the parent : 
 	 * necessary to erase the id of the deleted child in the parent's child List
 	 */
-	public void deleteArboPage(Long id, Long parentId);
+	public boolean deleteArboPage(Long id, Long parentId);
 	
 	/**
 	 * Return the last ArboPage added in a parentPage.
@@ -86,4 +86,34 @@ public interface ArboPageService extends RemoteService {
 	 * @return path : "rootUrlName/.../leafUrlName/"
 	 */
 	public String getPath(List<Long> ids);
+	
+	/**
+	 * Unlock a specific page and allows other 
+	 * user to modify this one
+	 * @param pageId : the id of the specific page
+	 */
+	public void unlockThisPage(Long pageId);
+	
+	/**
+	 * This function make any modification on the lock field
+	 * use this one if you need information about the state of the page lock
+	 * @param pageId : id of the specific page
+	 * @return Id of the user who lock this page, null if this page is free
+	 */
+	public Long lockPageInfo(Long pageId);
+	
+	/**
+	 * This function lock the specific page with this user id but
+	 * just if this page was'nt lock by an other user.
+	 * @param pageId : id of the specific page
+	 * @param userId : id of the user who would modify this page
+	 * @return Id of an user if this page is already lock, null if it free
+	 */
+	public Long lockThisPage(Long pageId,Long userId);
+	
+	/**
+	 * return all locked page by users
+	 * @return list of beanArboPage
+	 */
+	public List<BeanArboPage> getAllLockedPages();
 }

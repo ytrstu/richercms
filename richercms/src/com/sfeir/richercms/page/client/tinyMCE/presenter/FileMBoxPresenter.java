@@ -3,7 +3,6 @@ package com.sfeir.richercms.page.client.tinyMCE.presenter;
 
 import java.util.List;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.mvp4g.client.annotation.Presenter;
@@ -23,7 +22,7 @@ import com.sfeir.richercms.page.client.tinyMCE.view.FileMbox;
 @Presenter( view = FileMbox.class )
 public class FileMBoxPresenter extends LazyPresenter<IFileMBox,PageEventBus>{
 
-	private static final String imageUrl = GWT.getModuleName()+ "/image?path=";
+	private static final String imageUrl = "/image?path=";
 	private String selectedPath = "";
 	/**
 	 * Bind the various evt

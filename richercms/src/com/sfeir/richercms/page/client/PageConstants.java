@@ -55,8 +55,14 @@ public interface PageConstants extends Constants {
 	  @DefaultStringValue("Modify")
 	  String BtnModify();
 	  
+	  @DefaultStringValue("Save")
+	  String BtnSave();
+	  
 	  @DefaultStringValue("return")
 	  String BtnReturn();
+	  
+	  @DefaultStringValue("Save and return")
+	  String BtnModifyAndRetrun();
 	  
 	  @DefaultStringValue("Reset position")
 	  String BtnResetPos();
@@ -186,6 +192,9 @@ public interface PageConstants extends Constants {
 	  
 	  @DefaultStringValue("Are you sure you want to delete this image?")
 	  String MsgSuppImg();
+	  
+	  @DefaultStringValue("Are you sure, you want to leave the current task ?")
+	  String ConfirmCancelMsg();
 	  
 	  @DefaultStringValue("logOut")
 	  String LogOutAnchor();

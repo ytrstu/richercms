@@ -22,7 +22,7 @@ public interface ArboPageServiceAsync {
 
 	public void updateArboPage(BeanArboPage p, AsyncCallback<Void> callback);
 
-	public void deleteArboPage(Long id, Long parentId, AsyncCallback<Void> callback);
+	public void deleteArboPage(Long id, Long parentId, AsyncCallback<Boolean> callback);
 
 	public void getLastChildAdded(Long parentId, AsyncCallback<BeanArboPage> callback);
 	
@@ -31,5 +31,13 @@ public interface ArboPageServiceAsync {
 	public void updateChildOrder(Long id, List<Integer> newPositionOrder, AsyncCallback<Void> callback);
 	
 	public void getPath(List<Long> ids, AsyncCallback<String> callback);
+	
+	public void unlockThisPage(Long pageId, AsyncCallback<Void> callback);
+	
+	public void lockPageInfo(Long pageId, AsyncCallback<Long> callback);
+	
+	public void lockThisPage(Long pageId,Long userId, AsyncCallback<Long> callback);
+	
+	public void getAllLockedPages(AsyncCallback<List<BeanArboPage>> callback);
 }
  

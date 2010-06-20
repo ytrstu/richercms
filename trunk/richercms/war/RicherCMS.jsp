@@ -34,17 +34,17 @@
     <!--                                           -->
     <script type="text/javascript" language="javascript" src="RicherCMS/RicherCMS.nocache.js"></script>
     
-    <script src='tiny_mce_3.2.7/tiny_mce_src.js' type='text/javascript'></script>
+    <script src='tiny_mce_3.3.7/tiny_mce_src.js' type='text/javascript'></script>
     <script language="javascript" type="text/javascript">
     tinyMCE.init({
         mode : "textareas",
         theme : "advanced",
         plugins : "table,advhr,advimage,advlink,emotions,insertdatetime,preview,searchreplace,"+
-                  "print,contextmenu,inlinepopups",
+                  "print,contextmenu,inlinepopups,fullscreen",
         file_browser_callback : "tinyMCE.org_richercms_call.loadFileName",
         theme_advanced_buttons1 : "save,newdocument,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,styleselect,formatselect,fontselect,fontsizeselect",
         theme_advanced_buttons2 : "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,image,cleanup,help,code,|,insertdate,inserttime,preview,|,forecolor,backcolor",
-        theme_advanced_buttons3 : "tablecontrols,|,hr,removeformat,visualaid,|,sub,sup,|,charmap,emotions,iespell,media,advhr,|,print,|,ltr,rtl,|,fullscreen",
+        theme_advanced_buttons3 : "tablecontrols,|,hr,removeformat,visualaid,|,sub,sup,|,charmap,emotions,iespell,media,advhr,|,print,|,fullscreen",
         theme_advanced_toolbar_location : "top",
         theme_advanced_toolbar_align : "left",
         theme_advanced_path_location : "bottom",
@@ -52,7 +52,12 @@
         plugin_insertdate_timeFormat : "%H:%M:%S",
         extended_valid_elements : "a[name|href|target|title|onclick],img[class|style|src|border=0|alt|title|hspace"+
                                   "|vspace|width|height|align|onmouseover|onmouseout|name],hr[class|width|size|"+
-                                  "noshade],font[face|size|color|style],span[class|align|style]"
+                                  "noshade],font[face|size|color|style],span[class|align|style]",
+        fullscreen_new_window : false,
+        fullscreen_settings : {
+        	theme_advanced_path_location : "top"
+        }
+                                      
     });
 
     function richerCmsFileBrowser(field_name, url, type, win) {

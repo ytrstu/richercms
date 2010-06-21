@@ -13,10 +13,10 @@ public interface PageConstants extends Constants {
 	  @DefaultStringValue("Browser Title")
 	  String BrowserTitle();
 	  
-	  @DefaultStringValue("Page title")
+	  @DefaultStringValue("Page title (*)")
 	  String PageTitle();
 	  
-	  @DefaultStringValue("Url name")
+	  @DefaultStringValue("Url name (*)")
 	  String UrlName();
 	  
 	  @DefaultStringValue("Desciption")
@@ -30,6 +30,12 @@ public interface PageConstants extends Constants {
 	  
 	  @DefaultStringValue("End date of publication")
 	  String PublicationFinish();
+	  
+	  @DefaultStringValue("(*) = required field")
+	  String Obligation();
+	  
+	  @DefaultStringValue("<== Do not be empty")
+	  String ObligationMsg();
 	  
 	  @DefaultStringValue("Site")
 	  String MainWebSitePage();
@@ -78,6 +84,9 @@ public interface PageConstants extends Constants {
 	  
 	  @DefaultStringValue("Cancel")
 	  String BtnCancel();
+	  
+	  @DefaultStringValue("Send")
+	  String BtnSend();
 	  
 	  @DefaultStringValue("Unable to destroy the main page")
 	  String IDeletMainPage();
@@ -154,7 +163,7 @@ public interface PageConstants extends Constants {
 	  @DefaultStringValue("Image in : ")
 	  String ThumbTitle();
 	  
-	  @DefaultStringValue("Upload a new image with a maximum size of 1 Mb (png, jpg,...)")	  
+	  @DefaultStringValue("Upload a new image with a maximum size of 1 Mb (png, jpg or gif)")	  
 	  String UploadTitle();
 	  
 	  @DefaultStringValue("Click to Close")

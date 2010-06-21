@@ -294,7 +294,6 @@ public class PagePresenter extends LazyPresenter<IdisplayPage, PageEventBus> {
 	}
 	
 	public void onSavePage() {
-		this.view.showWaitPopUp();
 		this.eventBus.callInfo();
 	}
 	

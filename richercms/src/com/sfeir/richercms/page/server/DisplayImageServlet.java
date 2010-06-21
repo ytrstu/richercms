@@ -30,7 +30,16 @@ public class DisplayImageServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) 
 	throws ServletException, IOException {
-		String id = req.getParameter("path");
+		//you can use directly the path
+		String id = req.getPathInfo();
+		if( id == null)//or add a parameter
+			id = req.getParameter("path");
+		else{
+			// delete the first "/"
+			id = id.substring(1, id.length());
+			// replace all "%20" to a space char
+			id = id.replaceAll("%20", " ");
+		}
 		MemoryFileItem mfi = getMemoryFileItem(id);
 		if(mfi != null) {
 			Image thumb = ImagesServiceFactory.makeImage(mfi.get());

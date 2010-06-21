@@ -246,7 +246,7 @@ td.datePickerMonth {
 
 .thumb {
 	float:left;
-	margin-right: 10px;
+	text-align : center;
 }
 .thumb:focus {
 	border:5px solid #D0E4F6;
@@ -282,6 +282,12 @@ td.datePickerMonth {
 .lockedStyle:hover {
 	cursor: pointer;
     background : url("/tab_images/unlock.png"); 
+}
+
+.requiredField {
+	font-style: bold;
+	color:red;
+	direction:ltr;
 }
     
     

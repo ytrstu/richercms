@@ -22,8 +22,9 @@ import com.sfeir.richercms.page.client.tinyMCE.view.FileMbox;
 @Presenter( view = FileMbox.class )
 public class FileMBoxPresenter extends LazyPresenter<IFileMBox,PageEventBus>{
 
-	private static final String imageUrl = "/image?path=";
+	private static final String imageUrl = "/image/";
 	private String selectedPath = "";
+	
 	/**
 	 * Bind the various evt
 	 * It's Mvp4g framework who call this function
@@ -44,8 +45,8 @@ public class FileMBoxPresenter extends LazyPresenter<IFileMBox,PageEventBus>{
         });
 	}
 	
-	public void onStartTinyPopUp(List<Long> pathId){
-		this.eventBus.tinyPopUpStartPanels(pathId);
+	public void onStartTinyPopUp(List<Long> pathId, int type){
+		this.eventBus.tinyPopUpStartImgPanels(pathId);
 		this.view.setDefaultTitle();
 	}
 	

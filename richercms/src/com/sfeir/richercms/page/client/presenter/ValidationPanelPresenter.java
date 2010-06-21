@@ -1,5 +1,7 @@
 package com.sfeir.richercms.page.client.presenter;
 
+import java.util.List;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -78,7 +80,7 @@ public class ValidationPanelPresenter extends LazyPresenter<IValidationPanel, Pa
 		this.state = PageState.modify;
 	}
 	
-	public void onSavePage() {
+	public void onSendContent(List<String> translationsContent) {
 		//if the state is not modify
 		if(!this.state.equals(PageState.modify))
 			view.hideButtons();

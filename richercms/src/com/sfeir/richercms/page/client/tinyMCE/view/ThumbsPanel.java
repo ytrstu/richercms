@@ -6,7 +6,7 @@ import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FileUpload;
-import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FormPanel;
 import com.google.gwt.user.client.ui.Hidden;
 import com.google.gwt.user.client.ui.LayoutPanel;
@@ -14,8 +14,6 @@ import com.google.gwt.user.client.ui.ResizeComposite;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteEvent;
-import com.google.gwt.user.client.ui.FormPanel.SubmitEvent;
 import com.sfeir.richercms.page.client.PageConstants;
 import com.sfeir.richercms.page.client.tinyMCE.interfaces.IThumbsPanel;
 import com.sfeir.richercms.page.client.view.custom.thumb.ThumbFocusable;
@@ -36,11 +34,14 @@ public class ThumbsPanel extends ResizeComposite implements IThumbsPanel{
 	private static final String urlActionUP = GWT.getModuleName() + "/upload"; // up a file
 	private static final String thumbnailUrl = GWT.getModuleName() + 
 						"/thumbnail?width="+thumbsWidth+"&height="+thumbsHeight; // display a thumbnail
-	private FlowPanel thumbsPanel = null;
+	private FlexTable thumbsPanel = null;
 	private Button btnSend = null; // send the form
 	private Hidden path = null;
 	private FormPanel form = null;
 	
+	private int currentLine = 0;
+	private int currentCol = 0;
+	private int nbColMax = 3;
 	
 	public Widget asWidget() {	
 		return this;
@@ -54,8 +55,8 @@ public class ThumbsPanel extends ResizeComposite implements IThumbsPanel{
 		this.panel = new LayoutPanel();
 		VerticalPanel submitPanel = new VerticalPanel();
 		this.path = new Hidden();
-		this.thumbsPanel = new FlowPanel();
-		//this.thumbsPanel.addStyleName("thumbsPanel");
+		this.thumbsPanel = new FlexTable();
+		this.thumbsPanel.setCellPadding(5);
 		
 		ScrollPanel thumbScroll = new ScrollPanel();
 		thumbScroll.add(this.thumbsPanel);
@@ -63,7 +64,7 @@ public class ThumbsPanel extends ResizeComposite implements IThumbsPanel{
 		this.panel.setWidgetTopHeight(thumbScroll,0,Unit.PX,300,Unit.PX);
 		this.panel.setWidgetLeftRight(thumbScroll, 8, Unit.PCT, 8, Unit.PCT);
 		
-		this.btnSend = new Button("envoi");
+		this.btnSend = new Button(this.constants.BtnSend());
 		// Creation du panel contenant le formulaire
 		this.form = new FormPanel();
 		// Definition de l'action du formulaire (url du servlet)
@@ -84,26 +85,35 @@ public class ThumbsPanel extends ResizeComposite implements IThumbsPanel{
 		form.setWidget(submitPanel);
 		
 		this.panel.add(this.form);
-		this.panel.setWidgetTopHeight(this.form,300,Unit.PX,50,Unit.PX);
+		this.panel.setWidgetTopHeight(this.form,310,Unit.PX,50,Unit.PX);
 		this.panel.setWidgetLeftRight(this.form, 10, Unit.PCT, 10, Unit.PCT);
 		
 		// Ajout d'un bouton de soumission pour le formulaire
 		this.panel.add(this.btnSend);
 		this.panel.setWidgetTopHeight(this.btnSend,350,Unit.PX,30,Unit.PX);
 		this.panel.setWidgetLeftRight(this.btnSend, 40, Unit.PCT, 40, Unit.PCT);
-			
+
 		this.initWidget(this.panel);
 	}
 		
 	@SuppressWarnings("static-access")
 	public HasClickHandlers addThumbnail(String p) {
 		ThumbFocusable thumb = new ThumbFocusable(this.thumbnailUrl+"&path="+p,null,p,thumbsWidth,thumbsHeight);
-		this.thumbsPanel.add(thumb);
+		
+		if(this.currentCol == this.nbColMax){
+			this.currentCol = 0;
+			this.currentLine ++;
+		}
+		
+		this.thumbsPanel.setWidget(this.currentLine, this.currentCol, thumb);
+		
+		this.currentCol++;
+		
 		return thumb;
 	}
 	
 	public HasClickHandlers onLastThumbClick() {
-		ThumbFocusable thumb = (ThumbFocusable)this.thumbsPanel.getWidget(this.thumbsPanel.getWidgetCount()-1);
+		ThumbFocusable thumb = (ThumbFocusable)this.thumbsPanel.getWidget(this.currentLine, this.currentCol-1);
 		return thumb;
 	}
 	
@@ -122,6 +132,8 @@ public class ThumbsPanel extends ResizeComposite implements IThumbsPanel{
 	
 	public void clearThumbNails() {
 		this.thumbsPanel.clear();
+		this.currentLine = 0;
+		this.currentCol = 0;
 	}
 	
 	public PageConstants getConstants() {

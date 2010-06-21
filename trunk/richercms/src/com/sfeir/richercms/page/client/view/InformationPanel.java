@@ -37,6 +37,8 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 
 	private Label Title = null;
 	private Label lock = null;
+	private Label helpUrlName = null;
+	private Label helpPageTitle = null;
 	private TextBox tBrowserTitle = null;
 	private TextBox tPageTitle = null;
 	private TextBox tUrlName = null;
@@ -69,6 +71,14 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 		this.dPublicationStart = new DateBox();
 		this.dPublicationFinish = new DateBox();
 		
+		//display required if user miss them
+		this.helpUrlName = new Label(this.constants.ObligationMsg());
+		this.helpUrlName.setVisible(false);
+		this.helpUrlName.addStyleName("requiredField");
+		this.helpPageTitle = new Label(this.constants.ObligationMsg());
+		this.helpPageTitle.setVisible(false);
+		this.helpPageTitle.addStyleName("requiredField");
+		
 		for(int i=0; i<5; i++) {
 			Button b = new Button();
 			b.setText("<");
@@ -92,12 +102,14 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 		
 		tab.setWidget(1,0, new Label(constants.PageTitle()));
 		tab.setWidget(1,1,this.tPageTitle);
+		tab.setWidget(1,3,this.helpPageTitle);
 		p = new HorizontalPanel();
 		p.add(this.cpyButtonLst.get(1));p.add(this.cpyLabelLst.get(1));
 		tab.setWidget(1,2,p);
 		
 		tab.setWidget(2,0, new Label(constants.UrlName()));
 		tab.setWidget(2,1,this.tUrlName);
+		tab.setWidget(2,3,this.helpUrlName);
 		p = new HorizontalPanel();
 		p.add(this.cpyButtonLst.get(2));p.add(this.cpyLabelLst.get(2));
 		tab.setWidget(2,2,p);
@@ -123,12 +135,13 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 		VerticalPanel container = new VerticalPanel();
 		container.add(this.Title);
 		container.add(tab);
+		container.add(new Label(this.constants.Obligation()));
 		
 		LayoutPanel root = new LayoutPanel();
 		root.add(container);
 		root.add(this.lock);
-		root.setWidgetLeftWidth(container, 10, Unit.PX, 350, Unit.PX);
-		root.setWidgetTopHeight(container, 10, Unit.PX, 250, Unit.PX);
+		root.setWidgetLeftWidth(container, 10, Unit.PX, 500, Unit.PX);
+		root.setWidgetTopHeight(container, 10, Unit.PX, 280, Unit.PX);
 		root.setWidgetRightWidth(this.lock, 10, Unit.PX, 300, Unit.PX);
 		root.setWidgetTopHeight(this.lock, 10, Unit.PX, 70, Unit.PX);
 
@@ -266,6 +279,16 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 	public void hideOneHelp(int number) {
 		this.cpyButtonLst.get(number).setVisible(false);
 		this.cpyLabelLst.get(number).setVisible(false);
+	}
+	
+	public void showRequiredField(){
+		this.helpPageTitle.setVisible(true);
+		this.helpUrlName.setVisible(true);
+	}
+	
+	public void hideRequiredField(){
+		this.helpPageTitle.setVisible(false);
+		this.helpUrlName.setVisible(false);
 	}
 	
 	public void enableHelp(){

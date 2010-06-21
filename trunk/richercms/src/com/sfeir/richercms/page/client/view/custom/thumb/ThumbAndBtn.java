@@ -1,18 +1,23 @@
 package com.sfeir.richercms.page.client.view.custom.thumb;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.dom.client.HasMouseDownHandlers;
+import com.google.gwt.event.dom.client.HasMouseOutHandlers;
+import com.google.gwt.event.dom.client.HasMouseOverHandlers;
+import com.google.gwt.event.dom.client.LoadEvent;
+import com.google.gwt.event.dom.client.LoadHandler;
 import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.dom.client.MouseOverHandler;
-import com.google.gwt.user.client.ui.HasAlignment;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.LayoutPanel;
 import com.sfeir.richercms.page.client.PageConstants;
-import com.sfeir.richercms.page.client.view.custom.HorizontalEventPanel;
 
-public class ThumbAndBtn extends HorizontalEventPanel {
+public class ThumbAndBtn extends LayoutPanel implements HasMouseOverHandlers, HasMouseOutHandlers{
 
 	//gestion des langues
 	private PageConstants constants = GWT.create(PageConstants.class);
@@ -50,7 +55,7 @@ public class ThumbAndBtn extends HorizontalEventPanel {
 	public ThumbAndBtn(String URL, Long id, String path, int width, int height){
 		super();
 		this.img = new Thumb(URL, id, path);
-		this.width = width + 22;
+		this.width = width;
 		this.height = height;
 		setUp();
 	}
@@ -75,11 +80,31 @@ public class ThumbAndBtn extends HorizontalEventPanel {
 			}
 		});
 		
+		this.img.addLoadHandler(new LoadHandler(){
+
+			public void onLoad(LoadEvent event) {
+				int spacingWidth = width - img.getWidth();
+				ThumbAndBtn.this.setWidgetLeftWidth(img, spacingWidth/2, Unit.PX, img.getWidth(), Unit.PX);
+				int spacingheight = height - img.getHeight();
+				ThumbAndBtn.this.setWidgetTopHeight(img, spacingheight/2, Unit.PX, img.getHeight(), Unit.PX);
+				
+				ThumbAndBtn.this.setWidgetRightWidth(btn, spacingWidth/2-8, Unit.PX, 30, Unit.PX);
+				ThumbAndBtn.this.setWidgetTopHeight(btn, spacingheight/2-8, Unit.PX, 30, Unit.PX);
+			}
+		});
+		
 		this.add(this.img);
-		this.setCellHorizontalAlignment(this.img, HasAlignment.ALIGN_CENTER);
 		this.add(this.btn);
 		this.setHeight(this.height+"px");
 		this.setWidth(this.width+"px");
+	}
+	
+	public HandlerRegistration addMouseOverHandler(MouseOverHandler handler) {
+		return addDomHandler(handler, MouseOverEvent.getType());
+	}
+
+	public HandlerRegistration addMouseOutHandler(MouseOutHandler handler) {
+		return addDomHandler(handler, MouseOutEvent.getType());
 	}
 	
 	public HasClickHandlers btnClickEvent() {

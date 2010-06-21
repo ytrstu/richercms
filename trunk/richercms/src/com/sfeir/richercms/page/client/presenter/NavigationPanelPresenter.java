@@ -546,9 +546,12 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Pa
 	
 	//display the FileMbox PopUp with the good node opened
 	public void onLoadFileManager() {
-		this.eventBus.startTinyPopUp(this.getIdPath());
+		this.eventBus.startTinyPopUp(this.getIdPath(),0);
 	}
 	
+	public void onLoadLinkManager() {
+		this.eventBus.startTinyPopUp(this.getIdPath(),1);
+	}
 		
 	/**
 	 * used by the framework to instantiate rpcPage 

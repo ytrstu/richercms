@@ -226,21 +226,22 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 	
 	public void onAddPage(Long id) {
 		this.translationIndex = 0; //on commence toujours par ajouter la langue par défaut
-		view.setTitle(view.getConstants().AddPageTitleInformation()+view.getTitle());
-		view.clearFields();
-		view.enabledWidgets();
-		view.disableHelp();
+		this.view.setTitle(this.view.getConstants().AddPageTitleInformation()+this.view.getTitle());
+		this.view.clearFields();
+		this.view.enabledWidgets();
+		this.view.disableHelp();
 		this.state = PageState.add;
 		//make a clean BeanArboPage
 		this.currentPage = addInformationInPage();
 		//send clean translation to add new content
-		eventBus.displayContent(this.currentPage.getTranslation());
+		this.eventBus.displayContent(this.currentPage.getTranslation());
 	}
 	
 	public void onCancelPage(PageState newState) {
-		view.deasabledWidgets();
-		view.disableHelp();
-		view.setTitle(view.getConstants().DefaultTitleInformation());
+		this.view.hideRequiredField();
+		this.view.deasabledWidgets();
+		this.view.disableHelp();
+		this.view.setTitle(this.view.getConstants().DefaultTitleInformation());
 		this.state = newState;
 	}
 	
@@ -260,18 +261,27 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 	}
 	
 	public void onCallInfo() {
-		//need the current state to restore them later
-		PageState currentState = this.state;
-		//modifymode : modify the translation in the current page
-		this.state = PageState.modify;
-		//add the translation in the current page
-		this.currentPage = this.addInformationInPage();
-		//reconfigure the state
-		this.state = currentState;
-		//send info
-		this.eventBus.sendInfo(this.currentPage);
-		this.view.hideAllHelpField();
-		view.setTitle(this.currentPage.getTranslation().get(0).getUrlName());
+		if(this.view.getUrlName().length() == 0 || 
+					this.view.getPageTitle().length() == 0) {
+			this.view.showRequiredField();
+			
+		}else {
+			this.eventBus.showInformationPopUp();
+			this.view.hideRequiredField();
+			//need the current state to restore them later
+			PageState currentState = this.state;
+			//modifymode : modify the translation in the current page
+			this.state = PageState.modify;
+			//add the translation in the current page
+			this.currentPage = this.addInformationInPage();
+			//reconfigure the state
+			this.state = currentState;
+			//send info
+			this.eventBus.sendInfo(this.currentPage);
+			this.view.hideAllHelpField();
+			view.setTitle(this.currentPage.getTranslation().get(0).getUrlName());
+			
+		}
 	}
 	
 	public void onChangeTranslation(int index) {

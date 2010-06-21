@@ -52,7 +52,9 @@ public class FileUploadServlet extends HttpServlet {
 				items = upload.parseRequest(req);
 				for(MemoryFileItem item : items) {
 					if(item.getFieldName().equals("uploadFormElement")){
-						if(item.getContentType().contains("image/")){
+						if(item.getContentType().contains("image/png") || 
+								item.getContentType().contains("image/jpeg") ||
+								item.getContentType().contains("image/gif")){
 							item.commit();
 							item.setPath(path);
 							ofy.put(item);

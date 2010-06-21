@@ -96,7 +96,7 @@ public class TinyMCE extends Composite {
             public void execute() {
                 setWidth("100%");
                 setTextAreaToTinyMCE(id);
-                focusMCE(id);
+                //focusMCE(id);
             }
         });
     }

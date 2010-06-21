@@ -51,7 +51,7 @@ public class FileMbox extends DialogBox implements IFileMBox {
         setGlassEnabled(true);
         setStyleName("fileManagerPopup");
         setGlassStyleName("fileManagerGlassPopup");
-		setSize("500px", "500px");
+		setSize("650px", "500px");
 		
 		// the treePanel at left
 		this.treePanel = new SimplePanel();
@@ -61,7 +61,7 @@ public class FileMbox extends DialogBox implements IFileMBox {
 		// the thumbPanel at right
 		this.thumbPanel = new SimplePanel();
 		this.thumbPanel.setHeight("400px");
-		this.thumbPanel.setWidth("300px");
+		this.thumbPanel.setWidth("450px");
 		
 		//top of the popUp
 		this.treeAndThumbs = new HorizontalPanel();

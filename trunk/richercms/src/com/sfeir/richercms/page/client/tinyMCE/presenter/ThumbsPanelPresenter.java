@@ -51,7 +51,7 @@ public class ThumbsPanelPresenter extends LazyPresenter<IThumbsPanel,PageEventBu
 		});
 	}
 	
-	public void onTinyPopUpStartPanels(List<Long> pathId){
+	public void onTinyPopUpStartImgPanels(List<Long> pathId){
 		this.view.clearThumbNails();
 		this.eventBus.tinyPopUpDisplayThumbsPanel(this.view);
 		

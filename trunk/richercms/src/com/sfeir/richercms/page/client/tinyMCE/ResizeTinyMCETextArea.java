@@ -23,9 +23,8 @@ public class ResizeTinyMCETextArea extends TextArea implements RequiresResize {
 	public void onResize() {
 		LayoutPanel parent = (LayoutPanel) getParent();
 		int height = parent.getOffsetHeight() - 13;
-		setHeight(height+"px");
-		
 		tinyMce.unload();
+		setHeight(height+"px");
 		tinyMce.initTinyMCE();
 	}
 

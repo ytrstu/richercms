@@ -62,13 +62,20 @@ public class ImageTreePanelPresenter  extends LazyPresenter<IImageTreePanel,Page
 		});
 	}
 	
-	public void onTinyPopUpStartPanels(List<Long> pathId){
+	public void onTinyPopUpStartImgPanels(List<Long> pathId){
+		this.startTreePanel(pathId);
+	}
+	
+	public void onTinyPopUpStartLinkPanels(List<Long> pathId){
+		this.startTreePanel(pathId);
+	}
+	
+	private void startTreePanel(List<Long> pathId){
 		this.pathId = pathId;
-		this.pathPosition =pathId.size()-1;
+		this.pathPosition = pathId.size()-1;
 		// we need to display a child node who you are the path.
 		this.createTree(true);
 		this.eventBus.tinyPopUpDisplayTreePanel(this.view);
-
 	}
 	
 	/**

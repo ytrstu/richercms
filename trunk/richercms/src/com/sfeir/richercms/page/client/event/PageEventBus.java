@@ -27,6 +27,7 @@ import com.sfeir.richercms.page.client.tinyMCE.interfaces.IImageTreePanel;
 import com.sfeir.richercms.page.client.tinyMCE.interfaces.IThumbsPanel;
 import com.sfeir.richercms.page.client.tinyMCE.presenter.FileMBoxPresenter;
 import com.sfeir.richercms.page.client.tinyMCE.presenter.ImageTreePanelPresenter;
+import com.sfeir.richercms.page.client.tinyMCE.presenter.PageViewerPresenter;
 import com.sfeir.richercms.page.client.tinyMCE.presenter.ThumbsPanelPresenter;
 import com.sfeir.richercms.page.client.view.PageView;
 import com.sfeir.richercms.page.shared.BeanArboPage;
@@ -113,7 +114,7 @@ public interface PageEventBus extends EventBus {
 	/**
 	 * fired by the ValidationPresenter when the saveButton is clicked
 	 */
-	@Event( handlers =  {PagePresenter.class, InformationPanelPresenter.class, ValidationPanelPresenter.class, TinyMCEPanelPresenter.class} )
+	@Event( handlers =  PagePresenter.class )
 	public void savePage();
 	
 	/**
@@ -160,7 +161,7 @@ public interface PageEventBus extends EventBus {
 	 * Fired by the ContentPresenter for Sending the content to save a page (in the mainPresenter)
 	 * @param translationsContent : content of all Page (modify or not)
 	 */
-	@Event( handlers =  PagePresenter.class )
+	@Event( handlers =  {PagePresenter.class, ValidationPanelPresenter.class})
 	public void sendContent(List<String> translationsContent);
 	
 	/**
@@ -316,7 +317,7 @@ public interface PageEventBus extends EventBus {
 	
 	
 	/**
-	 * Fired by the FileManager to display the FileMBox
+	 * Fired by the FileManager to display the ImageFileMBox
 	 * But the FileMbox need to know what page is selected to open the right node
 	 * Andso the NavigationPanelPresenter catch this event end fired a startTinyPopUp with 
 	 * the id of the selectedPage
@@ -324,20 +325,38 @@ public interface PageEventBus extends EventBus {
 	@Event( handlers =  NavigationPanelPresenter.class )
 	public void loadFileManager();
 	
+	
+	/**
+	 * Fired by the FileManager to display the LinkFileMBox
+	 * But the FileMbox need to know what page is selected to open the right node
+	 * Andso the NavigationPanelPresenter catch this event end fired a startTinyPopUp with 
+	 * the id of the selectedPage
+	 */
+	@Event( handlers =  NavigationPanelPresenter.class )
+	public void loadLinkManager();
+	
 	/**
 	 * Fired by the NavigationPanelPresenter with the id of the selected page
 	 * in order to open the corresponding node in the popUp
 	 * @param pathId : the recusive path ids
+	 * @param type : 0 => imagePopUp; 1=> LinkPopUp
 	 */
 	@Event( handlers =  FileMBoxPresenter.class )
-	public void startTinyPopUp(List<Long> pathId);
+	public void startTinyPopUp(List<Long> pathId, int type);
 	
 	/**
 	 * Fired by the FileManager to create his TreePanel and the thumbsView
 	 * @param pathId : the recusive path ids
 	 */
 	@Event( handlers = {ImageTreePanelPresenter.class, ThumbsPanelPresenter.class} )
-	public void tinyPopUpStartPanels(List<Long> pathId);
+	public void tinyPopUpStartImgPanels(List<Long> pathId);
+	
+	/**
+	 * Fired by the FileManager to create his TreePanel and the PageViewer
+	 * @param pathId : the recusive path ids
+	 */
+	@Event( handlers = {ImageTreePanelPresenter.class, PageViewerPresenter.class} )
+	public void tinyPopUpStartLinkPanels(List<Long> pathId);
 	
 	/**
 	 * Fired by the ImageTreePanelPresenter to display the image tree view

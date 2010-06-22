@@ -29,6 +29,7 @@ import com.sfeir.richercms.page.client.LockState;
 import com.sfeir.richercms.page.client.PageState;
 import com.sfeir.richercms.page.client.event.PageEventBus;
 import com.sfeir.richercms.page.client.interfaces.INavigationPanel;
+import com.sfeir.richercms.page.client.tinyMCE.PopUpState;
 import com.sfeir.richercms.page.client.view.NavigationPanel;
 import com.sfeir.richercms.page.client.view.custom.ConfirmationBox;
 import com.sfeir.richercms.page.client.view.custom.HorizontalEventPanel;
@@ -144,7 +145,9 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Pa
 		// commande pour afficher l'outil de gestion des images
 		this.view.getPopUpMenuBar().setManageImagesCommand(new Command() {
 			public void execute() {
-				createPath();
+				//fired this event to modify state into the pagePresenter
+				//and make all test necessary before display imageManager
+				eventBus.menuImageManager();
 				view.getPopUpMenuBar().hide();
 			}});
 	}
@@ -546,11 +549,11 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Pa
 	
 	//display the FileMbox PopUp with the good node opened
 	public void onLoadFileManager() {
-		this.eventBus.startTinyPopUp(this.getIdPath(),0);
+		this.eventBus.startTinyPopUp(this.getIdPath(),PopUpState.imageManager);
 	}
 	
 	public void onLoadLinkManager() {
-		this.eventBus.startTinyPopUp(this.getIdPath(),1);
+		this.eventBus.startTinyPopUp(this.getIdPath(),PopUpState.linkManager);
 	}
 		
 	/**

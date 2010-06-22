@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.sfeir.richercms.page.shared.BeanArboPage;
+import com.sfeir.richercms.page.shared.BeanTranslationPage;
 
 /**
  * WebPage Services
@@ -39,5 +40,7 @@ public interface ArboPageServiceAsync {
 	public void lockThisPage(Long pageId,Long userId, AsyncCallback<Long> callback);
 	
 	public void getAllLockedPages(AsyncCallback<List<BeanArboPage>> callback);
+	
+	public void getDefaultTranslation(Long pageId, AsyncCallback<BeanTranslationPage> callBack);
 }
  

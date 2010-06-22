@@ -181,6 +181,9 @@ public interface PageConstants extends Constants {
 	  @DefaultStringValue("Select an image")
 	  String PopUpImgTitle();
 	  
+	  @DefaultStringValue("Select page to link it")
+	  String PopUpLinkTitle();
+	  
 	  @DefaultStringValue("sending the current image")
 	  String MsgSendImage();
 	  

@@ -9,8 +9,10 @@ import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.sfeir.richercms.page.client.event.PageEventBus;
 import com.sfeir.richercms.page.client.tinyMCE.FileManager;
+import com.sfeir.richercms.page.client.tinyMCE.PopUpState;
 import com.sfeir.richercms.page.client.tinyMCE.interfaces.IFileMBox;
 import com.sfeir.richercms.page.client.tinyMCE.interfaces.IImageTreePanel;
+import com.sfeir.richercms.page.client.tinyMCE.interfaces.IPageViewer;
 import com.sfeir.richercms.page.client.tinyMCE.interfaces.IThumbsPanel;
 import com.sfeir.richercms.page.client.tinyMCE.view.FileMbox;
 
@@ -24,6 +26,7 @@ public class FileMBoxPresenter extends LazyPresenter<IFileMBox,PageEventBus>{
 
 	private static final String imageUrl = "/image/";
 	private String selectedPath = "";
+	private PopUpState state;
 	
 	/**
 	 * Bind the various evt
@@ -32,8 +35,13 @@ public class FileMBoxPresenter extends LazyPresenter<IFileMBox,PageEventBus>{
 	public void bindView() {
 		this.view.onOkClick().addClickHandler(new ClickHandler() {
         	public void onClick(ClickEvent event) {
-        		addPathInTiny();
-        		view.setDefaultTitle();
+        		switch(state){
+        			case imageManager :
+        				addPathInTiny();
+        				break;
+        			case linkManager :
+        				eventBus.callLinkPath();
+        		}
         		view.hide();
         	}
         });
@@ -45,18 +53,33 @@ public class FileMBoxPresenter extends LazyPresenter<IFileMBox,PageEventBus>{
         });
 	}
 	
-	public void onStartTinyPopUp(List<Long> pathId, int type){
-		this.eventBus.tinyPopUpStartImgPanels(pathId);
-		this.view.setDefaultTitle();
+	public void onStartTinyPopUp(List<Long> pathId, PopUpState state) {
+		this.state = state;
+		switch(this.state)
+		{
+		case imageManager :
+			this.eventBus.tinyPopUpStartImgPanels(pathId);
+			this.view.setImgDefaultTitle();
+			break;
+		case linkManager :
+			this.eventBus.tinyPopUpStartLinkPanels(pathId);
+			this.view.setLinkDefaultTitle();
+			break;
+		}
 	}
 	
-	public void onTinyPopUpDisplayTreePanel(IImageTreePanel p){
+	public void onTinyPopUpDisplayTreePanel(IImageTreePanel p) {
 		this.view.displayLeftTree(p);
 		this.view.center();
 	}
 	
-	public void onTinyPopUpDisplayThumbsPanel(IThumbsPanel p){
+	public void onTinyPopUpDisplayThumbsPanel(IThumbsPanel p) {
 		this.view.displayThumbs(p);
+		this.view.center();
+	}
+	
+	public void onTinyPopUpDisplayContentViewer(IPageViewer p) {
+		this.view.displayViewer(p);
 		this.view.center();
 	}
 	
@@ -65,13 +88,29 @@ public class FileMBoxPresenter extends LazyPresenter<IFileMBox,PageEventBus>{
 		
 		// if path == "" no image was selected
 		if(path == "")
-			this.view.setDefaultTitle();
+			this.view.setImgDefaultTitle();
 		else
 			this.view.setTitle(this.extractTitle(path));
 	}
 	
-	private void addPathInTiny(){
-		FileManager.setTinyMceUrl(imageUrl+selectedPath);
+	public void onSendLinkPath(String path){
+		this.selectedPath = path;
+		addPathInTiny();
+	}
+	
+	/**
+	 * Add the current path in tinyMCE
+	 */
+	private void addPathInTiny() {
+		
+		switch(this.state){
+		case imageManager :
+			FileManager.setTinyMceUrl(imageUrl+selectedPath);
+			break;
+		case linkManager :
+			FileManager.setTinyMceUrl(selectedPath);
+			break;
+		}
 		this.selectedPath = "";
 	}
 	

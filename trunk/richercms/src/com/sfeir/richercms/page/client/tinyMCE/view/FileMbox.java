@@ -19,6 +19,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.sfeir.richercms.page.client.PageConstants;
 import com.sfeir.richercms.page.client.tinyMCE.interfaces.IFileMBox;
 import com.sfeir.richercms.page.client.tinyMCE.interfaces.IImageTreePanel;
+import com.sfeir.richercms.page.client.tinyMCE.interfaces.IPageViewer;
 import com.sfeir.richercms.page.client.tinyMCE.interfaces.IThumbsPanel;
 import com.sfeir.richercms.page.client.view.custom.TreePanel;
 
@@ -32,7 +33,7 @@ public class FileMbox extends DialogBox implements IFileMBox {
 	//gestion des langues
 	private PageConstants constants = GWT.create(PageConstants.class);
 	private SimplePanel treePanel = null;
-	private SimplePanel thumbPanel = null;
+	private SimplePanel thumbOrViewerPanel = null;
 	private VerticalPanel mainContainer = null;
 	private HorizontalPanel treeAndThumbs = null;
 	private Label title = null;
@@ -58,10 +59,10 @@ public class FileMbox extends DialogBox implements IFileMBox {
 		this.treePanel.setHeight("400px");
 		this.treePanel.setWidth("200px");
 		
-		// the thumbPanel at right
-		this.thumbPanel = new SimplePanel();
-		this.thumbPanel.setHeight("400px");
-		this.thumbPanel.setWidth("450px");
+		// the thumbPanel or PageViewer at right
+		this.thumbOrViewerPanel = new SimplePanel();
+		this.thumbOrViewerPanel.setHeight("400px");
+		this.thumbOrViewerPanel.setWidth("450px");
 		
 		//top of the popUp
 		this.treeAndThumbs = new HorizontalPanel();
@@ -69,8 +70,8 @@ public class FileMbox extends DialogBox implements IFileMBox {
 		this.treeAndThumbs.setBorderWidth(5);
 		this.treePanel.addStyleName("paddingPanel");
 		this.treeAndThumbs.add(this.treePanel);
-		this.thumbPanel.addStyleName("paddingPanel");
-		this.treeAndThumbs.add(this.thumbPanel);
+		this.thumbOrViewerPanel.addStyleName("paddingPanel");
+		this.treeAndThumbs.add(this.thumbOrViewerPanel);
 		
 		//bottom of the popUp
         this.ok = new Button(this.constants.BtnOk());
@@ -83,7 +84,6 @@ public class FileMbox extends DialogBox implements IFileMBox {
         btnPanel.add(this.cancel);
         
         this.title = new Label();
-        this.setDefaultTitle();
         this.title.setStyleName("informationTitle");
         
         //main container
@@ -170,8 +170,14 @@ public class FileMbox extends DialogBox implements IFileMBox {
 	}
 	
 	public void displayThumbs(IThumbsPanel p) {
-		this.thumbPanel.clear();
-		this.thumbPanel.add((ThumbsPanel)p);
+		this.thumbOrViewerPanel.clear();
+		this.thumbOrViewerPanel.add((ThumbsPanel)p);
+	}
+	
+	public void displayViewer(IPageViewer p) {
+		this.thumbOrViewerPanel.clear();
+		this.thumbOrViewerPanel.add((PageViewer)p);
+		
 	}
 	
 	public HasClickHandlers onOkClick() {
@@ -191,7 +197,11 @@ public class FileMbox extends DialogBox implements IFileMBox {
 		this.title.setText(title);
 	}
 	
-	public void setDefaultTitle() {
+	public void setImgDefaultTitle() {
 		this.title.setText(this.constants.PopUpImgTitle());
+	}
+	
+	public void setLinkDefaultTitle() {
+		this.title.setText(this.constants.PopUpLinkTitle());
 	}
 }

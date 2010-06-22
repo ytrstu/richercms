@@ -12,4 +12,6 @@ import com.mvp4g.client.view.LazyView;
 public interface IPageViewer extends LazyView {
 
 	Widget asWidget();
+	
+	public void addContent(String html);
 }

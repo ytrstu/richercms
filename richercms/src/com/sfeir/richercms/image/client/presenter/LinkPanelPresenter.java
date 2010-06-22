@@ -13,7 +13,7 @@ import com.sfeir.richercms.image.client.event.SetWidgetDropController;
 import com.sfeir.richercms.image.client.interfaces.ILinkPanel;
 import com.sfeir.richercms.image.client.view.LinkPanel;
 import com.sfeir.richercms.page.client.FileServiceAsync;
-import com.sfeir.richercms.page.client.tinyMCE.interfaces.IImageTreePanel;
+import com.sfeir.richercms.page.client.tinyMCE.interfaces.IPopUpTreePanel;
 
 @Presenter( view = LinkPanel.class)
 public class LinkPanelPresenter extends LazyPresenter<ILinkPanel,ImageEventBus> {
@@ -37,7 +37,7 @@ public class LinkPanelPresenter extends LazyPresenter<ILinkPanel,ImageEventBus> 
 		this.eventBus.displayLinkPanel(this.view);
 	}
 	
-	public void onDisplayLeftTree(IImageTreePanel p){
+	public void onDisplayLeftTree(IPopUpTreePanel p){
 		this.view.displayLeftTree(p);
 	}
 	

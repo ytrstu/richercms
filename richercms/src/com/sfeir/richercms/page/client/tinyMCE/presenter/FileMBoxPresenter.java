@@ -11,7 +11,7 @@ import com.sfeir.richercms.page.client.event.PageEventBus;
 import com.sfeir.richercms.page.client.tinyMCE.FileManager;
 import com.sfeir.richercms.page.client.tinyMCE.PopUpState;
 import com.sfeir.richercms.page.client.tinyMCE.interfaces.IFileMBox;
-import com.sfeir.richercms.page.client.tinyMCE.interfaces.IImageTreePanel;
+import com.sfeir.richercms.page.client.tinyMCE.interfaces.IPopUpTreePanel;
 import com.sfeir.richercms.page.client.tinyMCE.interfaces.IPageViewer;
 import com.sfeir.richercms.page.client.tinyMCE.interfaces.IThumbsPanel;
 import com.sfeir.richercms.page.client.tinyMCE.view.FileMbox;
@@ -68,7 +68,7 @@ public class FileMBoxPresenter extends LazyPresenter<IFileMBox,PageEventBus>{
 		}
 	}
 	
-	public void onTinyPopUpDisplayTreePanel(IImageTreePanel p) {
+	public void onTinyPopUpDisplayTreePanel(IPopUpTreePanel p) {
 		this.view.displayLeftTree(p);
 		this.view.center();
 	}

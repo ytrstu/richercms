@@ -10,7 +10,7 @@ import com.sfeir.richercms.page.client.interfaces.custom.ITreePanel;
  * @author homberg.g
  *
  */
-public interface IImageTreePanel extends LazyView, ITreePanel{
+public interface IPopUpTreePanel extends LazyView, ITreePanel{
 
 	Widget asWidget();
 }

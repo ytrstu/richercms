@@ -11,8 +11,8 @@ import com.sfeir.richercms.image.client.presenter.AddPanelPresenter;
 import com.sfeir.richercms.image.client.presenter.ImagePanelPresenter;
 import com.sfeir.richercms.image.client.presenter.LinkPanelPresenter;
 import com.sfeir.richercms.image.client.view.ImagePanel;
-import com.sfeir.richercms.page.client.tinyMCE.interfaces.IImageTreePanel;
-import com.sfeir.richercms.page.client.tinyMCE.presenter.ImageTreePanelPresenter;
+import com.sfeir.richercms.page.client.tinyMCE.interfaces.IPopUpTreePanel;
+import com.sfeir.richercms.page.client.tinyMCE.presenter.PopUpTreePanelPresenter;
 
 @Events(startView = ImagePanel.class, module = ImageMobule.class, debug = true)
 public interface ImageEventBus extends EventBus {
@@ -69,14 +69,14 @@ public interface ImageEventBus extends EventBus {
 	@Event( forwardToParent = true )
 	public void addErrorLinePopUp(String text);
 	
-	@Event( handlers = ImageTreePanelPresenter.class )
+	@Event( handlers = PopUpTreePanelPresenter.class )
 	public void startLeftTreePanel();
 	
 	@Event( handlers = LinkPanelPresenter.class )
-	public void displayLeftTree(IImageTreePanel p);
+	public void displayLeftTree(IPopUpTreePanel p);
 	
 	/**
-	 * Fired by the ImageTreePanelPresenter to Display all 
+	 * Fired by the PopUpTreePanelPresenter to Display all 
 	 * images linked with the selected page
 	 * @param pageID : id we need to display linked Thumbs
 	 */

@@ -11,7 +11,7 @@ import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.sfeir.richercms.image.client.interfaces.ILinkPanel;
-import com.sfeir.richercms.page.client.tinyMCE.interfaces.IImageTreePanel;
+import com.sfeir.richercms.page.client.tinyMCE.interfaces.IPopUpTreePanel;
 import com.sfeir.richercms.page.client.view.custom.TreePanel;
 import com.sfeir.richercms.page.client.view.custom.thumb.Thumb;
 
@@ -132,7 +132,7 @@ public class LinkPanel  extends ResizeComposite implements ILinkPanel {
 	}
 
 
-	public void displayLeftTree(IImageTreePanel p) {
+	public void displayLeftTree(IPopUpTreePanel p) {
 		this.leftPanel.clear();
 		this.leftPanel.add((TreePanel)p);
 	}

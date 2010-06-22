@@ -28,10 +28,10 @@ public interface IFileMBox extends LazyView{
 	void hide();
 	
 	/**
-	 * Add the ImageTreePanel into the view
-	 * @param p : the ImageTreePanel
+	 * Add the PopUpTreePanel into the view
+	 * @param p : the PopUpTreePanel
 	 */
-	void displayLeftTree(IImageTreePanel p);
+	void displayLeftTree(IPopUpTreePanel p);
 	
 	/**
 	 * Add the ThumbsPanel into the view

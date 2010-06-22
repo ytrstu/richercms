@@ -19,18 +19,18 @@ import com.sfeir.richercms.client.view.PopUpMessage;
 import com.sfeir.richercms.page.client.ArboPageServiceAsync;
 import com.sfeir.richercms.page.client.event.PageEventBus;
 import com.sfeir.richercms.page.client.tinyMCE.PopUpState;
-import com.sfeir.richercms.page.client.tinyMCE.interfaces.IImageTreePanel;
-import com.sfeir.richercms.page.client.tinyMCE.view.ImageTreePanel;
+import com.sfeir.richercms.page.client.tinyMCE.interfaces.IPopUpTreePanel;
+import com.sfeir.richercms.page.client.tinyMCE.view.PopUpTreePanel;
 import com.sfeir.richercms.page.client.view.custom.HorizontalEventPanel;
 import com.sfeir.richercms.page.shared.BeanArboPage;
 
 /**
- * Presenter of the ImageTreePanel view
+ * Presenter of the PopUpTreePanel view
  * @author homberg.g
  *
  */
-@Presenter( view =ImageTreePanel.class)
-public class ImageTreePanelPresenter  extends LazyPresenter<IImageTreePanel,PageEventBus>{
+@Presenter( view =PopUpTreePanel.class)
+public class PopUpTreePanelPresenter  extends LazyPresenter<IPopUpTreePanel,PageEventBus>{
 
 	private TreeItem expandedItem = null; // current expanded Item in tree
 	private TreeItem selectedItem = null; // current selected Item in tree

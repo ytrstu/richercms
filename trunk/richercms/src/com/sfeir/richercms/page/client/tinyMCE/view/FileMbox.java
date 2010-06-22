@@ -18,7 +18,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.sfeir.richercms.page.client.PageConstants;
 import com.sfeir.richercms.page.client.tinyMCE.interfaces.IFileMBox;
-import com.sfeir.richercms.page.client.tinyMCE.interfaces.IImageTreePanel;
+import com.sfeir.richercms.page.client.tinyMCE.interfaces.IPopUpTreePanel;
 import com.sfeir.richercms.page.client.tinyMCE.interfaces.IPageViewer;
 import com.sfeir.richercms.page.client.tinyMCE.interfaces.IThumbsPanel;
 import com.sfeir.richercms.page.client.view.custom.TreePanel;
@@ -164,7 +164,7 @@ public class FileMbox extends DialogBox implements IFileMBox {
         // Fin de la verrue
 	}
 	
-	public void displayLeftTree(IImageTreePanel p) {
+	public void displayLeftTree(IPopUpTreePanel p) {
 		this.treePanel.clear();
 		this.treePanel.add((TreePanel)p);
 	}

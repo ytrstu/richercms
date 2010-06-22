@@ -5,6 +5,7 @@ import java.util.List;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.sfeir.richercms.page.shared.BeanArboPage;
+import com.sfeir.richercms.page.shared.BeanTranslationPage;
 
 /**
  * All services needed to handle WebPages
@@ -116,4 +117,11 @@ public interface ArboPageService extends RemoteService {
 	 * @return list of beanArboPage
 	 */
 	public List<BeanArboPage> getAllLockedPages();
+	
+	/**
+	 * return the default translation of this page
+	 * @param pageId : id of needed page
+	 * @return : the corresponding BeanTranslationPage
+	 */
+	public BeanTranslationPage getDefaultTranslation(Long pageId);
 }

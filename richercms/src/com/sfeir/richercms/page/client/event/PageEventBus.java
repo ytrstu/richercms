@@ -23,7 +23,9 @@ import com.sfeir.richercms.page.client.presenter.ReorderPagePanelPresenter;
 import com.sfeir.richercms.page.client.presenter.TinyMCEPanelPresenter;
 import com.sfeir.richercms.page.client.presenter.UserManagerPresenter;
 import com.sfeir.richercms.page.client.presenter.ValidationPanelPresenter;
+import com.sfeir.richercms.page.client.tinyMCE.PopUpState;
 import com.sfeir.richercms.page.client.tinyMCE.interfaces.IImageTreePanel;
+import com.sfeir.richercms.page.client.tinyMCE.interfaces.IPageViewer;
 import com.sfeir.richercms.page.client.tinyMCE.interfaces.IThumbsPanel;
 import com.sfeir.richercms.page.client.tinyMCE.presenter.FileMBoxPresenter;
 import com.sfeir.richercms.page.client.tinyMCE.presenter.ImageTreePanelPresenter;
@@ -295,14 +297,14 @@ public interface PageEventBus extends EventBus {
 	public void addErrorLinePopUp(String text);
 	
 	/**
-	 * Fired by the PagePresenter, when the corresponding entryMenu is clicked
+	 * Fired by the NavigationPresenter, when the manage image entryMenu is clicked.
 	 */
-	//@Event( modulesToLoad = ImageMobule.class )
-	//public void startImagePanel();
+	@Event( handlers =  PagePresenter.class )
+	public void menuImageManager();
 	
 	/**
-	 * Fired by the NavigationPresenter, when the reorderMenu is clicked
-	 * and allows the MainPagePresenter to show the ReorderPanel
+	 * Fired by the NavigationPresenter to allows the ImageManagerPresenter to send his view to the 
+	 * PagePrestenter.
 	 * @param path : the virtual path, use to load image
 	 */
 	@Event( handlers =  ImageManagerPresenter.class )
@@ -339,10 +341,10 @@ public interface PageEventBus extends EventBus {
 	 * Fired by the NavigationPanelPresenter with the id of the selected page
 	 * in order to open the corresponding node in the popUp
 	 * @param pathId : the recusive path ids
-	 * @param type : 0 => imagePopUp; 1=> LinkPopUp
+	 * @param state : linkManager or imageManager
 	 */
 	@Event( handlers =  FileMBoxPresenter.class )
-	public void startTinyPopUp(List<Long> pathId, int type);
+	public void startTinyPopUp(List<Long> pathId, PopUpState state);
 	
 	/**
 	 * Fired by the FileManager to create his TreePanel and the thumbsView
@@ -372,12 +374,27 @@ public interface PageEventBus extends EventBus {
 	public void tinyPopUpDisplayThumbsPanel(IThumbsPanel p);
 	
 	/**
+	 * Fired by the PageViewerPresenter to display the PageViewer.
+	 * @param p
+	 */
+	@Event( handlers =  FileMBoxPresenter.class )
+	public void tinyPopUpDisplayContentViewer(IPageViewer p);
+	
+	/**
 	 * Fired by the ImageTreePanelPresenter when a node is selected in the tree
-	 * Allows the ThumbsPanelPresenter to dissplay thumbnails include in this page
+	 * Allows the ThumbsPanelPresenter to display thumbnails include in this page
 	 * @param path : Path of the page : /page1/page1.1/page1.1.3
 	 */
 	@Event( handlers =  ThumbsPanelPresenter.class )
 	public void displayThumbsInPopUp(String path);
+	
+	/**
+	 * Fired by the ImageTreePanelPresenter when a node is selected in the tree
+	 * Allows the PageViewerPresenter to display content include in this page
+	 * @param pageId : the id of the selected page
+	 */
+	@Event( handlers =  PageViewerPresenter.class )
+	public void displayContentInPopUp(Long pageId);
 	
 	/**
 	 * Fired by the ThumbsPanelPresenter to send the path of the selected thumb
@@ -385,6 +402,20 @@ public interface PageEventBus extends EventBus {
 	 */
 	@Event( handlers =  FileMBoxPresenter.class )
 	public void selectThumbs(String path);
+	
+	/**
+	 * Fired by the FileMBoxPresenter, when the ok btn was clicked.
+	 */
+	@Event( handlers = ImageTreePanelPresenter.class)
+	public void callLinkPath();
+	
+	/**
+	 * Fired by the ImageTreePanelPresenter to send the
+	 * selected page path and allows the FileMBoxPresenter to add it in tinyMCE
+	 * @param path : Page's path : /page1/page1.1
+	 */
+	@Event( handlers =  FileMBoxPresenter.class )
+	public void sendLinkPath(String path);
 	
 	/**
 	 * Fired by the PagePresenter, to enable return button of the validationPanel

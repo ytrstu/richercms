@@ -40,6 +40,12 @@ public interface IFileMBox extends LazyView{
 	void displayThumbs(IThumbsPanel p);
 	
 	/**
+	 * Add the PageViewer into the view
+	 * @param p : the PageViewer panel
+	 */
+	void displayViewer(IPageViewer p);
+	
+	/**
 	 * Return the click handler on the Ok button.
 	 * @return EVENT
 	 */
@@ -53,5 +59,7 @@ public interface IFileMBox extends LazyView{
 	
 	public void setTitle(String title);
 	
-	public void setDefaultTitle();
+	public void setImgDefaultTitle();
+	
+	public void setLinkDefaultTitle();
 }

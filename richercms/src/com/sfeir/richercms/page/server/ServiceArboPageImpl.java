@@ -271,6 +271,18 @@ public class ServiceArboPageImpl  extends RemoteServiceServlet implements ArboPa
 		return bap;
 	}
 	
+	public BeanTranslationPage getDefaultTranslation(Long pageId){
+		
+		Objectify ofy = ObjectifyService.begin();
+		ArboPage page = ofy.get(ArboPage.class, pageId);
+		
+		if(page != null) {
+			TranslationPage tp = ofy.get(page.getTranslation().get(0));
+			return this.translationPageToBean(tp);
+		}
+		return null;
+	}
+	
 	public BeanTranslationPage translationPageToBean(TranslationPage tp) {
 		return new BeanTranslationPage(tp.getId(), tp.getBrowserTitle(),tp.getPageTitle(), tp.getUrlName(),
 				 tp.getDescription(), tp.getKeyWord(), tp.getContent().getValue());
@@ -304,7 +316,6 @@ public class ServiceArboPageImpl  extends RemoteServiceServlet implements ArboPa
 		return new TranslationPage(bTp.getId(), bTp.getBrowserTitle(),bTp.getPageTitle(), bTp.getUrlName(),
 				bTp.getDescription(), bTp.getKeyWord(), bTp.getContent());
 	}
-	
 	
 	/**
 	 * Store the number of language in the class variable nbTranslation.

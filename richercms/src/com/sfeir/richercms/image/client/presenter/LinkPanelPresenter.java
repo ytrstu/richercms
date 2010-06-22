@@ -12,7 +12,6 @@ import com.sfeir.richercms.image.client.event.ImageEventBus;
 import com.sfeir.richercms.image.client.event.SetWidgetDropController;
 import com.sfeir.richercms.image.client.interfaces.ILinkPanel;
 import com.sfeir.richercms.image.client.view.LinkPanel;
-import com.sfeir.richercms.page.client.ArboPageServiceAsync;
 import com.sfeir.richercms.page.client.FileServiceAsync;
 import com.sfeir.richercms.page.client.tinyMCE.interfaces.IImageTreePanel;
 
@@ -20,7 +19,6 @@ import com.sfeir.richercms.page.client.tinyMCE.interfaces.IImageTreePanel;
 public class LinkPanelPresenter extends LazyPresenter<ILinkPanel,ImageEventBus> {
 	
 	private FileServiceAsync rpcFile = null;
-	private ArboPageServiceAsync rpcPage = null;
 	private PickupDragController dragController;
 	
 	/**
@@ -101,15 +99,6 @@ public class LinkPanelPresenter extends LazyPresenter<ILinkPanel,ImageEventBus> 
 	@InjectService
 	public void setFileService(FileServiceAsync rpcFile) {
 		this.rpcFile = rpcFile;
-	}
-	
-	/**
-	 * used by the framework to instantiate rpcPage 
-	 * @param rpcPage
-	 */
-	@InjectService
-	public void setPageService( ArboPageServiceAsync rpcPage ) {
-		this.rpcPage = rpcPage;
 	}
 
 }

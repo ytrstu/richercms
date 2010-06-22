@@ -267,6 +267,11 @@ public class PagePresenter extends LazyPresenter<IdisplayPage, PageEventBus> {
 		this.view.setValidationPanel(validationPanel);
 	}
 	
+	//NavigationPresenter Menu Event
+	public void onMenuImageManager(){
+		changeState(PageState.manageImage);
+	}
+	
 	public void onDisplayReorderPage(IReorderPagePanel reorderPanel) {
 		this.view.displayReorderPanel(reorderPanel);
 		this.state = PageState.display;
@@ -280,6 +285,8 @@ public class PagePresenter extends LazyPresenter<IdisplayPage, PageEventBus> {
 	}
 	
 	public void onStartPage(BeanUser usr) {
+		//initialize state
+		this.state = PageState.display;
 		this.usr = usr;
 		// we d'ont display de right part of the adress mail (only if the user does not fil the nickName field)
 		if(this.usr.getNickname().contains("@"))

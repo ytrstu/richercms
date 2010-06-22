@@ -18,6 +18,7 @@ import com.mvp4g.client.presenter.LazyPresenter;
 import com.sfeir.richercms.client.view.PopUpMessage;
 import com.sfeir.richercms.page.client.ArboPageServiceAsync;
 import com.sfeir.richercms.page.client.event.PageEventBus;
+import com.sfeir.richercms.page.client.tinyMCE.PopUpState;
 import com.sfeir.richercms.page.client.tinyMCE.interfaces.IImageTreePanel;
 import com.sfeir.richercms.page.client.tinyMCE.view.ImageTreePanel;
 import com.sfeir.richercms.page.client.view.custom.HorizontalEventPanel;
@@ -36,6 +37,7 @@ public class ImageTreePanelPresenter  extends LazyPresenter<IImageTreePanel,Page
 	private ArboPageServiceAsync rpcPage = null;
 	private List<Long> pathId; // the path to display a childNode in the tree
 	private int pathPosition = 1; // useful to display the path to access a childNode
+	private PopUpState state;
 	
 	/**
 	 * Bind the various evt
@@ -64,10 +66,12 @@ public class ImageTreePanelPresenter  extends LazyPresenter<IImageTreePanel,Page
 	
 	public void onTinyPopUpStartImgPanels(List<Long> pathId){
 		this.startTreePanel(pathId);
+		this.state = PopUpState.imageManager;
 	}
 	
 	public void onTinyPopUpStartLinkPanels(List<Long> pathId){
 		this.startTreePanel(pathId);
+		this.state = PopUpState.linkManager;
 	}
 	
 	private void startTreePanel(List<Long> pathId){
@@ -206,13 +210,38 @@ public class ImageTreePanelPresenter  extends LazyPresenter<IImageTreePanel,Page
 			ids.add((Long)currentItem.getUserObject());
 			currentItem = currentItem.getParentItem();
 		}
+		switch(state){
+		case imageManager :
+			this.rpcPage.getPath(ids, new AsyncCallback<String>() {
+				public void onFailure(Throwable caught) {}
+				public void onSuccess(String result) {
+					eventBus.displayThumbsInPopUp(result);
+				}
+			});
+			break;
+		case linkManager :
+			eventBus.displayContentInPopUp((Long)selectedItem.getUserObject());
+			break;
+		}
+
+	}
+	
+	public void onCallLinkPath() {
+		
+		ArrayList<Long> ids = new ArrayList<Long>();
+		ids.add((Long)this.selectedItem.getUserObject());
+		TreeItem currentItem = this.selectedItem.getParentItem();
+		
+		while(currentItem != null) {
+			ids.add((Long)currentItem.getUserObject());
+			currentItem = currentItem.getParentItem();
+		}
 		
 		this.rpcPage.getPath(ids, new AsyncCallback<String>() {
 			public void onFailure(Throwable caught) {}
 			public void onSuccess(String result) {
-				eventBus.displayThumbsInPopUp(result);
-				}
-			
+				eventBus.sendLinkPath(result);
+			}
 		});
 	}
 	

@@ -24,16 +24,20 @@ package com.sfeir.richercms.page.client.tinyMCE;
  * limitations under the License.
  */
 
+import com.google.gwt.dom.client.Document;
+import com.google.gwt.dom.client.Node;
+import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.DeferredCommand;
+import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.ResizeComposite;
 import com.google.gwt.user.client.ui.TextArea;
+import com.google.gwt.user.client.ui.Widget;
 import com.sfeir.richercms.page.client.event.PageEventBus;
 import com.sfeir.richercms.page.client.tinyMCE.FileManager;
-import com.sfeir.richercms.page.client.tinyMCE.ResizeTinyMCETextArea;
 
 /**
  * TinyMCE -
@@ -47,15 +51,20 @@ public class TinyMCE extends ResizeComposite {
 
     private TextArea ta;
     private String id;
+    private String idPanel;
+    private int numPanel;
 
-    public TinyMCE(String height) {
+    public TinyMCE() {
         super();
 
         LayoutPanel panel = new LayoutPanel();
-
+        panel.setStyleName("tinyPanel");
+        idPanel = HTMLPanel.createUniqueId();
+        numPanel= Integer.parseInt(idPanel.substring(idPanel.length()-2, idPanel.length()))+1;
+        DOM.setElementAttribute(panel.getElement(), "id", idPanel);
+        
         id = HTMLPanel.createUniqueId();
-        ta = new ResizeTinyMCETextArea(this);
-        ta.setHeight(height);
+        ta = new TextArea();
         DOM.setElementAttribute(ta.getElement(), "id", id);
         DOM.setStyleAttribute(ta.getElement(), "width", "100%");
         panel.add(ta);
@@ -63,6 +72,18 @@ public class TinyMCE extends ResizeComposite {
         initWidget(panel);
     }
 
+	@Override
+	public void onResize() {
+		Widget parent = getParent();
+		if (parent!=null) {
+    		ta.setHeight((parent.getOffsetHeight()-13)+"px");
+    		//setHeight((parent.getOffsetHeight()-13)+"px");
+    		System.out.println("TinyMCE : " + parent.getOffsetHeight());
+    		unload();
+    		initTinyMCE();
+		}
+	}
+	
     /**
      * getID() -
      *
@@ -113,12 +134,7 @@ public class TinyMCE extends ResizeComposite {
 
         DeferredCommand.addCommand(new Command() {
             public void execute() {
-                setWidth("100%");
-        		LayoutPanel parent = (LayoutPanel) ta.getParent();
-        		int height = parent.getOffsetHeight() - 13;
-        		ta.setHeight(height+"px");
-        		
-               initTinyMCE();
+            	onResize();	
             }
         });
     }

@@ -1,10 +1,10 @@
 package com.sfeir.richercms.page.client.view;
 
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.ResizeComposite;
 import com.google.gwt.user.client.ui.ScrollPanel;
+import com.google.gwt.user.client.ui.Widget;
 import com.sfeir.richercms.page.client.event.PageEventBus;
 import com.sfeir.richercms.page.client.interfaces.ITinyMCEPanel;
 import com.sfeir.richercms.page.client.tinyMCE.TinyMCE;
@@ -15,7 +15,6 @@ import com.sfeir.richercms.page.client.tinyMCE.TinyMCE;
 public class TinyMCEPanel extends ResizeComposite implements ITinyMCEPanel {
 
 	private TinyMCE tmce = null;
-	private final int height = Window.getClientHeight()-30;
 	private ScrollPanel  displayPanel = null;
 	private LayoutPanel main = null;
 	/**
@@ -25,16 +24,30 @@ public class TinyMCEPanel extends ResizeComposite implements ITinyMCEPanel {
 	public TinyMCEPanel() {
 		super();
 	}
+
 	
 	/**
 	 * Create the widget and attached all component
 	 */
 	public void createView() {
 		this.main = new LayoutPanel();
+		main.setStyleName("tinyMceContainer");
 		this.displayEditor(""); // first initialization
 		this.initWidget(main);
 	}
 
+	@Override
+	public void onResize() {
+		Widget parent = getParent();
+		if (parent!=null) {
+			System.out.println("TinyMCEPanel : " + parent.getOffsetHeight() + " -> " + getOffsetHeight());
+			//setHeight((parent.getOffsetHeight()+20)+"px");
+			if (tmce!=null) {
+				tmce.onResize();
+			}
+		}
+	}
+	
 	public void ShowEditor() {
 		this.tmce.enable();
 	}
@@ -56,6 +69,7 @@ public class TinyMCEPanel extends ResizeComposite implements ITinyMCEPanel {
 	
 	public void setContent(String content) {
 		this.tmce.setText(content);
+		
 	}
 	
 	public void enableEditor() {
@@ -66,15 +80,12 @@ public class TinyMCEPanel extends ResizeComposite implements ITinyMCEPanel {
 		this.tmce.disable();
 	}
 	
-	public int getHeight() {
-		return this.height;
-	}
-	
 	public void displayEditor(String html) {
 		this.main.clear();
-		this.tmce = new TinyMCE((this.height/2+67)+"px");
-		this.main.add(this.tmce);
+		this.tmce = new TinyMCE();
+		this.main.add(tmce);
 		this.setContent(html);
+		onResize();
 	}
 	
 	public void displayViewer(String html) {

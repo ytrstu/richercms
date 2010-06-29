@@ -6,10 +6,12 @@ import java.util.List;
 
 import javax.persistence.Id;
 import com.googlecode.objectify.Key;
+import com.googlecode.objectify.annotation.Cached;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Indexed;
 import com.googlecode.objectify.annotation.Unindexed;
 
+@Cached
 @Entity(name="ArboPage")
 @Unindexed
 public class ArboPage {

@@ -42,5 +42,7 @@ public interface ArboPageServiceAsync {
 	public void getAllLockedPages(AsyncCallback<List<BeanArboPage>> callback);
 	
 	public void getDefaultTranslation(Long pageId, AsyncCallback<BeanTranslationPage> callBack);
+	
+	public void unlockAllUserPage(Long idUser, AsyncCallback<Void> callback);
 }
  

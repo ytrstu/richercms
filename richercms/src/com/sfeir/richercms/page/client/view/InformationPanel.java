@@ -10,6 +10,7 @@ import com.google.gwt.event.dom.client.HasFocusHandlers;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.ResizeComposite;
@@ -46,6 +47,8 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 	private TextBox tKeyWord = null;
 	private DateBox dPublicationStart = null;
 	private DateBox dPublicationFinish = null;
+	private final static String textBoxWidth = "250px";
+	
 	
 	public InformationPanel() {
 		super();
@@ -55,21 +58,31 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 	 * Create the widget and attached all component
 	 */
 	public void createView() {
+		Image img;
 		this.Title = new Label(this.constants.DefaultTitleInformation());
 		this.Title.setStyleName("informationTitle");
 		
-		this.lock = new Label("test");
+		this.lock = new Label("");
+		this.lock.setStyleName("lockLabel");
 		
 		this.cpyLabelLst = new ArrayList<Label>();
 		this.cpyButtonLst = new ArrayList<Button>();
+		
 
 		this.tBrowserTitle = new TextBox();
+		this.tBrowserTitle.setWidth(textBoxWidth);
 		this.tPageTitle = new TextBox();
+		this.tPageTitle.setWidth(textBoxWidth);
 		this.tUrlName = new TextBox();
+		this.tUrlName.setWidth(textBoxWidth);
 		this.tDescription = new TextBox();
+		this.tDescription.setWidth(textBoxWidth);
 		this.tKeyWord = new TextBox();
+		this.tKeyWord.setWidth(textBoxWidth);
 		this.dPublicationStart = new DateBox();
+		this.dPublicationStart.setWidth(textBoxWidth);
 		this.dPublicationFinish = new DateBox();
+		this.dPublicationFinish.setWidth(textBoxWidth);
 		
 		//display required if user miss them
 		this.helpUrlName = new Label(this.constants.ObligationMsg());
@@ -96,41 +109,62 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 		
 		tab.setWidget(0,0, new Label(constants.BrowserTitle()));
 		tab.setWidget(0,1,this.tBrowserTitle);
+		img = new Image("/tab_images/infoBulle.png");
+		img.setTitle(this.constants.infoMessBrowserTitle());
+		tab.setWidget(0,2,img);
 		p = new HorizontalPanel();
 		p.add(this.cpyButtonLst.get(0));p.add(this.cpyLabelLst.get(0));
-		tab.setWidget(0,2,p);
+		tab.setWidget(0,3,p);
 		
 		tab.setWidget(1,0, new Label(constants.PageTitle()));
 		tab.setWidget(1,1,this.tPageTitle);
 		tab.setWidget(1,3,this.helpPageTitle);
+		img = new Image("/tab_images/infoBulle.png");
+		img.setTitle(this.constants.infoMessPageTitle());
+		tab.setWidget(1,2,img);
 		p = new HorizontalPanel();
 		p.add(this.cpyButtonLst.get(1));p.add(this.cpyLabelLst.get(1));
-		tab.setWidget(1,2,p);
+		tab.setWidget(1,4,p);
 		
 		tab.setWidget(2,0, new Label(constants.UrlName()));
 		tab.setWidget(2,1,this.tUrlName);
 		tab.setWidget(2,3,this.helpUrlName);
+		img = new Image("/tab_images/infoBulle.png");
+		img.setTitle(this.constants.infoMessUrlName());
+		tab.setWidget(2,2,img);
 		p = new HorizontalPanel();
 		p.add(this.cpyButtonLst.get(2));p.add(this.cpyLabelLst.get(2));
-		tab.setWidget(2,2,p);
+		tab.setWidget(2,4,p);
 		
 		tab.setWidget(3,0, new Label(constants.Description()));
 		tab.setWidget(3,1,this.tDescription);
+		img = new Image("/tab_images/infoBulle.png");
+		img.setTitle(this.constants.infoMessDescription());
+		tab.setWidget(3,2,img);
 		p = new HorizontalPanel();
 		p.add(this.cpyButtonLst.get(3));p.add(this.cpyLabelLst.get(3));
-		tab.setWidget(3,2,p);
+		tab.setWidget(3,3,p);
 		
 		tab.setWidget(4,0, new Label(constants.KeyWord()));
 		tab.setWidget(4,1,this.tKeyWord);
+		img = new Image("/tab_images/infoBulle.png");
+		img.setTitle(this.constants.infoMessKeyWord());
+		tab.setWidget(4,2,img);
 		p = new HorizontalPanel();
 		p.add(this.cpyButtonLst.get(4));p.add(this.cpyLabelLst.get(4));
-		tab.setWidget(4,2,p);
+		tab.setWidget(4,3,p);
 		
 		tab.setWidget(5,0, new Label(constants.PublicationStart()));
 		tab.setWidget(5,1,this.dPublicationStart);
+		img = new Image("/tab_images/infoBulle.png");
+		img.setTitle(this.constants.infoMessDateStart());
+		tab.setWidget(5,2,img);
 		
 		tab.setWidget(6,0, new Label(constants.PublicationFinish()));
 		tab.setWidget(6,1,this.dPublicationFinish);
+		img = new Image("/tab_images/infoBulle.png");
+		img.setTitle(this.constants.infoMessDateStop());
+		tab.setWidget(6,2,img);
 		
 		VerticalPanel container = new VerticalPanel();
 		container.add(this.Title);
@@ -140,10 +174,10 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 		LayoutPanel root = new LayoutPanel();
 		root.add(container);
 		root.add(this.lock);
-		root.setWidgetLeftWidth(container, 10, Unit.PX, 500, Unit.PX);
+		root.setWidgetLeftWidth(container, 10, Unit.PX, 700, Unit.PX);
 		root.setWidgetTopHeight(container, 10, Unit.PX, 280, Unit.PX);
 		root.setWidgetRightWidth(this.lock, 10, Unit.PX, 300, Unit.PX);
-		root.setWidgetTopHeight(this.lock, 10, Unit.PX, 70, Unit.PX);
+		root.setWidgetTopHeight(this.lock, 10, Unit.PX, 20, Unit.PX);
 
 		this.deasabledWidgets();
 		this.hideAllHelpField();
@@ -281,13 +315,28 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 		this.cpyLabelLst.get(number).setVisible(false);
 	}
 	
-	public void showRequiredField(){
+
+	
+	public void showRequiredTitle() {
 		this.helpPageTitle.setVisible(true);
+	}
+	
+	public void showRequiredUrl() {
+		this.helpUrlName.setText(this.constants.ObligationMsg());
 		this.helpUrlName.setVisible(true);
 	}
 	
 	public void hideRequiredField(){
 		this.helpPageTitle.setVisible(false);
+		this.helpUrlName.setVisible(false);
+	}
+	
+	public void showErrorInUrl(){
+		this.helpUrlName.setText(this.constants.ErrorInUrl());
+		this.helpUrlName.setVisible(true);
+	}
+	
+	public void hideErrorInUrl(){
 		this.helpUrlName.setVisible(false);
 	}
 	

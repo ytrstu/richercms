@@ -2,6 +2,7 @@ package com.sfeir.richercms.server.business;
 
 import javax.persistence.Id;
 
+import com.googlecode.objectify.annotation.Cached;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Indexed;
 import com.googlecode.objectify.annotation.Unindexed;
@@ -10,6 +11,7 @@ import com.googlecode.objectify.annotation.Unindexed;
  * Represent a user
  * @author homberg.g
  */
+@Cached
 @Entity(name="User")
 @Unindexed
 public class CmsUser {

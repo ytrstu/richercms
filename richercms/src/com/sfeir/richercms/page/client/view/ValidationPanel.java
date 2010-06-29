@@ -104,4 +104,7 @@ public class ValidationPanel extends ResizeComposite implements IValidationPanel
 		this.btnAdd.setText(text);
 	}
 
+	public PageConstants getConstants() {
+		return this.constants;
+	}
 }

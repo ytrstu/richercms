@@ -1,5 +1,6 @@
 package com.sfeir.richercms.page.client.view;
 
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.HasChangeHandlers;
@@ -10,6 +11,8 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.ListBox;
@@ -57,12 +60,17 @@ public class PageView extends ResizeComposite implements IdisplayPage {
 	// include in the topBottomSpliter
 	private LayoutPanel topPanel;
 	private LayoutPanel bottomPanel;
+	//btn up and down topBottomSpliter
+	private Image downSpliter = null;
+	private Image upSpliter = null;
+	private HorizontalPanel btnSpliterPanel =null;
 	
 	private MenuItem imageTool;
 	private MenuItem pageTool;
 	private MenuItem userSettings;
 
 	private final int height = Window.getClientHeight()-30;
+	private final int topPanelHeight = height/2 -120;
 	
 	public PageView() {
 		super();
@@ -85,6 +93,15 @@ public class PageView extends ResizeComposite implements IdisplayPage {
 	    this.leftRightSpliter = new SplitLayoutPanel();
 	    this.topBottomSpliter = new SplitLayoutPanel();
 	    
+		// down and up the topBottomSpliter
+		this.downSpliter = new Image("/tab_images/downBtn.png");
+		this.upSpliter = new Image("/tab_images/upBtn.png");
+		this.btnSpliterPanel = new HorizontalPanel();
+		this.btnSpliterPanel.add(this.upSpliter);
+		this.btnSpliterPanel.add(this.downSpliter);
+		
+		
+	    
 	    // When it's necessary, this popUp is show
 		this.popUp = new CenterEventPopUp(400, 200,"Sauvegarde en cours");
 	    this.popUp.setVisible(false);
@@ -103,7 +120,7 @@ public class PageView extends ResizeComposite implements IdisplayPage {
 	    this.bottomPanel.setStyleName("tab-content");
 	    
 	    // connects the two panels to the topBottomSpliter
-	    this.topBottomSpliter.addNorth(this.topPanel, this.height/2 -120);
+	    this.topBottomSpliter.addNorth(this.topPanel, this.topPanelHeight);
 		this.topBottomSpliter.add(this.bottomPanel);
 	    
 	    // the left and the right content of the main Spliter ( leftRightSpliter )
@@ -243,7 +260,18 @@ public class PageView extends ResizeComposite implements IdisplayPage {
 
 	public void setInfoPanel(IInformationPanel listPanel) {
 		this.topPanel.add((InformationPanel)listPanel);
+		this.addUpDownBtn();
+	}
+	
+	private void addUpDownBtn() {
+		//remove btn to replace it in front
+		if(this.topPanel.getWidgetIndex(this.btnSpliterPanel) != -1)
+			this.topPanel.remove(this.btnSpliterPanel);
 		
+		// add down and up btn in first part of the topBottomSpliter
+		this.topPanel.add(this.btnSpliterPanel);
+	    this.topPanel.setWidgetRightWidth(this.btnSpliterPanel, 10, Unit.PX, 65, Unit.PX);
+	    this.topPanel.setWidgetBottomHeight(this.btnSpliterPanel, 0, Unit.PX, 30, Unit.PX);
 	}
 	
 	public void displayReorderPanel(IReorderPagePanel reorderPanel) {
@@ -379,5 +407,26 @@ public class PageView extends ResizeComposite implements IdisplayPage {
 		this.pseudo.setText(name+" | ");
 	}
 
+	public HasClickHandlers upSpliterEvent(){
+		return this.upSpliter;
+	}
 
+	public HasClickHandlers downSpliterEvent(){
+		return this.downSpliter;
+	}
+	
+	public void downRightSpliter(){
+		int height = this.topBottomSpliter.getOffsetHeight();
+		this.topBottomSpliter.remove(this.topPanel);
+		this.topBottomSpliter.remove(bottomPanel);
+		this.topBottomSpliter.addNorth(topPanel, height-70);
+		this.topBottomSpliter.add(bottomPanel);
+	}
+	
+	public void upRightSpliter(){
+		this.topBottomSpliter.remove(this.topPanel);
+		this.topBottomSpliter.remove(bottomPanel);
+		this.topBottomSpliter.addNorth(topPanel, this.topPanelHeight);
+		this.topBottomSpliter.add(bottomPanel);
+	}
 }

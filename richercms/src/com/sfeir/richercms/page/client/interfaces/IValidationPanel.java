@@ -2,6 +2,7 @@ package com.sfeir.richercms.page.client.interfaces;
 
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.mvp4g.client.view.LazyView;
+import com.sfeir.richercms.page.client.PageConstants;
 
 public interface IValidationPanel extends LazyView {
 
@@ -69,4 +70,6 @@ public interface IValidationPanel extends LazyView {
 	 * Disable modify btn
 	 */
 	void disableModifyBtn();
+	
+	PageConstants getConstants();
 }

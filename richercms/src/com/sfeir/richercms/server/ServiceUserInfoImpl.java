@@ -100,6 +100,13 @@ public class ServiceUserInfoImpl extends RemoteServiceServlet implements UserInf
 		return newUsr.getId();
 	}
 	
+	public void deleteUser(Long userId){
+		Objectify ofy = ObjectifyService.begin();
+		CmsUser usr = ofy.get(CmsUser.class, userId);
+		if(usr != null)
+			ofy.delete(usr);
+	}
+	
 	public void logOutUser(Long id){
 		Objectify ofy = ObjectifyService.begin();
 		

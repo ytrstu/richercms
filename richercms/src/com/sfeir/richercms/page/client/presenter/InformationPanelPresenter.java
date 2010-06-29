@@ -250,24 +250,16 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 		this.state = PageState.modify;
 	}
 	
-	public void onSavePage() {
-		//view.deasabledWidgets();
-		//this.state = MainState.display;
-	}
-	
 	public void onDeletePage() {
+		view.setTitle(this.view.getConstants().DefaultTitleInformation());
 		view.clearFields();
 		this.state = PageState.display;
 	}
 	
 	public void onCallInfo() {
-		if(this.view.getUrlName().length() == 0 || 
-					this.view.getPageTitle().length() == 0) {
-			this.view.showRequiredField();
-			
-		}else {
+		if(testField()){
+		
 			this.eventBus.showInformationPopUp();
-			this.view.hideRequiredField();
 			//need the current state to restore them later
 			PageState currentState = this.state;
 			//modifymode : modify the translation in the current page
@@ -278,10 +270,38 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 			this.state = currentState;
 			//send info
 			this.eventBus.sendInfo(this.currentPage);
+			//hide all help field
 			this.view.hideAllHelpField();
+			//set title
 			view.setTitle(this.currentPage.getTranslation().get(0).getUrlName());
-			
+			//this event is send if all information entered by user are right
+			this.eventBus.rightInformation();
 		}
+		
+	}
+	
+	private boolean testField() {
+		boolean ret = true;
+		//hide all field and display just the necessary
+		this.view.hideErrorInUrl();
+		this.view.hideRequiredField();
+		
+		if(this.view.getUrlName().length() == 0){
+			this.view.showRequiredUrl();
+			ret = false;
+	
+		}
+		if(this.view.getPageTitle().length() == 0){
+			this.view.showRequiredTitle();
+			ret = false;
+
+		}
+		if(!validateURL(this.view.getUrlName())){
+			this.view.showErrorInUrl();
+			ret = false;
+		}
+		
+		return ret;
 	}
 	
 	public void onChangeTranslation(int index) {
@@ -307,6 +327,17 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 			this.view.setlockInfo("");
 		else
 			this.view.setlockInfo(userName);
+	}
+	
+	private boolean validateURL(String url) {
+		if(url.contains(" "))
+			return false;
+		if(url.matches(".*\\p{Punct}.*"))
+				return false;
+		
+		if(url.matches(".*[^\\p{Alpha}].*"))
+			return false;
+		return true;
 	}
 
 	/**

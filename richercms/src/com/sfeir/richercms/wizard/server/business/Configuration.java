@@ -3,6 +3,7 @@ package com.sfeir.richercms.wizard.server.business;
 
 import javax.persistence.Id;
 
+import com.googlecode.objectify.annotation.Cached;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Unindexed;
 
@@ -12,6 +13,7 @@ import com.googlecode.objectify.annotation.Unindexed;
  * without the language.
  * @author homberg.g
  */
+@Cached
 @Entity(name="Configuration")
 @Unindexed// or @Unindexed sets default for fields in class; if neither specified, assume @Indexed
 public class Configuration {

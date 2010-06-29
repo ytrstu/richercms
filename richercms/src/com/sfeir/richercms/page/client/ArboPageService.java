@@ -124,4 +124,10 @@ public interface ArboPageService extends RemoteService {
 	 * @return : the corresponding BeanTranslationPage
 	 */
 	public BeanTranslationPage getDefaultTranslation(Long pageId);
+	
+	/**
+	 * Unlock all page locked by a specific user.
+	 * @param idUser : id of the specific user
+	 */
+	public void unlockAllUserPage(Long idUser);
 }

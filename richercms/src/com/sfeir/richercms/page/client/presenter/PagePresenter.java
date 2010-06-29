@@ -89,6 +89,18 @@ public class PagePresenter extends LazyPresenter<IdisplayPage, PageEventBus> {
 				disconnectUser();
 			}
 		});
+		
+		this.view.upSpliterEvent().addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				view.upRightSpliter();
+			}
+		});
+		
+		this.view.downSpliterEvent().addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				view.downRightSpliter();
+			}
+		});
 	}
 	
 	
@@ -229,6 +241,7 @@ public class PagePresenter extends LazyPresenter<IdisplayPage, PageEventBus> {
 								public void onSuccess(Void result) {
 									// avertit tout les presenter qu'il faut cancel
 									eventBus.cancelPage(newState);
+									eventBus.displayPage(id);
 								}
 							});
 						}		
@@ -331,20 +344,6 @@ public class PagePresenter extends LazyPresenter<IdisplayPage, PageEventBus> {
 			this.modifyPage();
 	}
 	
-	public void onDeletePage() {
-		this.view.showWaitPopUp();
-		this.view.addLineInPopUp(view.getConstants().PopUpDelPage(), 0);
-	}
-	
-	public void onDeletingPageFinish(boolean state) {
-		if(state)
-			this.view.addLineInPopUp(view.getConstants().PopUpDelPageFinish(), 1);
-		else
-			this.view.addLineInPopUp(view.getConstants().PopUpDelPageFail(), 2);
-		this.view.hideWaitPopUp();
-	}
-	
-	
 	public void onShowInformationPopUp() {
 		this.view.showWaitPopUp();
 	}
@@ -373,6 +372,7 @@ public class PagePresenter extends LazyPresenter<IdisplayPage, PageEventBus> {
 		switch(lockState){
 		case delete :
 		case modify :
+
 			// if any user block this page, this page was locked
 			this.rpcPage.lockThisPage(pageId, this.usr.getId(), new AsyncCallback<Long>() {
 				public void onFailure(Throwable caught){}
@@ -385,7 +385,10 @@ public class PagePresenter extends LazyPresenter<IdisplayPage, PageEventBus> {
 						rpcUser.getUser(result, new AsyncCallback<BeanUser>() {
 							public void onFailure(Throwable caught) {}
 							public void onSuccess(BeanUser result) {
+								//display lock
 								eventBus.pageLockState(result.getNickname());
+								PopUpMessage popUp = new PopUpMessage("Impossible de modifier cette page, car elle est déjà en cours de modification par : "+result.getNickname());
+								popUp.show();
 							}
 						});
 				}

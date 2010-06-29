@@ -172,23 +172,29 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Pa
 	 * delete page selected in the tree
 	 */
 	public void deletePage() {	
-		view.getPopUpMenuBar().hide();
 		// on ne delete pas la main Page
 		if(!((Long) selectedItem.getUserObject()).equals((Long)rootItem.getUserObject())) {
-			// on commence donc la suppression
-			NavigationPanelPresenter.this.eventBus.deletePage();
+			// affichage de la popUp lors du deleteing
+			this.eventBus.showInformationPopUp();
+			this.eventBus.addWaitLinePopUp(view.getConstants().PopUpDelPage());
 			this.rpcPage.deleteArboPage((Long)selectedItem.getUserObject(), (Long)selectedItem.getParentItem().getUserObject(), new AsyncCallback<Boolean>() {
 				public void onSuccess(Boolean result) {
 					if(result){
 						view.deleteSelectedTI();
 						selectedItem = selectedItem.getParentItem();
-						eventBus.deletingPageFinish(true); // suppression finis : on peut hide la popUp
+						eventBus.deletePage();
+						eventBus.addSuccessPopUp(view.getConstants().PopUpDelPageFinish()); // suppression finis : on peut hide la popUp
 					} else {
-						eventBus.deletingPageFinish(false); // suppression n'a pas eu lieu
+						eventBus.addErrorLinePopUp(view.getConstants().PopUpDelPageLock());
+						// popUp for display the UI error
+						PopUpMessage popUp = new PopUpMessage(view.getConstants().PopUpDelPageLock());
+						popUp.show();
 					}
+					eventBus.hideInformationPopUp();
 				}
 				public void onFailure(Throwable caught) {
-					eventBus.deletingPageFinish(false);}
+					eventBus.addErrorLinePopUp(view.getConstants().PopUpDelPageFail());
+					eventBus.hideInformationPopUp();}
 			});
 		}else {
 			PopUpMessage p = new PopUpMessage(this.view.getConstants().IDeletMainPage());

@@ -45,7 +45,7 @@ public class ServiceArboPageImpl  extends RemoteServiceServlet implements ArboPa
 
 	public boolean deleteArboPage(Long id, Long parentId) {
 		// test if this page wasn't lock by another user
-		if(this.lockPageInfo(id) == null){
+		if(this.isDeletable(id)){
 			Objectify ofy = ObjectifyService.begin();
 	
 	    	ArboPage parentPage = ofy.get(ArboPage.class, parentId);
@@ -65,6 +65,26 @@ public class ServiceArboPageImpl  extends RemoteServiceServlet implements ArboPa
 			return true;
 		}
 		return false;
+	}
+	
+	/**
+	 * Recursing to see a sub-nodes is being modified
+	 * @param id : node to delete
+	 * @return : false if one node or sub-,ode are in modification, true if all node are free
+	 */
+	private boolean isDeletable(Long id) {
+		Objectify ofy = ObjectifyService.begin();
+		
+		ArboPage arboPage = ofy.get(ArboPage.class, id);
+		if(arboPage.getIdUserInModif().intValue() != -1)
+			return false;
+    	//delete all child
+    	for(Long childKey : arboPage.getIdChildArboPage()) {
+    		// if one is locked, its impossible to delete
+    		if(!isDeletable(childKey))
+    			return false;
+    	}
+		return true;
 	}
 
 	public BeanArboPage getArboPage(Long id) {
@@ -236,6 +256,16 @@ public class ServiceArboPageImpl  extends RemoteServiceServlet implements ArboPa
 		if(page != null) {
 			page.setIdUserInModif(new Long(-1));
 			ofy.put(page);
+		}
+	}
+	
+	public void unlockAllUserPage(Long idUser) {
+		Objectify ofy = ObjectifyService.begin();
+		Query<ArboPage> lockedPages  = ofy.query(ArboPage.class).filter("idUserInModif !=", idUser);
+		
+		for(ArboPage lockedPage :lockedPages){
+			lockedPage.setIdUserInModif(new Long(-1));
+			ofy.put(lockedPage);
 		}
 	}
 	

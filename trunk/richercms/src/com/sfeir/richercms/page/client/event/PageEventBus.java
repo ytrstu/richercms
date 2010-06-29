@@ -120,6 +120,12 @@ public interface PageEventBus extends EventBus {
 	public void savePage();
 	
 	/**
+	 * Fired by the InformationPanelPresenter if all fields are filled properly 
+	 */
+	@Event( handlers =  ValidationPanelPresenter.class )
+	public void rightInformation();
+	
+	/**
 	 * Fired by the NavigationPresenter, for displaying the selected Page
 	 * @param Key
 	 */
@@ -189,18 +195,12 @@ public interface PageEventBus extends EventBus {
 	public void reloadCurrentPageInTree(BeanArboPage modifOnPage);
 	
 	/**
-	 * Fired by the NavigationPresenter when the DelPage menu is clicked
-	 * * @param state : true if the page is deleted, false either
+	 * Fired by the NavigationPresenter when a page is deleted
+	 * Allows the InformationPanelPresenter and the TinyMCEPanelPresenter to clear her field.
 	 */
-	@Event( handlers =  {InformationPanelPresenter.class, PagePresenter.class} )
+	@Event( handlers = {InformationPanelPresenter.class, TinyMCEPanelPresenter.class})
 	public void deletePage();
 	
-	/**
-	 * Fired by the NavigationPresenter when a page is delete
-	 * @param state : true if the page is deleted, false etheir
-	 */
-	@Event( handlers =  PagePresenter.class )
-	public void deletingPageFinish(boolean state);
 	
 	/**
 	 * Fired by the NavigationPanel to Load it in the right place in mainView

@@ -94,6 +94,20 @@ public interface IdisplayPage extends LazyView {
 	public HasClickHandlers onLogOutClick();
 	
 	/**
+	 * When user click on the up button to resize the spliter
+	 * in default place.
+	 * @return the Event
+	 */
+	public HasClickHandlers upSpliterEvent();
+
+	/**
+	 * When user click on the down button to minimize the bottom part 
+	 * of the spliter.
+	 * @return the Event
+	 */
+	public HasClickHandlers downSpliterEvent();
+	
+	/**
 	 * Return the key of the language, its the key of the associated language in the datastore.
 	 * @return the key of the selected Language
 	 */
@@ -187,5 +201,16 @@ public interface IdisplayPage extends LazyView {
 	 * @param name : pseudo
 	 */
 	public void setPseudo(String name);
+	
+	/**
+	 * Down the topBottomSpliter and display just the top part
+	 */
+	public void downRightSpliter();
+	
+	/**
+	 * Up the topBottomSpliter and resize it
+	 * to default place.
+	 */
+	public void upRightSpliter();
 	
 }

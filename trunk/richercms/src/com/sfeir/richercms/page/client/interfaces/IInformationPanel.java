@@ -154,16 +154,32 @@ public interface IInformationPanel extends LazyView {
 	public void hideOneHelp(int number);
 	
 	/**
-	 * Show the require field : to show to the user
-	 * which field is mandatory
+	 * Display a help field to say
+	 * Title is mandatory
 	 */
-	public void showRequiredField();
+	public void showRequiredTitle();
+	
+	/**
+	 * Display a help field to say
+	 * Url is mandatory
+	 */
+	public void showRequiredUrl();
 	
 	/**
 	 * hide the require field : to show to the user
 	 * which field is mandatory
 	 */
 	public void hideRequiredField();
+	
+	/**
+	 * Show message when a wrong character was used in url field
+	 */
+	public void showErrorInUrl();
+	
+	/**
+	 * hide message when a all character are right in url field
+	 */
+	public void hideErrorInUrl();
 	
 	/**
 	 * handle focus event on the 0 of 4 textBox

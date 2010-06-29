@@ -28,4 +28,6 @@ public interface UserInfoServiceAsync {
 	public void getUsers(AsyncCallback<List<BeanUser>> async);
 	
 	public void getUser(Long id, AsyncCallback<BeanUser> async);
+	
+	public void deleteUser(Long userId, AsyncCallback<Void> async);
 }

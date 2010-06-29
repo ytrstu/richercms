@@ -55,6 +55,7 @@ public class FileMBoxPresenter extends LazyPresenter<IFileMBox,PageEventBus>{
 	
 	public void onStartTinyPopUp(List<Long> pathId, PopUpState state) {
 		this.state = state;
+		//this.eventBus.showInformationPopUp();
 		switch(this.state)
 		{
 		case imageManager :

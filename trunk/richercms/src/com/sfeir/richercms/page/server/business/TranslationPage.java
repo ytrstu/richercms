@@ -3,9 +3,11 @@ package com.sfeir.richercms.page.server.business;
 import javax.persistence.Id;
 
 import com.google.appengine.api.datastore.Text;
+import com.googlecode.objectify.annotation.Cached;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Unindexed;
 
+@Cached
 @Entity(name="TranslationPage")
 @Unindexed
 public class TranslationPage {

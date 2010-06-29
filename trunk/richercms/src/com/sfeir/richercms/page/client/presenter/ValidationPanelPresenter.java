@@ -20,6 +20,7 @@ public class ValidationPanelPresenter extends LazyPresenter<IValidationPanel, Pa
 	//gestion des langues
 	private PageConstants constants = GWT.create(PageConstants.class);
 	private PageState state = PageState.display;
+	private boolean saveAndQuit = false;
 	
 	public ValidationPanelPresenter() {
 		super();
@@ -44,8 +45,8 @@ public class ValidationPanelPresenter extends LazyPresenter<IValidationPanel, Pa
 		
 		this.view.getClicBtnSaveAndQ().addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
+				saveAndQuit = true;
 				eventBus.savePage();
-				eventBus.confirmCancelPage(PageState.display, false);
 			}
 		});
 		
@@ -102,6 +103,12 @@ public class ValidationPanelPresenter extends LazyPresenter<IValidationPanel, Pa
 	
 	public void onEnableModifyBtn(){
 		this.view.enableModifyBtn();
+	}
+	
+	public void onRightInformation(){
+		if(this.saveAndQuit)
+			eventBus.confirmCancelPage(PageState.display, false);
+		this.saveAndQuit = false;
 	}
 	
 	/**

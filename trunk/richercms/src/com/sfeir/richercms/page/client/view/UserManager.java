@@ -5,6 +5,7 @@ package com.sfeir.richercms.page.client.view;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -116,7 +117,7 @@ public class UserManager  extends ResizeComposite implements IUserManager {
 		this.addNewUser.setText("");
 	}
 	
-	public void addLine(String email, String nickName, String state) {
+	public HasClickHandlers addLine(String email, String nickName, String state) {
 		// j'instancie les 2 panneaux et je les add vide dans la table
 		// c'est les 2 fonction : addAdminWidget et addLockedPage qui les remplirons
 		// c'est aussi c'est fonction qui vont laisser la main au presenter pour gèrer les events
@@ -139,20 +140,31 @@ public class UserManager  extends ResizeComposite implements IUserManager {
 		this.userTable.setWidget(numRow, 3, this.currentLockedPage);
 		this.userTable.setWidget(numRow, 4, this.currentAdminPanel);
 		this.userTable.setWidget(numRow, 5, btnDel);
+		
+		return btnDel;
 	}
 
-	public void addAdminWidget(boolean admin) {
+	public HasValueChangeHandlers<Boolean> addAdminWidgetYes(boolean admin) {
 		int numRow = this.userTable.getRowCount()-1;
 		RadioButton yes = new RadioButton("row"+numRow,"yes");
-		RadioButton no = new RadioButton("row"+numRow,"no");
 		
 		this.currentAdminPanel.add(yes);
-		this.currentAdminPanel.add(no);
 		
 		if(admin)
 			yes.setValue(true);
-		else
+
+		return yes;
+	}
+	
+	public HasValueChangeHandlers<Boolean> addAdminWidgetNo(boolean admin) {
+		int numRow = this.userTable.getRowCount()-1;
+		RadioButton no = new RadioButton("row"+numRow,"no");
+		
+		this.currentAdminPanel.add(no);
+		
+		if(!admin)
 			no.setValue(true);
+		return no;
 	}
 	
 	public HasClickHandlers addLockedPage(Long pageId, String pagename) {
@@ -172,5 +184,9 @@ public class UserManager  extends ResizeComposite implements IUserManager {
 	
 	public String getNewEmail() {
 		return this.newEmailAdress.getText();
+	}
+	
+	public PageConstants getConstants(){
+		return this.constants;
 	}
 }

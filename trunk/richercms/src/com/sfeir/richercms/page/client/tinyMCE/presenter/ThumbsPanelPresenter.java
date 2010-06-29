@@ -59,6 +59,7 @@ public class ThumbsPanelPresenter extends LazyPresenter<IThumbsPanel,PageEventBu
 	
 	public void onDisplayThumbsInPopUp(String path){
 		this.view.setCurrentPath(path);
+		//this.eventBus.addWaitLinePopUp("chargement des miniatures");
 		this.displayThumbNails(false);
 		
 		//no thumbs was selected
@@ -68,15 +69,17 @@ public class ThumbsPanelPresenter extends LazyPresenter<IThumbsPanel,PageEventBu
 	private void displayThumbNails(final boolean justLast) {
 		if(!justLast)
 			this.view.clearThumbNails();
-		
 		this.rpcFile.getFile(this.view.getCurrentPath(), new AsyncCallback<List<BeanFile>>(){
 			public void onFailure(Throwable caught) {
+				//eventBus.addErrorLinePopUp("Impossible d'ajouter les miniatures");
 			}
 			public void onSuccess(List<BeanFile> result) {
 				if(!justLast){
 					for(BeanFile bean : result){
 						addThumbNail(bean);
 					}
+					//eventBus.addSuccessPopUp("Miniature chargé avec succès");
+					//eventBus.hideInformationPopUp();
 				}else {
 					addThumbNail(result.get(result.size()-1));
 				}

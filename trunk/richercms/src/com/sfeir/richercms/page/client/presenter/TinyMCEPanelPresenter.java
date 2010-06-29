@@ -66,6 +66,10 @@ public class TinyMCEPanelPresenter extends LazyPresenter<ITinyMCEPanel, PageEven
 		this.state = newState;
 	}
 	
+	public void onDeletePage(){
+		this.view.displayViewer("");
+	}
+	
 	public void onCallContent() {
 		ArrayList<String> contents = new ArrayList<String>();
 		// get the last content and add it in the right Translation

@@ -289,5 +289,13 @@ td.datePickerMonth {
 	color:red;
 	direction:ltr;
 }
+
+.lockLabel {
+	background-color: #D0E4F6;
+}
+
+.tinyMceContainer, .tinyMceContainer > div, .tinyMceContainer > div > div, .tinyMceContainer > div > div > div, .tinyMceContainer > div > div > div > div {
+	overflow: visible !important;
+}
     
     

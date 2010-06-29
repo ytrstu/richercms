@@ -147,6 +147,9 @@ public interface PageConstants extends Constants {
 	  
 	  @DefaultStringValue("Error during deletion!")
 	  String PopUpDelPageFail();
+	  
+	  @DefaultStringValue("Can not delete this page because it or one of his son is being modified")
+	  String PopUpDelPageLock();
 
 	  @DefaultStringValue("page is complete")
 	  String TreeOkPage();
@@ -231,4 +234,28 @@ public interface PageConstants extends Constants {
 	  
 	  @DefaultStringValue("delete user")
 	  String UserTitleColumn6();
+	  
+	  @DefaultStringValue("Page title, will be displayed in the web page.")
+	  String infoMessPageTitle();
+	  
+	  @DefaultStringValue("appearing in the browser")
+	  String infoMessBrowserTitle();
+	  
+	  @DefaultStringValue("The name in the url. Must not contain spaces, special or accentuated character. ('_' Allowed as a separato")
+	  String infoMessUrlName();
+	  
+	  @DefaultStringValue("Quick and brief desciption of page content")
+	  String infoMessDescription();
+	  
+	  @DefaultStringValue("Keywords page, separated by spaces")
+	  String infoMessKeyWord();
+	  
+	  @DefaultStringValue("Date which the page is available")
+	  String infoMessDateStart();
+	  
+	  @DefaultStringValue("Date which the page isn't available")
+	  String infoMessDateStop();
+	  
+	  @DefaultStringValue("Do not use illegal character ")
+	  String ErrorInUrl();
 }

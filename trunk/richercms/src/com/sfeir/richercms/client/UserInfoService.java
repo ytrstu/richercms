@@ -44,6 +44,12 @@ public interface UserInfoService extends RemoteService {
 	public Long addUser(String email);
 	
 	/**
+	 * Delete a specific user into the datastore
+	 * @param userId : id of the specific user
+	 */
+	public void deleteUser(Long userId);
+	
+	/**
 	 * this method is use when a user logout.
 	 * its necessary to update his state in dataBase for other user
 	 * @param id : the id's user

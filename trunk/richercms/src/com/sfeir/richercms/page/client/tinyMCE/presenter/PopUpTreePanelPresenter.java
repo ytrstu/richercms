@@ -75,6 +75,7 @@ public class PopUpTreePanelPresenter  extends LazyPresenter<IPopUpTreePanel,Page
 	}
 	
 	private void startTreePanel(List<Long> pathId){
+		//eventBus.addWaitLinePopUp("Creation de l'arbre");
 		this.pathId = pathId;
 		this.pathPosition = pathId.size()-1;
 		// we need to display a child node who you are the path.
@@ -96,9 +97,11 @@ public class PopUpTreePanelPresenter  extends LazyPresenter<IPopUpTreePanel,Page
 		    		expandPath();
 	    		}else {
 	    			view.setTree(makeTreeNode(result));
+	    			//eventBus.addSuccessPopUp("Arbre chargé");
 	    		}
 	    	}
 			public void onFailure(Throwable caught){
+				//eventBus.addErrorLinePopUp("impossible de charger l'arbre !");
 				PopUpMessage p = new PopUpMessage(view.getConstants().ECreateTree());
 				p.show();}
 			});
@@ -114,6 +117,7 @@ public class PopUpTreePanelPresenter  extends LazyPresenter<IPopUpTreePanel,Page
 		
 		if (this.pathPosition == -1){
 			view.setSelectedItem(this.selectedItem);
+			eventBus.addSuccessPopUp("Arbre chargé");
 		}else {
 			this.expandedItem = this.selectedItem;
 			this.expandedItem.setState(true, false);

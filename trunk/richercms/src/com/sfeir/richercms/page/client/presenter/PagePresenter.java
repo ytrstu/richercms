@@ -25,6 +25,7 @@ import com.sfeir.richercms.page.client.interfaces.IInformationPanel;
 import com.sfeir.richercms.page.client.interfaces.INavigationPanel;
 import com.sfeir.richercms.page.client.interfaces.IReorderPagePanel;
 import com.sfeir.richercms.page.client.interfaces.ITagManager;
+import com.sfeir.richercms.page.client.interfaces.ITemplateManager;
 import com.sfeir.richercms.page.client.interfaces.ITinyMCEPanel;
 import com.sfeir.richercms.page.client.interfaces.IUserManager;
 import com.sfeir.richercms.page.client.interfaces.IValidationPanel;
@@ -83,6 +84,10 @@ public class PagePresenter extends LazyPresenter<IdisplayPage, PageEventBus> {
 				changeState(PageState.manageTag);
 		}});
 		
+		view.setTemplateSettingsCommand(new Command(){
+			public void execute() {
+				changeState(PageState.manageTemplate);
+		}});
 		
 		Window.addCloseHandler(new CloseHandler<Window>(){
 			public void onClose(CloseEvent<Window> event) {
@@ -204,6 +209,7 @@ public class PagePresenter extends LazyPresenter<IdisplayPage, PageEventBus> {
 		case manageTag:
 		case manageUser:
 		case manageImage:
+		case manageTemplate:
 			view.disableLanguageBox();
 		case display :
 			this.state = newState;
@@ -259,6 +265,7 @@ public class PagePresenter extends LazyPresenter<IdisplayPage, PageEventBus> {
 						public void onSuccess(Void result) {
 							// avertit tout les presenter qu'il faut cancel
 							eventBus.cancelPage(newState);
+							eventBus.displayPage(id);
 						}
 					});
 				}
@@ -266,6 +273,7 @@ public class PagePresenter extends LazyPresenter<IdisplayPage, PageEventBus> {
 			case manageImage:
 			case manageUser:
 			case manageTag:
+			case manageTemplate:
 			case display:
 			default:
 				eventBus.cancelPage(newState);
@@ -287,6 +295,10 @@ public class PagePresenter extends LazyPresenter<IdisplayPage, PageEventBus> {
 	
 	public void onChangeValidationPanel(IValidationPanel validationPanel) {
 		this.view.setValidationPanel(validationPanel);
+	}
+	
+	public void onChangeLanguageInList(int index){
+		this.view.setLanguageListIndex(index);
 	}
 	
 	//NavigationPresenter Menu Event
@@ -379,6 +391,10 @@ public class PagePresenter extends LazyPresenter<IdisplayPage, PageEventBus> {
 	
 	public void onDisplayTagManager(ITagManager tagManager) {
 		this.view.displayTagManager(tagManager);
+	}
+	
+	public void onDisplayTemplateManager(ITemplateManager templateManager){
+		this.view.displayTemplateManager(templateManager);
 	}
 	
 	public void onVerifyPageLock(Long pageId, final LockState lockState) {

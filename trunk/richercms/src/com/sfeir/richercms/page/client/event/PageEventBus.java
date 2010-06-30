@@ -13,6 +13,7 @@ import com.sfeir.richercms.page.client.interfaces.IInformationPanel;
 import com.sfeir.richercms.page.client.interfaces.INavigationPanel;
 import com.sfeir.richercms.page.client.interfaces.IReorderPagePanel;
 import com.sfeir.richercms.page.client.interfaces.ITagManager;
+import com.sfeir.richercms.page.client.interfaces.ITemplateManager;
 import com.sfeir.richercms.page.client.interfaces.ITinyMCEPanel;
 import com.sfeir.richercms.page.client.interfaces.IUserManager;
 import com.sfeir.richercms.page.client.interfaces.IValidationPanel;
@@ -22,6 +23,7 @@ import com.sfeir.richercms.page.client.presenter.PagePresenter;
 import com.sfeir.richercms.page.client.presenter.NavigationPanelPresenter;
 import com.sfeir.richercms.page.client.presenter.ReorderPagePanelPresenter;
 import com.sfeir.richercms.page.client.presenter.TagManagerPresenter;
+import com.sfeir.richercms.page.client.presenter.TemplateManagerPresenter;
 import com.sfeir.richercms.page.client.presenter.TinyMCEPanelPresenter;
 import com.sfeir.richercms.page.client.presenter.UserManagerPresenter;
 import com.sfeir.richercms.page.client.presenter.ValidationPanelPresenter;
@@ -245,6 +247,15 @@ public interface PageEventBus extends EventBus {
 	 */
 	@Event( handlers =  {InformationPanelPresenter.class, TinyMCEPanelPresenter.class} )
 	public void changeTranslation(int index);
+	
+	/**
+	 * Fired by the InformationPresenter if all field are not correctly feeled and
+	 * force user to modify his fault before change language. (return to the last language
+	 * in the list).
+	 * @param index : index of the new language to display in the list
+	 */
+	@Event( handlers =  PagePresenter.class )
+	public void changeLanguageInList(int index);
 	
 	/**
 	 * Fired by the Navigation presenter, when the new page is added
@@ -484,4 +495,10 @@ public interface PageEventBus extends EventBus {
 	
 	@Event( handlers =  PagePresenter.class )
 	public void displayTagManager(ITagManager tagManager);
+	
+	@Event( handlers =  TemplateManagerPresenter.class )
+	public void startTemplateManager();
+	
+	@Event( handlers =  PagePresenter.class )
+	public void displayTemplateManager(ITemplateManager templateManager);
 }

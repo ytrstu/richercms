@@ -27,6 +27,7 @@ import com.sfeir.richercms.page.client.interfaces.IInformationPanel;
 import com.sfeir.richercms.page.client.interfaces.INavigationPanel;
 import com.sfeir.richercms.page.client.interfaces.IReorderPagePanel;
 import com.sfeir.richercms.page.client.interfaces.ITagManager;
+import com.sfeir.richercms.page.client.interfaces.ITemplateManager;
 import com.sfeir.richercms.page.client.interfaces.ITinyMCEPanel;
 import com.sfeir.richercms.page.client.interfaces.IUserManager;
 import com.sfeir.richercms.page.client.interfaces.IValidationPanel;
@@ -70,6 +71,7 @@ public class PageView extends ResizeComposite implements IdisplayPage {
 	private MenuItem pageTool;
 	private MenuItem userSettings;
 	private MenuItem tagSettings;
+	private MenuItem templateSettings;
 
 	private final int height = Window.getClientHeight()-30;
 	private final int topPanelHeight = height/2 -120;
@@ -203,7 +205,8 @@ public class PageView extends ResizeComposite implements IdisplayPage {
 	    setting.addItem(this.userSettings);
 	    this.tagSettings = new MenuItem("Tag", new Command(){public void execute(){}});
 	    setting.addItem(this.tagSettings);
-	    setting.addItem("Site Languages", new Command(){public void execute(){}});
+	    this.templateSettings = new MenuItem("Template", new Command(){public void execute(){}});
+	    setting.addItem(this.templateSettings);
 	    this.mainmenu.addItem(new MenuItem("Setting", setting));
 	    
 	    // Create the help menu
@@ -340,6 +343,10 @@ public class PageView extends ResizeComposite implements IdisplayPage {
 		this.languages.setSelectedIndex(0);
 	}
 	
+	public void setLanguageListIndex(int index){
+		this.languages.setSelectedIndex(index);
+	}
+	
 	public void disableLanguageBox() {
 		this.languages.setEnabled(false);
 	}
@@ -391,6 +398,10 @@ public class PageView extends ResizeComposite implements IdisplayPage {
 		this.tagSettings.setCommand(cmd);
 	}
 	
+	public void setTemplateSettingsCommand(Command cmd) {
+		this.templateSettings.setCommand(cmd);
+	}
+	
 	public void displayImagePanel(IImageManager imageMPanel) {
 		this.rightNorthPanel.clear();
 		this.rightNorthPanel.add((ImageManager)imageMPanel);
@@ -404,6 +415,11 @@ public class PageView extends ResizeComposite implements IdisplayPage {
 	public void displayTagManager(ITagManager tagManager) {
 		this.dispositionPanel.remove(this.leftRightSpliter);
 		this.dispositionPanel.add((TagManager)tagManager);
+	}
+
+	public void displayTemplateManager(ITemplateManager templateManager) {
+		this.dispositionPanel.remove(this.leftRightSpliter);
+		this.dispositionPanel.add((TemplateManager)templateManager);
 	}
 	
 	public void reDisplayPageView() {

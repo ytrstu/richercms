@@ -17,12 +17,14 @@ public class Tag {
     private String tagName;
     private String shortLib;
     private String description;
+    private boolean isTextual;
    
 	public Tag() {
 		super();
 		this.tagName = "";
 		this.shortLib = "";
 		this.description = "";
+		this.isTextual = false;
 	}
     
 	public Tag(String tagName, String shortLib, String description) {
@@ -30,15 +32,25 @@ public class Tag {
 		this.tagName = tagName;
 		this.shortLib = shortLib;
 		this.description = description;
+		this.isTextual = false;
+	}
+	
+	public Tag(String tagName, String shortLib, String description, boolean isTextual) {
+		super();
+		this.tagName = tagName;
+		this.shortLib = shortLib;
+		this.description = description;
+		this.isTextual = isTextual;
 	}
 
 	
-	public Tag(Long id, String tagName, String shortLib, String description) {
+	public Tag(Long id, String tagName, String shortLib, String description, boolean isTextual) {
 		super();
 		this.id = id;
 		this.tagName = tagName;
 		this.shortLib = shortLib;
 		this.description = description;
+		this.isTextual = isTextual;
 	}
 
 	public Long getId() {
@@ -71,5 +83,13 @@ public class Tag {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public boolean isTextual() {
+		return isTextual;
+	}
+
+	public void setTextual(boolean isTextual) {
+		this.isTextual = isTextual;
 	}
 }

@@ -305,21 +305,25 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 	}
 	
 	public void onChangeTranslation(int index) {
-		if(this.state == PageState.modify){//modifyMode
-			//add the current translation in the page
-			this.currentPage = this.addInformationInPage();
-		}else if(this.state == PageState.add){
-			//modifymode : modify a translation in the current page
-			this.state = PageState.modify;
-			//add the translation in the current page
-			this.currentPage = this.addInformationInPage();
-			//addMode : necessary to add a page in the datastore
-			this.state = PageState.add;
+		if(testField()){
+			if(this.state == PageState.modify){//modifyMode
+				//add the current translation in the page
+				this.currentPage = this.addInformationInPage();
+			}else if(this.state == PageState.add){
+				//modifymode : modify a translation in the current page
+				this.state = PageState.modify;
+				//add the translation in the current page
+				this.currentPage = this.addInformationInPage();
+				//addMode : necessary to add a page in the datastore
+				this.state = PageState.add;
+			}
+			// new index selected in the Language list
+			this.translationIndex = index;
+			// display the new translation
+			this.displayArboPage(this.currentPage);
+		}else{
+			this.eventBus.changeLanguageInList(this.translationIndex);
 		}
-		// new index selected in the Language list
-		this.translationIndex = index;
-		// display the new translation
-		this.displayArboPage(this.currentPage);
 	}
 	
 	public void onPageLockState(String userName) {
@@ -332,10 +336,10 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 	private boolean validateURL(String url) {
 		if(url.contains(" "))
 			return false;
-		if(url.matches(".*\\p{Punct}.*"))
+		if(url.matches(".*[!\"#$%&'()*+,./:;<=>?@[\\\\]^`{|}~].*"))
 				return false;
 		
-		if(url.matches(".*[^\\p{Alpha}].*"))
+		if(url.matches(".*[^\\p{Alpha}\\p{Digit}-_].*"))
 			return false;
 		return true;
 	}

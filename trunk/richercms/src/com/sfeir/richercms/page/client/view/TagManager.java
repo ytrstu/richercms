@@ -4,6 +4,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
@@ -32,6 +33,7 @@ public class TagManager extends ResizeComposite implements ITagManager{
 	private TextBox newTagName;
 	private TextBox newShortLib;
 	private TextArea newDescription;
+	private CheckBox tagTextuel;
 
 	public Widget asWidget() {
 		return this;
@@ -73,10 +75,12 @@ public class TagManager extends ResizeComposite implements ITagManager{
 		cellFormater.setStyleName(0, 1, "tagTableHeader");
 		cellFormater.setStyleName(0, 2, "tagTableHeader");
 		cellFormater.setStyleName(0, 3, "tagTableHeader");
+		cellFormater.setStyleName(0, 4, "tagTableHeader");
 		this.tagTable.setText(0, 0, "Nom du tag");
 		this.tagTable.setText(0, 1, "Libellé court");
 		this.tagTable.setText(0, 2, "Description");
-		this.tagTable.setText(0, 3, "Supression");
+		this.tagTable.setText(0, 3, "tag textuel");
+		this.tagTable.setText(0, 4, "Supression");
 	}
 	
 	/**
@@ -99,9 +103,11 @@ public class TagManager extends ResizeComposite implements ITagManager{
 		this.newShortLib = new TextBox();
 		this.newDescription = new TextArea();
 		this.newDescription.setVisibleLines(3);
+		this.tagTextuel = new CheckBox(" tag textuel");
 		newTagTable.setWidget(0, 1, this.newTagName);
 		newTagTable.setWidget(1, 1, this.newShortLib);
 		newTagTable.setWidget(2, 1, this.newDescription);
+		newTagTable.setWidget(3, 1, this.tagTextuel);
 		
 		//btn
 		this.addNewTag = new Button("ajouter ce tag");
@@ -122,7 +128,8 @@ public class TagManager extends ResizeComposite implements ITagManager{
 		return this.constants;
 	}
 	
-	public HasClickHandlers addLine(String tagName, String shortLib, String description) {
+	public HasClickHandlers addLine(String tagName, String shortLib,
+			String description, boolean isTextual) {
 		
 		PushButton btnDel = new PushButton( new Image("tab_images/Delete-icon.png"));
 		int numRow = this.tagTable.getRowCount();
@@ -130,7 +137,12 @@ public class TagManager extends ResizeComposite implements ITagManager{
 		this.tagTable.setText(numRow, 0, tagName);
 		this.tagTable.setText(numRow, 1, shortLib);
 		this.tagTable.setText(numRow, 2, description);
-		this.tagTable.setWidget(numRow, 3, btnDel);
+		this.tagTable.setWidget(numRow, 4, btnDel);
+		
+		if(isTextual)
+			this.tagTable.setText(numRow, 3, "oui");
+		else
+			this.tagTable.setText(numRow, 3, "non");
 		
 		return btnDel;
 	}
@@ -147,6 +159,10 @@ public class TagManager extends ResizeComposite implements ITagManager{
 		return this.newDescription.getText();
 	}
 	
+	public boolean isTextual(){
+		return this.tagTextuel.getValue();
+	}
+	
 	public HasClickHandlers clickOnAddTag(){
 		return this.addNewTag;
 	}
@@ -160,5 +176,6 @@ public class TagManager extends ResizeComposite implements ITagManager{
 		this.newTagName.setText("");
 		this.newShortLib.setText("");
 		this.newDescription.setText("");
+		this.tagTextuel.setValue(false);
 	}
 }

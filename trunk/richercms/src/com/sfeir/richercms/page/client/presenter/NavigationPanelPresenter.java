@@ -544,6 +544,9 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Pa
 		case manageTag:
 			this.eventBus.startTagManager();
 			break;
+		case manageTemplate:
+			this.eventBus.startTemplateManager();
+			break;
 		case display:
 			this.dispBtnInTree = true;
 			if(!this.sameItemSelected)

@@ -125,7 +125,8 @@ public class ServiceArboPageImpl  extends RemoteServiceServlet implements ArboPa
         	countLanguage();
         	RootArbo root = new RootArbo();
         	ArboPage rootPage = new ArboPage();
-        	TranslationPage tp = new TranslationPage(); tp.setPageTitle("main");
+        	TranslationPage tp = new TranslationPage();
+        	tp.setPageTitle("index");tp.setUrlName("index");
         	ofy.put(tp);
         	Key<TranslationPage> kTp = new Key<TranslationPage>(TranslationPage.class,tp.getId());
         	rootPage.getTranslation().add(kTp);

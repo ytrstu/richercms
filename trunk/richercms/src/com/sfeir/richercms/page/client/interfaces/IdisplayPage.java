@@ -68,10 +68,16 @@ public interface IdisplayPage extends LazyView {
 	public void displayImagePanel(IImageManager imageMPanel);
 	
 	/**
-	 * Load the UserManager's Panel into the dispositionPanel Container
+	 * Load the UserManager's Panel into the dispositionPanel Container (all screen)
 	 * @param userManagerPanel
 	 */
 	public void displayUserManager(IUserManager userManagerPanel);
+	
+	/**
+	 * Load the TagManager's Panel into the dispositionPanel container (all screen)
+	 * @param tagManager
+	 */
+	public void displayTagManager(ITagManager tagManager);
 	
 	/**
 	 * Add a language in the listBox
@@ -187,6 +193,13 @@ public interface IdisplayPage extends LazyView {
 	 * @param cmd
 	 */
 	public void setUserSettingsCommand(Command cmd);
+	
+	/**
+	 * Add a specific command when the tagSettingsEntry is clicked
+	 * in the menuBar 
+	 * @param cmd
+	 */
+	public void setTagSettingsCommand(Command cmd);
 	
 	/**
 	 * Set the url of the logOut Anchor.

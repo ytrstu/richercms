@@ -24,6 +24,7 @@ import com.sfeir.richercms.page.client.interfaces.IImageManager;
 import com.sfeir.richercms.page.client.interfaces.IInformationPanel;
 import com.sfeir.richercms.page.client.interfaces.INavigationPanel;
 import com.sfeir.richercms.page.client.interfaces.IReorderPagePanel;
+import com.sfeir.richercms.page.client.interfaces.ITagManager;
 import com.sfeir.richercms.page.client.interfaces.ITinyMCEPanel;
 import com.sfeir.richercms.page.client.interfaces.IUserManager;
 import com.sfeir.richercms.page.client.interfaces.IValidationPanel;
@@ -75,6 +76,11 @@ public class PagePresenter extends LazyPresenter<IdisplayPage, PageEventBus> {
 		view.setUserSettingsCommand(new Command(){
 			public void execute() {
 				changeState(PageState.manageUser);
+		}});
+		
+		view.setTagSettingsCommand(new Command(){
+			public void execute() {
+				changeState(PageState.manageTag);
 		}});
 		
 		
@@ -195,8 +201,9 @@ public class PagePresenter extends LazyPresenter<IdisplayPage, PageEventBus> {
 		case add :
 			eventBus.confirmCancelPage(newState,true);
 			break;
+		case manageTag:
 		case manageUser:
-		case manageImage :
+		case manageImage:
 			view.disableLanguageBox();
 		case display :
 			this.state = newState;
@@ -258,7 +265,9 @@ public class PagePresenter extends LazyPresenter<IdisplayPage, PageEventBus> {
 				break;
 			case manageImage:
 			case manageUser:
+			case manageTag:
 			case display:
+			default:
 				eventBus.cancelPage(newState);
 		}
 
@@ -366,6 +375,10 @@ public class PagePresenter extends LazyPresenter<IdisplayPage, PageEventBus> {
 	
 	public void onDisplayUserManager(IUserManager p) {
 		this.view.displayUserManager(p);
+	}
+	
+	public void onDisplayTagManager(ITagManager tagManager) {
+		this.view.displayTagManager(tagManager);
 	}
 	
 	public void onVerifyPageLock(Long pageId, final LockState lockState) {

@@ -226,7 +226,8 @@ td.datePickerMonth {
 }
 
 .pageTable,
-.userTable {
+.userTable,
+.tagTable  {
 	border-top: 1px solid #BBBBBB;
 	border-left: 1px solid #BBBBBB;
 	text-align:center;
@@ -234,13 +235,14 @@ td.datePickerMonth {
 
 .pageTable td,
 .userTable td,
- {
+.tagTable td {
 	border-bottom: 1px solid #BBBBBB;
 	border-right: 1px solid #BBBBBB;
 }
 
 .pageTableHeader,
-.userTableHeader {
+.userTableHeader,
+.tagTableHeader {
 	background-color: #E8D2FF;
 }
 

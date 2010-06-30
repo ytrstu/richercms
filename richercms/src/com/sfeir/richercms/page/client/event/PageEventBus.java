@@ -12,6 +12,7 @@ import com.sfeir.richercms.page.client.interfaces.IImageManager;
 import com.sfeir.richercms.page.client.interfaces.IInformationPanel;
 import com.sfeir.richercms.page.client.interfaces.INavigationPanel;
 import com.sfeir.richercms.page.client.interfaces.IReorderPagePanel;
+import com.sfeir.richercms.page.client.interfaces.ITagManager;
 import com.sfeir.richercms.page.client.interfaces.ITinyMCEPanel;
 import com.sfeir.richercms.page.client.interfaces.IUserManager;
 import com.sfeir.richercms.page.client.interfaces.IValidationPanel;
@@ -20,6 +21,7 @@ import com.sfeir.richercms.page.client.presenter.InformationPanelPresenter;
 import com.sfeir.richercms.page.client.presenter.PagePresenter;
 import com.sfeir.richercms.page.client.presenter.NavigationPanelPresenter;
 import com.sfeir.richercms.page.client.presenter.ReorderPagePanelPresenter;
+import com.sfeir.richercms.page.client.presenter.TagManagerPresenter;
 import com.sfeir.richercms.page.client.presenter.TinyMCEPanelPresenter;
 import com.sfeir.richercms.page.client.presenter.UserManagerPresenter;
 import com.sfeir.richercms.page.client.presenter.ValidationPanelPresenter;
@@ -476,4 +478,10 @@ public interface PageEventBus extends EventBus {
 	 */
 	@Event( handlers =  NavigationPanelPresenter.class )
 	public void goInModification();
+	
+	@Event( handlers =  TagManagerPresenter.class )
+	public void startTagManager();
+	
+	@Event( handlers =  PagePresenter.class )
+	public void displayTagManager(ITagManager tagManager);
 }

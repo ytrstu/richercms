@@ -246,4 +246,13 @@ public interface IInformationPanel extends LazyView {
 	 * @param pseudo : pseudo of user who modify the page
 	 */
 	public void setlockInfo(String pseudo);
+	
+	/**
+	 * Add one tag in tagTable
+	 * @param id : tag id
+	 * @param tagName : tag name
+	 * @param shortLib : the associated shortLib
+	 * @param Description : tag description
+	 */
+	public void addTagLine(Long id, String tagName, String shortLib, String Description);
 }

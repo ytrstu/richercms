@@ -26,6 +26,7 @@ import com.sfeir.richercms.page.client.interfaces.IImageManager;
 import com.sfeir.richercms.page.client.interfaces.IInformationPanel;
 import com.sfeir.richercms.page.client.interfaces.INavigationPanel;
 import com.sfeir.richercms.page.client.interfaces.IReorderPagePanel;
+import com.sfeir.richercms.page.client.interfaces.ITagManager;
 import com.sfeir.richercms.page.client.interfaces.ITinyMCEPanel;
 import com.sfeir.richercms.page.client.interfaces.IUserManager;
 import com.sfeir.richercms.page.client.interfaces.IValidationPanel;
@@ -68,6 +69,7 @@ public class PageView extends ResizeComposite implements IdisplayPage {
 	private MenuItem imageTool;
 	private MenuItem pageTool;
 	private MenuItem userSettings;
+	private MenuItem tagSettings;
 
 	private final int height = Window.getClientHeight()-30;
 	private final int topPanelHeight = height/2 -120;
@@ -199,8 +201,9 @@ public class PageView extends ResizeComposite implements IdisplayPage {
 	    setting.setAnimationEnabled(true);
 	    this.userSettings = new MenuItem("User", new Command(){public void execute(){}});
 	    setting.addItem(this.userSettings);
+	    this.tagSettings = new MenuItem("Tag", new Command(){public void execute(){}});
+	    setting.addItem(this.tagSettings);
 	    setting.addItem("Site Languages", new Command(){public void execute(){}});
-	    setting.addItem("Reconfigure", new Command(){public void execute(){}});
 	    this.mainmenu.addItem(new MenuItem("Setting", setting));
 	    
 	    // Create the help menu
@@ -384,6 +387,10 @@ public class PageView extends ResizeComposite implements IdisplayPage {
 		this.userSettings.setCommand(cmd);
 	}
 	
+	public void setTagSettingsCommand(Command cmd) {
+		this.tagSettings.setCommand(cmd);
+	}
+	
 	public void displayImagePanel(IImageManager imageMPanel) {
 		this.rightNorthPanel.clear();
 		this.rightNorthPanel.add((ImageManager)imageMPanel);
@@ -392,6 +399,11 @@ public class PageView extends ResizeComposite implements IdisplayPage {
 	public void displayUserManager(IUserManager userManagerPanel) {
 		this.dispositionPanel.remove(this.leftRightSpliter);
 		this.dispositionPanel.add((UserManager)userManagerPanel);
+	}
+	
+	public void displayTagManager(ITagManager tagManager) {
+		this.dispositionPanel.remove(this.leftRightSpliter);
+		this.dispositionPanel.add((TagManager)tagManager);
 	}
 	
 	public void reDisplayPageView() {
@@ -429,4 +441,5 @@ public class PageView extends ResizeComposite implements IdisplayPage {
 		this.topBottomSpliter.addNorth(topPanel, this.topPanelHeight);
 		this.topBottomSpliter.add(bottomPanel);
 	}
+
 }

@@ -11,29 +11,33 @@ public class BeanTag  implements Serializable{
     private String tagName;
     private String shortLib;
     private String description;
+    private boolean isTextual;
    
 	public BeanTag() {
 		super();
 		this.tagName = "";
 		this.shortLib = "";
 		this.description = "";
+		this.isTextual = false;
 	}
     
-	public BeanTag(String tagName, String shortLib, String description) {
+	public BeanTag(String tagName, String shortLib, String description, boolean isTextual) {
 		super();
 		this.tagName = tagName;
 		this.shortLib = shortLib;
 		this.description = description;
+		this.isTextual = false;
 	}
 	
 	
 
-	public BeanTag(Long id, String tagName, String shortLib, String description) {
+	public BeanTag(Long id, String tagName, String shortLib, String description, boolean isTextual) {
 		super();
 		this.id = id;
 		this.tagName = tagName;
 		this.shortLib = shortLib;
 		this.description = description;
+		this.isTextual = false;
 	}
 
 	public Long getId() {
@@ -66,5 +70,13 @@ public class BeanTag  implements Serializable{
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public boolean isTextual() {
+		return isTextual;
+	}
+
+	public void setTextual(boolean isTextual) {
+		this.isTextual = isTextual;
 	}
 }

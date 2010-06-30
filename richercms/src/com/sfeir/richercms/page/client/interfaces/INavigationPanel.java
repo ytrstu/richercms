@@ -44,6 +44,10 @@ public interface INavigationPanel extends LazyView{
 	 */
 	IPopUpMenuBar getPopUpMenuBar ();
 	
+	/**
+	 * Set the root tree
+	 * @param root
+	 */
 	void setTree(TreeItem root);
 	
 	/**

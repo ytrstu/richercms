@@ -80,6 +80,12 @@ public interface IdisplayPage extends LazyView {
 	public void displayTagManager(ITagManager tagManager);
 	
 	/**
+	 * Load the TemplateManager's Panel into the dispositionPanel container (all screen)
+	 * @param templateManager
+	 */
+	public void displayTemplateManager(ITemplateManager templateManager);
+	
+	/**
 	 * Add a language in the listBox
 	 * @param name : the display name of the language 
 	 * @param key : the key, needed to retrive the page translation in the dataBase
@@ -136,6 +142,12 @@ public interface IdisplayPage extends LazyView {
 	 * Set the index of the languages listBox to the default value
 	 */
 	public void setIndexOfLgToDefault();
+	
+	/**
+	 * Set the display languages
+	 * @param index : language index in the list
+	 */
+	public void setLanguageListIndex(int index);
 	
 	/**
 	 * Disable the listBox containing language
@@ -200,6 +212,13 @@ public interface IdisplayPage extends LazyView {
 	 * @param cmd
 	 */
 	public void setTagSettingsCommand(Command cmd);
+	
+	/**
+	 * Add a specific command when the templateSettingsEntry is clicked
+	 * in the menuBar 
+	 * @param cmd
+	 */
+	public void setTemplateSettingsCommand(Command cmd);
 	
 	/**
 	 * Set the url of the logOut Anchor.

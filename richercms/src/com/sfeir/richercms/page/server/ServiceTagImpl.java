@@ -64,13 +64,15 @@ public class ServiceTagImpl extends RemoteServiceServlet implements TagService {
 		return new Tag(bean.getId(),
 				bean.getTagName(),
 				bean.getShortLib(),
-				bean.getDescription());
+				bean.getDescription(),
+				bean.isTextual());
 	}
 	
 	private BeanTag tagToBean(Tag tag){
 		return new BeanTag(tag.getId(),
 				tag.getTagName(),
 				tag.getShortLib(),
-				tag.getDescription());
+				tag.getDescription(),
+				tag.isTextual());
 	}
 }

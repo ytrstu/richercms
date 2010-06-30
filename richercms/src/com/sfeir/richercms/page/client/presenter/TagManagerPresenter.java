@@ -25,13 +25,15 @@ public class TagManagerPresenter extends LazyPresenter<ITagManager, PageEventBus
 			public void onClick(ClickEvent event) {
 				BeanTag bean = new BeanTag(view.getNewTagName(),
 						view.getNewShortLib(),
-						view.getNewDescription());
+						view.getNewDescription(),
+						view.isTextual());
 				rpcTag.addTag(bean, new AsyncCallback<Void>() {
 					public void onFailure(Throwable caught) {}
 					public void onSuccess(Void result) {
 						view.addLine(view.getNewTagName(),
 								view.getNewShortLib(), 
-								view.getNewDescription());
+								view.getNewDescription(),
+								view.isTextual());
 						view.clearAddNewTagTextBox();
 					}
 				});
@@ -52,7 +54,8 @@ public class TagManagerPresenter extends LazyPresenter<ITagManager, PageEventBus
 					
 					view.addLine(bean.getTagName(),
 							bean.getShortLib(),
-							bean.getDescription()).addClickHandler(new ClickHandler() {
+							bean.getDescription(),
+							bean.isTextual()).addClickHandler(new ClickHandler() {
 								public void onClick(ClickEvent event) {
 									deleteTag(bean.getId());
 								}

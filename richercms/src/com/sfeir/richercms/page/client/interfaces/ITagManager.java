@@ -14,9 +14,10 @@ public interface ITagManager extends LazyView {
 	 * @param tagName : Name of the tag.
 	 * @param shortLib : the short name of the tag
 	 * @param description : little description of the tag and his impact
+	 * @param isTextual : tag can be textual or not
 	 * @return the ClickHandlers on the DeleteBtn associate with a tag
 	 */
-	HasClickHandlers addLine(String tagName, String shortLib, String description);
+	HasClickHandlers addLine(String tagName, String shortLib, String description, boolean isTextual);
 	
 	/**
 	 * Handle clic on "add new tag" button.
@@ -41,6 +42,11 @@ public interface ITagManager extends LazyView {
 	 * @return value
 	 */
 	String getNewDescription();
+	
+	/**
+	 * @return true if the tag is textual, false either
+	 */
+	boolean isTextual();
 	
 	/**
 	 * Clear the tag table

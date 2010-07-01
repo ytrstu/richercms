@@ -48,6 +48,11 @@
   	</servlet>
   	
   	<servlet>
+    	<servlet-name>templateServiceServlet</servlet-name>
+    	<servlet-class>com.sfeir.richercms.page.server.ServiceTemplateImpl</servlet-class>
+  	</servlet>
+  	
+  	<servlet>
     	<servlet-name>uploadServlet</servlet-name>
     	<servlet-class>com.sfeir.richercms.page.server.FileUploadServlet</servlet-class>
   	</servlet>
@@ -107,6 +112,11 @@
 	<servlet-mapping>
   		<servlet-name>tagServiceServlet</servlet-name>
   		<url-pattern>/RicherCMS/tagService</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+  		<servlet-name>templateServiceServlet</servlet-name>
+  		<url-pattern>/RicherCMS/templateService</url-pattern>
 	</servlet-mapping>
 	
 	<servlet-mapping>

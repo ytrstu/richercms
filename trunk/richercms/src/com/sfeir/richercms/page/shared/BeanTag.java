@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 
 @SuppressWarnings("serial")
-public class BeanTag  implements Serializable{
+public class BeanTag  implements Serializable {
 
     private Long id;
     
@@ -26,7 +26,7 @@ public class BeanTag  implements Serializable{
 		this.tagName = tagName;
 		this.shortLib = shortLib;
 		this.description = description;
-		this.isTextual = false;
+		this.isTextual = isTextual;
 	}
 	
 	
@@ -37,7 +37,7 @@ public class BeanTag  implements Serializable{
 		this.tagName = tagName;
 		this.shortLib = shortLib;
 		this.description = description;
-		this.isTextual = false;
+		this.isTextual = isTextual;
 	}
 
 	public Long getId() {

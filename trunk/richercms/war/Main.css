@@ -299,5 +299,9 @@ td.datePickerMonth {
 .tinyMceContainer, .tinyMceContainer > div, .tinyMceContainer > div > div, .tinyMceContainer > div > div > div, .tinyMceContainer > div > div > div > div {
 	overflow: visible !important;
 }
+
+.informationPanel-Vertical-margin{
+	margin:10px;
+}
     
     

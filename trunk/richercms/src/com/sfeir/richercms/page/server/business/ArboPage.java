@@ -29,10 +29,16 @@ public class ArboPage {
 	
 	private Date creationDate;
 	
+	// One page Use One Template
+	@Indexed 
+	private Long templateId;
+
+	// One page Use Many tags and witch
+	// may be include in the specific Template
+	private List<Long> tagsId;
+	
 	@Indexed 
 	private Long idUserInModif;
-	
-	//TODO List<Long> idTag;
 	
 	public ArboPage() {
 		super();
@@ -42,57 +48,33 @@ public class ArboPage {
 		this.publicationFinish = new Date();
 		this.creationDate = new Date();
 		this.idUserInModif = new Long(-1);
+		this.templateId = new Long(-1);
+		this.tagsId = new ArrayList<Long>();
 	}
-	
-	public ArboPage(List<Key<TranslationPage>> translation) {
+
+	public ArboPage(List<Key<TranslationPage>> translation,
+			List<Long> idChildArboPage, Date publicationStart,
+			Date publicationFinish, Date creationDate, Long templateId,
+			List<Long> tagsId, Long idUserInModif) {
 		super();
-		this.idChildArboPage = new ArrayList<Long>();
 		this.translation = translation;
-		this.publicationStart = new Date();
-		this.publicationFinish = new Date();
-		this.creationDate = new Date();
-		this.idUserInModif = new Long(-1);
-	}
-	
-	public ArboPage(List<Key<TranslationPage>> translation, Date publicationStart, Date publicationFinish) {
-		super();
-		this.idChildArboPage = new ArrayList<Long>();
-		this.translation = translation;
+		this.idChildArboPage = idChildArboPage;
 		this.publicationStart = publicationStart;
 		this.publicationFinish = publicationFinish;
-		this.creationDate = new Date();
-		this.idUserInModif = new Long(-1);
+		this.creationDate = creationDate;
+		this.templateId = templateId;
+		this.tagsId = tagsId;
+		this.idUserInModif = idUserInModif;
 	}
 	
-	public ArboPage(List<Key<TranslationPage>> translation, List<Long> idChildArboPage) {
-		super();
-		this.idChildArboPage = idChildArboPage;
-		this.translation = translation;
-		this.publicationStart = new Date();
-		this.publicationFinish = new Date();
-		this.creationDate = new Date();
-		this.idUserInModif = new Long(-1);
-	}
-	
-	public ArboPage(List<Key<TranslationPage>> translation, List<Long> idChildArboPage,
-			Date publicationStart, Date publicationFinish) {
-		super();
-		this.idChildArboPage = idChildArboPage;
-		this.translation = translation;
+	public ArboPage(Long id,Date publicationStart, Date publicationFinish, Date creationDate, 
+			Long templateId, List<Long> tagsId, Long idUserInModif) {
+		this.id = id;
+		this.creationDate = creationDate;
 		this.publicationStart = publicationStart;
 		this.publicationFinish = publicationFinish;
-		this.creationDate = new Date();
-		this.idUserInModif = new Long(-1);
-	}
-	
-	public ArboPage(List<Key<TranslationPage>> translation, List<Long> idChildArboPage,
-			Date publicationStart, Date publicationFinish, Long idUserInModif) {
-		super();
-		this.idChildArboPage = idChildArboPage;
-		this.translation = translation;
-		this.publicationStart = publicationStart;
-		this.publicationFinish = publicationFinish;
-		this.creationDate = new Date();
+		this.templateId = templateId;
+		this.tagsId = tagsId;
 		this.idUserInModif = idUserInModif;
 	}
 
@@ -152,4 +134,19 @@ public class ArboPage {
 		this.idUserInModif = idUserInModif;
 	}
 
+	public Long getTemplateId() {
+		return this.templateId;
+	}
+
+	public void setTemplateId(Long templateId) {
+		this.templateId = templateId;
+	}
+
+	public List<Long> getTagsId() {
+		return this.tagsId;
+	}
+
+	public void setTagsId(List<Long> tagsId) {
+		this.tagsId = tagsId;
+	}
 }

@@ -21,6 +21,13 @@ public interface TagService extends RemoteService {
 	List<BeanTag> getAllTags();
 	
 	/**
+	 * Get many tags
+	 * @param tagids : list of tag's id
+	 * @return a list who containig required tags
+	 */
+	List<BeanTag> getTags(List<Long> tagids);
+	
+	/**
 	 * Get a specific tag
 	 * @param id : id of specific tag
 	 * @return corresponding BeanTag or null if not exist in datastore

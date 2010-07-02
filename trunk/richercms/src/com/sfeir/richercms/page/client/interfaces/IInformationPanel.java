@@ -1,7 +1,9 @@
 package com.sfeir.richercms.page.client.interfaces;
 
 import java.util.Date;
+import java.util.List;
 
+import com.google.gwt.event.dom.client.HasChangeHandlers;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.dom.client.HasFocusHandlers;
 import com.google.gwt.user.client.ui.Widget;
@@ -118,141 +120,163 @@ public interface IInformationPanel extends LazyView {
 	 * @param pageTitle : content of default translation
 	 * @param urlName : content of default translation
 	 */
-	public void setHelp(String browserTitle, String description, String keyWord, 
+	void setHelp(String browserTitle, String description, String keyWord, 
 			String pageTitle, String urlName);
 	
 	/**
 	 * Set the title of the InformationPanel
 	 * @param title : the new title
 	 */
-	public void setTitle(String title);
+	void setTitle(String title);
 	
 	/**
 	 * Get the title of the InformationPanel
 	 * @return the current title
 	 */
-	public String getTitle();
+	String getTitle();
 	
 	
 	/**
 	 * hide all widget used for display help
 	 */
-	public void hideAllHelpField();
+	void hideAllHelpField();
 	
 	/**
 	 * display once widget needed for help
 	 * @param number : the number associated to the position of the textBox who need helpDisplay
 	 * (0 to 4)
 	 */
-	public void showOneHelp(int number);
+	void showOneHelp(int number);
 	
 	/**
 	 * hide once widget needed for help
 	 * @param number : the number associated to the position of the textBox who need helpDisplay
 	 * (0 to 4)
 	 */
-	public void hideOneHelp(int number);
+	void hideOneHelp(int number);
 	
 	/**
 	 * Display a help field to say
 	 * Title is mandatory
 	 */
-	public void showRequiredTitle();
+	void showRequiredTitle();
 	
 	/**
 	 * Display a help field to say
 	 * Url is mandatory
 	 */
-	public void showRequiredUrl();
+	void showRequiredUrl();
 	
 	/**
 	 * hide the require field : to show to the user
 	 * which field is mandatory
 	 */
-	public void hideRequiredField();
+	void hideRequiredField();
 	
 	/**
 	 * Show message when a wrong character was used in url field
 	 */
-	public void showErrorInUrl();
+	void showErrorInUrl();
 	
 	/**
 	 * hide message when a all character are right in url field
 	 */
-	public void hideErrorInUrl();
+	void hideErrorInUrl();
 	
 	/**
 	 * handle focus event on the 0 of 4 textBox
 	 * @return Event
 	 */
-	public HasFocusHandlers getFocusOnTB0();
+	HasFocusHandlers getFocusOnTB0();
 	
 	/**
 	 * handle focus event on the 1 of 4 textBox
 	 * @return Event
 	 */
-	public HasFocusHandlers getFocusOnTB1();
+	HasFocusHandlers getFocusOnTB1();
 	
 	/**
 	 * handle focus event on the 2 of 4 textBox
 	 * @return Event
 	 */
-	public HasFocusHandlers getFocusOnTB2();
+	HasFocusHandlers getFocusOnTB2();
 	
 	/**
 	 * handle focus event on the 3 of 4 textBox
 	 * @return Event
 	 */
-	public HasFocusHandlers getFocusOnTB3();
+	HasFocusHandlers getFocusOnTB3();
 	
 	/**
 	 * handle focus event on the 4 of 4 textBox
 	 * @return Event
 	 */
-	public HasFocusHandlers getFocusOnTB4();
+	HasFocusHandlers getFocusOnTB4();
 	
 	/**
 	 * Enable the Translation help 
 	 */
-	public void enableHelp();
+	void enableHelp();
 	
 	/**
 	 * disable the Translation help 
 	 */
-	public void disableHelp();
+	void disableHelp();
 	
 	/**
 	 * Handle click event on one of the 5th helpsButton 
 	 * @param number : ID of the corresponding button : 0 to 4
 	 * @return
 	 */
-	public HasClickHandlers getclickBtnCpy(int number);
+	HasClickHandlers getclickBtnCpy(int number);
 	
 	/**
 	 * action after a click on the Helpbutton
 	 * copy the content of the help field in the texbox
 	 * @param number : ID of the corresponding help : 0 to 4
 	 */
-	public void cpyHelpInField(int number);
+	void cpyHelpInField(int number);
 	
 	/**
 	 * Return the MainConstants. Use this for use translationSystem
 	 * @return the MainConstants
 	 */
-	public PageConstants getConstants();
+	PageConstants getConstants();
 	
 	/**
 	 * Set the lock label with the pseudo of user
 	 * @param pseudo : pseudo of user who modify the page
 	 */
-	public void setlockInfo(String pseudo);
+	void setlockInfo(String pseudo);
 	
 	/**
 	 * Add one tag in tagTable
-	 * @param id : tag id
-	 * @param tagName : tag name
-	 * @param shortLib : the associated shortLib
-	 * @param Description : tag description
+	 * @param id
+	 * @param TagName
+	 * @param shortLib
+	 * @param description
+	 * @param textualTag
 	 */
-	public void addTagLine(Long id, String tagName, String shortLib, String Description);
+	void addTagLine(String id,String TagName,
+			String shortLib, String description, boolean textualTag );
+	
+	/**
+	 * 
+	 * @return
+	 */
+	List<Long> getSelectedTagsId();
+	
+	void clearTemplateList();
+	
+	void clearTagTable();
+	
+	HasChangeHandlers getTemplateLstSelection();
+	
+	String getSelectedTemplateId();
+	
+	void unCheckAllTags();
+	
+	void checktag(Long tagId);
+	
+	void addTemplateInList(String name, String id);
 }

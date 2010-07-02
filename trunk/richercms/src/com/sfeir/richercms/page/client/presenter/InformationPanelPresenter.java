@@ -3,6 +3,8 @@ package com.sfeir.richercms.page.client.presenter;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.FocusEvent;
@@ -14,10 +16,14 @@ import com.mvp4g.client.presenter.LazyPresenter;
 import com.sfeir.richercms.client.view.PopUpMessage;
 import com.sfeir.richercms.page.client.ArboPageServiceAsync;
 import com.sfeir.richercms.page.client.PageState;
+import com.sfeir.richercms.page.client.TagServiceAsync;
+import com.sfeir.richercms.page.client.TemplateServiceAsync;
 import com.sfeir.richercms.page.client.event.PageEventBus;
 import com.sfeir.richercms.page.client.interfaces.IInformationPanel;
 import com.sfeir.richercms.page.client.view.InformationPanel;
 import com.sfeir.richercms.page.shared.BeanArboPage;
+import com.sfeir.richercms.page.shared.BeanTag;
+import com.sfeir.richercms.page.shared.BeanTemplate;
 import com.sfeir.richercms.page.shared.BeanTranslationPage;
 
 
@@ -25,6 +31,8 @@ import com.sfeir.richercms.page.shared.BeanTranslationPage;
 public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, PageEventBus>{
 
 	private ArboPageServiceAsync rpcPage = null;
+	private TagServiceAsync rpcTag = null;
+	private TemplateServiceAsync rpcTemplate = null;
 	private BeanArboPage currentPage = null;
 	private int translationIndex = 0;
 	private int cpt = 0;
@@ -77,6 +85,12 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 			public void onFocus(FocusEvent event) {
 				view.showOneHelp(4);
 			};
+		});
+		
+		this.view.getTemplateLstSelection().addChangeHandler(new ChangeHandler() {
+			public void onChange(ChangeEvent event) {
+				fetchTagTable();
+			}
 		});
 		
 		for(this.cpt=0; this.cpt<5; this.cpt++){
@@ -199,6 +213,7 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 				view.deasabledWidgets();
 				currentPage = result;
 				displayArboPage(result);
+				fetchTemplateList();
 				eventBus.displayContent(result.getTranslation());
 			}
 			public void onFailure(Throwable caught) {
@@ -343,6 +358,47 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 			return false;
 		return true;
 	}
+	
+	/**
+	 * This function clear TemplateList and add
+	 * all template into the list (use an rpc call to take all template)
+	 */
+	private void fetchTemplateList() {
+		this.view.clearTemplateList();
+		this.rpcTemplate.getAllTemplate(new AsyncCallback<List<BeanTemplate>>() {
+			public void onFailure(Throwable caught) {
+			}
+			public void onSuccess(List<BeanTemplate> result) {
+				for(BeanTemplate template : result){
+					view.addTemplateInList(template.getName(), 
+							template.getId().toString());
+				}
+				fetchTagTable();
+			}
+		});
+	}
+	
+	/**
+	 * Clear the tag table and and all tag in it
+	 * (use an RPC call to take all tag)
+	 */
+	private void fetchTagTable(){
+		this.view.clearTagTable();
+		this.rpcTemplate.getTemplate(new Long(this.view.getSelectedTemplateId()),
+				new AsyncCallback<BeanTemplate>() {
+			public void onFailure(Throwable caught) {
+			}
+			public void onSuccess(BeanTemplate result) {
+				for(BeanTag tag : result.getAssociatedTags()){
+					view.addTagLine(tag.getId().toString(),
+							tag.getTagName(),
+							tag.getShortLib(),
+							tag.getDescription(),
+							tag.isTextual());
+				}
+			}
+		});
+	}
 
 	/**
 	 * used by the framework to instantiate rpcPage 
@@ -351,5 +407,23 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 	@InjectService
 	public void setPageService( ArboPageServiceAsync rpcPage ) {
 		this.rpcPage = rpcPage;
+	}
+	
+	/**
+	 * used by the framework to instantiate rpcTag
+	 * @param rpcTag
+	 */
+	@InjectService
+	public void setTagService( TagServiceAsync rpcTag ) {
+		this.rpcTag = rpcTag;
+	}
+	
+	/**
+	 * used by the framework to instantiate rpcTag
+	 * @param rpcTag
+	 */
+	@InjectService
+	public void setTemplateService( TemplateServiceAsync rpcTemplate ) {
+		this.rpcTemplate = rpcTemplate;
 	}
 }

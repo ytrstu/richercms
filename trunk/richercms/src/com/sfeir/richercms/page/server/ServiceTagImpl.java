@@ -2,6 +2,7 @@ package com.sfeir.richercms.page.server;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
@@ -29,6 +30,19 @@ public class ServiceTagImpl extends RemoteServiceServlet implements TagService {
 		}
 		
 		return lst;
+	}
+	
+	public List<BeanTag> getTags(List<Long> tagids){
+		ArrayList<BeanTag> beans = new ArrayList<BeanTag>();
+		
+		Objectify ofy = ObjectifyService.begin();
+		Map<Long,Tag> tags = ofy.get(Tag.class,tagids);
+		
+		for(Tag tag : tags.values()){
+			beans.add(this.tagToBean(tag));
+		}
+		
+		return beans;
 	}
 	
 	public BeanTag getTag(Long id) {

@@ -74,7 +74,7 @@ public class PageView extends ResizeComposite implements IdisplayPage {
 	private MenuItem templateSettings;
 
 	private final int height = Window.getClientHeight()-30;
-	private final int topPanelHeight = height/2 -120;
+	private final int topPanelHeight = height/2 -100;
 	
 	public PageView() {
 		super();

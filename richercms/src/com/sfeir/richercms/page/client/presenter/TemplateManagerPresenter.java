@@ -75,7 +75,7 @@ public class TemplateManagerPresenter extends LazyPresenter<ITemplateManager, Pa
 	}
 	
 	public void onStartTemplateManager() {
-		//fetch the template List and
+		//fetchTemplateList do : fetch the template List and
 		//call the fetchTagTable to synchronize RPC call
 		this.fetchTemplateList();
 		this.view.disableApplyTagBtn();

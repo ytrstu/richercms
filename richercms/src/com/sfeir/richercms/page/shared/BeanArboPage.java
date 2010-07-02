@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+
 @SuppressWarnings("serial")
 public class BeanArboPage implements Serializable{
 	
@@ -13,7 +14,9 @@ public class BeanArboPage implements Serializable{
 	private List<Long> idLinkedImages;
 	private Date publicationStart;
 	private Date publicationFinish;
-	private Date creationDate;
+	private Date creationDate; 
+	private Long TemplateId;
+	private List<Long> tagsId;
 	private Long idUserInModif;
 	
 	public BeanArboPage() {
@@ -83,6 +86,24 @@ public class BeanArboPage implements Serializable{
 		this.idUserInModif = null;
 	}
 	
+	
+	
+	public BeanArboPage(Long id, List<BeanTranslationPage> translation,
+			List<Long> idLinkedImages, Date publicationStart,
+			Date publicationFinish, Date creationDate, Long templateId,
+			List<Long> tagsId, Long idUserInModif) {
+		super();
+		this.id = id;
+		this.translation = translation;
+		this.idLinkedImages = idLinkedImages;
+		this.publicationStart = publicationStart;
+		this.publicationFinish = publicationFinish;
+		this.creationDate = creationDate;
+		this.TemplateId = templateId;
+		this.tagsId = tagsId;
+		this.idUserInModif = idUserInModif;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -137,5 +158,21 @@ public class BeanArboPage implements Serializable{
 
 	public void setIdUserInModif(Long idUserInModif) {
 		this.idUserInModif = idUserInModif;
+	}
+
+	public Long getTemplateId() {
+		return TemplateId;
+	}
+
+	public void setTemplateId(Long templateId) {
+		TemplateId = templateId;
+	}
+
+	public List<Long> getTagsId() {
+		return tagsId;
+	}
+
+	public void setTagsId(List<Long> tagsId) {
+		this.tagsId = tagsId;
 	}
 }

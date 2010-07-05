@@ -344,10 +344,7 @@ public class PagePresenter extends LazyPresenter<IdisplayPage, PageEventBus> {
 	}
 
 	public void onSendInfo(BeanArboPage information) {
-		this.editingPage = new BeanArboPage();
-		this.editingPage.setPublicationStart(information.getPublicationStart());
-		this.editingPage.setPublicationFinish(information.getPublicationFinish());
-		this.editingPage.setTranslation(information.getTranslation());
+		this.editingPage = information;
 		this.eventBus.callContent();
 	}
 	

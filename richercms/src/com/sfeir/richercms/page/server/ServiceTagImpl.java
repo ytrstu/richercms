@@ -6,11 +6,14 @@ import java.util.Map;
 
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.Query;
 import com.sfeir.richercms.page.client.TagService;
+import com.sfeir.richercms.page.server.business.ArboPage;
 import com.sfeir.richercms.page.server.business.Tag;
+import com.sfeir.richercms.page.server.business.Template;
 import com.sfeir.richercms.page.shared.BeanTag;
 
 @SuppressWarnings("serial")
@@ -18,6 +21,8 @@ public class ServiceTagImpl extends RemoteServiceServlet implements TagService {
 
 	static {
 		ObjectifyService.register(Tag.class);
+		ObjectifyService.register(Template.class);
+		ObjectifyService.register(ArboPage.class);
 	}
 	
 	public List<BeanTag> getAllTags() {
@@ -57,9 +62,24 @@ public class ServiceTagImpl extends RemoteServiceServlet implements TagService {
 	public void deleteTag(Long id) {
 		Objectify ofy = ObjectifyService.begin();
 		Tag tag = ofy.get(Tag.class, id);
-		
-		if(tag!= null)
+				
+		if(tag!= null) {
+			//delete tag in all template who associate this tag
+			Query<Template> templates = ofy.query(Template.class).filter("associatedTags ", tag);
+			for(Template template : templates){
+				template.getAssociatedTags().remove(new Key<Tag>(Tag.class, id));
+				ofy.put(template);
+			}
+			
+			//delete tag in all arboPage who associate this tag
+			Query<ArboPage> pages = ofy.query(ArboPage.class).filter("tagsId ", id);
+			for(ArboPage page : pages){
+				page.getTagsId().remove(id);
+				ofy.put(page);
+			}
+			//finally delete the tag
 			ofy.delete(tag);
+		}
 	}
 	
 	public void addTag(BeanTag bean){

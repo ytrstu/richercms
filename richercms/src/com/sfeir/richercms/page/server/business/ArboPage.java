@@ -35,6 +35,7 @@ public class ArboPage {
 
 	// One page Use Many tags and witch
 	// may be include in the specific Template
+	@Indexed 
 	private List<Long> tagsId;
 	
 	@Indexed 
@@ -51,6 +52,20 @@ public class ArboPage {
 		this.templateId = new Long(-1);
 		this.tagsId = new ArrayList<Long>();
 	}
+	
+	public ArboPage(Long id, Date publicationStart,Date publicationFinish,
+			Date creationDate,Long templateId,List<Long> tagsId) {
+		super();
+		this.id = id;
+		this.translation = new ArrayList<Key<TranslationPage>>();
+		this.idChildArboPage = new ArrayList<Long>();
+		this.publicationStart = publicationStart;
+		this.publicationFinish = publicationFinish;
+		this.creationDate = creationDate;
+		this.idUserInModif = new Long(-1);
+		this.templateId = templateId;
+		this.tagsId = tagsId;
+	}
 
 	public ArboPage(List<Key<TranslationPage>> translation,
 			List<Long> idChildArboPage, Date publicationStart,
@@ -62,17 +77,6 @@ public class ArboPage {
 		this.publicationStart = publicationStart;
 		this.publicationFinish = publicationFinish;
 		this.creationDate = creationDate;
-		this.templateId = templateId;
-		this.tagsId = tagsId;
-		this.idUserInModif = idUserInModif;
-	}
-	
-	public ArboPage(Long id,Date publicationStart, Date publicationFinish, Date creationDate, 
-			Long templateId, List<Long> tagsId, Long idUserInModif) {
-		this.id = id;
-		this.creationDate = creationDate;
-		this.publicationStart = publicationStart;
-		this.publicationFinish = publicationFinish;
 		this.templateId = templateId;
 		this.tagsId = tagsId;
 		this.idUserInModif = idUserInModif;

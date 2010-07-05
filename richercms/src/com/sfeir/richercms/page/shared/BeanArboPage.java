@@ -11,7 +11,6 @@ public class BeanArboPage implements Serializable{
 	
     private Long id;
 	List<BeanTranslationPage> translation;
-	private List<Long> idLinkedImages;
 	private Date publicationStart;
 	private Date publicationFinish;
 	private Date creationDate; 
@@ -23,70 +22,39 @@ public class BeanArboPage implements Serializable{
 		super();
 		this.id = null;
 		this.translation = new ArrayList<BeanTranslationPage>();
-		this.idLinkedImages = new ArrayList<Long>();
 		this.publicationFinish = new Date();
 		this.publicationStart = new Date();
 		this.creationDate = new Date();
 		this.idUserInModif = null;
+		this.tagsId = new ArrayList<Long>();
+		this.TemplateId = null;
 	}
 	
 	public BeanArboPage(Long id) {
 		super();
 		this.id = id;
 		this.translation = new ArrayList<BeanTranslationPage>();
-		this.idLinkedImages = new ArrayList<Long>();
 		this.publicationFinish = new Date();
 		this.publicationStart = new Date();
 		this.creationDate = new Date();
 		this.idUserInModif = null;
+		this.tagsId = new ArrayList<Long>();
+		this.TemplateId = null;
 	}
 	
-	public BeanArboPage(Long id, Date publicationStart, Date publicationFinish, Date creationDate) {
+	public BeanArboPage(Long id, Date publicationStart, Date publicationFinish, Date creationDate,
+			Long templateId, List<Long> tagList) {
 		super();
 		this.id = id;
 		this.translation = new ArrayList<BeanTranslationPage>();
-		this.idLinkedImages = new ArrayList<Long>();
 		this.publicationFinish = publicationFinish;
 		this.publicationStart = publicationStart;
 		this.creationDate = creationDate;
 		this.idUserInModif = null;
+		this.TemplateId = templateId;
+		this.tagsId = tagList;
 	}
-	
-	public BeanArboPage(List<BeanTranslationPage> translation) {
-		super();
-		this.id = null;
-		this.translation = translation;
-		this.idLinkedImages = new ArrayList<Long>();
-		this.publicationFinish = new Date();
-		this.publicationStart = new Date();
-		this.creationDate = new Date();
-		this.idUserInModif = null;
-	}
-	
-	public BeanArboPage(Long id, List<BeanTranslationPage> translation) {
-		super();
-		this.id = id;
-		this.translation = translation;
-		this.idLinkedImages = new ArrayList<Long>();
-		this.publicationFinish = new Date();
-		this.publicationStart = new Date();
-		this.creationDate = new Date();
-		this.idUserInModif = null;
-	}
-	
-	public BeanArboPage(Long id, List<BeanTranslationPage> translation,
-			Date publicationStart, Date publicationFinish) {
-		super();
-		this.id = id;
-		this.translation = translation;
-		this.idLinkedImages = new ArrayList<Long>();
-		this.publicationFinish = publicationFinish;
-		this.publicationStart = publicationStart;
-		this.creationDate = new Date();
-		this.idUserInModif = null;
-	}
-	
-	
+
 	
 	public BeanArboPage(Long id, List<BeanTranslationPage> translation,
 			List<Long> idLinkedImages, Date publicationStart,
@@ -95,13 +63,27 @@ public class BeanArboPage implements Serializable{
 		super();
 		this.id = id;
 		this.translation = translation;
-		this.idLinkedImages = idLinkedImages;
 		this.publicationStart = publicationStart;
 		this.publicationFinish = publicationFinish;
 		this.creationDate = creationDate;
 		this.TemplateId = templateId;
 		this.tagsId = tagsId;
 		this.idUserInModif = idUserInModif;
+	}
+	
+	public BeanArboPage(Date publicationStart, Date publicationFinish,
+			List<BeanTranslationPage> translation) {
+		
+		super();
+		this.id = null;
+		this.translation = translation;
+		this.publicationStart = publicationStart;
+		this.publicationFinish = publicationFinish;
+		this.creationDate = new Date();
+		this.TemplateId = null;
+		this.tagsId = new ArrayList<Long>();
+		this.TemplateId = null;
+		this.idUserInModif = null;
 	}
 
 	public Long getId() {
@@ -142,14 +124,6 @@ public class BeanArboPage implements Serializable{
 
 	public void setCreationDate(Date creationDate) {
 		this.creationDate = creationDate;
-	}
-
-	public List<Long> getIdLinkedImages() {
-		return idLinkedImages;
-	}
-
-	public void setIdLinkedImages(List<Long> idLinkedImages) {
-		this.idLinkedImages = idLinkedImages;
 	}
 
 	public Long getIdUserInModif() {

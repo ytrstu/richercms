@@ -9,6 +9,7 @@ import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.Query;
 import com.sfeir.richercms.page.client.TemplateService;
+import com.sfeir.richercms.page.server.business.ArboPage;
 import com.sfeir.richercms.page.server.business.Tag;
 import com.sfeir.richercms.page.server.business.Template;
 import com.sfeir.richercms.page.shared.BeanTag;
@@ -20,6 +21,7 @@ public class ServiceTemplateImpl extends RemoteServiceServlet implements Templat
 	static {
         ObjectifyService.register(Template.class);
         ObjectifyService.register(Tag.class);
+        ObjectifyService.register(ArboPage.class);
 	}
 
 	public Long addTemplate(BeanTemplate bean) {
@@ -71,11 +73,30 @@ public class ServiceTemplateImpl extends RemoteServiceServlet implements Templat
 		ofy.put(template);
 	}
 	
+	public void updateTemplate(Long id, String name, String description) {
+		Objectify ofy = ObjectifyService.begin();
+		Template template = ofy.get(Template.class, id);
+		if(template != null){
+			template.setName(name);
+			template.setDescription(description);
+			ofy.put(template);
+		}
+	}
+	
 	public void deleteTemplate(Long id) {
 		Objectify ofy = ObjectifyService.begin();
 		Template template = ofy.get(Template.class, id);
-		if(template != null)
+		if(template != null){
+			
+			//delete template in all arboPage who associate this template
+			Query<ArboPage> pages = ofy.query(ArboPage.class).filter("templateId ", id);
+			for(ArboPage page : pages){
+				page.setTemplateId(null);
+				page.getTagsId().clear();
+				ofy.put(page);
+			}
 			ofy.delete(template);
+		}
 	}
 	
 	private Template BeanToArboPage(BeanTemplate bTP){

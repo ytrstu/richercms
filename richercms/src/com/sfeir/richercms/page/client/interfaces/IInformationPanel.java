@@ -130,6 +130,13 @@ public interface IInformationPanel extends LazyView {
 	void setTitle(String title);
 	
 	/**
+	 * Select the required template in the list.
+	 * id it doesn't extist, the first is selected by default
+	 * @param id : template's id
+	 */
+	void selectTemplate(String id);
+	
+	/**
 	 * Get the title of the InformationPanel
 	 * @return the current title
 	 */

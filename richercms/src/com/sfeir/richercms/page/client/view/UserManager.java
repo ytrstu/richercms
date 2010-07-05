@@ -13,7 +13,6 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.LayoutPanel;
-import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.ResizeComposite;
 import com.google.gwt.user.client.ui.ScrollPanel;
@@ -124,7 +123,9 @@ public class UserManager  extends ResizeComposite implements IUserManager {
 		this.currentLockedPage = new VerticalPanel();
 		this.currentAdminPanel = new VerticalPanel();
 		
-		PushButton btnDel = new PushButton( new Image("tab_images/Delete-icon.png"));
+		Image btnDel = new Image("tab_images/trans.png");
+		btnDel.addStyleName("deleteStyle");
+		
 		int numRow = this.userTable.getRowCount();
 		Label labelState = new Label(state);
 		

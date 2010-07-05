@@ -303,5 +303,22 @@ td.datePickerMonth {
 .informationPanel-Vertical-margin{
 	margin:10px;
 }
+
+.deleteStyle {
+	cursor: pointer;
+	background : url("/tab_images/Delete-icon.png"); 
+}
+
+.modifyStyle {
+	cursor: pointer;
+	background : url("/tab_images/editBtn.png"); 
+}
+
+.addStyle {
+	cursor: pointer;
+	background : url("/tab_images/addBtn.png"); 
+}
+
+
     
     

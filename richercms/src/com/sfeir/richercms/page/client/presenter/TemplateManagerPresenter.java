@@ -37,21 +37,52 @@ public class TemplateManagerPresenter extends LazyPresenter<ITemplateManager, Pa
 				view.showPopUpAddTemplate();
 			}
 		});
+		
+		this.view.getBtnDelClick().addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				if(view.getSelectedTemplateId() != null) {
+					eventBus.addWaitLinePopUp("Suppression en cours");
+					rpcTemplate.deleteTemplate(new Long(view.getSelectedTemplateId()), 
+							new AsyncCallback<Void>() {
+						
+						public void onFailure(Throwable caught) {
+							eventBus.addSuccessPopUp("Suppression réussi");
+							eventBus.hideInformationPopUp();
+						}
+						public void onSuccess(Void result) {
+							eventBus.addErrorLinePopUp("Suppression impossible");
+						}
+					});
+				}
+			}
+		});
+		
+		this.view.getBtnModifyClick().addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				if(view.getSelectedTemplateId() != null) {
+					if(addOrModifyTemplate(false))//modify template if its possible
+						view.hidePopUpAddTemplate();
+				}
+			}
+		});
+		
 		this.view.getPopUpBtnCancel().addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				view.hidePopUpAddTemplate();
 			}
 		});
+		
 		this.view.getPopUpBtnOk().addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				if(addNewTemplate())//add template if its possible
+				if(addOrModifyTemplate(true))//add template if its possible
 					view.hidePopUpAddTemplate();
 			}
 		});
+		
 		this.view.getPopUpKbEvent().addKeyPressHandler(new KeyPressHandler() {
 			public void onKeyPress(KeyPressEvent event) {
 				if(event.getNativeEvent().getKeyCode() == KeyCodes.KEY_ENTER) {
-					if(addNewTemplate())//add template if its possible
+					if(addOrModifyTemplate(true))//add template if its possible
 						view.hidePopUpAddTemplate();// hide popUp only if template are added
 				}else if (event.getNativeEvent().getKeyCode() == KeyCodes.KEY_ESCAPE){
 					view.hidePopUpAddTemplate();
@@ -83,11 +114,11 @@ public class TemplateManagerPresenter extends LazyPresenter<ITemplateManager, Pa
 	}
 	
 	/**
-	 * Take information in the popup to create the new tempalte
+	 * Take information in the popup and create or modify the template
 	 * and add it into the list
 	 * @return true if add was possible, false either
 	 */
-	private boolean addNewTemplate() {
+	private boolean addOrModifyTemplate(boolean add) {
 		
 		if(this.view.getPopUpNewTempName().length() == 0) {
 			PopUpMessage p = new PopUpMessage("Le nom du template ne peut être vide !");
@@ -97,14 +128,26 @@ public class TemplateManagerPresenter extends LazyPresenter<ITemplateManager, Pa
 			BeanTemplate bTP = new BeanTemplate();
 			bTP.setName(this.view.getPopUpNewTempName());
 			bTP.setDescription(this.view.getPopUpNewTempDesc());
-			this.rpcTemplate.addTemplate(bTP, new AsyncCallback<Long>() {
-				public void onSuccess(Long result) {
-					view.addTemplateInList(view.getPopUpNewTempName(), 
-							result.toString());
-				}
-				public void onFailure(Throwable caught) {
-				}
-			});
+			if(add)
+				this.rpcTemplate.addTemplate(bTP, new AsyncCallback<Long>() {
+					public void onSuccess(Long result) {
+						view.addTemplateInList(view.getPopUpNewTempName(), 
+								result.toString());
+					}
+					public void onFailure(Throwable caught) {
+					}
+				});
+			else
+				this.rpcTemplate.updateTemplate(new Long(this.view.getSelectedTemplateId()),
+												this.view.getPopUpNewTempName(), 
+												this.view.getPopUpNewTempDesc(), 
+												new AsyncCallback<Void>() {
+					public void onSuccess(Void result) {
+						//view.addTemplateInList(view.getPopUpNewTempName(), 
+								//result.toString());
+					}
+					public void onFailure(Throwable caught) {}
+				});
 			return true;
 		}
 	}

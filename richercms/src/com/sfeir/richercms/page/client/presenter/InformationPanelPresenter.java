@@ -16,7 +16,6 @@ import com.mvp4g.client.presenter.LazyPresenter;
 import com.sfeir.richercms.client.view.PopUpMessage;
 import com.sfeir.richercms.page.client.ArboPageServiceAsync;
 import com.sfeir.richercms.page.client.PageState;
-import com.sfeir.richercms.page.client.TagServiceAsync;
 import com.sfeir.richercms.page.client.TemplateServiceAsync;
 import com.sfeir.richercms.page.client.event.PageEventBus;
 import com.sfeir.richercms.page.client.interfaces.IInformationPanel;
@@ -31,7 +30,6 @@ import com.sfeir.richercms.page.shared.BeanTranslationPage;
 public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, PageEventBus>{
 
 	private ArboPageServiceAsync rpcPage = null;
-	private TagServiceAsync rpcTag = null;
 	private TemplateServiceAsync rpcTemplate = null;
 	private BeanArboPage currentPage = null;
 	private int translationIndex = 0;
@@ -111,7 +109,7 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 	 */
 	@SuppressWarnings("unused")
 	public BeanArboPage addInformationInPage() {
-		BeanArboPage nBaP = new BeanArboPage();
+		
 		List<BeanTranslationPage> lst = null;
 		BeanTranslationPage newTranslation = new BeanTranslationPage();
 		
@@ -137,12 +135,18 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 		newTranslation.setDescription(view.getDescription());
 		newTranslation.setKeyWord(view.getKeyWord());
 		newTranslation.setPageTitle(view.getPageTitle());
-		newTranslation.setUrlName(view.getUrlName());
-		nBaP.setPublicationStart(view.getPublicationStart());
-		nBaP.setPublicationFinish(view.getPublicationFinish());
+		newTranslation.setUrlName(view.getUrlName());	
 		
 		lst.set(this.translationIndex, newTranslation);
-		nBaP.setTranslation(lst);
+		BeanArboPage nBaP = new BeanArboPage(view.getPublicationStart(),
+				view.getPublicationFinish(),
+				lst);
+		
+		// tag Handle
+		if(view.getSelectedTemplateId() != null) {
+			nBaP.setTemplateId(new Long(view.getSelectedTemplateId()));
+		nBaP.setTagsId(view.getSelectedTagsId());
+		}
 		
 		return nBaP;
 	}
@@ -229,6 +233,7 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 				view.deasabledWidgets();
 				currentPage = result;
 				displayArboPage(result);
+				fetchTemplateList();
 				eventBus.displayContent(result.getTranslation());
 			}
 			public void onFailure(Throwable caught) {
@@ -272,8 +277,7 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 	}
 	
 	public void onCallInfo() {
-		if(testField()){
-		
+		if(testField()) {
 			this.eventBus.showInformationPopUp();
 			//need the current state to restore them later
 			PageState currentState = this.state;
@@ -362,6 +366,7 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 	/**
 	 * This function clear TemplateList and add
 	 * all template into the list (use an rpc call to take all template)
+	 * function call
 	 */
 	private void fetchTemplateList() {
 		this.view.clearTemplateList();
@@ -373,6 +378,9 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 					view.addTemplateInList(template.getName(), 
 							template.getId().toString());
 				}
+				//select the good template
+				if(currentPage.getTemplateId()!=null)
+					view.selectTemplate(currentPage.getTemplateId().toString());
 				fetchTagTable();
 			}
 		});
@@ -384,20 +392,34 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 	 */
 	private void fetchTagTable(){
 		this.view.clearTagTable();
-		this.rpcTemplate.getTemplate(new Long(this.view.getSelectedTemplateId()),
-				new AsyncCallback<BeanTemplate>() {
-			public void onFailure(Throwable caught) {
-			}
-			public void onSuccess(BeanTemplate result) {
-				for(BeanTag tag : result.getAssociatedTags()){
-					view.addTagLine(tag.getId().toString(),
-							tag.getTagName(),
-							tag.getShortLib(),
-							tag.getDescription(),
-							tag.isTextual());
+		//if template != null (null => any template available
+		if(this.view.getSelectedTemplateId()!= null){
+			this.rpcTemplate.getTemplate(new Long(this.view.getSelectedTemplateId()),
+					new AsyncCallback<BeanTemplate>() {
+				public void onFailure(Throwable caught) {}
+				public void onSuccess(BeanTemplate result) {
+					for(BeanTag tag : result.getAssociatedTags()){
+						view.addTagLine(tag.getId().toString(),
+								tag.getTagName(),
+								tag.getShortLib(),
+								tag.getDescription(),
+								tag.isTextual());
+					}
+					checkTag(); //check tag if its necessary
 				}
+			});
+		}
+	}
+	
+	private void checkTag() {
+		
+		if(this.currentPage.getTemplateId()!= null && 
+			this.currentPage.getTemplateId().equals(new Long(view.getSelectedTemplateId())))
+			for (Long tagId : this.currentPage.getTagsId()){
+				this.view.checktag(tagId);
 			}
-		});
+		else
+			this.view.unCheckAllTags();
 	}
 
 	/**
@@ -407,15 +429,6 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 	@InjectService
 	public void setPageService( ArboPageServiceAsync rpcPage ) {
 		this.rpcPage = rpcPage;
-	}
-	
-	/**
-	 * used by the framework to instantiate rpcTag
-	 * @param rpcTag
-	 */
-	@InjectService
-	public void setTagService( TagServiceAsync rpcTag ) {
-		this.rpcTag = rpcTag;
 	}
 	
 	/**

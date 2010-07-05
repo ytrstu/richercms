@@ -7,12 +7,12 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.LayoutPanel;
-import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.ResizeComposite;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TextArea;
@@ -80,7 +80,7 @@ public class TagManager extends ResizeComposite implements ITagManager{
 		this.tagTable.setText(0, 1, "Libellé court");
 		this.tagTable.setText(0, 2, "Description");
 		this.tagTable.setText(0, 3, "tag textuel");
-		this.tagTable.setText(0, 4, "Supression");
+		this.tagTable.setText(0, 4, "Action");
 	}
 	
 	/**
@@ -131,13 +131,21 @@ public class TagManager extends ResizeComposite implements ITagManager{
 	public HasClickHandlers addLine(String tagName, String shortLib,
 			String description, boolean isTextual) {
 		
-		PushButton btnDel = new PushButton( new Image("tab_images/Delete-icon.png"));
+		Image btnDel = new Image("tab_images/trans.png");
+		btnDel.addStyleName("deleteStyle");
+		Image btnModify = new Image("tab_images/trans.png");
+		btnModify.addStyleName("modifyStyle");
+		
+		FlowPanel btnPanel = new FlowPanel();
+		btnPanel.add(btnModify);
+		btnPanel.add(btnDel);
+		
 		int numRow = this.tagTable.getRowCount();
 		
 		this.tagTable.setText(numRow, 0, tagName);
 		this.tagTable.setText(numRow, 1, shortLib);
 		this.tagTable.setText(numRow, 2, description);
-		this.tagTable.setWidget(numRow, 4, btnDel);
+		this.tagTable.setWidget(numRow, 4, btnPanel);
 		
 		if(isTextual)
 			this.tagTable.setText(numRow, 3, "oui");

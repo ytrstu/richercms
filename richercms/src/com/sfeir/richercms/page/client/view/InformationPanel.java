@@ -244,9 +244,8 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 		
 	}
 	
-	private void createTagPanel(){
+	private void createTagPanel() {
 
-		
 		//tag Selection
 		Label tagtitle = new Label("tag possible pour ce template");
 		tagtitle.setStyleName("informationTitle");
@@ -334,8 +333,10 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 	}
 	
 	public String getSelectedTemplateId() {
-		return this.listTemplate.getValue(
-				this.listTemplate.getSelectedIndex());
+		if(this.listTemplate.getItemCount() != 0)
+			return this.listTemplate.getValue(
+					this.listTemplate.getSelectedIndex());
+		return null;
 	}
 	
 	public void unCheckAllTags() {
@@ -575,5 +576,16 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 	
 	public PageConstants getConstants() {
 		return this.constants;
+	}
+	
+	public void selectTemplate(String id){
+		int nbTemplate = this.listTemplate.getItemCount();
+		
+		for(int i = 0 ; i< nbTemplate; i++){
+			if(this.listTemplate.getValue(i).equals(id)){
+				this.listTemplate.setSelectedIndex(i);
+				break;
+			}
+		}
 	}
 }

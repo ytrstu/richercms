@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Cached;
 import com.googlecode.objectify.annotation.Entity;
+import com.googlecode.objectify.annotation.Indexed;
 import com.googlecode.objectify.annotation.Unindexed;
 
 @Cached
@@ -17,6 +18,7 @@ public class Template {
 
 	@Id
     private Long id;
+	@Indexed
 	private List<Key<Tag>> associatedTags;
 	private String name;
 	private String description;

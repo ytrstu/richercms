@@ -155,16 +155,23 @@ public class ServiceArboPageImpl  extends RemoteServiceServlet implements ArboPa
 	
 	public void updateArboPage(BeanArboPage bean) {
 		Objectify ofy = ObjectifyService.begin();
-		ArboPage parentPage = ofy.get(ArboPage.class, bean.getId());
-		parentPage.getTranslation().clear();
+		ArboPage page = ofy.get(ArboPage.class, bean.getId());
+		page.getTranslation().clear();
 		
 		for(BeanTranslationPage trans : bean.getTranslation()) {
 				TranslationPage tP = this.BeanToTranslationPage(trans);
 				ofy.put(tP);
 				Key<TranslationPage> kTp = new Key<TranslationPage>(TranslationPage.class, tP.getId());
-				parentPage.getTranslation().add(kTp);
+				page.getTranslation().add(kTp);
 		}
-		ofy.put(parentPage);
+		
+		//modification on the page
+		page.setPublicationStart(bean.getPublicationStart());
+		page.setPublicationFinish(bean.getPublicationFinish());
+		page.setTemplateId(bean.getTemplateId());
+		page.setTagsId(bean.getTagsId());
+		
+		ofy.put(page);
 	}
 	
 	public BeanArboPage getLastChildAdded(Long parentId){
@@ -286,8 +293,12 @@ public class ServiceArboPageImpl  extends RemoteServiceServlet implements ArboPa
 	
 	public BeanArboPage arboPageToBean(ArboPage ap){
 		Objectify ofy = ObjectifyService.begin();
-		BeanArboPage bap = new BeanArboPage(ap.getId(),ap.getPublicationStart(), 
-				ap.getPublicationFinish(), ap.getCreationDate());
+		BeanArboPage bap = new BeanArboPage(ap.getId(),
+											ap.getPublicationStart(), 
+											ap.getPublicationFinish(),
+											ap.getCreationDate(),
+											ap.getTemplateId(),
+											ap.getTagsId());
 		
 		//if IdUserInModif == -1 we return null
 		if(ap.getIdUserInModif().intValue() != -1)
@@ -315,16 +326,25 @@ public class ServiceArboPageImpl  extends RemoteServiceServlet implements ArboPa
 	}
 	
 	public BeanTranslationPage translationPageToBean(TranslationPage tp) {
-		return new BeanTranslationPage(tp.getId(), tp.getBrowserTitle(),tp.getPageTitle(), tp.getUrlName(),
-				 tp.getDescription(), tp.getKeyWord(), tp.getContent().getValue());
+		return new BeanTranslationPage(tp.getId(), 
+				tp.getBrowserTitle(),
+				tp.getPageTitle(), 
+				tp.getUrlName(),
+				tp.getDescription(), 
+				tp.getKeyWord(), 
+				tp.getContent().getValue());
 	}
 	
 
 	public ArboPage BeanToArboPage(BeanArboPage bAP){
 		Objectify ofy = ObjectifyService.begin();
-		ArboPage ap = new ArboPage();
-		ap.setPublicationStart(bAP.getPublicationStart());
-		ap.setPublicationFinish(bAP.getPublicationFinish());
+		ArboPage ap = new ArboPage(bAP.getId(),
+								   bAP.getPublicationStart(),
+								   bAP.getPublicationFinish(),
+								   bAP.getCreationDate(),
+								   bAP.getTemplateId(),
+								   bAP.getTagsId());
+		
 		ArrayList<Key<TranslationPage>> lst = new ArrayList<Key<TranslationPage>>();
 		
 		for(BeanTranslationPage bTp : bAP.getTranslation()){

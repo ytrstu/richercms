@@ -21,6 +21,20 @@ public interface ITemplateManager  extends LazyView {
 	HasClickHandlers getBtnAddClick();
 	
 	/**
+	 * Handle clickEvent on the delete
+	 * selected template button
+	 * @return Event
+	 */
+	HasClickHandlers getBtnDelClick();
+	
+	/**
+	 * Handle clickEvent on the modify
+	 * selected template button
+	 * @return Event
+	 */
+	HasClickHandlers getBtnModifyClick();
+	
+	/**
 	 * Handle ClickEvent on the tag modification apply button
 	 * @return Event
 	 */

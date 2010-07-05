@@ -15,6 +15,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.ListBox;
@@ -30,7 +31,9 @@ public class TemplateManager extends ResizeComposite implements ITemplateManager
 	private DockLayoutPanel mainContainer;
 	private Button applyTag;
 	private ListBox listTemplate;
-	private Button addTemplate;
+	private Image addTemplate;
+	private Image deleteTemplate;
+	private Image modifyTemplate;
 	private FlexTable tagTable;
 	private PopUpAddTemplate popUpAddTemplate;
 	private HashMap<Long,CheckBox> selectedTags; // idTag, associated CheckBox
@@ -59,7 +62,16 @@ public class TemplateManager extends ResizeComposite implements ITemplateManager
 		//template selection
 		Label listTitle = new Label("template existant : ");
 		this.listTemplate = new ListBox();
-		this.addTemplate = new Button("add");
+		this.addTemplate = new Image("tab_images/trans.png");
+		this.addTemplate.setTitle("Ajouter un nouveau template");
+		this.addTemplate.addStyleName("addStyle");
+		this.deleteTemplate = new Image("tab_images/trans.png");
+		this.deleteTemplate.setTitle("Supprimer le template sélectioné");
+		this.deleteTemplate.addStyleName("deleteStyle");
+		this.modifyTemplate = new Image("tab_images/trans.png");
+		this.modifyTemplate.setTitle("modifier le template sélectioné");
+		this.modifyTemplate.addStyleName("modifyStyle");
+		
 		LayoutPanel templateContainer = new LayoutPanel();
 		templateContainer.add(listTitle);
 		templateContainer.setWidgetLeftWidth(listTitle, 0, Unit.PX, 120, Unit.PX);
@@ -68,8 +80,14 @@ public class TemplateManager extends ResizeComposite implements ITemplateManager
 		templateContainer.setWidgetLeftWidth(this.listTemplate, 120, Unit.PX, 120, Unit.PX);
 		templateContainer.setWidgetVerticalPosition(this.listTemplate, Alignment.BEGIN);
 		templateContainer.add(this.addTemplate);
-		templateContainer.setWidgetLeftWidth(this.addTemplate, 240, Unit.PX, 70, Unit.PX);
+		templateContainer.setWidgetLeftWidth(this.addTemplate, 240, Unit.PX, 22, Unit.PX);
 		templateContainer.setWidgetVerticalPosition(this.addTemplate, Alignment.BEGIN);
+		templateContainer.add(this.modifyTemplate);
+		templateContainer.setWidgetLeftWidth(this.modifyTemplate, 270, Unit.PX, 22, Unit.PX);
+		templateContainer.setWidgetVerticalPosition(this.modifyTemplate, Alignment.BEGIN);
+		templateContainer.add(this.deleteTemplate);
+		templateContainer.setWidgetLeftWidth(this.deleteTemplate, 300, Unit.PX, 22, Unit.PX);
+		templateContainer.setWidgetVerticalPosition(this.deleteTemplate, Alignment.BEGIN);
 		
 		//tag Selection
 		Label tagtitle = new Label("tag possible pour ce template");
@@ -140,6 +158,14 @@ public class TemplateManager extends ResizeComposite implements ITemplateManager
 	
 	public HasClickHandlers getBtnAddClick() {
 		return this.addTemplate;
+	}
+	
+	public HasClickHandlers getBtnDelClick() {
+		return this.deleteTemplate;
+	}
+	
+	public HasClickHandlers getBtnModifyClick() {
+		return this.modifyTemplate;
 	}
 	
 	public HasClickHandlers getBtnApplyTagClick() {

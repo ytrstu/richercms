@@ -19,6 +19,7 @@ import com.sfeir.richercms.page.shared.BeanTag;
 public class TagManagerPresenter extends LazyPresenter<ITagManager, PageEventBus>{
 
 	private TagServiceAsync rpcTag = null;
+	private Long currentTagId; // use for apply modification on the current tag
 	
 	public void bindView() {
 		this.view.clickOnAddTag().addClickHandler(new ClickHandler() {
@@ -39,6 +40,26 @@ public class TagManagerPresenter extends LazyPresenter<ITagManager, PageEventBus
 				});
 			}
 		});
+		
+		this.view.clickOnApplyModif().addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				BeanTag bean = new BeanTag(currentTagId,
+								   view.getModifyTagName(),
+								   view.getModifyShortLib(),
+								   view.getModifyDescription(), false);
+				
+				rpcTag.updateTag(bean, new AsyncCallback<Void>() {
+					public void onFailure(Throwable caught) {}
+					public void onSuccess(Void result) {}
+				});
+				view.hideModifyFields(false);
+			}
+		});
+		this.view.clickOnCancelModif().addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {	
+				view.hideModifyFields(true);
+			}
+		});
 	}
 	
 	public void onStartTagManager() {
@@ -52,14 +73,23 @@ public class TagManagerPresenter extends LazyPresenter<ITagManager, PageEventBus
 			public void onSuccess(List<BeanTag> result) {
 				for(final BeanTag bean : result){
 					
-					view.addLine(bean.getTagName(),
+					final int lineNumb = view.addLine(bean.getTagName(),
 							bean.getShortLib(),
 							bean.getDescription(),
-							bean.isTextual()).addClickHandler(new ClickHandler() {
-								public void onClick(ClickEvent event) {
-									deleteTag(bean.getId());
-								}
-							});
+							bean.isTextual());
+					view.getCurDeleteClick().addClickHandler(new ClickHandler() {
+						public void onClick(ClickEvent event) {
+							deleteTag(bean.getId());
+							view.deleteLine(event.getRelativeElement());
+						}
+					});
+					
+					view.getCurModifyClick().addClickHandler(new ClickHandler() {
+						public void onClick(ClickEvent event) {
+							currentTagId = bean.getId();
+							view.DisplayModifyFields(lineNumb);
+						}
+					});
 				}
 			}
 			public void onFailure(Throwable caught) {

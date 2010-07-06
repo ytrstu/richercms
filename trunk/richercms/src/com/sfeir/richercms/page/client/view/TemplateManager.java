@@ -204,6 +204,14 @@ public class TemplateManager extends ResizeComposite implements ITemplateManager
 		return this.popUpAddTemplate.taDesc.getText();
 	}
 	
+	public void setPopUpNewTempName(String name) {
+		this.popUpAddTemplate.tbName.setText(name);
+	}
+	
+	public void setPopUpNewTempDesc(String description) {
+		this.popUpAddTemplate.taDesc.setText(description);
+	}
+	
 	public void addTemplateInList(String name, String id) {
 		this.listTemplate.addItem(name, id);
 	}
@@ -221,9 +229,11 @@ public class TemplateManager extends ResizeComposite implements ITemplateManager
 		return this.listTemplate;
 	}
 	
-	public String getSelectedTemplateId() {
-		return this.listTemplate.getValue(
-				this.listTemplate.getSelectedIndex());
+	public Long getSelectedTemplateId() {
+		if(this.listTemplate.getItemCount() != 0)
+			return new Long(this.listTemplate.getValue(
+					this.listTemplate.getSelectedIndex()));
+		return null;
 	}
 	
 	public void unCheckAllTags() {
@@ -241,5 +251,13 @@ public class TemplateManager extends ResizeComposite implements ITemplateManager
 	
 	public void disableApplyTagBtn() {
 		this.applyTag.setEnabled(false);
+	}
+	
+	public void deleteSelectedTemplate() {
+		this.listTemplate.removeItem(this.listTemplate.getSelectedIndex());
+	}
+	
+	public void changeSelectedTagName(String name){
+		this.listTemplate.setItemText(this.listTemplate.getSelectedIndex(), name);
 	}
 }

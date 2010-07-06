@@ -319,6 +319,14 @@ td.datePickerMonth {
 	background : url("/tab_images/addBtn.png"); 
 }
 
+.ApplyStyle {
+	cursor: pointer;
+	background : url("/tab_images/check22.png");
+	background-repeat: no-repeat;
+}
+
+
+
 
     
     

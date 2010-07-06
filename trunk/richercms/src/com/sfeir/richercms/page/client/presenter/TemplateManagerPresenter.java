@@ -16,6 +16,7 @@ import com.mvp4g.client.annotation.InjectService;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.sfeir.richercms.client.view.PopUpMessage;
+import com.sfeir.richercms.page.client.PopUpTemplateState;
 import com.sfeir.richercms.page.client.TagServiceAsync;
 import com.sfeir.richercms.page.client.TemplateServiceAsync;
 import com.sfeir.richercms.page.client.event.PageEventBus;
@@ -29,12 +30,15 @@ public class TemplateManagerPresenter extends LazyPresenter<ITemplateManager, Pa
 
 	private TagServiceAsync rpcTag = null;
 	private TemplateServiceAsync rpcTemplate = null;
+	private PopUpTemplateState popUpState = PopUpTemplateState.add;
 	
 	public void bindView() {
+		
 		this.view.getBtnAddClick().addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				view.disableApplyTagBtn();
 				view.showPopUpAddTemplate();
+				popUpState = PopUpTemplateState.add;
 			}
 		});
 		
@@ -42,15 +46,18 @@ public class TemplateManagerPresenter extends LazyPresenter<ITemplateManager, Pa
 			public void onClick(ClickEvent event) {
 				if(view.getSelectedTemplateId() != null) {
 					eventBus.addWaitLinePopUp("Suppression en cours");
-					rpcTemplate.deleteTemplate(new Long(view.getSelectedTemplateId()), 
+					rpcTemplate.deleteTemplate(view.getSelectedTemplateId(), 
 							new AsyncCallback<Void>() {
 						
 						public void onFailure(Throwable caught) {
-							eventBus.addSuccessPopUp("Suppression réussi");
+							eventBus.addErrorLinePopUp("Suppression impossible");
 							eventBus.hideInformationPopUp();
 						}
 						public void onSuccess(Void result) {
-							eventBus.addErrorLinePopUp("Suppression impossible");
+							view.deleteSelectedTemplate();
+							fetchTagTable();
+							eventBus.addSuccessPopUp("Suppression réussi");
+							eventBus.hideInformationPopUp();
 						}
 					});
 				}
@@ -60,8 +67,16 @@ public class TemplateManagerPresenter extends LazyPresenter<ITemplateManager, Pa
 		this.view.getBtnModifyClick().addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				if(view.getSelectedTemplateId() != null) {
-					if(addOrModifyTemplate(false))//modify template if its possible
-						view.hidePopUpAddTemplate();
+					view.disableApplyTagBtn();
+					view.showPopUpAddTemplate();
+					popUpState = PopUpTemplateState.modify;
+					rpcTemplate.getTemplate(view.getSelectedTemplateId(), new AsyncCallback<BeanTemplate>() {
+						public void onFailure(Throwable caught) {}
+						public void onSuccess(BeanTemplate result) {
+							view.setPopUpNewTempDesc(result.getDescription());
+							view.setPopUpNewTempName(result.getName());
+						}
+					});
 				}
 			}
 		});
@@ -74,7 +89,7 @@ public class TemplateManagerPresenter extends LazyPresenter<ITemplateManager, Pa
 		
 		this.view.getPopUpBtnOk().addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				if(addOrModifyTemplate(true))//add template if its possible
+				if(addOrModifyTemplate())//add template if its possible
 					view.hidePopUpAddTemplate();
 			}
 		});
@@ -82,7 +97,7 @@ public class TemplateManagerPresenter extends LazyPresenter<ITemplateManager, Pa
 		this.view.getPopUpKbEvent().addKeyPressHandler(new KeyPressHandler() {
 			public void onKeyPress(KeyPressEvent event) {
 				if(event.getNativeEvent().getKeyCode() == KeyCodes.KEY_ENTER) {
-					if(addOrModifyTemplate(true))//add template if its possible
+					if(addOrModifyTemplate())//add template if its possible
 						view.hidePopUpAddTemplate();// hide popUp only if template are added
 				}else if (event.getNativeEvent().getKeyCode() == KeyCodes.KEY_ESCAPE){
 					view.hidePopUpAddTemplate();
@@ -118,7 +133,7 @@ public class TemplateManagerPresenter extends LazyPresenter<ITemplateManager, Pa
 	 * and add it into the list
 	 * @return true if add was possible, false either
 	 */
-	private boolean addOrModifyTemplate(boolean add) {
+	private boolean addOrModifyTemplate() {
 		
 		if(this.view.getPopUpNewTempName().length() == 0) {
 			PopUpMessage p = new PopUpMessage("Le nom du template ne peut être vide !");
@@ -128,7 +143,20 @@ public class TemplateManagerPresenter extends LazyPresenter<ITemplateManager, Pa
 			BeanTemplate bTP = new BeanTemplate();
 			bTP.setName(this.view.getPopUpNewTempName());
 			bTP.setDescription(this.view.getPopUpNewTempDesc());
-			if(add)
+			
+			switch(this.popUpState) {
+			case modify :
+				this.rpcTemplate.updateTemplate(this.view.getSelectedTemplateId(),
+						this.view.getPopUpNewTempName(), 
+						this.view.getPopUpNewTempDesc(), 
+						new AsyncCallback<Void>() {
+					public void onSuccess(Void result) {
+						view.changeSelectedTagName(view.getPopUpNewTempName());
+					}
+					public void onFailure(Throwable caught) {}
+				});
+				break;
+			case add :
 				this.rpcTemplate.addTemplate(bTP, new AsyncCallback<Long>() {
 					public void onSuccess(Long result) {
 						view.addTemplateInList(view.getPopUpNewTempName(), 
@@ -137,17 +165,8 @@ public class TemplateManagerPresenter extends LazyPresenter<ITemplateManager, Pa
 					public void onFailure(Throwable caught) {
 					}
 				});
-			else
-				this.rpcTemplate.updateTemplate(new Long(this.view.getSelectedTemplateId()),
-												this.view.getPopUpNewTempName(), 
-												this.view.getPopUpNewTempDesc(), 
-												new AsyncCallback<Void>() {
-					public void onSuccess(Void result) {
-						//view.addTemplateInList(view.getPopUpNewTempName(), 
-								//result.toString());
-					}
-					public void onFailure(Throwable caught) {}
-				});
+				break;
+			}
 			return true;
 		}
 	}
@@ -176,7 +195,7 @@ public class TemplateManagerPresenter extends LazyPresenter<ITemplateManager, Pa
 	 * and call selectGoodTag to check good tag
 	 */
 	private void modifySelectedTemplate() {
-		this.rpcTemplate.getTemplate(new Long(this.view.getSelectedTemplateId()), 
+		this.rpcTemplate.getTemplate(this.view.getSelectedTemplateId(), 
 				new AsyncCallback<BeanTemplate>() {
 					public void onFailure(Throwable caught) {
 					}
@@ -230,7 +249,7 @@ public class TemplateManagerPresenter extends LazyPresenter<ITemplateManager, Pa
 	 * Save new selected tag into the template
 	 */
 	private void saveNewTag() {
-		this.rpcTemplate.upDateTagsTemplate(new Long(view.getSelectedTemplateId()), 
+		this.rpcTemplate.upDateTagsTemplate(view.getSelectedTemplateId(), 
 				view.getSelectedTagsId(), new AsyncCallback<Void>() {
 					public void onFailure(Throwable caught) {}
 					public void onSuccess(Void result) {}

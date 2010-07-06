@@ -1,5 +1,6 @@
 package com.sfeir.richercms.page.client.interfaces;
 
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.view.LazyView;
@@ -15,9 +16,35 @@ public interface ITagManager extends LazyView {
 	 * @param shortLib : the short name of the tag
 	 * @param description : little description of the tag and his impact
 	 * @param isTextual : tag can be textual or not
-	 * @return the ClickHandlers on the DeleteBtn associate with a tag
+	 * @return the line number
 	 */
-	HasClickHandlers addLine(String tagName, String shortLib, String description, boolean isTextual);
+	int addLine(String tagName, String shortLib, String description, boolean isTextual);
+	
+	/**
+	 * Handle click on the modify Btn in the current line
+	 * call this method after an addline to handle click on this button
+	 * @return Event
+	 */
+	HasClickHandlers getCurModifyClick();
+	
+	/**
+	 * Handle click on the delete Btn in the current line
+	 * call this method after an addline to handle click on this button
+	 * @return Event
+	 */
+	HasClickHandlers getCurDeleteClick();
+	
+	/**
+	 * Handle click on the applyModification
+	 * @return Event
+	 */
+	HasClickHandlers clickOnApplyModif();
+	
+	/**
+	 * Handle click on the CancelModification
+	 * @return Event
+	 */
+	HasClickHandlers clickOnCancelModif();
 	
 	/**
 	 * Handle clic on "add new tag" button.
@@ -49,6 +76,30 @@ public interface ITagManager extends LazyView {
 	boolean isTextual();
 	
 	/**
+	 * Return value of the modify TagName field
+	 * @return value
+	 */
+	String getModifyTagName();
+
+	/**
+	 * Return value of the modify ShortLib field
+	 * @return value
+	 */
+	String getModifyShortLib();
+	
+	/**
+	 * Return value of the modify Description field
+	 * @return value
+	 */
+	String getModifyDescription();
+	
+	/**
+	 * Modify value of the textual fields
+	 * @return true if the tag is textual, false either
+	 */
+	boolean isModifyTextual();
+	
+	/**
 	 * Clear the tag table
 	 */
 	void clearTagTable();
@@ -57,6 +108,29 @@ public interface ITagManager extends LazyView {
 	 * Clear all field needed to add a new tag
 	 */
 	void clearAddNewTagTextBox();
+	
+	/**
+	 * Clear all modify fields
+	 */
+	void clearModifyFields();
+	
+	/**
+	 * hide modification fields and display normal fields
+	 * @param restoreValue : true : restore alt value, false : apply modification
+	 */
+	void hideModifyFields(boolean restoreValue);
+	
+	/**
+	 * display modify field in a specific line
+	 * @param row : line number
+	 */
+	void DisplayModifyFields(int row);
+	
+	/**
+	 * Remove one line in the tagTable
+	 * @param clicSrc : the widget source of the clickEvent.
+	 */
+	void deleteLine(Element clicSrc);
 	
 	PageConstants getConstants();
 }

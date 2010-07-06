@@ -86,9 +86,23 @@ public interface ITemplateManager  extends LazyView {
 	/**
 	 * Get the Template's description
 	 * entered in the popUp
-	 * @return
+	 * @return template's Description
 	 */
 	String getPopUpNewTempDesc();
+	
+	/**
+	 * Set the Template's name,
+	 * entered in the popUp
+	 * @param name : template's name
+	 */
+	void setPopUpNewTempName(String name);
+	
+	/**
+	 * Set the Template's description
+	 * entered in the popUp
+	 * @param description : template's Description
+	 */
+	void setPopUpNewTempDesc(String description);
 	
 	/**
 	 * Add a new line into the TemplateList
@@ -110,9 +124,8 @@ public interface ITemplateManager  extends LazyView {
 	/**
 	 * Get template selected in the list.
 	 * @return template's id 
-	 * (make new Long(String) to convert id into Long value)
 	 */
-	String getSelectedTemplateId();
+	Long getSelectedTemplateId();
 	
 	/**
 	 * Add a tag in table.
@@ -150,7 +163,17 @@ public interface ITemplateManager  extends LazyView {
 	void enableApplyTagBtn();
 	
 	/**
-	 * disable the tag selection apply button
+	 * Disable the tag selection apply button
 	 */
 	void disableApplyTagBtn();
+	
+	/**
+	 * Delete selected template into the list
+	 */
+	void deleteSelectedTemplate();
+	
+	/**
+	 * Change selected template's name into the list
+	 */
+	void changeSelectedTagName(String name);
 }

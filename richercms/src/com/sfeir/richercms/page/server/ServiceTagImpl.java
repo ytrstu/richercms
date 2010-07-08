@@ -1,6 +1,7 @@
 package com.sfeir.richercms.page.server;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,8 +13,10 @@ import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.Query;
 import com.sfeir.richercms.page.client.TagService;
 import com.sfeir.richercms.page.server.business.ArboPage;
+import com.sfeir.richercms.page.server.business.DependentTag;
 import com.sfeir.richercms.page.server.business.Tag;
 import com.sfeir.richercms.page.server.business.Template;
+import com.sfeir.richercms.page.shared.BeanDependentTag;
 import com.sfeir.richercms.page.shared.BeanTag;
 
 @SuppressWarnings("serial")
@@ -21,6 +24,7 @@ public class ServiceTagImpl extends RemoteServiceServlet implements TagService {
 
 	static {
 		ObjectifyService.register(Tag.class);
+		ObjectifyService.register(DependentTag.class);
 		ObjectifyService.register(Template.class);
 		ObjectifyService.register(ArboPage.class);
 	}
@@ -59,6 +63,71 @@ public class ServiceTagImpl extends RemoteServiceServlet implements TagService {
 		return null;
 	}
 	
+	public List<BeanDependentTag> getAllDependentTag(Long pageId){
+		ArrayList<BeanDependentTag> beans = new ArrayList<BeanDependentTag>();
+		Objectify ofy = ObjectifyService.begin();
+		
+		ArboPage page = ofy.get(ArboPage.class, pageId);
+		
+		if(page != null){
+			Map<Long, DependentTag> dTags = ofy.get(DependentTag.class, page.getTagsId());
+			for(DependentTag dTag : dTags.values()){
+				beans.add(DependentTagToBean(dTag));
+			}
+		}
+		
+		return beans;
+	}
+	
+	public List<Long> getAssociatedTag(Long pageId){
+		ArrayList<Long> lst = new ArrayList<Long>();
+		Objectify ofy = ObjectifyService.begin();
+		
+		ArboPage page = ofy.get(ArboPage.class, pageId);
+		
+		if(page != null){
+			Map<Long, DependentTag> dTags = ofy.get(DependentTag.class, page.getTagsId());
+			for(DependentTag dTag : dTags.values()){
+				lst.add(dTag.getDependentTag().getId());
+			}
+		}
+		
+		return lst;
+	}
+	
+	public List<Long> upDateDependentTag(List<BeanDependentTag> updateDTags, List<Long> addedTagsId,
+			List<Long> deletedTags, HashMap<Long,String> customTag) {
+		
+		ArrayList<Long> lst = new ArrayList<Long>();
+		Objectify ofy = ObjectifyService.begin();
+		
+		//modify all updated tag
+		for(BeanDependentTag updtateDTag : updateDTags){
+			ofy.put(this.beanToDependentTag(updtateDTag));
+			//add updated DependentTag's id in list
+			lst.add(updtateDTag.getId());
+		}
+		
+		// delete all not necessary dependentTag 
+		Map<Long,DependentTag> deletedDTags = ofy.get(DependentTag.class, deletedTags);
+		ofy.delete(deletedDTags.values());
+		
+		//add new DependentTag
+		DependentTag newDTag;
+		for(Long addedTagId : addedTagsId) {
+			String customValue = customTag.get(addedTagId);
+			if(customValue == null)
+				newDTag = new DependentTag(new Key<Tag>(Tag.class, addedTagId), "");
+			else
+				newDTag = new DependentTag(new Key<Tag>(Tag.class, addedTagId), customValue);
+			
+			ofy.put(newDTag);
+			lst.add(newDTag.getId());
+		}
+		
+		return lst;
+	}
+	
 	public void deleteTag(Long id) {
 		Objectify ofy = ObjectifyService.begin();
 		Tag tag = ofy.get(Tag.class, id);
@@ -72,11 +141,14 @@ public class ServiceTagImpl extends RemoteServiceServlet implements TagService {
 			}
 			
 			//delete tag in all arboPage who associate this tag
-			Query<ArboPage> pages = ofy.query(ArboPage.class).filter("tagsId ", id);
-			for(ArboPage page : pages){
-				page.getTagsId().remove(id);
-				ofy.put(page);
+			Query<DependentTag> dTags = ofy.query(DependentTag.class).filter("dependentTag ", new Key<Tag>(Tag.class, id));
+			for(DependentTag dTag : dTags){
+				Query<ArboPage> pages = ofy.query(ArboPage.class).filter("tagsId ", dTag.getId());
+				pages.get().getTagsId().remove(dTag.getId());
+				ofy.put(pages.get());
 			}
+			//delete all dependentTag
+			ofy.delete(dTags);
 			//finally delete the tag
 			ofy.delete(tag);
 		}
@@ -108,5 +180,19 @@ public class ServiceTagImpl extends RemoteServiceServlet implements TagService {
 				tag.getShortLib(),
 				tag.getDescription(),
 				tag.isTextual());
+	}
+	
+	private DependentTag beanToDependentTag(BeanDependentTag bean){
+		return new DependentTag(bean.getId(),
+				new Key<Tag>(Tag.class, bean.getDependentTag().getId()),
+				bean.getCustomName());
+	}
+	
+	private BeanDependentTag DependentTagToBean(DependentTag tag){
+		Objectify ofy = ObjectifyService.begin();
+		
+		return new BeanDependentTag(tag.getId(),
+				tagToBean(ofy.get(tag.getDependentTag())),
+				tag.getCustomName());
 	}
 }

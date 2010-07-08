@@ -31,12 +31,14 @@ public class TemplateManagerPresenter extends LazyPresenter<ITemplateManager, Pa
 	private TagServiceAsync rpcTag = null;
 	private TemplateServiceAsync rpcTemplate = null;
 	private PopUpTemplateState popUpState = PopUpTemplateState.add;
+	private boolean mayApplyChange = false;
 	
 	public void bindView() {
 		
 		this.view.getBtnAddClick().addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				view.disableApplyTagBtn();
+				mayApplyChange = false;
 				view.showPopUpAddTemplate();
 				popUpState = PopUpTemplateState.add;
 			}
@@ -68,6 +70,7 @@ public class TemplateManagerPresenter extends LazyPresenter<ITemplateManager, Pa
 			public void onClick(ClickEvent event) {
 				if(view.getSelectedTemplateId() != null) {
 					view.disableApplyTagBtn();
+					mayApplyChange = false;
 					view.showPopUpAddTemplate();
 					popUpState = PopUpTemplateState.modify;
 					rpcTemplate.getTemplate(view.getSelectedTemplateId(), new AsyncCallback<BeanTemplate>() {
@@ -108,6 +111,7 @@ public class TemplateManagerPresenter extends LazyPresenter<ITemplateManager, Pa
 		this.view.getTemplateLstSelection().addChangeHandler(new ChangeHandler() {
 			public void onChange(ChangeEvent event) {
 				view.disableApplyTagBtn();
+				mayApplyChange = false;
 				modifySelectedTemplate();
 			}
 		});
@@ -115,7 +119,18 @@ public class TemplateManagerPresenter extends LazyPresenter<ITemplateManager, Pa
 		this.view.getBtnApplyTagClick().addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				view.disableApplyTagBtn();
+				mayApplyChange = false;
 				saveNewTag();
+			}
+		});
+		
+		this.view.getKeyPressEvent().addKeyPressHandler(new KeyPressHandler() {
+			public void onKeyPress(KeyPressEvent event) {
+				if(mayApplyChange  && event.getNativeEvent().getKeyCode() == KeyCodes.KEY_ENTER) {
+					view.disableApplyTagBtn();
+					mayApplyChange = false;
+					saveNewTag();
+				}
 			}
 		});
 	}
@@ -125,6 +140,7 @@ public class TemplateManagerPresenter extends LazyPresenter<ITemplateManager, Pa
 		//call the fetchTagTable to synchronize RPC call
 		this.fetchTemplateList();
 		this.view.disableApplyTagBtn();
+		mayApplyChange = false;
 		eventBus.displayTemplateManager(this.view);
 	}
 	
@@ -195,14 +211,16 @@ public class TemplateManagerPresenter extends LazyPresenter<ITemplateManager, Pa
 	 * and call selectGoodTag to check good tag
 	 */
 	private void modifySelectedTemplate() {
-		this.rpcTemplate.getTemplate(this.view.getSelectedTemplateId(), 
-				new AsyncCallback<BeanTemplate>() {
-					public void onFailure(Throwable caught) {
-					}
-					public void onSuccess(BeanTemplate result) {
-						selectGoodTag(result.getAssociatedTags());
-					}
-		});
+		//test if list contain no template yet
+		if(this.view.getSelectedTemplateId() != null)
+			this.rpcTemplate.getTemplate(this.view.getSelectedTemplateId(), 
+					new AsyncCallback<BeanTemplate>() {
+						public void onFailure(Throwable caught) {
+						}
+						public void onSuccess(BeanTemplate result) {
+							selectGoodTag(result.getAssociatedTags());
+						}
+			});
 	}
 	
 	/**
@@ -237,6 +255,7 @@ public class TemplateManagerPresenter extends LazyPresenter<ITemplateManager, Pa
 							).addValueChangeHandler(new ValueChangeHandler<Boolean>() {
 								public void onValueChange(ValueChangeEvent<Boolean> event) {
 									view.enableApplyTagBtn();
+									mayApplyChange = true;
 								}
 							});
 				}

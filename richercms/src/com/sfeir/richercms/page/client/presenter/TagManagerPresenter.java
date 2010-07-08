@@ -24,17 +24,14 @@ public class TagManagerPresenter extends LazyPresenter<ITagManager, PageEventBus
 	public void bindView() {
 		this.view.clickOnAddTag().addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				BeanTag bean = new BeanTag(view.getNewTagName(),
+				final BeanTag bean = new BeanTag(view.getNewTagName(),
 						view.getNewShortLib(),
 						view.getNewDescription(),
 						view.isTextual());
 				rpcTag.addTag(bean, new AsyncCallback<Void>() {
 					public void onFailure(Throwable caught) {}
 					public void onSuccess(Void result) {
-						view.addLine(view.getNewTagName(),
-								view.getNewShortLib(), 
-								view.getNewDescription(),
-								view.isTextual());
+						addTag(bean);
 						view.clearAddNewTagTextBox();
 					}
 				});
@@ -46,7 +43,8 @@ public class TagManagerPresenter extends LazyPresenter<ITagManager, PageEventBus
 				BeanTag bean = new BeanTag(currentTagId,
 								   view.getModifyTagName(),
 								   view.getModifyShortLib(),
-								   view.getModifyDescription(), false);
+								   view.getModifyDescription(),
+								   view.isModifyTextual());
 				
 				rpcTag.updateTag(bean, new AsyncCallback<Void>() {
 					public void onFailure(Throwable caught) {}
@@ -72,27 +70,31 @@ public class TagManagerPresenter extends LazyPresenter<ITagManager, PageEventBus
 		this.rpcTag.getAllTags(new AsyncCallback<List<BeanTag>>() {
 			public void onSuccess(List<BeanTag> result) {
 				for(final BeanTag bean : result){
-					
-					final int lineNumb = view.addLine(bean.getTagName(),
-							bean.getShortLib(),
-							bean.getDescription(),
-							bean.isTextual());
-					view.getCurDeleteClick().addClickHandler(new ClickHandler() {
-						public void onClick(ClickEvent event) {
-							deleteTag(bean.getId());
-							view.deleteLine(event.getRelativeElement());
-						}
-					});
-					
-					view.getCurModifyClick().addClickHandler(new ClickHandler() {
-						public void onClick(ClickEvent event) {
-							currentTagId = bean.getId();
-							view.DisplayModifyFields(lineNumb);
-						}
-					});
+					addTag(bean);
 				}
 			}
 			public void onFailure(Throwable caught) {
+			}
+		});
+	}
+	
+	private void addTag(final BeanTag bean) {
+		
+		final int lineNumb = view.addLine(bean.getTagName(),
+				bean.getShortLib(),
+				bean.getDescription(),
+				bean.isTextual());
+		view.getCurDeleteClick().addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				deleteTag(bean.getId());
+				view.deleteLine(event.getRelativeElement());
+			}
+		});
+		
+		view.getCurModifyClick().addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				currentTagId = bean.getId();
+				view.DisplayModifyFields(lineNumb);
 			}
 		});
 	}

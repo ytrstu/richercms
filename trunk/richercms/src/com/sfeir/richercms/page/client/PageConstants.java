@@ -258,4 +258,58 @@ public interface PageConstants extends Constants {
 	  
 	  @DefaultStringValue("Do not use illegal character ")
 	  String ErrorInUrl();
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  @DefaultStringValue("template existant : ")
+	  String ExistingTemplate();
+	  @DefaultStringValue("tag possible pour ce template")
+	  String PossibleTag();
+	  @DefaultStringValue("sélection")
+	  String TagTableSelect();
+	  @DefaultStringValue("Nom du tag")
+	  String TagTableName();
+	  @DefaultStringValue("Libellé court")
+	  String TagTableLibe();
+	  @DefaultStringValue("Description")
+	  String TagTableDesc();
+	  @DefaultStringValue("tag textuel")
+	  String TagTabelTextual();
+	  @DefaultStringValue("Yes")
+	  String Yes();
+	  @DefaultStringValue("No")
+	  String No();
+	  @DefaultStringValue("en cours de modification par : ")
+	  String LockMessage();
+	  @DefaultStringValue(" tag textuel")
+	  String TbTextual();
+	  @DefaultStringValue("Action")
+	  String Action();
+	  @DefaultStringValue("Ajouter de nouveau tag")
+	  String AddNewTag();
+	  @DefaultStringValue("Nom du tag : ")
+	  String LibTagName();
+	  @DefaultStringValue("Libellé court : ")
+	  String LibShrotLib();
+	  @DefaultStringValue("description : ")
+	  String Libdesc();
+	  @DefaultStringValue("ajouter ce tag")
+	  String addThisTag();
+	  @DefaultStringValue("Gestion des Templates")
+	  String TemplatesHandle();
+	  @DefaultStringValue("appliquer les changments")
+	  String ApplyChange();
+	  @DefaultStringValue("Ajouter un nouveau template")
+	  String AddTemplate();
+	  @DefaultStringValue("Supprimer le template sélectioné")
+	  String DeleteTemplate();
+	  @DefaultStringValue("modifier le template sélectioné")
+	  String ModifyTemplate();
 }

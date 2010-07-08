@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.DomEvent;
@@ -32,11 +33,14 @@ import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.HTMLTable.CellFormatter;
+import com.sfeir.richercms.page.client.PageConstants;
 import com.sfeir.richercms.page.client.interfaces.ITemplateManager;
 import com.sfeir.richercms.page.client.view.custom.PopUpAddTemplate;
 
 public class TemplateManager extends ResizeComposite implements ITemplateManager, HasKeyPressHandlers{
 
+	//gestion des langues
+	private PageConstants constants = GWT.create(PageConstants.class);
 	private DockLayoutPanel mainContainer;
 	private Button applyTag;
 	private ListBox listTemplate;
@@ -63,28 +67,28 @@ public class TemplateManager extends ResizeComposite implements ITemplateManager
 		this.popUpAddTemplate = new PopUpAddTemplate();
 		
 		//title
-		Label title = new Label("Gestion des Templates");
+		Label title = new Label(this.constants.TemplatesHandle());
 		title.setStyleName("informationTitle");
 		this.mainContainer.addNorth(title, 60);
 		
 		//apply button
-		this.applyTag = new Button("appliquer les changments");
+		this.applyTag = new Button(this.constants.ApplyChange());
 		SimplePanel buttonPanel = new SimplePanel();
 		buttonPanel.add(this.applyTag);
 		buttonPanel.addStyleName("mainButtonPanel");
 		this.mainContainer.addSouth(buttonPanel, 60);
 		
 		//template selection
-		Label listTitle = new Label("template existant : ");
+		Label listTitle = new Label(this.constants.ExistingTemplate());
 		this.listTemplate = new ListBox();
 		this.addTemplate = new Image("tab_images/trans.png");
-		this.addTemplate.setTitle("Ajouter un nouveau template");
+		this.addTemplate.setTitle(this.constants.AddTemplate());
 		this.addTemplate.addStyleName("addStyle");
 		this.deleteTemplate = new Image("tab_images/trans.png");
-		this.deleteTemplate.setTitle("Supprimer le template sélectioné");
+		this.deleteTemplate.setTitle(this.constants.DeleteTemplate());
 		this.deleteTemplate.addStyleName("deleteStyle");
 		this.modifyTemplate = new Image("tab_images/trans.png");
-		this.modifyTemplate.setTitle("modifier le template sélectioné");
+		this.modifyTemplate.setTitle(this.constants.ModifyTemplate());
 		this.modifyTemplate.addStyleName("modifyStyle");
 		
 		this.templateContainer = new LayoutPanel();
@@ -108,7 +112,7 @@ public class TemplateManager extends ResizeComposite implements ITemplateManager
 		
 		
 		//tag Selection
-		Label tagtitle = new Label("tag possible pour ce template");
+		Label tagtitle = new Label(this.constants.PossibleTag());
 		tagtitle.setStyleName("informationTitle");
 		this.tagTable = new FlexTable();
 		this.tagTable.addStyleName("tagTable");
@@ -167,11 +171,11 @@ public class TemplateManager extends ResizeComposite implements ITemplateManager
 		cellFormater.setStyleName(0, 2, "tagTableHeader");
 		cellFormater.setStyleName(0, 3, "tagTableHeader");
 		cellFormater.setStyleName(0, 4, "tagTableHeader");
-		this.tagTable.setText(0, 0, "sélection");
-		this.tagTable.setText(0, 1, "Nom du tag");
-		this.tagTable.setText(0, 2, "Libellé court");
-		this.tagTable.setText(0, 3, "Description");
-		this.tagTable.setText(0, 4, "tag textuel");
+		this.tagTable.setText(0, 0, this.constants.TagTableSelect());
+		this.tagTable.setText(0, 1, this.constants.TagTableName());
+		this.tagTable.setText(0, 2, this.constants.TagTableLibe());
+		this.tagTable.setText(0, 3, this.constants.TagTableDesc());
+		this.tagTable.setText(0, 4, this.constants.TagTabelTextual());
 	}
 	
 	public HasValueChangeHandlers<Boolean> addTagLine(String id,String TagName,
@@ -188,9 +192,9 @@ public class TemplateManager extends ResizeComposite implements ITemplateManager
 		this.tagTable.setText(numRow, 3, description);
 		
 		if(textualTag)
-			this.tagTable.setText(numRow, 4, "yes");
+			this.tagTable.setText(numRow, 4, this.constants.Yes());
 		else
-			this.tagTable.setText(numRow, 4, "no");
+			this.tagTable.setText(numRow, 4, this.constants.No());
 		
 		onResize();
 		

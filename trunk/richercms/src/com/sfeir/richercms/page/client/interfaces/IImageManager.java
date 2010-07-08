@@ -18,24 +18,61 @@ public interface IImageManager  extends LazyView {
 	 */
 	public PageConstants getConstants();
 	
+	/**
+	 * Handle click on the add thumbnail button
+	 * @param Path
+	 * @return Event
+	 */
 	HasClickHandlers addThumbnail(String Path);
 
+	/**
+	 * Handle click on a thumbnail
+	 * @return Event
+	 */
 	HasMouseDownHandlers onThumbClick();
 	
+	/**
+	 * Handle click on the send formular button
+	 * @return Event
+	 */
 	HasClickHandlers onSendBtnclick();
 	
+	/**
+	 * @return image uploader formular
+	 */
 	FormPanel getFormEvent();
 	
+	/**
+	 * submit the formular
+	 */
 	void submitForm();
 	
+	/**
+	 * Erase all thumbnails in the layout
+	 */
 	void clearThumbNails();
 	
+	/**
+	 * Set the current path stored in the view
+	 * @param path the new path
+	 */
 	void setCurrentPath(String path);
 	
+	/**
+	 * @return the current path stored in the view
+	 */
 	String getCurrentPath();
 	
+	/**
+	 * Display an image in a popup
+	 * @param path : image's path
+	 */
 	void showPopUpImgPreview(String path);
 	
+	/**
+	 * Set the Title
+	 * @param title : new title
+	 */
 	void setTitle(String title);
 	
 	/**

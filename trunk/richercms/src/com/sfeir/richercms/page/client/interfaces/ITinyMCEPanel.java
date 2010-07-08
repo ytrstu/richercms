@@ -49,5 +49,10 @@ public interface ITinyMCEPanel extends LazyView{
 	 */
 	void displayViewer(String html);
 	
+	/**
+	 * Set EventBus in tiny for inject event throught
+	 * the javascript wraper
+	 * @param eventBus
+	 */
 	void addEventBusInTiny(PageEventBus eventBus);
 }

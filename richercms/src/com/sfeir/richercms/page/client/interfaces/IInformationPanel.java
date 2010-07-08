@@ -287,17 +287,43 @@ public interface IInformationPanel extends LazyView {
 	 */
 	List<Long> getSelectedTagsId();
 	
+	/**
+	 * Clear template list
+	 */
 	void clearTemplateList();
 	
+	/**
+	 * Clear tag table
+	 */
 	void clearTagTable();
 	
+	/**
+	 * Handle the selection event on the template list
+	 * @return Event
+	 */
 	HasChangeHandlers getTemplateLstSelection();
 	
+	/**
+	 * Get the selected template id
+	 * @return id
+	 */
 	String getSelectedTemplateId();
 	
+	/**
+	 * Uncheck all tag in table
+	 */
 	void unCheckAllTags();
 	
+	/**
+	 * Check a specific tag
+	 * @param tagId : check this tag if it exist
+	 */
 	void checktag(Long tagId);
 	
+	/**
+	 * Add a new template in the list
+	 * @param name : name of the template
+	 * @param id : template's id
+	 */
 	void addTemplateInList(String name, String id);
 }

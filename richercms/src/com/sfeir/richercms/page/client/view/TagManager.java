@@ -88,7 +88,7 @@ public class TagManager extends ResizeComposite implements ITagManager{
 		this.modifyShortLib = new TextBox();
 		this.modifyDescription = new TextArea();
 		this.modifyDescription.setVisibleLines(3);
-		this.modifyTagTextuel = new CheckBox(" tag textuel");
+		this.modifyTagTextuel = new CheckBox(this.constants.TbTextual());
 		this.applyModification = new Image("tab_images/trans.png");
 		this.applyModification.addStyleName("ApplyStyle");
 		this.cancelModification = new Image("tab_images/trans.png");
@@ -149,11 +149,11 @@ public class TagManager extends ResizeComposite implements ITagManager{
 		cellFormater.setStyleName(0, 2, "tagTableHeader");
 		cellFormater.setStyleName(0, 3, "tagTableHeader");
 		cellFormater.setStyleName(0, 4, "tagTableHeader");
-		this.tagTable.setText(0, 0, "Nom du tag");
-		this.tagTable.setText(0, 1, "Libellé court");
-		this.tagTable.setText(0, 2, "Description");
-		this.tagTable.setText(0, 3, "tag textuel");
-		this.tagTable.setText(0, 4, "Action");
+		this.tagTable.setText(0, 0, this.constants.TagTableName());
+		this.tagTable.setText(0, 1, this.constants.TagTableLibe());
+		this.tagTable.setText(0, 2, this.constants.TagTableDesc());
+		this.tagTable.setText(0, 3, this.constants.TagTabelTextual());
+		this.tagTable.setText(0, 4, this.constants.Action());
 	}
 	
 	/**
@@ -164,27 +164,27 @@ public class TagManager extends ResizeComposite implements ITagManager{
 		FlexTable newTagTable = new FlexTable();
 		
 		//title
-		Label titleAdd = new Label("Ajouter de nouveau tag");
+		Label titleAdd = new Label(this.constants.AddNewTag());
 		titleAdd.setStyleName("informationTitle");
 		
 		//label
-		newTagTable.setText(0, 0, "Nom du tag : ");
-		newTagTable.setText(1, 0, "Libellé court : ");
-		newTagTable.setText(2, 0, "description : ");
+		newTagTable.setText(0, 0, this.constants.LibTagName());
+		newTagTable.setText(1, 0, this.constants.LibShrotLib());
+		newTagTable.setText(2, 0, this.constants.Libdesc());
 		
 		//texBox
 		this.newTagName = new TextBox();
 		this.newShortLib = new TextBox();
 		this.newDescription = new TextArea();
 		this.newDescription.setVisibleLines(3);
-		this.tagTextuel = new CheckBox(" tag textuel");
+		this.tagTextuel = new CheckBox(this.constants.TbTextual());
 		newTagTable.setWidget(0, 1, this.newTagName);
 		newTagTable.setWidget(1, 1, this.newShortLib);
 		newTagTable.setWidget(2, 1, this.newDescription);
 		newTagTable.setWidget(3, 1, this.tagTextuel);
 		
 		//btn
-		this.addNewTag = new Button("ajouter ce tag");
+		this.addNewTag = new Button(this.constants.addThisTag());
 		newTagTable.setWidget(1, 2, this.addNewTag);
 		CellFormatter cellFormater = newTagTable.getCellFormatter();
 		cellFormater.setWidth(1, 2, "200px");
@@ -224,9 +224,9 @@ public class TagManager extends ResizeComposite implements ITagManager{
 		this.tagTable.setWidget(numRow, 4, btnPanel);
 		
 		if(isTextual)
-			this.tagTable.setText(numRow, 3, "oui");
+			this.tagTable.setText(numRow, 3, this.constants.Yes());
 		else
-			this.tagTable.setText(numRow, 3, "non");
+			this.tagTable.setText(numRow, 3, this.constants.No());
 			this.onResize();
 		return numRow;
 	}
@@ -307,10 +307,10 @@ public class TagManager extends ResizeComposite implements ITagManager{
 				//text instead checkBox value
 				if(this.currentTagTextuel)
 					this.tagTable.setText(this.rowInModification, 3, 
-							"oui");
+							this.constants.Yes());
 				else
 					this.tagTable.setText(this.rowInModification, 3, 
-					"non");
+							this.constants.No());
 				
 				this.tagTable.setWidget(this.rowInModification, 4, 
 						this.currentBtnPanel);
@@ -323,9 +323,9 @@ public class TagManager extends ResizeComposite implements ITagManager{
 						this.getModifyDescription());
 				//text instead checkBox value
 				if(this.isModifyTextual())
-					this.tagTable.setText(this.rowInModification, 3, "oui");
+					this.tagTable.setText(this.rowInModification, 3, this.constants.Yes());
 				else
-					this.tagTable.setText(this.rowInModification, 3, "non");
+					this.tagTable.setText(this.rowInModification, 3, this.constants.No());
 				
 				this.tagTable.setWidget(this.rowInModification, 4, 
 						this.currentBtnPanel);
@@ -346,7 +346,7 @@ public class TagManager extends ResizeComposite implements ITagManager{
 		//display in the good line
 		this.rowInModification = row;
 		
-		if(this.tagTable.getText(row, 3).equals("oui"))
+		if(this.tagTable.getText(row, 3).equals(this.constants.Yes()))
 			textualTest = true;
 		else
 			textualTest = false;

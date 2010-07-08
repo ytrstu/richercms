@@ -229,7 +229,7 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 		
 		//template selection
 		this.listTemplate = new ListBox();
-		this.infoTab.setText(7,0,"template existant : ");
+		this.infoTab.setText(7,0,this.constants.ExistingTemplate());
 		this.infoTab.setWidget(7,1,this.listTemplate);	
 		
 		//obligation
@@ -249,7 +249,7 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 	private void createTagPanel() {
 
 		//tag Selection
-		Label tagtitle = new Label("tag possible pour ce template");
+		Label tagtitle = new Label(this.constants.PossibleTag());
 		tagtitle.setStyleName("informationTitle");
 		this.tagTable = new FlexTable();
 		this.tagTable.addStyleName("tagTable");
@@ -283,11 +283,11 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 		cellFormater.setStyleName(0, 2, "tagTableHeader");
 		cellFormater.setStyleName(0, 3, "tagTableHeader");
 		cellFormater.setStyleName(0, 4, "tagTableHeader");
-		this.tagTable.setText(0, 0, "sélection");
-		this.tagTable.setText(0, 1, "Nom du tag");
-		this.tagTable.setText(0, 2, "Libellé court");
-		this.tagTable.setText(0, 3, "Description");
-		this.tagTable.setText(0, 4, "tag textuel");
+		this.tagTable.setText(0, 0, this.constants.TagTableSelect());
+		this.tagTable.setText(0, 1, this.constants.TagTableName());
+		this.tagTable.setText(0, 2, this.constants.TagTableLibe());
+		this.tagTable.setText(0, 3, this.constants.TagTableDesc());
+		this.tagTable.setText(0, 4, this.constants.TagTabelTextual());
 	}
 	
 	public void addTagLine(String id,String TagName,
@@ -310,7 +310,7 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 			this.customTags.put(new Long(id), tb);
 			this.tagTable.setWidget(numRow, 4, tb);
 		}else
-			this.tagTable.setText(numRow, 4,"No");
+			this.tagTable.setText(numRow, 4,this.constants.No());
 		
 	}
 	
@@ -468,7 +468,7 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 		if(pseudo.length() == 0)
 			this.lock.setText("");
 		else
-			this.lock.setText("en cours de modification par : "+pseudo);
+			this.lock.setText(this.constants.LockMessage()+pseudo);
 	}
 
 	public void setPublicationFinish(Date publicationFinish) {

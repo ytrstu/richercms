@@ -58,10 +58,11 @@ public class TagManager extends ResizeComposite implements ITagManager{
 	private String currentDescription;
 	private boolean currentTagTextuel;
 	
-	// Scroll tab if table vas too tall
-	private ScrollPanel verticalScrollTag;
-	// contain verticalScrollTag : allow to place verticalScrollTag in center
-	private LayoutPanel TagContainer; 
+	// Scroll tab if table was too tall
+	private ScrollPanel scrollTag;
+	// contain scrollTag : allow to place scrollTag in center
+	private LayoutPanel tagContainer;
+	private LayoutPanel addTagContainer; 
 
 	public Widget asWidget() {
 		return this;
@@ -97,18 +98,19 @@ public class TagManager extends ResizeComposite implements ITagManager{
 		this.btnModifyPanel.add(cancelModification);
 		
 		//addTag
-		this.addTagPanel = new LayoutPanel();
+		this.addTagContainer = new LayoutPanel();
 		this.addTagPanel();
-		this.mainContainer.addSouth(this.addTagPanel, 300);
 		
-		this.verticalScrollTag = new ScrollPanel();
-		verticalScrollTag.setWidget(this.tagTable);
-		this.verticalScrollTag.setWidth(this.tagTable.getOffsetWidth()+20+"px");
+		this.mainContainer.addSouth(this.addTagContainer, 300);
 		
-		this.TagContainer = new LayoutPanel();
-		this.TagContainer.add(this.verticalScrollTag );
+		this.scrollTag = new ScrollPanel();
+		scrollTag.setWidget(this.tagTable);
+		this.scrollTag.setWidth(this.tagTable.getOffsetWidth()+20+"px");
 		
-		this.mainContainer.add(this.TagContainer);
+		this.tagContainer = new LayoutPanel();
+		this.tagContainer.add(this.scrollTag );
+		
+		this.mainContainer.add(this.tagContainer);
 		
 		this.initWidget(this.mainContainer);
 	}
@@ -117,22 +119,24 @@ public class TagManager extends ResizeComposite implements ITagManager{
 		super.onResize();
 		
 		//////////////// RESIZE ////////////////
-		if(Window.getClientWidth() < this.verticalScrollTag.getOffsetWidth())
+		if(Window.getClientWidth() < this.scrollTag.getOffsetWidth())
 
-			this.verticalScrollTag.setWidth(Window.getClientWidth()+"px");
+			this.scrollTag.setWidth(Window.getClientWidth()+"px");
 			
-		else if(this.verticalScrollTag.getOffsetWidth() < Window.getClientWidth()) {
-			this.verticalScrollTag.setWidth(Window.getClientWidth()+"px");
+		else if(this.scrollTag.getOffsetWidth() < Window.getClientWidth()) {
+			this.scrollTag.setWidth(Window.getClientWidth()+"px");
 			
-			if((this.tagTable.getOffsetWidth()+20) < this.verticalScrollTag.getOffsetWidth())
-				this.verticalScrollTag.setWidth(this.tagTable.getOffsetWidth()+20+"px");
+			if((this.tagTable.getOffsetWidth()+20) < this.scrollTag.getOffsetWidth())
+				this.scrollTag.setWidth(this.tagTable.getOffsetWidth()+20+"px");
 		}
 		else
-			this.verticalScrollTag.setWidth(Window.getClientWidth()+"px");
+			this.scrollTag.setWidth(Window.getClientWidth()+"px");
 		
 		//////////////// CENTER ////////////////
-		int tagPadding = (Window.getClientWidth() - this.verticalScrollTag.getOffsetWidth())/2;
-		this.TagContainer.setWidgetLeftRight(verticalScrollTag, tagPadding, Unit.PX, tagPadding, Unit.PX);
+		int tagPadding = (Window.getClientWidth() - this.scrollTag.getOffsetWidth())/2;
+		this.tagContainer.setWidgetLeftRight(scrollTag, tagPadding, Unit.PX, tagPadding, Unit.PX);
+		int addTagPadding = (Window.getClientWidth() - this.addTagPanel.getOffsetWidth())/2;
+		this.addTagContainer.setWidgetLeftRight(this.addTagPanel, addTagPadding, Unit.PX, addTagPadding, Unit.PX);
 	}
 	
 	/**
@@ -156,6 +160,7 @@ public class TagManager extends ResizeComposite implements ITagManager{
 	 * Initialize the "addTag".
 	 */
 	private void addTagPanel() {
+		this.addTagPanel  = new LayoutPanel();
 		FlexTable newTagTable = new FlexTable();
 		
 		//title
@@ -185,12 +190,14 @@ public class TagManager extends ResizeComposite implements ITagManager{
 		cellFormater.setWidth(1, 2, "200px");
 		cellFormater.setAlignment(1, 2, HasHorizontalAlignment.ALIGN_CENTER, HasVerticalAlignment.ALIGN_MIDDLE);
 		
-		//attach element in layoutPanel
-		this.addTagPanel.add(titleAdd);
-		this.addTagPanel.setWidgetTopHeight(titleAdd, 5, Unit.PX, 20, Unit.PCT);
+		this.addTagPanel.setWidth("500px");
 		this.addTagPanel.add(newTagTable);
-		this.addTagPanel.setWidgetTopHeight(newTagTable, 35, Unit.PCT, 60, Unit.PCT);
 		
+		//attach element in layoutPanel
+		this.addTagContainer.add(titleAdd);
+		this.addTagContainer.setWidgetTopHeight(titleAdd, 5, Unit.PX, 20, Unit.PCT);
+		this.addTagContainer.add(this.addTagPanel);
+		this.addTagContainer.setWidgetTopHeight(this.addTagPanel, 35, Unit.PCT, 60, Unit.PCT);
 	}
 	
 	public PageConstants getConstants(){
@@ -297,6 +304,14 @@ public class TagManager extends ResizeComposite implements ITagManager{
 						this.currentShortLib);
 				this.tagTable.setText(this.rowInModification, 2, 
 						this.currentDescription);
+				//text instead checkBox value
+				if(this.currentTagTextuel)
+					this.tagTable.setText(this.rowInModification, 3, 
+							"oui");
+				else
+					this.tagTable.setText(this.rowInModification, 3, 
+					"non");
+				
 				this.tagTable.setWidget(this.rowInModification, 4, 
 						this.currentBtnPanel);
 			}else{
@@ -306,6 +321,12 @@ public class TagManager extends ResizeComposite implements ITagManager{
 						this.getModifyShortLib());
 				this.tagTable.setText(this.rowInModification, 2, 
 						this.getModifyDescription());
+				//text instead checkBox value
+				if(this.isModifyTextual())
+					this.tagTable.setText(this.rowInModification, 3, "oui");
+				else
+					this.tagTable.setText(this.rowInModification, 3, "non");
+				
 				this.tagTable.setWidget(this.rowInModification, 4, 
 						this.currentBtnPanel);
 			}
@@ -318,19 +339,28 @@ public class TagManager extends ResizeComposite implements ITagManager{
 	}
 	
 	public void DisplayModifyFields(int row) {
+		boolean textualTest;
+		
 		//hide modify fields if it was use in an other line
 		this.hideModifyFields(false);
 		//display in the good line
 		this.rowInModification = row;
 		
+		if(this.tagTable.getText(row, 3).equals("oui"))
+			textualTest = true;
+		else
+			textualTest = false;
+		
 		setModifyFields(this.tagTable.getText(row, 0),
 				this.tagTable.getText(row, 1),
 				this.tagTable.getText(row, 2),
-				false);
+				textualTest);
 		
 		this.tagTable.setWidget(row, 0, this.modifyTagName);
 		this.tagTable.setWidget(row, 1, this.modifyShortLib);
 		this.tagTable.setWidget(row, 2, this.modifyDescription);
+		this.tagTable.setWidget(row, 3, this.modifyTagTextuel);
+		
 		this.currentBtnPanel = (FlowPanel)this.tagTable.getWidget(row, 4);
 		this.tagTable.setWidget(this.rowInModification, 4, 
 				this.btnModifyPanel);

@@ -1,6 +1,7 @@
 package com.sfeir.richercms.page.client.presenter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import com.google.gwt.event.dom.client.ChangeEvent;
@@ -16,11 +17,13 @@ import com.mvp4g.client.presenter.LazyPresenter;
 import com.sfeir.richercms.client.view.PopUpMessage;
 import com.sfeir.richercms.page.client.ArboPageServiceAsync;
 import com.sfeir.richercms.page.client.PageState;
+import com.sfeir.richercms.page.client.TagServiceAsync;
 import com.sfeir.richercms.page.client.TemplateServiceAsync;
 import com.sfeir.richercms.page.client.event.PageEventBus;
 import com.sfeir.richercms.page.client.interfaces.IInformationPanel;
 import com.sfeir.richercms.page.client.view.InformationPanel;
 import com.sfeir.richercms.page.shared.BeanArboPage;
+import com.sfeir.richercms.page.shared.BeanDependentTag;
 import com.sfeir.richercms.page.shared.BeanTag;
 import com.sfeir.richercms.page.shared.BeanTemplate;
 import com.sfeir.richercms.page.shared.BeanTranslationPage;
@@ -31,10 +34,11 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 
 	private ArboPageServiceAsync rpcPage = null;
 	private TemplateServiceAsync rpcTemplate = null;
+	private TagServiceAsync rpcTag = null;
 	private BeanArboPage currentPage = null;
 	private int translationIndex = 0;
 	private int cpt = 0;
-	private PageState state = PageState.display;;
+	private PageState state = PageState.display;
 	
 	public InformationPanelPresenter() {
 		super();
@@ -108,7 +112,7 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 	 * @return a BeanArboPage with all information of the InformationPanel form
 	 */
 	@SuppressWarnings("unused")
-	public BeanArboPage addInformationInPage() {
+	private BeanArboPage addInformationInPage() {
 		
 		List<BeanTranslationPage> lst = null;
 		BeanTranslationPage newTranslation = new BeanTranslationPage();
@@ -142,14 +146,18 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 				view.getPublicationFinish(),
 				lst);
 		
+		if(this.state == PageState.modify)
+			nBaP.setId(this.currentPage.getId());
+		
 		// tag Handle
 		if(view.getSelectedTemplateId() != null) {
-			nBaP.setTemplateId(new Long(view.getSelectedTemplateId()));
-		nBaP.setTagsId(view.getSelectedTagsId());
+			nBaP.setTemplateId(new Long(view.getSelectedTemplateId()));;
 		}
 		
 		return nBaP;
 	}
+	
+
 	
 	/**
 	 * Display a BeanArboPage information in the good field
@@ -157,7 +165,6 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 	 */
 	private void displayArboPage(BeanArboPage page){
 		this.view.clearFields();
-		
 		//set the title of the panel
 		this.view.setTitle(page.getTranslation().get(0).getPageTitle());
 		
@@ -283,20 +290,108 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 			PageState currentState = this.state;
 			//modifymode : modify the translation in the current page
 			this.state = PageState.modify;
-			//add the translation in the current page
+			//add information 
 			this.currentPage = this.addInformationInPage();
 			//reconfigure the state
 			this.state = currentState;
-			//send info
-			this.eventBus.sendInfo(this.currentPage);
-			//hide all help field
-			this.view.hideAllHelpField();
-			//set title
-			view.setTitle(this.currentPage.getTranslation().get(0).getUrlName());
-			//this event is send if all information entered by user are right
-			this.eventBus.rightInformation();
+			//save dependentTags and call sendInfo (due waiting for an rpc result)
+			if(view.getSelectedTemplateId() != null)
+				this.saveDependentTags();
+			else
+				//send directly information if any 
+				sendInfo(null);
 		}
 		
+	}
+	
+	/**
+	 * This function save dependentTag
+	 * All dependentTag are save only if its was explicitly ask.
+	 * the only call of this methos was in onCallInfo
+	 */
+	private void saveDependentTags() {
+		this.rpcTag.getAllDependentTag(currentPage.getId(), 
+				new AsyncCallback<List<BeanDependentTag>>() {
+					public void onFailure(Throwable caught) {eventBus.hideInformationPopUp();}
+
+					public void onSuccess(List<BeanDependentTag> result) {
+						boolean find = false;
+						//on met dabord tout les tag sélectionné dans addedTags
+						List<Long> addedTags = view.getSelectedTagsId();
+						ArrayList<Long> deletedTags = new ArrayList<Long>();
+						ArrayList<BeanDependentTag> updateDTags = new ArrayList<BeanDependentTag>();
+						
+						//on parcours tout les dependent tag déjà lié a la page
+						for(BeanDependentTag bean : result) {
+							find = false; // permet de savoir si on l'a trouvé ou non
+							//on parcours tout les tag sélectionné pour :
+							//  -  Mettre à jour les DependentTag existant
+							//  -  Supprimer les DependentTag dont le tag n'est plus sélectionné
+							//  -  Ajouter les nouveau tag séléctionné par le biais de DependentTag
+							//on parcours addedTags car elle contient tout les tag sélectionnés dans addedTags
+							for(Long selectedTag : addedTags){
+								//on a trouvé un dependentTag correspondant
+								if(bean.getDependentTag().getId().equals(selectedTag)) {
+									find = true;// trouvé !
+									//test pour savoir si c'est un tag custom ou non
+									if(bean.getDependentTag().isTextual()){
+										//met a jour le custom si besoin
+										bean.setCustomName(view.getCustomValue(selectedTag));
+									}
+									updateDTags.add(bean);
+									// on le retire de cette list car il ne faut pas le ré-ajouté
+									addedTags.remove(selectedTag);
+									break;
+								}
+							}
+							// si on ne l'a pas trouvé alors c'est bien un nouveau a ajouter
+							if(!find)
+								deletedTags.add(bean.getId());
+								
+						}
+						
+						//contain all custom tag + her customosation
+						HashMap<Long,String> customTag = new HashMap<Long,String> ();
+						String value;
+						for(Long addedTag : addedTags){
+							value = view.getCustomValue(addedTag);
+							//if null => addedTag aren't a custom tag
+							if(value != null)
+								customTag.put(addedTag, value);
+						}
+						
+						rpcTag.upDateDependentTag(updateDTags, addedTags, deletedTags,customTag,
+								new AsyncCallback<List<Long>>() {
+									public void onFailure(Throwable caught) {}
+									public void onSuccess(List<Long> result) {
+										sendInfo(result);
+									}
+						});
+					}
+		});
+	}
+	
+	/**
+	 * This methods was called in saveDependentTags.
+	 * After saving all dependentTag, the new list of specific dependentTag
+	 * are send by rpc and this method add it in currentPage.
+	 * After that, currentPage are send to the PagePresenter to save it.
+	 * @param newTagsIdList : new TagsId list of the currentPage, if null any 
+	 * modification on tagIdList are maked
+	 */
+	private void sendInfo(List<Long> newTagsIdList) {
+		
+		//add the rpc result in currentPage
+		if(newTagsIdList != null)
+			this.currentPage.setTagsId(newTagsIdList);
+		//send info
+		this.eventBus.sendInfo(this.currentPage);
+		//hide all help field
+		this.view.hideAllHelpField();
+		//set title
+		view.setTitle(this.currentPage.getTranslation().get(0).getUrlName());
+		//this event is send if all information entered by user are right
+		this.eventBus.rightInformation();
 	}
 	
 	private boolean testField() {
@@ -412,14 +507,26 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 	}
 	
 	private void checkTag() {
-		
+
 		if(this.currentPage.getTemplateId()!= null && 
-			this.currentPage.getTemplateId().equals(new Long(view.getSelectedTemplateId())))
-			for (Long tagId : this.currentPage.getTagsId()){
-				this.view.checktag(tagId);
-			}
-		else
-			this.view.unCheckAllTags();
+			this.currentPage.getTemplateId().equals(new Long(view.getSelectedTemplateId()))){
+			
+			this.rpcTag.getAllDependentTag(this.currentPage.getId(), new AsyncCallback<List<BeanDependentTag>>() {
+				public void onFailure(Throwable caught) {}
+
+				public void onSuccess(List<BeanDependentTag> result) {
+					
+					for (BeanDependentTag dTag : result){
+						view.checktag(dTag.getDependentTag().getId());
+						if(dTag.getDependentTag().isTextual()){
+							view.setCustom(dTag.getDependentTag().getId(),dTag.getCustomName());
+						}
+					}	
+				}
+			});
+		}else // if new template selected, uncheck all
+			view.unCheckAllTags();
+		
 	}
 
 	/**
@@ -432,11 +539,20 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 	}
 	
 	/**
-	 * used by the framework to instantiate rpcTag
-	 * @param rpcTag
+	 * used by the framework to instantiate rpcTemplate
+	 * @param rpcTemplate
 	 */
 	@InjectService
 	public void setTemplateService( TemplateServiceAsync rpcTemplate ) {
 		this.rpcTemplate = rpcTemplate;
+	}
+	
+	/**
+	 * used by the framework to instantiate rpcTag
+	 * @param rpcTag
+	 */
+	@InjectService
+	public void setTemplateService( TagServiceAsync rpcTag ) {
+		this.rpcTag = rpcTag;
 	}
 }

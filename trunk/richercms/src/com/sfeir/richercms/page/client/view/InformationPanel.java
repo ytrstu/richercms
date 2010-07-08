@@ -65,6 +65,7 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 	//parse this to know what tag are selected
 	
 	private HashMap<Long,CheckBox> selectedTags; // idTag, associated CheckBox
+	private HashMap<Long,TextBox> customTags; // idTag, associated CheckBox
 	private ListBox listTemplate = null;
 	
 	private boolean EnableCheckBox = false;
@@ -80,6 +81,7 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 	public void createView() {
 
 		this.selectedTags = new HashMap<Long,CheckBox>();
+		this.customTags = new HashMap<Long,TextBox>();
 		this.lock = new Label("");
 		this.lock.setStyleName("lockLabel");
 		
@@ -302,9 +304,12 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 		this.tagTable.setText(numRow, 2, shortLib);
 		this.tagTable.setText(numRow, 3, description);
 		
-		if(textualTag)
-			this.tagTable.setWidget(numRow, 4, new TextBox());
-		else
+		if(textualTag){
+			TextBox tb = new TextBox(); 
+			tb.setEnabled(this.EnableCheckBox);
+			this.customTags.put(new Long(id), tb);
+			this.tagTable.setWidget(numRow, 4, tb);
+		}else
 			this.tagTable.setText(numRow, 4,"No");
 		
 	}
@@ -339,6 +344,21 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 		return null;
 	}
 	
+	public String getCustomValue(Long id) {
+		TextBox custom = this.customTags.get(id);
+		if(custom == null)
+			return null;
+		else
+			return custom.getText();
+
+	}
+	
+	public void setCustom(Long tagId, String customName){
+		TextBox custom = this.customTags.get(tagId);
+		if(custom != null)
+			custom.setText(customName);
+	}
+	
 	public void unCheckAllTags() {
 		for(CheckBox cb : this.selectedTags.values())
 			cb.setValue(false);
@@ -362,6 +382,10 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 		for(CheckBox cb : this.selectedTags.values()){
 			cb.setEnabled(true);
 		}
+		
+		for(TextBox tb : this.customTags.values()){
+			tb.setEnabled(true);
+		}
 	}
 	
 	public void deasabledWidgets() {
@@ -377,6 +401,10 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 		this.EnableCheckBox = false;
 		for(CheckBox cb : this.selectedTags.values()){
 			cb.setEnabled(false);
+		}
+		
+		for(TextBox tb : this.customTags.values()){
+			tb.setEnabled(false);
 		}
 	}
 	

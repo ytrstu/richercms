@@ -6,11 +6,19 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.DomEvent;
 import com.google.gwt.event.dom.client.HasChangeHandlers;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.dom.client.HasKeyPressHandlers;
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyPressEvent;
+import com.google.gwt.event.dom.client.KeyPressHandler;
+import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.layout.client.Layout.Alignment;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
@@ -20,13 +28,14 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.ResizeComposite;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.HTMLTable.CellFormatter;
 import com.sfeir.richercms.page.client.interfaces.ITemplateManager;
 import com.sfeir.richercms.page.client.view.custom.PopUpAddTemplate;
 
-public class TemplateManager extends ResizeComposite implements ITemplateManager {
+public class TemplateManager extends ResizeComposite implements ITemplateManager, HasKeyPressHandlers{
 
 	private DockLayoutPanel mainContainer;
 	private Button applyTag;
@@ -35,6 +44,12 @@ public class TemplateManager extends ResizeComposite implements ITemplateManager
 	private Image deleteTemplate;
 	private Image modifyTemplate;
 	private FlexTable tagTable;
+	
+	// Scroll tab if table vas too tall
+	private ScrollPanel tagContainer;
+	private LayoutPanel contentPanel; 
+	private LayoutPanel templateContainer;
+	
 	private PopUpAddTemplate popUpAddTemplate;
 	private HashMap<Long,CheckBox> selectedTags; // idTag, associated CheckBox
 	
@@ -72,22 +87,25 @@ public class TemplateManager extends ResizeComposite implements ITemplateManager
 		this.modifyTemplate.setTitle("modifier le template sélectioné");
 		this.modifyTemplate.addStyleName("modifyStyle");
 		
-		LayoutPanel templateContainer = new LayoutPanel();
-		templateContainer.add(listTitle);
-		templateContainer.setWidgetLeftWidth(listTitle, 0, Unit.PX, 120, Unit.PX);
-		templateContainer.setWidgetVerticalPosition(listTitle, Alignment.BEGIN);
-		templateContainer.add(this.listTemplate);
-		templateContainer.setWidgetLeftWidth(this.listTemplate, 120, Unit.PX, 120, Unit.PX);
-		templateContainer.setWidgetVerticalPosition(this.listTemplate, Alignment.BEGIN);
-		templateContainer.add(this.addTemplate);
-		templateContainer.setWidgetLeftWidth(this.addTemplate, 240, Unit.PX, 22, Unit.PX);
-		templateContainer.setWidgetVerticalPosition(this.addTemplate, Alignment.BEGIN);
-		templateContainer.add(this.modifyTemplate);
-		templateContainer.setWidgetLeftWidth(this.modifyTemplate, 270, Unit.PX, 22, Unit.PX);
-		templateContainer.setWidgetVerticalPosition(this.modifyTemplate, Alignment.BEGIN);
-		templateContainer.add(this.deleteTemplate);
-		templateContainer.setWidgetLeftWidth(this.deleteTemplate, 300, Unit.PX, 22, Unit.PX);
-		templateContainer.setWidgetVerticalPosition(this.deleteTemplate, Alignment.BEGIN);
+		this.templateContainer = new LayoutPanel();
+		this.templateContainer.setWidth(330+"px");
+		this.templateContainer.add(listTitle);
+		this.templateContainer.setWidgetLeftWidth(listTitle, 0, Unit.PX, 120, Unit.PX);
+		this.templateContainer.setWidgetVerticalPosition(listTitle, Alignment.BEGIN);
+		this.templateContainer.add(this.listTemplate);
+		this.templateContainer.setWidgetLeftWidth(this.listTemplate, 120, Unit.PX, 120, Unit.PX);
+		this.templateContainer.setWidgetVerticalPosition(this.listTemplate, Alignment.BEGIN);
+		this.templateContainer.add(this.addTemplate);
+		this.templateContainer.setWidgetLeftWidth(this.addTemplate, 240, Unit.PX, 22, Unit.PX);
+		this.templateContainer.setWidgetVerticalPosition(this.addTemplate, Alignment.BEGIN);
+		this.templateContainer.add(this.modifyTemplate);
+		this.templateContainer.setWidgetLeftWidth(this.modifyTemplate, 270, Unit.PX, 22, Unit.PX);
+		this.templateContainer.setWidgetVerticalPosition(this.modifyTemplate, Alignment.BEGIN);
+		this.templateContainer.add(this.deleteTemplate);
+		this.templateContainer.setWidgetLeftWidth(this.deleteTemplate, 300, Unit.PX, 22, Unit.PX);
+		this.templateContainer.setWidgetVerticalPosition(this.deleteTemplate, Alignment.BEGIN);
+		
+		
 		
 		//tag Selection
 		Label tagtitle = new Label("tag possible pour ce template");
@@ -97,15 +115,46 @@ public class TemplateManager extends ResizeComposite implements ITemplateManager
 		this.tagTable.setCellPadding(5);
 		this.tagTable.setBorderWidth(2);
 		this.addTagTableTitle();
-		templateContainer.add(tagtitle);
-		templateContainer.setWidgetTopHeight(tagtitle, 100, Unit.PX, 160, Unit.PX);
-		templateContainer.add(this.tagTable);
-		templateContainer.setWidgetTopHeight(this.tagTable, 170, Unit.PX, 100, Unit.PCT);
-		templateContainer.setWidgetVerticalPosition(this.tagTable, Alignment.BEGIN);
 		
-		this.mainContainer.add(templateContainer);
+		this.tagContainer = new ScrollPanel();
+		tagContainer.setWidget(this.tagTable);
+		this.tagContainer.setWidth(400+"px");
+
+		this.contentPanel = new LayoutPanel();
+		this.contentPanel.add(this.templateContainer);
+		this.contentPanel.add(tagtitle);
+		this.contentPanel.setWidgetTopHeight(tagtitle, 70, Unit.PX, 130, Unit.PX);
+		this.contentPanel.add(this.tagContainer);
+		this.contentPanel.setWidgetTopBottom(this.tagContainer, 140, Unit.PX, 60, Unit.PX);
+		
+		this.mainContainer.add(this.contentPanel);
 		
 		this.initWidget(this.mainContainer);
+	}
+	
+	public void onResize() {
+		super.onResize();
+		
+		//////////////// RESIZE ////////////////
+		if(Window.getClientWidth() < this.tagContainer.getOffsetWidth())
+
+			this.tagContainer.setWidth(Window.getClientWidth()+"px");
+			
+		else if(this.tagContainer.getOffsetWidth() < Window.getClientWidth()) {
+			this.tagContainer.setWidth(Window.getClientWidth()+"px");
+			
+			if((this.tagTable.getOffsetWidth()+20) < this.tagContainer.getOffsetWidth())
+				this.tagContainer.setWidth(this.tagTable.getOffsetWidth()+20+"px");
+		}
+		else
+			this.tagContainer.setWidth(Window.getClientWidth()+"px");
+		
+		//////////////// CENTER ////////////////
+		int tagPadding = (Window.getClientWidth() - this.tagContainer.getOffsetWidth())/2;
+		this.contentPanel.setWidgetLeftRight(tagContainer, tagPadding, Unit.PX, tagPadding, Unit.PX);
+		
+		int templatePadding = (Window.getClientWidth() - this.templateContainer.getOffsetWidth())/2;
+		this.contentPanel.setWidgetLeftRight(this.templateContainer, templatePadding, Unit.PX, templatePadding, Unit.PX);
 	}
 	
 	/**
@@ -142,6 +191,8 @@ public class TemplateManager extends ResizeComposite implements ITemplateManager
 			this.tagTable.setText(numRow, 4, "yes");
 		else
 			this.tagTable.setText(numRow, 4, "no");
+		
+		onResize();
 		
 		return selectTag;
 	}
@@ -259,5 +310,13 @@ public class TemplateManager extends ResizeComposite implements ITemplateManager
 	
 	public void changeSelectedTagName(String name){
 		this.listTemplate.setItemText(this.listTemplate.getSelectedIndex(), name);
+	}
+
+	public HasKeyPressHandlers getKeyPressEvent(){
+		return this;
+	}
+	
+	public HandlerRegistration addKeyPressHandler(KeyPressHandler handler) {
+		return addDomHandler(handler, KeyPressEvent.getType());
 	}
 }

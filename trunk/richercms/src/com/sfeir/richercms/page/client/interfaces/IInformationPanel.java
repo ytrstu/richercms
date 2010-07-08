@@ -268,6 +268,20 @@ public interface IInformationPanel extends LazyView {
 			String shortLib, String description, boolean textualTag );
 	
 	/**
+	 * Get value of custom tag textBox
+	 * @param id : tag's id
+	 * @return null if this tag aren't a custom tag, the custom value either
+	 */
+	String getCustomValue(Long id);
+	
+	/**
+	 * Set specific custom tag text
+	 * @param tagId : tag's id
+	 * @param customName : value of the field
+	 */
+	void setCustom(Long tagId, String customName);
+	
+	/**
 	 * 
 	 * @return
 	 */

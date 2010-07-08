@@ -65,6 +65,12 @@ public interface ITemplateManager  extends LazyView {
 	 * @return Event
 	 */
 	HasChangeHandlers getTemplateLstSelection();
+	
+	/**
+	 * Handle the KeyPress event
+	 * @return Event
+	 */
+	HasKeyPressHandlers getKeyPressEvent();
 
 	/**
 	 * Show the add template PopUp

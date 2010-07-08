@@ -1,8 +1,10 @@
 package com.sfeir.richercms.page.client;
 
+import java.util.HashMap;
 import java.util.List;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.sfeir.richercms.page.shared.BeanDependentTag;
 import com.sfeir.richercms.page.shared.BeanTag;
 
 public interface TagServiceAsync {
@@ -13,4 +15,8 @@ public interface TagServiceAsync {
 	void deleteTag(Long id, AsyncCallback<Void> callback);
 	void addTag(BeanTag bean, AsyncCallback<Void> callback);
 	void updateTag(BeanTag bean, AsyncCallback<Void> callback);
+	void upDateDependentTag(List<BeanDependentTag> updateDTags, List<Long> addedTags, 
+			List<Long> deletedTags, HashMap<Long,String> customTag, AsyncCallback<List<Long>> callback);
+	void getAllDependentTag(Long pageId, AsyncCallback<List<BeanDependentTag>> callback);
+	void getAssociatedTag(Long pageId, AsyncCallback<List<Long>> callback);
 }

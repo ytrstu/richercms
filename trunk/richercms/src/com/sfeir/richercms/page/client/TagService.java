@@ -52,14 +52,15 @@ public interface TagService extends RemoteService {
 	/**
 	 * Add a new tag in datastore
 	 * @param bean : corresponding bean with id == null
+	 * @return return the tagId or Null if a tag with the same name exist.
 	 */
-	void addTag(BeanTag bean);
+	Long addTag(BeanTag bean);
 	
 	/**
 	 * Update a tag
 	 * @param bean : corresponding bean with id != null
 	 */
-	void updateTag(BeanTag bean);
+	Boolean updateTag(BeanTag bean);
 	
 	/**
 	 * Update list of dependentTag

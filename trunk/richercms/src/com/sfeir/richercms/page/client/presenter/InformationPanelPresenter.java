@@ -310,63 +310,71 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 	 * the only call of this methos was in onCallInfo
 	 */
 	private void saveDependentTags() {
-		this.rpcTag.getAllDependentTag(currentPage.getId(), 
-				new AsyncCallback<List<BeanDependentTag>>() {
-					public void onFailure(Throwable caught) {eventBus.hideInformationPopUp();}
-
-					public void onSuccess(List<BeanDependentTag> result) {
-						boolean find = false;
-						//on met dabord tout les tag sélectionné dans addedTags
-						List<Long> addedTags = view.getSelectedTagsId();
-						ArrayList<Long> deletedTags = new ArrayList<Long>();
-						ArrayList<BeanDependentTag> updateDTags = new ArrayList<BeanDependentTag>();
-						
-						//on parcours tout les dependent tag déjà lié a la page
-						for(BeanDependentTag bean : result) {
-							find = false; // permet de savoir si on l'a trouvé ou non
-							//on parcours tout les tag sélectionné pour :
-							//  -  Mettre à jour les DependentTag existant
-							//  -  Supprimer les DependentTag dont le tag n'est plus sélectionné
-							//  -  Ajouter les nouveau tag séléctionné par le biais de DependentTag
-							//on parcours addedTags car elle contient tout les tag sélectionnés dans addedTags
-							for(Long selectedTag : addedTags){
-								//on a trouvé un dependentTag correspondant
-								if(bean.getDependentTag().getId().equals(selectedTag)) {
-									find = true;// trouvé !
-									//test pour savoir si c'est un tag custom ou non
-									if(bean.getDependentTag().isTextual()){
-										//met a jour le custom si besoin
-										bean.setCustomName(view.getCustomValue(selectedTag));
-									}
-									updateDTags.add(bean);
-									// on le retire de cette list car il ne faut pas le ré-ajouté
-									addedTags.remove(selectedTag);
-									break;
-								}
-							}
-							// si on ne l'a pas trouvé alors c'est bien un nouveau a ajouter
-							if(!find)
-								deletedTags.add(bean.getId());
-								
+		if(this.state.equals(PageState.modify)){
+			this.rpcTag.getAllDependentTag(currentPage.getId(), 
+					new AsyncCallback<List<BeanDependentTag>>() {
+						public void onFailure(Throwable caught) {eventBus.hideInformationPopUp();}
+	
+						public void onSuccess(List<BeanDependentTag> result) {
+							parseAndSaveTag(result);
 						}
-						
-						//contain all custom tag + her customosation
-						HashMap<Long,String> customTag = new HashMap<Long,String> ();
-						String value;
-						for(Long addedTag : addedTags){
-							value = view.getCustomValue(addedTag);
-							//if null => addedTag aren't a custom tag
-							if(value != null)
-								customTag.put(addedTag, value);
-						}
-						
-						rpcTag.upDateDependentTag(updateDTags, addedTags, deletedTags,customTag,
-								new AsyncCallback<List<Long>>() {
-									public void onFailure(Throwable caught) {}
-									public void onSuccess(List<Long> result) {
-										sendInfo(result);
-									}
-						});
+			});
+		}else{//when you add a new page, any tag depend of this page
+			parseAndSaveTag(new ArrayList<BeanDependentTag>());
+		}
+	}
+		
+	private void parseAndSaveTag(List<BeanDependentTag> dependentTags) {
+		boolean find = false;
+		//on met dabord tout les tag sélectionné dans addedTags
+		List<Long> addedTags = view.getSelectedTagsId();
+		ArrayList<Long> deletedTags = new ArrayList<Long>();
+		ArrayList<BeanDependentTag> updateDTags = new ArrayList<BeanDependentTag>();
+		
+		//on parcours tout les dependent tag déjà lié a la page
+		for(BeanDependentTag bean : dependentTags) {
+			find = false; // permet de savoir si on l'a trouvé ou non
+			//on parcours tout les tag sélectionné pour :
+			//  -  Mettre à jour les DependentTag existant
+			//  -  Supprimer les DependentTag dont le tag n'est plus sélectionné
+			//  -  Ajouter les nouveau tag séléctionné par le biais de DependentTag
+			//on parcours addedTags car elle contient tout les tag sélectionnés dans addedTags
+			for(Long selectedTag : addedTags){
+				//on a trouvé un dependentTag correspondant
+				if(bean.getDependentTag().getId().equals(selectedTag)) {
+					find = true;// trouvé !
+					//test pour savoir si c'est un tag custom ou non
+					if(bean.getDependentTag().isTextual()){
+						//met a jour le custom si besoin
+						bean.setCustomName(view.getCustomValue(selectedTag));
+					}
+					updateDTags.add(bean);
+					// on le retire de cette list car il ne faut pas le ré-ajouté
+					addedTags.remove(selectedTag);
+					break;
+				}
+			}
+			// si on ne l'a pas trouvé alors c'est bien un nouveau a ajouter
+			if(!find)
+				deletedTags.add(bean.getId());
+				
+		}
+		
+		//contain all custom tag + her customosation
+		HashMap<Long,String> customTag = new HashMap<Long,String> ();
+		String value;
+		for(Long addedTag : addedTags){
+			value = view.getCustomValue(addedTag);
+			//if null => addedTag aren't a custom tag
+			if(value != null)
+				customTag.put(addedTag, value);
+		}
+		
+		rpcTag.upDateDependentTag(updateDTags, addedTags, deletedTags,customTag,
+				new AsyncCallback<List<Long>>() {
+					public void onFailure(Throwable caught) {}
+					public void onSuccess(List<Long> result) {
+						sendInfo(result);
 					}
 		});
 	}

@@ -312,4 +312,8 @@ public interface PageConstants extends Constants {
 	  String DeleteTemplate();
 	  @DefaultStringValue("modifier le template sélectioné")
 	  String ModifyTemplate();
+	  @DefaultStringValue("Ajout d'un nouveau template")
+	  String AddTemplateTitle();
+	  @DefaultStringValue("Ajout d'un nouveau tag")
+	  String AddTagTitle();
 }

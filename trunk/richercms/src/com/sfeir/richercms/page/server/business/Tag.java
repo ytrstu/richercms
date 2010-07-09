@@ -4,6 +4,7 @@ import javax.persistence.Id;
 
 import com.googlecode.objectify.annotation.Cached;
 import com.googlecode.objectify.annotation.Entity;
+import com.googlecode.objectify.annotation.Indexed;
 import com.googlecode.objectify.annotation.Unindexed;
 
 @Cached
@@ -13,8 +14,9 @@ public class Tag {
 
     @Id
     private Long id;
-    
+    @Indexed
     private String tagName;
+    @Indexed
     private String shortLib;
     private String description;
     private boolean isTextual;

@@ -78,6 +78,7 @@ public class TemplateManagerPresenter extends LazyPresenter<ITemplateManager, Pa
 						public void onSuccess(BeanTemplate result) {
 							view.setPopUpNewTempDesc(result.getDescription());
 							view.setPopUpNewTempName(result.getName());
+							view.setPopUpNewTempLib(result.getShortLib());
 						}
 					});
 				}
@@ -159,11 +160,13 @@ public class TemplateManagerPresenter extends LazyPresenter<ITemplateManager, Pa
 			BeanTemplate bTP = new BeanTemplate();
 			bTP.setName(this.view.getPopUpNewTempName());
 			bTP.setDescription(this.view.getPopUpNewTempDesc());
+			bTP.setShortLib(this.view.getPopUpNewTempLib());
 			
 			switch(this.popUpState) {
 			case modify :
 				this.rpcTemplate.updateTemplate(this.view.getSelectedTemplateId(),
-						this.view.getPopUpNewTempName(), 
+						this.view.getPopUpNewTempName(),
+						this.view.getPopUpNewTempLib(),
 						this.view.getPopUpNewTempDesc(), 
 						new AsyncCallback<Void>() {
 					public void onSuccess(Void result) {

@@ -154,16 +154,31 @@ public class ServiceTagImpl extends RemoteServiceServlet implements TagService {
 		}
 	}
 	
-	public void addTag(BeanTag bean){
+	public Long addTag(BeanTag bean){
 		Tag tag = this.beanToTag(bean);
 		Objectify ofy = ObjectifyService.begin();
-		ofy.put(tag);
+		
+		Query<Tag> sameNameTags = ofy.query(Tag.class).filter("tagName ", tag.getTagName());
+		Query<Tag> sameShortLibTags = ofy.query(Tag.class).filter("shortLib ", tag.getShortLib());
+		
+		if(sameNameTags.countAll()==0 && sameShortLibTags.countAll()==0)
+			ofy.put(tag);
+			
+		return tag.getId();
 	}
 	
-	public void updateTag(BeanTag bean){
+	public Boolean updateTag(BeanTag bean){
 		Tag tag = this.beanToTag(bean);
 		Objectify ofy = ObjectifyService.begin();
-		ofy.put(tag);
+		
+		Query<Tag> sameNameTags = ofy.query(Tag.class).filter("tagName ", tag.getTagName());
+		Query<Tag> sameShortLibTags = ofy.query(Tag.class).filter("shortLib ", tag.getShortLib());
+		
+		if(sameNameTags.countAll()==0 && sameShortLibTags.countAll()==0){
+			ofy.put(tag);
+			return true;
+		}
+		return false;
 	}
 	
 	private Tag beanToTag(BeanTag bean){

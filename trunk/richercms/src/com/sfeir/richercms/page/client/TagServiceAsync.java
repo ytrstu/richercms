@@ -13,8 +13,8 @@ public interface TagServiceAsync {
 	void getTags(List<Long> tagids, AsyncCallback<List<BeanTag>> callback);
 	void getTag(Long id, AsyncCallback<BeanTag> callback);
 	void deleteTag(Long id, AsyncCallback<Void> callback);
-	void addTag(BeanTag bean, AsyncCallback<Void> callback);
-	void updateTag(BeanTag bean, AsyncCallback<Void> callback);
+	void addTag(BeanTag bean, AsyncCallback<Long> callback);
+	void updateTag(BeanTag bean, AsyncCallback<Boolean> callback);
 	void upDateDependentTag(List<BeanDependentTag> updateDTags, List<Long> addedTags, 
 			List<Long> deletedTags, HashMap<Long,String> customTag, AsyncCallback<List<Long>> callback);
 	void getAllDependentTag(Long pageId, AsyncCallback<List<BeanDependentTag>> callback);

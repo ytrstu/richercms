@@ -28,11 +28,14 @@ public class TagManagerPresenter extends LazyPresenter<ITagManager, PageEventBus
 						view.getNewShortLib(),
 						view.getNewDescription(),
 						view.isTextual());
-				rpcTag.addTag(bean, new AsyncCallback<Void>() {
+				rpcTag.addTag(bean, new AsyncCallback<Long>() {
 					public void onFailure(Throwable caught) {}
-					public void onSuccess(Void result) {
-						addTag(bean);
-						view.clearAddNewTagTextBox();
+					public void onSuccess(Long result) {
+						if(result != null){
+							view.hideAddLine();
+							bean.setId(result);
+							addTag(bean);
+						}
 					}
 				});
 			}
@@ -40,22 +43,40 @@ public class TagManagerPresenter extends LazyPresenter<ITagManager, PageEventBus
 		
 		this.view.clickOnApplyModif().addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
+				view.hideAddLine();
 				BeanTag bean = new BeanTag(currentTagId,
 								   view.getModifyTagName(),
 								   view.getModifyShortLib(),
 								   view.getModifyDescription(),
 								   view.isModifyTextual());
 				
-				rpcTag.updateTag(bean, new AsyncCallback<Void>() {
+				rpcTag.updateTag(bean, new AsyncCallback<Boolean>() {
 					public void onFailure(Throwable caught) {}
-					public void onSuccess(Void result) {}
+					public void onSuccess(Boolean result) {
+						//if update was possible
+						if(result.booleanValue())
+							view.hideModifyFields(false);
+					}
 				});
-				view.hideModifyFields(false);
+				
 			}
 		});
+		
 		this.view.clickOnCancelModif().addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {	
 				view.hideModifyFields(true);
+			}
+		});
+		
+		this.view.clickOnCancelAddTag().addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				view.hideAddLine();
+			}
+		});
+		
+		this.view.clickOnAddNewTag().addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				view.showAddLine();
 			}
 		});
 	}
@@ -86,6 +107,7 @@ public class TagManagerPresenter extends LazyPresenter<ITagManager, PageEventBus
 				bean.isTextual());
 		view.getCurDeleteClick().addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
+				view.hideAddLine();
 				deleteTag(bean.getId());
 				view.deleteLine(event.getRelativeElement());
 			}

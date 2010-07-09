@@ -90,6 +90,13 @@ public interface ITemplateManager  extends LazyView {
 	String getPopUpNewTempName();
 	
 	/**
+	 * Get the Template's short libelle,
+	 * entered in the popUp
+	 * @return template's libelle
+	 */
+	String getPopUpNewTempLib();
+	
+	/**
 	 * Get the Template's description
 	 * entered in the popUp
 	 * @return template's Description
@@ -102,6 +109,13 @@ public interface ITemplateManager  extends LazyView {
 	 * @param name : template's name
 	 */
 	void setPopUpNewTempName(String name);
+	
+	/**
+	 * Set the Template's short libelle
+	 * entered in the popUp
+	 * @param description : template's libelle
+	 */
+	void setPopUpNewTempLib(String shortLib);
 	
 	/**
 	 * Set the Template's description

@@ -10,8 +10,6 @@ import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.HasHorizontalAlignment;
-import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.LayoutPanel;
@@ -29,17 +27,13 @@ public class TagManager extends ResizeComposite implements ITagManager{
 
 	//gestion des langues
 	private PageConstants constants = GWT.create(PageConstants.class);
+	
 	private DockLayoutPanel mainContainer;
 	private FlexTable tagTable;
-	private LayoutPanel addTagPanel;
-	private Button addNewTag;
 	private int rowInModification = -1;
 	
 	//add tag
-	private TextBox newTagName;
-	private TextBox newShortLib;
-	private TextArea newDescription;
-	private CheckBox tagTextuel;
+	private Button addTag;
 	
 	//modify tag
 	private TextBox modifyTagName;
@@ -49,6 +43,16 @@ public class TagManager extends ResizeComposite implements ITagManager{
 	private Image applyModification;
 	private Image cancelModification;
 	private FlowPanel btnModifyPanel;
+	
+	// add tag
+	private TextBox newTagName;
+	private TextBox newShortLib;
+	private TextArea newDescription;
+	private CheckBox newtagTextuel;
+	private Image saveNewTag;
+	private Image cancelNewTag;
+	private FlowPanel btnAddPanel;
+	private boolean inAddState;
 	
 	private Panel currentBtnPanel; // save the current BtnPanel during the modification step
 	private Image currentModifyBtn;
@@ -62,7 +66,7 @@ public class TagManager extends ResizeComposite implements ITagManager{
 	private ScrollPanel scrollTag;
 	// contain scrollTag : allow to place scrollTag in center
 	private LayoutPanel tagContainer;
-	private LayoutPanel addTagContainer; 
+	
 
 	public Widget asWidget() {
 		return this;
@@ -75,6 +79,10 @@ public class TagManager extends ResizeComposite implements ITagManager{
 		Label title = new Label("Gestion des tag");
 		title.setStyleName("informationTitle");
 		this.mainContainer.addNorth(title, 60);
+		
+		this.addTag = new Button("Ajouter un nouveau tag");
+		this.addTag.setWidth("170px");
+		this.addTag.setHeight("30px");
 		
 		//tagTable
 		this.tagTable = new FlexTable();
@@ -97,18 +105,31 @@ public class TagManager extends ResizeComposite implements ITagManager{
 		this.btnModifyPanel.add(applyModification);
 		this.btnModifyPanel.add(cancelModification);
 		
-		//addTag
-		this.addTagContainer = new LayoutPanel();
-		this.addTagPanel();
+		//add field
+		this.newTagName = new TextBox();
+		this.newShortLib = new TextBox();
+		this.newDescription = new TextArea();
+		this.newDescription.setVisibleLines(3);
+		this.newtagTextuel = new CheckBox(this.constants.TbTextual());
+		this.saveNewTag = new Image("tab_images/trans.png");
+		this.saveNewTag.addStyleName("ApplyStyle");
+		this.cancelNewTag = new Image("tab_images/trans.png");
+		this.cancelNewTag.addStyleName("deleteStyle");
+		this.btnAddPanel = new FlowPanel();
+		this.btnAddPanel.add(this.saveNewTag);
+		this.btnAddPanel.add(this.cancelNewTag);
+		this.inAddState = false;
 		
-		this.mainContainer.addSouth(this.addTagContainer, 300);
 		
 		this.scrollTag = new ScrollPanel();
-		scrollTag.setWidget(this.tagTable);
-		this.scrollTag.setWidth(this.tagTable.getOffsetWidth()+20+"px");
+		this.scrollTag.setWidget(this.tagTable);
+		this.scrollTag.setWidth(400+"px");
 		
 		this.tagContainer = new LayoutPanel();
+		this.tagContainer.add(this.addTag);
 		this.tagContainer.add(this.scrollTag );
+		this.tagContainer.setWidgetTopBottom(this.scrollTag, 50, Unit.PX, 10, Unit.PX);
+		
 		
 		this.mainContainer.add(this.tagContainer);
 		
@@ -135,8 +156,8 @@ public class TagManager extends ResizeComposite implements ITagManager{
 		//////////////// CENTER ////////////////
 		int tagPadding = (Window.getClientWidth() - this.scrollTag.getOffsetWidth())/2;
 		this.tagContainer.setWidgetLeftRight(scrollTag, tagPadding, Unit.PX, tagPadding, Unit.PX);
-		int addTagPadding = (Window.getClientWidth() - this.addTagPanel.getOffsetWidth())/2;
-		this.addTagContainer.setWidgetLeftRight(this.addTagPanel, addTagPadding, Unit.PX, addTagPadding, Unit.PX);
+		int buttonPopUpPadding = (Window.getClientWidth() - this.addTag.getOffsetWidth())/2;
+		this.tagContainer.setWidgetLeftRight(this.addTag, buttonPopUpPadding, Unit.PX, buttonPopUpPadding, Unit.PX);
 	}
 	
 	/**
@@ -156,49 +177,6 @@ public class TagManager extends ResizeComposite implements ITagManager{
 		this.tagTable.setText(0, 4, this.constants.Action());
 	}
 	
-	/**
-	 * Initialize the "addTag".
-	 */
-	private void addTagPanel() {
-		this.addTagPanel  = new LayoutPanel();
-		FlexTable newTagTable = new FlexTable();
-		
-		//title
-		Label titleAdd = new Label(this.constants.AddNewTag());
-		titleAdd.setStyleName("informationTitle");
-		
-		//label
-		newTagTable.setText(0, 0, this.constants.LibTagName());
-		newTagTable.setText(1, 0, this.constants.LibShrotLib());
-		newTagTable.setText(2, 0, this.constants.Libdesc());
-		
-		//texBox
-		this.newTagName = new TextBox();
-		this.newShortLib = new TextBox();
-		this.newDescription = new TextArea();
-		this.newDescription.setVisibleLines(3);
-		this.tagTextuel = new CheckBox(this.constants.TbTextual());
-		newTagTable.setWidget(0, 1, this.newTagName);
-		newTagTable.setWidget(1, 1, this.newShortLib);
-		newTagTable.setWidget(2, 1, this.newDescription);
-		newTagTable.setWidget(3, 1, this.tagTextuel);
-		
-		//btn
-		this.addNewTag = new Button(this.constants.addThisTag());
-		newTagTable.setWidget(1, 2, this.addNewTag);
-		CellFormatter cellFormater = newTagTable.getCellFormatter();
-		cellFormater.setWidth(1, 2, "200px");
-		cellFormater.setAlignment(1, 2, HasHorizontalAlignment.ALIGN_CENTER, HasVerticalAlignment.ALIGN_MIDDLE);
-		
-		this.addTagPanel.setWidth("500px");
-		this.addTagPanel.add(newTagTable);
-		
-		//attach element in layoutPanel
-		this.addTagContainer.add(titleAdd);
-		this.addTagContainer.setWidgetTopHeight(titleAdd, 5, Unit.PX, 20, Unit.PCT);
-		this.addTagContainer.add(this.addTagPanel);
-		this.addTagContainer.setWidgetTopHeight(this.addTagPanel, 35, Unit.PCT, 60, Unit.PCT);
-	}
 	
 	public PageConstants getConstants(){
 		return this.constants;
@@ -252,23 +230,20 @@ public class TagManager extends ResizeComposite implements ITagManager{
 	}
 	
 	public boolean isTextual(){
-		return this.tagTextuel.getValue();
+		return this.newtagTextuel.getValue();
 	}
 	
 	public HasClickHandlers clickOnAddTag(){
-		return this.addNewTag;
+		return this.saveNewTag;
+	}
+	
+	public HasClickHandlers clickOnCancelAddTag(){
+		return this.cancelNewTag;
 	}
 	
 	public void clearTagTable() {
 		this.tagTable.removeAllRows();
 		this.addTagTableTitle();
-	}
-	
-	public void clearAddNewTagTextBox() {
-		this.newTagName.setText("");
-		this.newShortLib.setText("");
-		this.newDescription.setText("");
-		this.tagTextuel.setValue(false);
 	}
 	
 	public void clearModifyFields() {
@@ -398,7 +373,45 @@ public class TagManager extends ResizeComposite implements ITagManager{
 		return this.cancelModification;
 	}
 	
+	public HasClickHandlers clickOnAddNewTag() {
+		return this.addTag;
+	}
+	
 	public void deleteLine(Element clicSrc){
 		clicSrc.getParentNode().getParentNode().getParentNode().removeFromParent();
+		this.onUnload();
+		this.onResize();
+	}
+	
+	public void showAddLine(){
+		// if whe are in add state, field are already displayed
+		if(!this.inAddState) {
+			this.clearAddField();
+			if(tagTable.getRowCount() != 1)
+				this.tagTable.insertRow(1);
+			this.tagTable.setWidget(1, 0, this.newTagName);
+			this.tagTable.setWidget(1, 1, this.newShortLib);
+			this.tagTable.setWidget(1, 2, this.newDescription);
+			this.tagTable.setWidget(1, 3, this.newtagTextuel);
+			this.tagTable.setWidget(1, 4, this.btnAddPanel);
+			
+			this.inAddState = true;
+			this.onResize();
+		}
+	}
+	
+	public void hideAddLine(){
+		if(this.inAddState){
+			this.tagTable.removeRow(1);
+			this.inAddState = false;
+			this.onResize();
+		}
+	}
+	
+	private void clearAddField(){
+		this.newTagName.setText("");
+		this.newShortLib.setText("");
+		this.newDescription.setText("");
+		this.newtagTextuel.setValue(false);
 	}
 }

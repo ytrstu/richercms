@@ -7,15 +7,11 @@ import java.util.List;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.DomEvent;
 import com.google.gwt.event.dom.client.HasChangeHandlers;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.dom.client.HasKeyPressHandlers;
-import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
-import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.layout.client.Layout.Alignment;
@@ -240,7 +236,6 @@ public class TemplateManager extends ResizeComposite implements ITemplateManager
 	}
 
 	public void showPopUpAddTemplate() {
-			
 		// on vide les champs avant de re-afficher
 		this.popUpAddTemplate.clearField();
 		this.popUpAddTemplate.show();
@@ -255,12 +250,20 @@ public class TemplateManager extends ResizeComposite implements ITemplateManager
 		return this.popUpAddTemplate.tbName.getText();
 	}
 	
+	public String getPopUpNewTempLib() {
+		return this.popUpAddTemplate.tbshortLib.getText();
+	}
+	
 	public String getPopUpNewTempDesc() {
 		return this.popUpAddTemplate.taDesc.getText();
 	}
 	
 	public void setPopUpNewTempName(String name) {
 		this.popUpAddTemplate.tbName.setText(name);
+	}
+	
+	public void setPopUpNewTempLib(String shortLib) {
+		this.popUpAddTemplate.tbshortLib.setText(shortLib);
 	}
 	
 	public void setPopUpNewTempDesc(String description) {

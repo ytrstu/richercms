@@ -11,6 +11,7 @@ public class BeanTemplate implements Serializable {
     private Long id;
 	private List<BeanTag> associatedTags;
 	private String name;
+	private String shortLib;
 	private String description;
 	
 	public BeanTemplate() {
@@ -18,33 +19,37 @@ public class BeanTemplate implements Serializable {
 		this.associatedTags = new ArrayList<BeanTag>();
 		this.name = "";
 		this.description = "";
+		this.shortLib = "";
 	}
 	
 	public BeanTemplate(List<BeanTag> associatedTags, String name,
-			String description) {
+			String shortLib, String description) {
 		super();
 		this.associatedTags = associatedTags;
 		this.name = name;
 		this.description = description;
+		this.shortLib = shortLib;
 	}
 	
 	
 	public BeanTemplate(Long id, List<BeanTag> associatedTags, String name,
-			String description) {
+			String shortLib, String description) {
 		super();
 		this.id = id;
 		this.associatedTags = associatedTags;
 		this.name = name;
 		this.description = description;
+		this.shortLib = shortLib;
 	}
 	
 	public BeanTemplate(Long id, String name,
-			String description) {
+			String shortLib, String description) {
 		super();
 		this.id = id;
 		this.associatedTags = new ArrayList<BeanTag>();
 		this.name = name;
 		this.description = description;
+		this.shortLib = shortLib;
 	}
 
 	public Long getId() {
@@ -77,5 +82,13 @@ public class BeanTemplate implements Serializable {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public String getShortLib() {
+		return shortLib;
+	}
+
+	public void setShortLib(String shortLib) {
+		this.shortLib = shortLib;
 	}
 }

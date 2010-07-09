@@ -53,6 +53,19 @@ public interface ITagManager extends LazyView {
 	HasClickHandlers clickOnAddTag();
 	
 	/**
+	 * Handle clic on "cancel" button.
+	 * @return EventHandler
+	 */
+	HasClickHandlers clickOnCancelAddTag();
+	
+	/**
+	 * Handle click on the add new tag button
+	 * After this click we can display de addTagpopup
+	 * @return
+	 */
+	HasClickHandlers clickOnAddNewTag();
+	
+	/**
 	 * Return value of the newTagName field
 	 * @return value
 	 */
@@ -105,11 +118,6 @@ public interface ITagManager extends LazyView {
 	void clearTagTable();
 	
 	/**
-	 * Clear all field needed to add a new tag
-	 */
-	void clearAddNewTagTextBox();
-	
-	/**
 	 * Clear all modify fields
 	 */
 	void clearModifyFields();
@@ -131,6 +139,16 @@ public interface ITagManager extends LazyView {
 	 * @param clicSrc : the widget source of the clickEvent.
 	 */
 	void deleteLine(Element clicSrc);
+	
+	/**
+	 * Show the add line in tagTable
+	 */
+	void showAddLine();
+	
+	/**
+	 * Hide the add line in tagTable
+	 */
+	void hideAddLine();
 	
 	PageConstants getConstants();
 }

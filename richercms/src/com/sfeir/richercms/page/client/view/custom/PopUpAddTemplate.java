@@ -9,18 +9,21 @@ import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
-import com.sfeir.richercms.wizard.client.wizardConfigConstants;
+import com.sfeir.richercms.page.client.PageConstants;
+
 
 public class PopUpAddTemplate extends DialogBox {
 
 	
 	//gestion des langues
-	private wizardConfigConstants constants = GWT.create(wizardConfigConstants.class);
+	private PageConstants constants = GWT.create(PageConstants.class);
 	
-	public final Button ok = new Button(constants.buttonAddLanguagePopUp()); // public pour le passage des evt au presenter
-	public final Button cancel = new Button(constants.buttonCancelPopUp()); // public pour le passage des evt au presenter
+	public final Button ok = new Button(constants.BtnAdd()); // public pour le passage des evt au presenter
+	public final Button cancel = new Button(constants.BtnCancel()); // public pour le passage des evt au presenter
 	private final Label lname = new Label("template Name : ");
 	public final TextBox tbName = new TextBox(); // public pour le passage des evt au presenter
+	private final Label lshortLib = new Label("Short libelle : ");
+	public final TextBox tbshortLib = new TextBox(); // public pour le passage des evt au presenter
 	private final Label lDesc = new Label("Description : ");
 	public final TextArea taDesc = new TextArea(); // public pour le passage des evt au presenter
 	private FlexTable mainPanel = new FlexTable();
@@ -34,12 +37,15 @@ public class PopUpAddTemplate extends DialogBox {
     	
     	this.mainPanel.setWidget(0, 0, this.lname);
     	this.mainPanel.setWidget(0, 1, this.tbName);
+    	
+    	this.mainPanel.setWidget(1, 0, this.lshortLib);
+    	this.mainPanel.setWidget(1, 1, this.tbshortLib);
 			
-    	this.mainPanel.setWidget(1, 0, this.lDesc);
-    	this.mainPanel.setWidget(1, 1, this.taDesc);
+    	this.mainPanel.setWidget(2, 0, this.lDesc);
+    	this.mainPanel.setWidget(2, 1, this.taDesc);
 		
-    	this.mainPanel.setWidget(2, 0, this.ok);
-    	this.mainPanel.setWidget(2, 1, this.cancel);
+    	this.mainPanel.setWidget(3, 0, this.ok);
+    	this.mainPanel.setWidget(3, 1, this.cancel);
     	
     	
 		this.mainPanel.setCellSpacing(3);
@@ -48,7 +54,7 @@ public class PopUpAddTemplate extends DialogBox {
 		this.keyBoardPanel = new FocusPanel(this.mainPanel);
 		
 		// Set the dialog box's caption.
-		this.setText(this.constants.TextPopUp());  
+		this.setText(this.constants.AddTemplateTitle());  
 		this.center();
 		this.setWidget(this.keyBoardPanel);
 		
@@ -67,6 +73,7 @@ public class PopUpAddTemplate extends DialogBox {
 	 */
     public void clearField() {
     	this.tbName.setText("");
+    	this.tbshortLib.setText("");
     	this.taDesc.setText("");
     }
     

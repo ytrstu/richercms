@@ -18,7 +18,7 @@ public interface TemplateService extends RemoteService {
 	public BeanTemplate getTemplate(Long id);
 	public List<BeanTemplate> getAllTemplate();
 	public void upDateTagsTemplate(Long templateId, List<Long> tagIds);
-	public void updateTemplate(Long id, String name, String description);
+	public void updateTemplate(Long id, String name, String shortLib, String description);
 	public void deleteTemplate(Long id);
 
 }

@@ -115,11 +115,6 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 		this.initWidget(this.root);
 	}
 	
-	@Override
-	public void onResize() {
-		super.onResize();
-		this.verticalContainer.setWidth(this.root.getOffsetWidth()-30+"px");
-	}
 	
 	private void createInfoPanel(){
 		Image img;

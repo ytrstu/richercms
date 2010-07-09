@@ -73,12 +73,13 @@ public class ServiceTemplateImpl extends RemoteServiceServlet implements Templat
 		ofy.put(template);
 	}
 	
-	public void updateTemplate(Long id, String name, String description) {
+	public void updateTemplate(Long id, String name, String shortLib, String description) {
 		Objectify ofy = ObjectifyService.begin();
 		Template template = ofy.get(Template.class, id);
 		if(template != null){
 			template.setName(name);
 			template.setDescription(description);
+			template.setShortLib(shortLib);
 			ofy.put(template);
 		}
 	}
@@ -103,6 +104,7 @@ public class ServiceTemplateImpl extends RemoteServiceServlet implements Templat
 		Objectify ofy = ObjectifyService.begin();
 		Template TP = new Template();
 		TP.setName(bTP.getName());
+		TP.setShortLib(bTP.getShortLib());
 		TP.setDescription(bTP.getDescription());
 		ArrayList<Key<Tag>> lst = new ArrayList<Key<Tag>>();
 		
@@ -124,7 +126,7 @@ public class ServiceTemplateImpl extends RemoteServiceServlet implements Templat
 	
 	private BeanTemplate TemplateToBean(Template tp){
 		Objectify ofy = ObjectifyService.begin();
-		BeanTemplate btp = new BeanTemplate(tp.getId(),tp.getName(),tp.getDescription());
+		BeanTemplate btp = new BeanTemplate(tp.getId(),tp.getName(), tp.getShortLib(), tp.getDescription());
 		
 		ArrayList<BeanTag> lst = new ArrayList<BeanTag>();
 		for(Key<Tag> kTag : tp.getAssociatedTags()){

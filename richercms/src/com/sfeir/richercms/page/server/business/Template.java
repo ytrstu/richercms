@@ -20,7 +20,10 @@ public class Template {
     private Long id;
 	@Indexed
 	private List<Key<Tag>> associatedTags;
+	@Indexed
 	private String name;
+	@Indexed
+	private String shortLib;
 	private String description;
 	
 	public Template() {
@@ -28,24 +31,27 @@ public class Template {
 		this.associatedTags = new ArrayList<Key<Tag>>();;
 		this.name = "";
 		this.description = "";
+		this.shortLib = "";
 	}
 	
 	public Template(List<Key<Tag>> associatedTags, String name,
-			String description) {
+			 String shortLib, String description) {
 		super();
 		this.associatedTags = associatedTags;
 		this.name = name;
 		this.description = description;
+		this.shortLib = shortLib;
 	}
 	
 	
 	public Template(Long id, List<Key<Tag>> associatedTags, String name,
-			String description) {
+			String shortLib,String description) {
 		super();
 		this.id = id;
 		this.associatedTags = associatedTags;
 		this.name = name;
 		this.description = description;
+		this.shortLib = shortLib;
 	}
 
 	public Long getId() {
@@ -78,5 +84,13 @@ public class Template {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public String getShortLib() {
+		return shortLib;
+	}
+
+	public void setShortLib(String shortLib) {
+		this.shortLib = shortLib;
 	}
 }

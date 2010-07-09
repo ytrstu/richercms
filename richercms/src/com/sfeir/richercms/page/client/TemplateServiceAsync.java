@@ -11,6 +11,6 @@ public interface TemplateServiceAsync {
 	public void getTemplate(Long id, AsyncCallback<BeanTemplate> callback);
 	public void getAllTemplate(AsyncCallback<List<BeanTemplate>> callback);
 	public void upDateTagsTemplate(Long templateId, List<Long> tagIds, AsyncCallback<Void> callback);
-	public void updateTemplate(Long id, String name, String description, AsyncCallback<Void> callback) ;
+	public void updateTemplate(Long id, String name, String shortLib, String description, AsyncCallback<Void> callback) ;
 	public void deleteTemplate(Long id, AsyncCallback<Void> callback);
 }

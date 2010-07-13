@@ -270,7 +270,7 @@ public interface PageConstants extends Constants {
 	  
 	  @DefaultStringValue("template existant : ")
 	  String ExistingTemplate();
-	  @DefaultStringValue("tag possible pour ce template")
+	  @DefaultStringValue("Tag possible pour ce template :")
 	  String PossibleTag();
 	  @DefaultStringValue("sélection")
 	  String TagTableSelect();
@@ -316,4 +316,16 @@ public interface PageConstants extends Constants {
 	  String AddTemplateTitle();
 	  @DefaultStringValue("Ajout d'un nouveau tag")
 	  String AddTagTitle();
+	  @DefaultStringValue("Ajout impossible car un tag avec un nom ou un libellé court identique existe déjà")
+	  String msgErrorAddTag();
+	  @DefaultStringValue("Modification impossible car un tag avec un nom ou un libellé court identique existe déjà")
+	  String msgErrorModifyTag();
+	  @DefaultStringValue("Un tag doit contenir au minimum un nom et un libellé court")
+	  String msgErrorEmptyTag();
+	  @DefaultStringValue("Ajout impossible car un template avec un nom ou un libellé court identique existe déjà")
+	  String msgErrorAddTemplate();
+	  @DefaultStringValue("Modification impossible car un template avec un nom ou un libellé court identique existe déjà")
+	  String msgErrorModifyTemplate();
+	  @DefaultStringValue("Un template doit contenir au minimum un nom et un libellé court")
+	  String msgErrorEmptyTemplate();
 }

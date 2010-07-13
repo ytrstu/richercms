@@ -326,4 +326,8 @@ public class TemplateManager extends ResizeComposite implements ITemplateManager
 	public HandlerRegistration addKeyPressHandler(KeyPressHandler handler) {
 		return addDomHandler(handler, KeyPressEvent.getType());
 	}
+	
+	public PageConstants getConstants() {
+		return this.constants;
+	}
 }

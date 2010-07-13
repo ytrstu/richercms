@@ -549,12 +549,25 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Pa
 			break;
 		case display:
 			this.dispBtnInTree = true;
-			if(!this.sameItemSelected)
-				eventBus.displayPage((Long) selectedItem.getUserObject());
+			if(!this.sameItemSelected){
+					eventBus.displayPage((Long) selectedItem.getUserObject());
+			}
 			break;
 		case modify:
 			this.dispBtnInTree = true;
-			NavigationPanelPresenter.this.eventBus.modifyPage((Long) selectedItem.getUserObject());
+			
+			//if null => rootPage
+			if(selectedItem.getParentItem() == null){
+				NavigationPanelPresenter.this.eventBus.modifyPage(
+						(Long) selectedItem.getUserObject(),
+						null,
+						getIdPath());
+			}else{
+				NavigationPanelPresenter.this.eventBus.modifyPage(
+						(Long) selectedItem.getUserObject(),
+						(Long) selectedItem.getParentItem().getUserObject(),
+						getIdPath());
+			}
 			break;
 		}
 	}

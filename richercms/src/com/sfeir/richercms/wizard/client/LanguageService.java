@@ -37,8 +37,10 @@ public interface LanguageService extends RemoteService
 	 * Add a new language in the datastore
 	 * @param language ,new language to add
 	 * @param tag, the tag of the associated language
+	 * @return true if new language are added, false if the new language's tag are
+	 * already use by an other tag.
 	 */
-	public void addLanguage(String language, String tag);
+	public boolean addLanguage(String language, String tag);
 	
 	/**
 	 * Select a different default Language available for the website

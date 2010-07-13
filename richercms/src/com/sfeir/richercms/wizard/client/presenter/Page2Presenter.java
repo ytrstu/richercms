@@ -31,6 +31,7 @@ public class Page2Presenter extends LazyPresenter<IdisplayPage2, WizardConfigEve
 	// Initialized by the mvp4g framework
 	private LanguageServiceAsync rpcLangue = null;
 	private ConfigurationServiceAsync rpcConfigurationService = null;
+	private boolean languageAdded = false;
 		
 	
 	/**
@@ -66,6 +67,7 @@ public class Page2Presenter extends LazyPresenter<IdisplayPage2, WizardConfigEve
 	    view.getAddButton().addClickHandler(new ClickHandler() {   
 	        public void onClick(ClickEvent event) {
 	        	view.showPopUpAddLanguage();
+	        	languageAdded = false;
 	        }
 	      });
 	    
@@ -73,20 +75,18 @@ public class Page2Presenter extends LazyPresenter<IdisplayPage2, WizardConfigEve
 	    view.getPopUpBtnOk().addClickHandler(new ClickHandler() {   
 	        public void onClick(ClickEvent event) 
 	        {
-	          if(ajouteLangue())//ajoute la langue si possible
-	        	  view.hidePopUpAddLanguage();// cache le popUp uniquement si une langue a bien �t� ajout�
+	        	ajouteLangue();//ajoute la langue si possible
 	        }
 	      });
 	    
 	    //gestion des evt clavier sur la popUp
 	    view.getPopUpKbEvent().addKeyPressHandler(new KeyPressHandler(){
 			public void onKeyPress(KeyPressEvent event) {
-				if(event.getNativeEvent().getKeyCode() == KeyCodes.KEY_ENTER) {
-					if(ajouteLangue())//ajoute la langue si possible
-						view.hidePopUpAddLanguage();// cache le popUp uniquement si une langue a bien �t� ajout�
-				}else if (event.getNativeEvent().getKeyCode() == KeyCodes.KEY_ESCAPE){
+				if(event.getNativeEvent().getKeyCode() == KeyCodes.KEY_ENTER)
+					ajouteLangue();//ajoute la langue si possible
+				else if (event.getNativeEvent().getKeyCode() == KeyCodes.KEY_ESCAPE)
 					view.hidePopUpAddLanguage();
-				}
+				
 			}
 	    	});
 	    
@@ -137,27 +137,33 @@ public class Page2Presenter extends LazyPresenter<IdisplayPage2, WizardConfigEve
 	 * Add a new language if all conditions are verify
 	 * @return true : new language Added ; false else
 	 */
-	private boolean ajouteLangue() {
-		
-		if(this.view.getPopUpNewLanguage().length() == 0) {
-			PopUpMessage p = new PopUpMessage(view.getConstant().AlertNoLanguageEntered());
-			p.show();
-			return false;
-		}
-		else if (this.view.getPopUpNewTag().length() == 0){
-			PopUpMessage p = new PopUpMessage(view.getConstant().AlertNoTagLanguageEntered());
-			p.show();
-			return false;
-		}else {
-			this.rpcLangue.addLanguage(this.view.getPopUpNewLanguage(), this.view.getPopUpNewTag(),new AsyncCallback<Void>() {
-				    	public void onSuccess(Void result){
-				    		fetchLanguageTable();}
-				        public void onFailure(Throwable caught) {
-				        	PopUpMessage p = new PopUpMessage("Error : addLanguage");
-				        	p.show();}
-				    });
-			return true;
-		}
+	private void ajouteLangue() {
+		if(!this.languageAdded)
+			if(this.view.getPopUpNewLanguage().length() == 0) {
+				PopUpMessage p = new PopUpMessage(view.getConstant().AlertNoLanguageEntered());
+				p.show();
+			}
+			else if (this.view.getPopUpNewTag().length() == 0){
+				PopUpMessage p = new PopUpMessage(view.getConstant().AlertNoTagLanguageEntered());
+				p.show();
+			}else {
+				languageAdded = true;
+				this.rpcLangue.addLanguage(this.view.getPopUpNewLanguage(), this.view.getPopUpNewTag(),new AsyncCallback<Boolean>() {
+					    	public void onSuccess(Boolean result){
+					    		if(result){
+					    			fetchLanguageTable();
+					    			view.hidePopUpAddLanguage();
+					    		}else{
+									PopUpMessage p = new PopUpMessage(view.getConstant().AlertSameTagLanguageEntered());
+									p.show();
+									languageAdded = false; //The language was not added
+					    		}
+				    		}
+					        public void onFailure(Throwable caught) {
+					        	PopUpMessage p = new PopUpMessage("Error : addLanguage");
+					        	p.show();}
+					    });
+			}
 			
 	}
 	

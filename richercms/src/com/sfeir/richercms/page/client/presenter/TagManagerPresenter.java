@@ -8,6 +8,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.mvp4g.client.annotation.InjectService;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
+import com.sfeir.richercms.client.view.PopUpMessage;
 import com.sfeir.richercms.page.client.TagServiceAsync;
 import com.sfeir.richercms.page.client.event.PageEventBus;
 import com.sfeir.richercms.page.client.interfaces.ITagManager;
@@ -28,16 +29,21 @@ public class TagManagerPresenter extends LazyPresenter<ITagManager, PageEventBus
 						view.getNewShortLib(),
 						view.getNewDescription(),
 						view.isTextual());
-				rpcTag.addTag(bean, new AsyncCallback<Long>() {
-					public void onFailure(Throwable caught) {}
-					public void onSuccess(Long result) {
-						if(result != null){
-							view.hideAddLine();
-							bean.setId(result);
-							addTag(bean);
+				
+				if(testTag(bean))
+					rpcTag.addTag(bean, new AsyncCallback<Long>() {
+						public void onFailure(Throwable caught) {}
+						public void onSuccess(Long result) {
+							if(result != null){
+								view.hideAddLine();
+								bean.setId(result);
+								addTag(bean);
+							}else {
+								PopUpMessage popUp = new PopUpMessage(view.getConstants().msgErrorAddTag());
+								popUp.show();
+							}
 						}
-					}
-				});
+					});
 			}
 		});
 		
@@ -49,15 +55,19 @@ public class TagManagerPresenter extends LazyPresenter<ITagManager, PageEventBus
 								   view.getModifyShortLib(),
 								   view.getModifyDescription(),
 								   view.isModifyTextual());
-				
-				rpcTag.updateTag(bean, new AsyncCallback<Boolean>() {
-					public void onFailure(Throwable caught) {}
-					public void onSuccess(Boolean result) {
-						//if update was possible
-						if(result.booleanValue())
-							view.hideModifyFields(false);
-					}
-				});
+				if(testTag(bean))
+					rpcTag.updateTag(bean, new AsyncCallback<Boolean>() {
+						public void onFailure(Throwable caught) {}
+						public void onSuccess(Boolean result) {
+							//if update was possible
+							if(result.booleanValue()) {
+								view.hideModifyFields(false);
+							}else{
+								PopUpMessage popUp = new PopUpMessage(view.getConstants().msgErrorModifyTag());
+								popUp.show();
+							}
+						}
+					});
 				
 			}
 		});
@@ -126,6 +136,22 @@ public class TagManagerPresenter extends LazyPresenter<ITagManager, PageEventBus
 			public void onFailure(Throwable caught) {}
 			public void onSuccess(Void result) {}
 		});
+	}
+	
+	/**
+	 * test bean's fields and 
+	 * display an errorMessage if obligation fields are empty
+	 * @param bean
+	 * @return true if bean are correct, false either
+	 */
+	private boolean testTag(BeanTag bean){
+		if(bean.getTagName().length() == 0 || bean.getShortLib().length() == 0){
+			PopUpMessage popUp = new PopUpMessage(view.getConstants().msgErrorEmptyTag());
+			popUp.show();
+			return false;
+		}
+			
+		return true;
 	}
 	
 	/**

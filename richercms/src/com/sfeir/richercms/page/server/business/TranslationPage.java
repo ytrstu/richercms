@@ -5,6 +5,7 @@ import javax.persistence.Id;
 import com.google.appengine.api.datastore.Text;
 import com.googlecode.objectify.annotation.Cached;
 import com.googlecode.objectify.annotation.Entity;
+import com.googlecode.objectify.annotation.Indexed;
 import com.googlecode.objectify.annotation.Unindexed;
 
 @Cached
@@ -18,7 +19,8 @@ public class TranslationPage {
 	private String browserTitle;
 
 	private String pageTitle;
-
+	
+	@Indexed
 	private String urlName;
 
 	private String description;

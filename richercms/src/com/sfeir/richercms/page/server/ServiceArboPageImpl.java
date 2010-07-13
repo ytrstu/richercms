@@ -11,6 +11,7 @@ import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.Query;
 import com.sfeir.richercms.page.client.ArboPageService;
 import com.sfeir.richercms.page.server.business.ArboPage;
+import com.sfeir.richercms.page.server.business.MemoryFileItem;
 import com.sfeir.richercms.page.server.business.RootArbo;
 import com.sfeir.richercms.page.server.business.TranslationPage;
 import com.sfeir.richercms.page.shared.BeanArboPage;
@@ -25,6 +26,7 @@ public class ServiceArboPageImpl  extends RemoteServiceServlet implements ArboPa
         ObjectifyService.register(RootArbo.class);
         ObjectifyService.register(ArboPage.class);
         ObjectifyService.register(TranslationPage.class);
+        ObjectifyService.register(MemoryFileItem.class);
     }
 	
 	private Long keyRoot = null;
@@ -153,9 +155,16 @@ public class ServiceArboPageImpl  extends RemoteServiceServlet implements ArboPa
 		return bean;
 	}
 	
-	public void updateArboPage(BeanArboPage bean) {
+	public void updateArboPage(BeanArboPage bean, List<Long> recPath) {
 		Objectify ofy = ObjectifyService.begin();
 		ArboPage page = ofy.get(ArboPage.class, bean.getId());
+		
+		TranslationPage defaultTrans = ofy.get(page.getTranslation().get(0));
+		
+		//update page only if defaultUrlName are modified
+		if(!defaultTrans.getUrlName().equals(bean.getTranslation().get(0).getUrlName()))
+			updateImagePath(recPath, defaultTrans.getUrlName(), bean.getTranslation().get(0).getUrlName());
+		
 		page.getTranslation().clear();
 		
 		for(BeanTranslationPage trans : bean.getTranslation()) {
@@ -173,6 +182,73 @@ public class ServiceArboPageImpl  extends RemoteServiceServlet implements ArboPa
 		
 		ofy.put(page);
 	}
+	
+	/**
+	 * Call this method to update image's path
+	 * before an update of arboPage
+	 * @param recPath : list of id who represent path : selectedId => root
+	 * @param altUrlName : alt urlName of arboPage who need modification
+	 * @param newUrlName : new urlName of arboPage who need update
+	 */
+	private void updateImagePath(List<Long> recPath, String altUrlName, String newUrlName) {
+		Objectify ofy = ObjectifyService.begin();
+		//save alt path
+		String altPath = this.getPath(recPath);
+		//create new path
+		String newPath = new String(altPath);
+		newPath = newPath.replaceAll(altUrlName+"/$", "");
+		newPath = newPath.concat(newUrlName+"/");
+		
+		
+		ArboPage currentPage = ofy.get(ArboPage.class, recPath.get(0));
+		Map<Long,ArboPage> childs = ofy.get(ArboPage.class, currentPage.getIdChildArboPage());
+		//for all childs, make the same thinks	
+		for(ArboPage child : childs.values()){
+			modifyPath(child.getId(), newPath, altPath);
+		}
+	}
+	
+	/**
+	 * Recusive call for update path in image
+	 * don't call this method, call updateImagePath
+	 * @param pageId : Page's id
+	 * @param newPath : modified Path
+	 * @param altPath : alt path
+	 */
+	private void modifyPath(Long pageId, String newPath, String altPath) {
+		Objectify ofy = ObjectifyService.begin();
+		//take img with specific path
+		Query<MemoryFileItem> files  = ofy.query(MemoryFileItem.class).filter("path =", altPath);
+		
+		//modify path with new
+		for(MemoryFileItem file: files){
+			file.setPath(newPath);
+			ofy.put(file);
+		}
+
+		//add new part in the new path
+		ArboPage currentPage = ofy.get(ArboPage.class, pageId);
+		TranslationPage defaultTrans = ofy.get(currentPage.getTranslation().get(0));
+		newPath = newPath.concat(defaultTrans.getUrlName()+"/");
+		altPath = altPath.concat(defaultTrans.getUrlName()+"/");
+		//take all child of currentPage
+		Map<Long,ArboPage> childs = ofy.get(ArboPage.class, currentPage.getIdChildArboPage());
+		//for all childs, make the same thinks
+		if(childs.size() != 0){
+			for(ArboPage child : childs.values()){
+				modifyPath(child.getId(), newPath, altPath);
+			}
+		}else{//useful when recursive code arrive on a leaf. 
+			files  = ofy.query(MemoryFileItem.class).filter("path =", altPath);
+			//modify path with new
+			for(MemoryFileItem file: files){
+				file.setPath(newPath);
+				ofy.put(file);
+			}
+		}
+		
+	}
+
 	
 	public BeanArboPage getLastChildAdded(Long parentId){
 		Objectify ofy = ObjectifyService.begin();
@@ -291,6 +367,45 @@ public class ServiceArboPageImpl  extends RemoteServiceServlet implements ArboPa
 		return lst;
 	}
 	
+	public boolean existSameUrl(Long parentId, Long pageId, List<String> urlNames){
+		Objectify ofy = ObjectifyService.begin();
+		if(parentId !=null){
+			ArboPage parentPage = ofy.get(ArboPage.class, parentId);
+			Map<Long,ArboPage> childs = ofy.get(ArboPage.class,parentPage.getIdChildArboPage());
+			
+			//on enlève la page fils que l'on veut ajouter/modifier
+			if(pageId != null)
+				childs.remove(pageId);
+			
+			//pour chaque nom d'url
+			for(String urlName : urlNames) {
+				//on ne test pas les url vide
+				if(!urlName.equals("")){
+					//on récupère tout les URL possédant le même nom
+					Query<TranslationPage> sameUrlNames  = ofy.query(TranslationPage.class).filter("urlName =", urlName);
+					//si >0 alors il faut tester si ce nom n'est pas présent au même niveau que le nouveau
+					if(sameUrlNames.countAll()!= 0){
+						//on parcours donc les url identique
+						for(TranslationPage sameUrlName : sameUrlNames){
+							//pour chaque url identique on parcours toutes les page de même niveau que la courante
+							for(ArboPage child : childs.values()){
+								//enfin pour chaque page on parcours ses traductions
+								for(Key<TranslationPage> transKey : child.getTranslation()) {
+									//si la traduction identique fait partie d'une page de même niveau alors on ne peut pas
+									//sauvegarder cette page
+									if(transKey.getId() == sameUrlName.getId().longValue())
+										return false;
+								}
+							}
+						}
+					}
+				}
+				
+			}
+		}
+		return true;
+	}
+	
 	public BeanArboPage arboPageToBean(ArboPage ap){
 		Objectify ofy = ObjectifyService.begin();
 		BeanArboPage bap = new BeanArboPage(ap.getId(),
@@ -367,6 +482,7 @@ public class ServiceArboPageImpl  extends RemoteServiceServlet implements ArboPa
 		return new TranslationPage(bTp.getId(), bTp.getBrowserTitle(),bTp.getPageTitle(), bTp.getUrlName(),
 				bTp.getDescription(), bTp.getKeyWord(), bTp.getContent());
 	}
+	
 	
 	/**
 	 * Store the number of language in the class variable nbTranslation.

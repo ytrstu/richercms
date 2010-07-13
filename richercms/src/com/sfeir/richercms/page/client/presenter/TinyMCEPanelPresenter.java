@@ -49,7 +49,7 @@ public class TinyMCEPanelPresenter extends LazyPresenter<ITinyMCEPanel, PageEven
 		this.state = PageState.display;
 	}
 	
-	public void onModifyPage(Long id) {
+	public void onModifyPage(Long id, Long parentPageId, List<Long> recPath) {
 		view.displayEditor(this.view.getContent());
 		this.state = PageState.modify;
 	}

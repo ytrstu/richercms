@@ -21,7 +21,7 @@ public interface ArboPageServiceAsync {
 
 	public void addArboPage(BeanArboPage newArboPage, Long parentId, AsyncCallback<Void> callback);
 
-	public void updateArboPage(BeanArboPage p, AsyncCallback<Void> callback);
+	public void updateArboPage(BeanArboPage p, List<Long> recPath, AsyncCallback<Void> callback);
 
 	public void deleteArboPage(Long id, Long parentId, AsyncCallback<Boolean> callback);
 
@@ -44,5 +44,7 @@ public interface ArboPageServiceAsync {
 	public void getDefaultTranslation(Long pageId, AsyncCallback<BeanTranslationPage> callBack);
 	
 	public void unlockAllUserPage(Long idUser, AsyncCallback<Void> callback);
+	
+	public void existSameUrl(Long parentId, Long pageId, List<String> urlNames, AsyncCallback<Boolean> callback);
 }
  

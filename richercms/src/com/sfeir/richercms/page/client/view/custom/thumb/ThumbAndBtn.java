@@ -84,12 +84,12 @@ public class ThumbAndBtn extends LayoutPanel implements HasMouseOverHandlers, Ha
 
 			public void onLoad(LoadEvent event) {
 				int spacingWidth = width - img.getWidth();
-				ThumbAndBtn.this.setWidgetLeftWidth(img, spacingWidth/2, Unit.PX, img.getWidth(), Unit.PX);
+				ThumbAndBtn.this.setWidgetLeftWidth(img, spacingWidth/2-2, Unit.PX, img.getWidth(), Unit.PX);
 				int spacingheight = height - img.getHeight();
-				ThumbAndBtn.this.setWidgetTopHeight(img, spacingheight/2, Unit.PX, img.getHeight(), Unit.PX);
+				ThumbAndBtn.this.setWidgetTopHeight(img, spacingheight/2+8, Unit.PX, img.getHeight(), Unit.PX);
 				
-				ThumbAndBtn.this.setWidgetRightWidth(btn, spacingWidth/2-8, Unit.PX, 30, Unit.PX);
-				ThumbAndBtn.this.setWidgetTopHeight(btn, spacingheight/2-8, Unit.PX, 30, Unit.PX);
+				ThumbAndBtn.this.setWidgetRightWidth(btn, 0, Unit.PX, 30, Unit.PX);
+				ThumbAndBtn.this.setWidgetTopHeight(btn, 0, Unit.PX, 30, Unit.PX);
 			}
 		});
 		

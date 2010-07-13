@@ -13,7 +13,6 @@ import com.google.gwt.event.dom.client.HasFocusHandlers;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
@@ -25,7 +24,6 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.user.client.ui.HTMLTable.CellFormatter;
 import com.google.gwt.user.datepicker.client.DateBox;
 import com.sfeir.richercms.page.client.PageConstants;
 import com.sfeir.richercms.page.client.interfaces.IInformationPanel;
@@ -47,8 +45,8 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 	private VerticalPanel verticalContainer = null;
 	private ScrollPanel scroll = null;
 	private LayoutPanel root;
+	// infoTab contain : information fields and tags
 	private FlexTable infoTab = null;
-	private FlexTable tagTable = null;
 	
 	private Label Title = null;
 	private Label lock = null;
@@ -62,10 +60,10 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 	private DateBox dPublicationStart = null;
 	private DateBox dPublicationFinish = null;
 	private final static String textBoxWidth = "250px";
+	private final int firstTagInTable = 10;
 	//parse this to know what tag are selected
 	
-	private HashMap<Long,CheckBox> selectedTags; // idTag, associated CheckBox
-	private HashMap<Long,TextBox> customTags; // idTag, associated CheckBox
+	private HashMap<Long,Widget> checkORTextBox; // idTag, associated CheckBox or textBox
 	private ListBox listTemplate = null;
 	
 	private boolean EnableCheckBox = false;
@@ -80,23 +78,19 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 	 */
 	public void createView() {
 
-		this.selectedTags = new HashMap<Long,CheckBox>();
-		this.customTags = new HashMap<Long,TextBox>();
+		this.checkORTextBox = new HashMap<Long,Widget>();
 		this.lock = new Label("");
 		this.lock.setStyleName("lockLabel");
 		
 		//attach content
 		this.verticalContainer = new VerticalPanel();
-		this.verticalContainer.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+		//this.verticalContainer.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		
 		// layoutPanel attach content + lockDisplay
 		this.root = new LayoutPanel();
 
 		//create the first part : information
 		this.createInfoPanel();
-		
-		//create the second part : tag
-		this.createTagPanel();
 
 		this.deasabledWidgets();
 		this.hideAllHelpField();
@@ -229,6 +223,8 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 		
 		//obligation
 		this.infoTab.setText(8, 0, this.constants.Obligation());
+		//tag title
+		this.infoTab.setText(9, 0, this.constants.PossibleTag());
 		
 		SimplePanel spTitle = new SimplePanel();
 		SimplePanel spTable = new SimplePanel();
@@ -241,80 +237,54 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 		
 	}
 	
-	private void createTagPanel() {
-
-		//tag Selection
-		Label tagtitle = new Label(this.constants.PossibleTag());
-		tagtitle.setStyleName("informationTitle");
-		this.tagTable = new FlexTable();
-		this.tagTable.addStyleName("tagTable");
-		this.tagTable.setCellPadding(5);
-		this.tagTable.setBorderWidth(2);
-		this.addTagTableTitle();
-		
-		SimplePanel spTagTitle= new SimplePanel();
-		spTagTitle.setWidget(tagtitle);
-		spTagTitle.addStyleName("informationPanel-Vertical-margin");
-		
-		SimplePanel spTagTable = new SimplePanel();
-		spTagTable.setWidget(this.tagTable);
-		spTagTable.addStyleName("informationPanel-Vertical-margin");
-		
-		this.verticalContainer.add(spTagTitle);
-		this.verticalContainer.add(spTagTable);
-	}
 	
 	public void addTemplateInList(String name, String id) {
 		this.listTemplate.addItem(name, id);
 	}
 	
-	/**
-	 * add title of each columns of the tag table
-	 */
-	private void addTagTableTitle() {
-		CellFormatter cellFormater = this.tagTable.getCellFormatter();
-		cellFormater.setStyleName(0, 0, "tagTableHeader");
-		cellFormater.setStyleName(0, 1, "tagTableHeader");
-		cellFormater.setStyleName(0, 2, "tagTableHeader");
-		cellFormater.setStyleName(0, 3, "tagTableHeader");
-		cellFormater.setStyleName(0, 4, "tagTableHeader");
-		this.tagTable.setText(0, 0, this.constants.TagTableSelect());
-		this.tagTable.setText(0, 1, this.constants.TagTableName());
-		this.tagTable.setText(0, 2, this.constants.TagTableLibe());
-		this.tagTable.setText(0, 3, this.constants.TagTableDesc());
-		this.tagTable.setText(0, 4, this.constants.TagTabelTextual());
-	}
 	
 	public void addTagLine(String id,String TagName,
 			String shortLib, String description, boolean textualTag ) {
 		
-		int numRow = this.tagTable.getRowCount();
-		CheckBox selectTag = new CheckBox();
-		selectTag.setEnabled(this.EnableCheckBox);
-		selectTag.setFormValue(id);
-		this.selectedTags.put(new Long(id), selectTag);
+		//tag are added in infoTab
+		int numRow = this.infoTab.getRowCount();
+
 		
-		this.tagTable.setWidget(numRow, 0, selectTag);
-		this.tagTable.setText(numRow, 1, TagName);
-		this.tagTable.setText(numRow, 2, shortLib);
-		this.tagTable.setText(numRow, 3, description);
+		Image img = new Image("/tab_images/infoBulle.png");
+		img.setTitle(description);
+		
+		this.infoTab.setText(numRow, 0, shortLib);
+		this.infoTab.setWidget(numRow, 2, img);
 		
 		if(textualTag){
 			TextBox tb = new TextBox(); 
 			tb.setEnabled(this.EnableCheckBox);
-			this.customTags.put(new Long(id), tb);
-			this.tagTable.setWidget(numRow, 4, tb);
-		}else
-			this.tagTable.setText(numRow, 4,this.constants.No());
+			tb.setName(id);
+			tb.setWidth(textBoxWidth);
+			this.checkORTextBox.put(new Long(id), tb);
+			this.infoTab.setWidget(numRow, 1, tb);
+		}else{
+			CheckBox selectTag = new CheckBox();
+			selectTag.setEnabled(this.EnableCheckBox);
+			selectTag.setName(id);
+			this.checkORTextBox.put(new Long(id), selectTag);
+			this.infoTab.setWidget(numRow, 1, selectTag);
+		}
 		
 	}
 	
 	public List<Long> getSelectedTagsId() {
 		ArrayList<Long> lst = new ArrayList<Long>();
 		
-		for(CheckBox cb : this.selectedTags.values())
-			if(cb.getValue())//take just checked tag
-				lst.add(new Long(cb.getFormValue()));
+		for(Widget cb : this.checkORTextBox.values()){
+			//checkBox and are checked
+			if(cb.getClass().getName().contains("CheckBox") && ((CheckBox)cb).getValue()){
+				lst.add(new Long(((CheckBox)cb).getName()));
+			} // textbox and are filled
+			else if (cb.getClass().getName().contains("TextBox") && ((TextBox)cb).getValue().length() != 0){
+				lst.add(new Long(((TextBox)cb).getName()));
+			}
+		}
 
 		return lst;
 	}
@@ -323,9 +293,12 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 		this.listTemplate.clear();
 	}
 	
-	public void clearTagTable(){
-		this.tagTable.removeAllRows();
-		this.addTagTableTitle();
+	public void clearTagTable() {
+		//tag and information are included in same table
+		//we remove just tag
+		for(int i = this.firstTagInTable; i< this.infoTab.getRowCount() ; i++){
+			this.infoTab.removeRow(i);
+		}
 	}
 	
 	public HasChangeHandlers getTemplateLstSelection() {
@@ -340,27 +313,26 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 	}
 	
 	public String getCustomValue(Long id) {
-		TextBox custom = this.customTags.get(id);
-		if(custom == null)
-			return null;
-		else
-			return custom.getText();
-
+		Widget custom = this.checkORTextBox.get(id);
+		if(custom.getClass().getName().contains("TextBox"))
+			return ((TextBox)custom).getText();
+		return null;
 	}
 	
 	public void setCustom(Long tagId, String customName){
-		TextBox custom = this.customTags.get(tagId);
+		TextBox custom = (TextBox)this.checkORTextBox.get(tagId);
 		if(custom != null)
 			custom.setText(customName);
 	}
 	
 	public void unCheckAllTags() {
-		for(CheckBox cb : this.selectedTags.values())
-			cb.setValue(false);
+		for(Widget cb : this.checkORTextBox.values())
+			if(cb.getClass().getName().contains("CheckBox"))
+				((CheckBox)cb).setValue(false);
 	}
 	
 	public void checktag(Long tagId) {
-		this.selectedTags.get(tagId).setValue(true);
+		((CheckBox)this.checkORTextBox.get(tagId)).setValue(true);
 	}
 	
 	public void enabledWidgets() {
@@ -374,12 +346,12 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 		this.listTemplate.setEnabled(true);
 		
 		this.EnableCheckBox = true;
-		for(CheckBox cb : this.selectedTags.values()){
-			cb.setEnabled(true);
-		}
-		
-		for(TextBox tb : this.customTags.values()){
-			tb.setEnabled(true);
+		for(Widget cb : this.checkORTextBox.values()){
+			if(cb.getClass().getName().contains("CheckBox"))
+				((CheckBox)cb).setEnabled(true);
+			else // textBox
+				((TextBox)cb).setEnabled(true);
+			
 		}
 	}
 	
@@ -394,13 +366,13 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 		this.listTemplate.setEnabled(false);
 		
 		this.EnableCheckBox = false;
-		for(CheckBox cb : this.selectedTags.values()){
-			cb.setEnabled(false);
+		for(Widget cb : this.checkORTextBox.values()){
+			if(cb.getClass().getName().contains("CheckBox"))
+				((CheckBox)cb).setEnabled(false);
+			else // textBox
+				((TextBox)cb).setEnabled(false);
 		}
-		
-		for(TextBox tb : this.customTags.values()){
-			tb.setEnabled(false);
-		}
+
 	}
 	
 	public void clearFields()

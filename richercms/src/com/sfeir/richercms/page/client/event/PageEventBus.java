@@ -113,9 +113,12 @@ public interface PageEventBus extends EventBus {
 	
 	/**
 	 * fired by the NavigationPresenter when the addPage menu is clicked
+	 * @param pageId : id of page in modification
+	 * @param parentId : id of parentPage
+	 * @param path : path in a recursive order
 	 */
 	@Event( handlers = {PagePresenter.class, InformationPanelPresenter.class, ValidationPanelPresenter.class, TinyMCEPanelPresenter.class} )
-	public void modifyPage(Long id);
+	public void modifyPage(Long pageId, Long parentId, List<Long> path);
 	
 	/**
 	 * fired by the ValidationPresenter when the saveButton is clicked
@@ -131,10 +134,10 @@ public interface PageEventBus extends EventBus {
 	
 	/**
 	 * Fired by the NavigationPresenter, for displaying the selected Page
-	 * @param Key
+	 * @param id : pageId
 	 */
 	@Event( handlers = {InformationPanelPresenter.class, ValidationPanelPresenter.class} )
-	public void displayPage(Long id);
+	public void displayPage(Long pageId);
 	
 	/**
 	 * Fired by the NavigationPresenter, for displaying the root Page

@@ -63,4 +63,7 @@ public interface wizardConfigConstants extends Constants {
 	  
 	  @DefaultStringValue("No Language tag Entered, please add the tag of the language")
 	  String AlertNoTagLanguageEntered();
+	  
+	  @DefaultStringValue("Unable to save the language. The tag entered is already used by another language")
+	  String AlertSameTagLanguageEntered();
 }

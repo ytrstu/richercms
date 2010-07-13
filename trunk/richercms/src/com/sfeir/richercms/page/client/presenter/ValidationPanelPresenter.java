@@ -75,7 +75,7 @@ public class ValidationPanelPresenter extends LazyPresenter<IValidationPanel, Pa
 		view.showReturnBtn();
 	}
 	
-	public void onModifyPage(Long id) {
+	public void onModifyPage(Long id, Long ParentPageId, List<Long> recPath) {
 		this.view.setBtnAddText(this.constants.BtnSave());
 		view.showModifyButtons();
 		this.state = PageState.modify;

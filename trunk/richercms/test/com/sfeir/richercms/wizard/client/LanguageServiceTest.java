@@ -78,10 +78,10 @@ public class LanguageServiceTest extends GWTTestCase {
 	@Test
 	public void testAddLanguage() {
 		
-		this.rpcLanguage.addLanguage("Russe", "ru",new AsyncCallback<Void>() {
+		/*this.rpcLanguage.addLanguage("Russe", "ru",new AsyncCallback<Void>() {
 	    	public void onSuccess(Void result) {assertTrue(true);} // pas beau
 			public void onFailure(Throwable caught){fail();}
-			});
+			});*/
 		
 		this.rpcLanguage.getLangues(new AsyncCallback<List<BeanLanguageDetails>>(){
 	    	public void onSuccess(List<BeanLanguageDetails> result) {

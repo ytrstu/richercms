@@ -93,19 +93,17 @@ public class TemplateManagerPresenter extends LazyPresenter<ITemplateManager, Pa
 		
 		this.view.getPopUpBtnOk().addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				if(addOrModifyTemplate())//add template if its possible
-					view.hidePopUpAddTemplate();
+				addOrModifyTemplate();//add template if its possible
 			}
 		});
 		
 		this.view.getPopUpKbEvent().addKeyPressHandler(new KeyPressHandler() {
 			public void onKeyPress(KeyPressEvent event) {
-				if(event.getNativeEvent().getKeyCode() == KeyCodes.KEY_ENTER) {
-					if(addOrModifyTemplate())//add template if its possible
-						view.hidePopUpAddTemplate();// hide popUp only if template are added
-				}else if (event.getNativeEvent().getKeyCode() == KeyCodes.KEY_ESCAPE){
+				if(event.getNativeEvent().getKeyCode() == KeyCodes.KEY_ENTER)
+					addOrModifyTemplate();//add template if its possible
+				else if (event.getNativeEvent().getKeyCode() == KeyCodes.KEY_ESCAPE)
 					view.hidePopUpAddTemplate();
-				}
+				
 			}
 		});
 		
@@ -147,30 +145,32 @@ public class TemplateManagerPresenter extends LazyPresenter<ITemplateManager, Pa
 	
 	/**
 	 * Take information in the popup and create or modify the template
-	 * and add it into the list
-	 * @return true if add was possible, false either
+	 * and add it into the list if field are correctly filled.
+	 * Display warning PopUp or close the add/modify popUp as appropriate
 	 */
-	private boolean addOrModifyTemplate() {
-		
-		if(this.view.getPopUpNewTempName().length() == 0) {
-			PopUpMessage p = new PopUpMessage("Le nom du template ne peut être vide !");
-			p.show();
-			return false;
-		}else {
-			BeanTemplate bTP = new BeanTemplate();
-			bTP.setName(this.view.getPopUpNewTempName());
-			bTP.setDescription(this.view.getPopUpNewTempDesc());
-			bTP.setShortLib(this.view.getPopUpNewTempLib());
+	private void addOrModifyTemplate() {
+
+		BeanTemplate bTP = new BeanTemplate();
+		bTP.setName(this.view.getPopUpNewTempName());
+		bTP.setDescription(this.view.getPopUpNewTempDesc());
+		bTP.setShortLib(this.view.getPopUpNewTempLib());
 			
+		if(testTemplate(bTP)) {
 			switch(this.popUpState) {
 			case modify :
 				this.rpcTemplate.updateTemplate(this.view.getSelectedTemplateId(),
 						this.view.getPopUpNewTempName(),
 						this.view.getPopUpNewTempLib(),
 						this.view.getPopUpNewTempDesc(), 
-						new AsyncCallback<Void>() {
-					public void onSuccess(Void result) {
-						view.changeSelectedTagName(view.getPopUpNewTempName());
+						new AsyncCallback<Boolean>() {
+					public void onSuccess(Boolean result) {
+						if(result == true){
+							view.changeSelectedTagName(view.getPopUpNewTempName());
+							view.hidePopUpAddTemplate();// hide popUp only if template are modify
+						}else{
+							PopUpMessage popUp = new PopUpMessage(view.getConstants().msgErrorModifyTemplate());
+							popUp.show();
+						}
 					}
 					public void onFailure(Throwable caught) {}
 				});
@@ -178,16 +178,37 @@ public class TemplateManagerPresenter extends LazyPresenter<ITemplateManager, Pa
 			case add :
 				this.rpcTemplate.addTemplate(bTP, new AsyncCallback<Long>() {
 					public void onSuccess(Long result) {
-						view.addTemplateInList(view.getPopUpNewTempName(), 
-								result.toString());
+						if(result != null){
+							view.addTemplateInList(view.getPopUpNewTempName(), 
+									result.toString());
+							view.hidePopUpAddTemplate();// hide popUp only if template are added
+						}else{
+							PopUpMessage popUp = new PopUpMessage(view.getConstants().msgErrorAddTemplate());
+							popUp.show();
+						}
 					}
 					public void onFailure(Throwable caught) {
 					}
 				});
 				break;
 			}
-			return true;
 		}
+	}
+	
+	/**
+	 * test bean's fields and 
+	 * display an errorMessage if obligation fields are empty
+	 * @param bean
+	 * @return true if bean are correct, false either
+	 */
+	private boolean testTemplate(BeanTemplate bean){
+		if(bean.getName().length() == 0 || bean.getShortLib().length() == 0){
+			PopUpMessage popUp = new PopUpMessage(view.getConstants().msgErrorEmptyTemplate());
+			popUp.show();
+			return false;
+		}
+			
+		return true;
 	}
 	
 	/**

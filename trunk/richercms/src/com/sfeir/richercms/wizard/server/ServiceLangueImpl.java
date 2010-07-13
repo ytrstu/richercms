@@ -71,13 +71,16 @@ public class ServiceLangueImpl extends RemoteServiceServlet implements LanguageS
 	    }*/
 	}
 	
-	public void addLanguage(String language, String tag) {
+	public boolean addLanguage(String language, String tag) {
 		
 		Objectify ofy = ObjectifyService.begin();
 		Language lg = new Language(language, tag);
 		
-		if(!this.existingLanguage(language))
+		if(!this.existingLanguage(tag)){
 			ofy.put(lg);
+			return true;
+		}
+		return false;
 	}
 	
 	public void selectLanguage(int id) {
@@ -128,10 +131,10 @@ public class ServiceLangueImpl extends RemoteServiceServlet implements LanguageS
 		ofy.delete(lg);
 	}
 	
-	private boolean existingLanguage(String lg) {
+	private boolean existingLanguage(String tag) {
 		
 		 for (Language language : this.languages) {
-			 if(lg.equals(language.getLangue()))
+			 if(tag.equals(language.getTag()))
 				 return true;
 		 }
 		 return false;

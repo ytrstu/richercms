@@ -8,6 +8,7 @@ import com.google.gwt.event.dom.client.HasKeyPressHandlers;
 import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.view.LazyView;
+import com.sfeir.richercms.page.client.PageConstants;
 
 public interface ITemplateManager  extends LazyView {
 
@@ -196,4 +197,6 @@ public interface ITemplateManager  extends LazyView {
 	 * Change selected template's name into the list
 	 */
 	void changeSelectedTagName(String name);
+	
+	PageConstants getConstants();
 }

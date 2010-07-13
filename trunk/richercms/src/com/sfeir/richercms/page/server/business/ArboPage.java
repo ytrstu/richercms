@@ -21,6 +21,7 @@ public class ArboPage {
 
 	private List<Key<TranslationPage>> translation;
 	
+	@Indexed 
 	private List<Long> idChildArboPage;
 	
 	private Date publicationStart;

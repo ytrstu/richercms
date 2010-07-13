@@ -46,8 +46,9 @@ public interface ArboPageService extends RemoteService {
 	/**
 	 * Modify this page in the datastore
 	 * @param p : changed page
+	 * @param recPath : recursive path : selectedPageId => root
 	 */
-	public void updateArboPage(BeanArboPage p);
+	public void updateArboPage(BeanArboPage p, List<Long> recPath);
 	
 	/**
 	 * delete a page and all translation of this page
@@ -130,4 +131,13 @@ public interface ArboPageService extends RemoteService {
 	 * @param idUser : id of the specific user
 	 */
 	public void unlockAllUserPage(Long idUser);
+	
+	/**
+	 * Test if an urlName are no doublon's Path
+	 * @param parentId : parent page's id : necessary to research doublon in a specific path
+	 * @param pageId : id of th current page
+	 * @param urlNames : urlName who you need a test
+	 * @return true if path does not exist, false either
+	 */
+	public boolean existSameUrl(Long parentId, Long pageId, List<String> urlNames);
 }

@@ -45,7 +45,9 @@ public class PagePresenter extends LazyPresenter<IdisplayPage, PageEventBus> {
 	private LanguageServiceAsync rpcLanguage = null;
 	private BeanUser usr;
 	private BeanArboPage editingPage = null;
-	private Long id = null; // field used to save the key of the current Page
+	private Long pageId = null; // field used to save the key of the current Page
+	private Long parentPageId = null; // field used to save the key of the current Page
+	private List<Long> recPath; // need this to update imagePath
 	private PageState state = PageState.display;
 	
 	public PagePresenter() {
@@ -119,13 +121,14 @@ public class PagePresenter extends LazyPresenter<IdisplayPage, PageEventBus> {
 		// show the popUp to the user
 		this.view.addLineInPopUp(view.getConstants().PopUpTakeInfo(), 1);
 		this.view.addLineInPopUp(view.getConstants().PopUpSaveInProgress(), 0);
-		this.rpcPage.addArboPage(this.editingPage, this.id, new AsyncCallback<Void>() {
+		this.rpcPage.addArboPage(this.editingPage, this.parentPageId, new AsyncCallback<Void>() {
 			public void onSuccess(Void result) {
 				eventBus.AddNewChildInTree(); //reload the new tree
 				view.addLineInPopUp(view.getConstants().PopUpSaveFinish(), 1);
-				
 				//on redonne la possibilité de changer de traduction
 				view.enableLanguageBox();
+				//this event is send if all information entered by user are right
+				eventBus.rightInformation();
 			}
 			public void onFailure(Throwable caught) {
 				view.addLineInPopUp(view.getConstants().PopUpSaveFail(), 2);}
@@ -136,13 +139,15 @@ public class PagePresenter extends LazyPresenter<IdisplayPage, PageEventBus> {
 		// show the popUp to the user
 		this.view.addLineInPopUp(view.getConstants().PopUpTakeModif(), 1);
 		this.view.addLineInPopUp(view.getConstants().PopUpSaveModifInProg(), 0);
-		this.editingPage.setId(this.id);
-		this.rpcPage.updateArboPage(this.editingPage, new AsyncCallback<Void>() {
+		this.editingPage.setId(this.pageId);
+		this.rpcPage.updateArboPage(this.editingPage, this.recPath, new AsyncCallback<Void>() {
 			public void onSuccess(Void result) {
 				view.addLineInPopUp(view.getConstants().PopUpSaveModifFinish(), 1);
 				//reload the current treeNode
 				eventBus.reloadCurrentPageInTree(editingPage);
 				view.hideWaitPopUp();
+				//this event is send if all information entered by user are right
+				eventBus.rightInformation();
 			}
 			public void onFailure(Throwable caught) {
 				view.addLineInPopUp(view.getConstants().PopUpSaveModifFail(), 2);
@@ -176,7 +181,7 @@ public class PagePresenter extends LazyPresenter<IdisplayPage, PageEventBus> {
 	private void disconnectUser() {
 		// unlock page if it was in modify mode
 		if(this.state.equals(PageState.modify))
-			this.rpcPage.unlockThisPage(this.id, new AsyncCallback<Void>() {
+			this.rpcPage.unlockThisPage(this.pageId, new AsyncCallback<Void>() {
 				public void onFailure(Throwable caught) {;}
 				public void onSuccess(Void result) {;}
 			});
@@ -220,15 +225,18 @@ public class PagePresenter extends LazyPresenter<IdisplayPage, PageEventBus> {
 	
 	public void onAddPage(Long id){
 		this.state = PageState.add;
-		this.id = id;
+		this.parentPageId = id;
+		this.pageId = null;
 		//this.view.disableLanguageBox();
 		this.view.setIndexOfLgToDefault();
 	}
 	
-	public void onModifyPage(Long id)
+	public void onModifyPage(Long id, Long parentpageId, List<Long> path)
 	{
 		this.state = PageState.modify;
-		this.id = id;
+		this.recPath = path;
+		this.pageId = id;
+		this.parentPageId = parentpageId;
 		this.view.enableLanguageBox();
 	}
 	
@@ -249,23 +257,23 @@ public class PagePresenter extends LazyPresenter<IdisplayPage, PageEventBus> {
 					confirmPopUp.getClickOkEvt().addClickHandler(new ClickHandler() {
 						public void onClick(ClickEvent event) {
 							// unlock page if its necessary
-							rpcPage.unlockThisPage(id, new AsyncCallback<Void>() {
+							rpcPage.unlockThisPage(pageId, new AsyncCallback<Void>() {
 								public void onFailure(Throwable caught) {}
 								public void onSuccess(Void result) {
 									// avertit tout les presenter qu'il faut cancel
 									eventBus.cancelPage(newState);
-									eventBus.displayPage(id);
+									eventBus.displayPage(pageId);
 								}
 							});
 						}		
 					});
 				}else{// just unlock and send the cancelPage event
-					rpcPage.unlockThisPage(id, new AsyncCallback<Void>() {
+					rpcPage.unlockThisPage(pageId, new AsyncCallback<Void>() {
 						public void onFailure(Throwable caught) {}
 						public void onSuccess(Void result) {
 							// avertit tout les presenter qu'il faut cancel
 							eventBus.cancelPage(newState);
-							eventBus.displayPage(id);
+							eventBus.displayPage(pageId);
 						}
 					});
 				}

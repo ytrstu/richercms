@@ -177,6 +177,11 @@ public class ServiceTagImpl extends RemoteServiceServlet implements TagService {
 		if(sameNameTags.countAll()==0 && sameShortLibTags.countAll()==0){
 			ofy.put(tag);
 			return true;
+		}//same tag with same tagName and shortLib 
+		else if(sameNameTags.countAll()==1 && sameShortLibTags.countAll()==1 && 
+				sameNameTags.get().getId().equals(bean.getId()) && sameShortLibTags.get().getId().equals(bean.getId())){
+			ofy.put(tag);
+			return true;
 		}
 		return false;
 	}

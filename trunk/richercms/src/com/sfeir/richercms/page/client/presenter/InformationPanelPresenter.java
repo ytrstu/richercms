@@ -39,6 +39,7 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 	private int translationIndex = 0;
 	private int cpt = 0;
 	private PageState state = PageState.display;
+	private Long parentPageId = null;
 	
 	public InformationPanelPresenter() {
 		super();
@@ -219,6 +220,7 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 	
 
 	public void onDisplayPage(Long id) {
+		this.parentPageId = null;
 		this.rpcPage.getArboPage(id, new AsyncCallback<BeanArboPage>() {
 			public void onSuccess(BeanArboPage result) {
 				view.deasabledWidgets();
@@ -235,6 +237,7 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 	}
 	
 	public void onDisplayMainPage() {
+		this.parentPageId = null;
 		this.rpcPage.getMainArboPage(new AsyncCallback<BeanArboPage>() {
 			public void onSuccess(BeanArboPage result) {
 				view.deasabledWidgets();
@@ -252,6 +255,7 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 	
 	
 	public void onAddPage(Long id) {
+		this.parentPageId = id;
 		this.translationIndex = 0; //on commence toujours par ajouter la langue par défaut
 		this.view.setTitle(this.view.getConstants().AddPageTitleInformation()+this.view.getTitle());
 		this.view.clearFields();
@@ -265,6 +269,7 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 	}
 	
 	public void onCancelPage(PageState newState) {
+		this.parentPageId = null;
 		this.view.hideRequiredField();
 		this.view.deasabledWidgets();
 		this.view.disableHelp();
@@ -272,12 +277,14 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 		this.state = newState;
 	}
 	
-	public void onModifyPage(Long id) {
+	public void onModifyPage(Long id, Long parentId, List<Long> path) {
+		this.parentPageId = parentId;
 		view.enabledWidgets();
 		this.state = PageState.modify;
 	}
 	
 	public void onDeletePage() {
+		this.parentPageId = null;
 		view.setTitle(this.view.getConstants().DefaultTitleInformation());
 		view.clearFields();
 		this.state = PageState.display;
@@ -285,7 +292,7 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 	
 	public void onCallInfo() {
 		if(testField()) {
-			this.eventBus.showInformationPopUp();
+			
 			//need the current state to restore them later
 			PageState currentState = this.state;
 			//modifymode : modify the translation in the current page
@@ -294,12 +301,30 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 			this.currentPage = this.addInformationInPage();
 			//reconfigure the state
 			this.state = currentState;
-			//save dependentTags and call sendInfo (due waiting for an rpc result)
-			if(view.getSelectedTemplateId() != null)
-				this.saveDependentTags();
-			else
-				//send directly information if any 
-				sendInfo(null);
+			
+			//create urlNameList for test
+			ArrayList<String> urlNames = new ArrayList<String>();
+			for(BeanTranslationPage trans : this.currentPage.getTranslation()){
+				urlNames.add(trans.getUrlName());
+			}
+			
+			rpcPage.existSameUrl(this.parentPageId, this.currentPage.getId(), urlNames, new AsyncCallback<Boolean>() {
+				public void onFailure(Throwable caught) {}
+				public void onSuccess(Boolean result) {
+					if(result){
+						eventBus.showInformationPopUp();
+						//save dependentTags and call sendInfo (due waiting for an rpc result)
+						if(view.getSelectedTemplateId() != null)
+							saveDependentTags();
+						else
+							//send directly information if any 
+							sendInfo(null);
+					}
+					else{
+						//error message
+					}
+				}
+			});
 		}
 		
 	}
@@ -398,8 +423,6 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 		this.view.hideAllHelpField();
 		//set title
 		view.setTitle(this.currentPage.getTranslation().get(0).getUrlName());
-		//this event is send if all information entered by user are right
-		this.eventBus.rightInformation();
 	}
 	
 	private boolean testField() {
@@ -525,10 +548,10 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 				public void onSuccess(List<BeanDependentTag> result) {
 					
 					for (BeanDependentTag dTag : result){
-						view.checktag(dTag.getDependentTag().getId());
-						if(dTag.getDependentTag().isTextual()){
+						if(dTag.getDependentTag().isTextual())
 							view.setCustom(dTag.getDependentTag().getId(),dTag.getCustomName());
-						}
+						else
+							view.checktag(dTag.getDependentTag().getId());
 					}	
 				}
 			});

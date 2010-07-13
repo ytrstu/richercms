@@ -27,7 +27,13 @@ public class ServiceTemplateImpl extends RemoteServiceServlet implements Templat
 	public Long addTemplate(BeanTemplate bean) {
 		Objectify ofy = ObjectifyService.begin();
 		Template template = this.BeanToArboPage(bean);
-		ofy.put(template);
+		
+		Query<Template> sameNames = ofy.query(Template.class).filter("name ", bean.getName());
+		Query<Template> sameShortLibs = ofy.query(Template.class).filter("shortLib ", bean.getShortLib());
+		
+		if(sameNames.countAll()==0 && sameShortLibs.countAll()==0)
+			ofy.put(template);
+		
 		return template.getId();
 	}
 	
@@ -73,15 +79,38 @@ public class ServiceTemplateImpl extends RemoteServiceServlet implements Templat
 		ofy.put(template);
 	}
 	
-	public void updateTemplate(Long id, String name, String shortLib, String description) {
+	public boolean updateTemplate(Long id, String name, String shortLib, String description) {
 		Objectify ofy = ObjectifyService.begin();
-		Template template = ofy.get(Template.class, id);
-		if(template != null){
-			template.setName(name);
-			template.setDescription(description);
-			template.setShortLib(shortLib);
-			ofy.put(template);
+		
+		Query<Template> sameNames = ofy.query(Template.class).filter("name ", name);
+		Query<Template> sameShortLibs = ofy.query(Template.class).filter("shortLib ", shortLib);
+		
+		int nbSameShortLib = sameShortLibs.countAll();
+		int nbSameName = sameNames.countAll();
+		
+		if(nbSameShortLib==0 && nbSameName==0) {
+			Template template = ofy.get(Template.class, id);
+			if(template != null) {
+				template.setName(name);
+				template.setDescription(description);
+				template.setShortLib(shortLib);
+				ofy.put(template);
+				return true;
+			}
+			
+		}//same template with same name and shortLib 
+		else if(nbSameName==1 && nbSameShortLib==1 && sameNames.get().getId().equals(id)
+				&& sameShortLibs.get().getId().equals(id)){
+			Template template = ofy.get(Template.class, id);
+			if(template != null) {
+				template.setName(name);
+				template.setDescription(description);
+				template.setShortLib(shortLib);
+				ofy.put(template);
+				return true;
+			}
 		}
+		return false;
 	}
 	
 	public void deleteTemplate(Long id) {

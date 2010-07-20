@@ -72,6 +72,10 @@
     	<servlet-class>com.sfeir.richercms.page.server.DisplayImageServlet</servlet-class>
   	</servlet>
   	
+	<servlet>
+    	<servlet-name>siteServlet</servlet-name>
+    	<servlet-class>com.sfeir.richercms.site.ForwarderServlet</servlet-class>
+  	</servlet>
 
   
  	<servlet-mapping>
@@ -138,15 +142,20 @@
     	<servlet-name>imageServlet</servlet-name>
     	<url-pattern>/RicherCMS/image/*</url-pattern>
   	</servlet-mapping>
+  	
   	<servlet-mapping>
     	<servlet-name>imageServlet</servlet-name>
     	<url-pattern>/image/*</url-pattern>
   	</servlet-mapping>
-  
-
-	<!-- Default page to serve -->
-	<welcome-file-list>
-		<welcome-file>RicherCMS.jsp</welcome-file>
-	</welcome-file-list>
+ 
+  	<servlet-mapping>
+    	<servlet-name>siteServlet</servlet-name>
+    	<url-pattern>/site/*</url-pattern>
+  	</servlet-mapping>
+  	
+	<servlet>
+		<servlet-name>mainPage</servlet-name>
+		<servlet-class>org.apache.jasper.servlet.JspServlet</servlet-class>
+	</servlet>
 	
 </web-app>

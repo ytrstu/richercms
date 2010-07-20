@@ -17,6 +17,7 @@ public class BeanArboPage implements Serializable{
 	private Long TemplateId;
 	private List<Long> tagsId;
 	private Long idUserInModif;
+	private Long parentId; // Parent id
 	
 	public BeanArboPage() {
 		super();
@@ -28,6 +29,7 @@ public class BeanArboPage implements Serializable{
 		this.idUserInModif = null;
 		this.tagsId = new ArrayList<Long>();
 		this.TemplateId = null;
+		this.parentId = null;
 	}
 	
 	public BeanArboPage(Long id) {
@@ -40,10 +42,11 @@ public class BeanArboPage implements Serializable{
 		this.idUserInModif = null;
 		this.tagsId = new ArrayList<Long>();
 		this.TemplateId = null;
+		this.parentId = null;
 	}
 	
 	public BeanArboPage(Long id, Date publicationStart, Date publicationFinish, Date creationDate,
-			Long templateId, List<Long> tagList) {
+			Long templateId, List<Long> tagList, Long parentId) {
 		super();
 		this.id = id;
 		this.translation = new ArrayList<BeanTranslationPage>();
@@ -53,13 +56,14 @@ public class BeanArboPage implements Serializable{
 		this.idUserInModif = null;
 		this.TemplateId = templateId;
 		this.tagsId = tagList;
+		this.parentId = parentId;
 	}
 
 	
 	public BeanArboPage(Long id, List<BeanTranslationPage> translation,
 			List<Long> idLinkedImages, Date publicationStart,
 			Date publicationFinish, Date creationDate, Long templateId,
-			List<Long> tagsId, Long idUserInModif) {
+			List<Long> tagsId, Long idUserInModif, Long parentId) {
 		super();
 		this.id = id;
 		this.translation = translation;
@@ -69,6 +73,7 @@ public class BeanArboPage implements Serializable{
 		this.TemplateId = templateId;
 		this.tagsId = tagsId;
 		this.idUserInModif = idUserInModif;
+		this.parentId = parentId;
 	}
 	
 	public BeanArboPage(Date publicationStart, Date publicationFinish,
@@ -149,4 +154,13 @@ public class BeanArboPage implements Serializable{
 	public void setTagsId(List<Long> tagsId) {
 		this.tagsId = tagsId;
 	}
+
+	public Long getParentId() {
+		return parentId;
+	}
+
+	public void setParentId(Long parentId) {
+		this.parentId = parentId;
+	}
+	
 }

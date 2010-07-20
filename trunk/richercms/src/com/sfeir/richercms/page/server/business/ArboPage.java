@@ -19,6 +19,7 @@ public class ArboPage {
     @Id
     private Long id;
 
+    @Indexed 
 	private List<Key<TranslationPage>> translation;
 	
 	@Indexed 
@@ -42,6 +43,8 @@ public class ArboPage {
 	@Indexed 
 	private Long idUserInModif;
 	
+	private Long parentId; // Parent id
+	
 	public ArboPage() {
 		super();
 		this.translation = new ArrayList<Key<TranslationPage>>();
@@ -52,10 +55,12 @@ public class ArboPage {
 		this.idUserInModif = new Long(-1);
 		this.templateId = new Long(-1);
 		this.tagsId = new ArrayList<Long>();
+		this.parentId = null;
+		
 	}
 	
 	public ArboPage(Long id, Date publicationStart,Date publicationFinish,
-			Date creationDate,Long templateId,List<Long> tagsId) {
+			Date creationDate,Long templateId,List<Long> tagsId, Long parentId) {
 		super();
 		this.id = id;
 		this.translation = new ArrayList<Key<TranslationPage>>();
@@ -66,12 +71,13 @@ public class ArboPage {
 		this.idUserInModif = new Long(-1);
 		this.templateId = templateId;
 		this.tagsId = tagsId;
+		this.parentId = parentId;
 	}
 
 	public ArboPage(List<Key<TranslationPage>> translation,
 			List<Long> idChildArboPage, Date publicationStart,
 			Date publicationFinish, Date creationDate, Long templateId,
-			List<Long> tagsId, Long idUserInModif) {
+			List<Long> tagsId, Long idUserInModif, Long parentId) {
 		super();
 		this.translation = translation;
 		this.idChildArboPage = idChildArboPage;
@@ -81,6 +87,7 @@ public class ArboPage {
 		this.templateId = templateId;
 		this.tagsId = tagsId;
 		this.idUserInModif = idUserInModif;
+		this.parentId = parentId;
 	}
 
 	public Long getId() {
@@ -153,5 +160,13 @@ public class ArboPage {
 
 	public void setTagsId(List<Long> tagsId) {
 		this.tagsId = tagsId;
+	}
+
+	public Long getParentId() {
+		return parentId;
+	}
+
+	public void setParentId(Long parentId) {
+		this.parentId = parentId;
 	}
 }

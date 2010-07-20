@@ -121,6 +121,7 @@ public class PagePresenter extends LazyPresenter<IdisplayPage, PageEventBus> {
 		// show the popUp to the user
 		this.view.addLineInPopUp(view.getConstants().PopUpTakeInfo(), 1);
 		this.view.addLineInPopUp(view.getConstants().PopUpSaveInProgress(), 0);
+		this.editingPage.setParentId(this.parentPageId);
 		this.rpcPage.addArboPage(this.editingPage, this.parentPageId, new AsyncCallback<Void>() {
 			public void onSuccess(Void result) {
 				eventBus.AddNewChildInTree(); //reload the new tree
@@ -219,7 +220,7 @@ public class PagePresenter extends LazyPresenter<IdisplayPage, PageEventBus> {
 		case display :
 			this.state = newState;
 			view.displayNormalPanel();
-			eventBus.displayCurrentPage(state);
+			eventBus.displayCurrentPage(state);	
 		}
 	}
 	
@@ -257,25 +258,11 @@ public class PagePresenter extends LazyPresenter<IdisplayPage, PageEventBus> {
 					confirmPopUp.getClickOkEvt().addClickHandler(new ClickHandler() {
 						public void onClick(ClickEvent event) {
 							// unlock page if its necessary
-							rpcPage.unlockThisPage(pageId, new AsyncCallback<Void>() {
-								public void onFailure(Throwable caught) {}
-								public void onSuccess(Void result) {
-									// avertit tout les presenter qu'il faut cancel
-									eventBus.cancelPage(newState);
-									eventBus.displayPage(pageId);
-								}
-							});
+							unLockPage(pageId, newState);
 						}		
 					});
 				}else{// just unlock and send the cancelPage event
-					rpcPage.unlockThisPage(pageId, new AsyncCallback<Void>() {
-						public void onFailure(Throwable caught) {}
-						public void onSuccess(Void result) {
-							// avertit tout les presenter qu'il faut cancel
-							eventBus.cancelPage(newState);
-							eventBus.displayPage(pageId);
-						}
-					});
+					this.unLockPage(pageId, newState);
 				}
 				break;
 			case manageImage:
@@ -287,6 +274,22 @@ public class PagePresenter extends LazyPresenter<IdisplayPage, PageEventBus> {
 				eventBus.cancelPage(newState);
 		}
 
+	}
+
+	private void unLockPage(final Long idOfPage, final PageState newState) {
+		// pageId == null if its a new page 
+		if(pageId != null){
+			rpcPage.unlockThisPage(pageId, new AsyncCallback<Void>() {
+				public void onFailure(Throwable caught) {}
+				public void onSuccess(Void result) {
+					// avertit tout les presenter qu'il faut cancel
+					eventBus.cancelPage(newState);
+					eventBus.displayCurrentPage(PageState.display);
+				}
+			});
+		}else {
+			eventBus.cancelPage(newState);
+		}
 	}
 	
 	public void onChangeNavPanel(INavigationPanel navPanel) {

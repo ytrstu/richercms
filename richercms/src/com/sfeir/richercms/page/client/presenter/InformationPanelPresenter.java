@@ -220,6 +220,7 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 	
 
 	public void onDisplayPage(Long id) {
+		this.view.clearTagTable();
 		this.parentPageId = null;
 		this.rpcPage.getArboPage(id, new AsyncCallback<BeanArboPage>() {
 			public void onSuccess(BeanArboPage result) {

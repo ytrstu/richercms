@@ -155,7 +155,6 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 		HorizontalPanel p;
 		
 		this.infoTab = new FlexTable();
-		this.infoTab.setCellSpacing(10);
 		
 		this.infoTab.setWidget(0,0, new Label(constants.BrowserTitle()));
 		this.infoTab.setWidget(0,1,this.tBrowserTitle);
@@ -248,13 +247,15 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 		
 		//tag are added in infoTab
 		int numRow = this.infoTab.getRowCount();
-
+		HorizontalPanel checkOrTextAndHelp = new HorizontalPanel();
+		checkOrTextAndHelp.setSpacing(10);
 		
 		Image img = new Image("/tab_images/infoBulle.png");
 		img.setTitle(description);
 		
+		
 		this.infoTab.setText(numRow, 0, shortLib);
-		this.infoTab.setWidget(numRow, 2, img);
+		this.infoTab.setWidget(numRow, 1, checkOrTextAndHelp);
 		
 		if(textualTag){
 			TextBox tb = new TextBox(); 
@@ -262,15 +263,16 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 			tb.setName(id);
 			tb.setWidth(textBoxWidth);
 			this.checkORTextBox.put(new Long(id), tb);
-			this.infoTab.setWidget(numRow, 1, tb);
+			checkOrTextAndHelp.add(tb);
 		}else{
 			CheckBox selectTag = new CheckBox();
 			selectTag.setEnabled(this.EnableCheckBox);
 			selectTag.setName(id);
 			this.checkORTextBox.put(new Long(id), selectTag);
-			this.infoTab.setWidget(numRow, 1, selectTag);
+			checkOrTextAndHelp.add(selectTag);
 		}
 		
+		checkOrTextAndHelp.add(img);
 	}
 	
 	public List<Long> getSelectedTagsId() {
@@ -296,9 +298,10 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 	public void clearTagTable() {
 		//tag and information are included in same table
 		//we remove just tag
-		for(int i = this.firstTagInTable; i< this.infoTab.getRowCount() ; i++){
+		for(int i = (this.infoTab.getRowCount()-1); i> (this.firstTagInTable-1) ; i--){
 			this.infoTab.removeRow(i);
 		}
+		this.checkORTextBox.clear();
 	}
 	
 	public HasChangeHandlers getTemplateLstSelection() {
@@ -384,6 +387,13 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 		this.tUrlName.setText("");
 		this.dPublicationFinish.setValue(new Date());
 		this.dPublicationStart.setValue(new Date());
+		
+		for(Widget cb : this.checkORTextBox.values()){
+			if(cb.getClass().getName().contains("CheckBox"))
+				((CheckBox)cb).setValue(false);
+			else // textBox
+				((TextBox)cb).setText("");
+		}
 	}
 
 	public String getBrowserTitle() {

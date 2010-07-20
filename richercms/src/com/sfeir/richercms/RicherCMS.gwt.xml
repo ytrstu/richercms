@@ -37,6 +37,8 @@
   <servlet path="/upload" class="com.sfeir.richercms.page.server.FileUploadServlet" />
   <servlet path="/thumbnail" class="com.sfeir.richercms.page.server.ThumbNailServlet" />
   
+  
+  
     <!-- Supported Language.	-->
   <extend-property name='locale' values='fr'/>
   <extend-property name='locale' values='de'/>

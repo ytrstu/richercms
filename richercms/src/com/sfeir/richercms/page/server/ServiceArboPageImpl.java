@@ -335,11 +335,13 @@ public class ServiceArboPageImpl  extends RemoteServiceServlet implements ArboPa
 	
 	public void unlockThisPage(Long pageId) {
 		Objectify ofy = ObjectifyService.begin();
-		ArboPage page = ofy.get(ArboPage.class, pageId);
-		
-		if(page != null) {
-			page.setIdUserInModif(new Long(-1));
-			ofy.put(page);
+		if(pageId != null){
+			ArboPage page = ofy.get(ArboPage.class, pageId);
+			
+			if(page != null) {
+				page.setIdUserInModif(new Long(-1));
+				ofy.put(page);
+			}
 		}
 	}
 	
@@ -406,6 +408,7 @@ public class ServiceArboPageImpl  extends RemoteServiceServlet implements ArboPa
 		return true;
 	}
 	
+	
 	public BeanArboPage arboPageToBean(ArboPage ap){
 		Objectify ofy = ObjectifyService.begin();
 		BeanArboPage bap = new BeanArboPage(ap.getId(),
@@ -413,7 +416,8 @@ public class ServiceArboPageImpl  extends RemoteServiceServlet implements ArboPa
 											ap.getPublicationFinish(),
 											ap.getCreationDate(),
 											ap.getTemplateId(),
-											ap.getTagsId());
+											ap.getTagsId(),
+											ap.getParentId());
 		
 		//if IdUserInModif == -1 we return null
 		if(ap.getIdUserInModif().intValue() != -1)
@@ -458,7 +462,8 @@ public class ServiceArboPageImpl  extends RemoteServiceServlet implements ArboPa
 								   bAP.getPublicationFinish(),
 								   bAP.getCreationDate(),
 								   bAP.getTemplateId(),
-								   bAP.getTagsId());
+								   bAP.getTagsId(),
+								   bAP.getParentId());
 		
 		ArrayList<Key<TranslationPage>> lst = new ArrayList<Key<TranslationPage>>();
 		

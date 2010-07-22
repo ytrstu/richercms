@@ -18,7 +18,6 @@
     <!--                                                               -->
     <link type="text/css" rel="stylesheet" href="RicherCMS.css">
     <link type="text/css" rel="stylesheet" href="Wizard.css">
-    <link type="text/css" rel="stylesheet" href="Main.css">
     <link type="text/css" rel="stylesheet" href="Image.css">
     <link type="text/css" rel="stylesheet" href="DndStyle.css">
 

@@ -15,7 +15,6 @@ import com.google.appengine.api.images.Transform;
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.Query;
-import com.sfeir.richercms.image.server.business.UnlinkedFile;
 import com.sfeir.richercms.page.server.business.MemoryFileItem;
 
 public class ThumbNailServlet extends HttpServlet  {
@@ -27,7 +26,6 @@ public class ThumbNailServlet extends HttpServlet  {
 	
 	static {
         ObjectifyService.register(MemoryFileItem.class);
-        ObjectifyService.register(UnlinkedFile.class);
     }
 	
 

@@ -14,11 +14,6 @@ import com.sfeir.richercms.page.shared.BeanFile;
  */
 @RemoteServiceRelativePath("fileService")
 public interface FileService  extends RemoteService {
-
-	public List<Long> getUnlikedFile();
-	
-	public List<byte[]> getUnLinkedThumbnails();
-	
 	public List<BeanFile> getFile(String path);
 	
 	public void deleteFile(Long id);

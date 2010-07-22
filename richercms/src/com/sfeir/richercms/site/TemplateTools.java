@@ -19,6 +19,7 @@ import com.sfeir.richercms.page.shared.BeanDependentTag;
 import com.sfeir.richercms.page.shared.BeanTag;
 import com.sfeir.richercms.page.shared.BeanTemplate;
 import com.sfeir.richercms.page.shared.BeanTranslationPage;
+import com.sfeir.richercms.site.template.template_basic.LinkPage;
 
 public final class TemplateTools {
 	
@@ -63,7 +64,15 @@ public final class TemplateTools {
 		return null;
 	}
 	
-	
+	public static BeanArboPage getRootPage(){
+		Objectify ofy = ObjectifyService.begin();
+		Query<RootArbo> root = ofy.query(RootArbo.class);
+		ArboPage rootPage = ofy.get(ArboPage.class, root.get().getIdOfRootArboPage());
+		if(rootPage != null){
+			return arboPageToBean(rootPage);
+		}
+		return null;
+	}
 	public static BeanArboPage arboPageToBean(ArboPage ap){
 		Objectify ofy = ObjectifyService.begin();
 		BeanArboPage bap = new BeanArboPage(ap.getId(),
@@ -122,6 +131,30 @@ public final class TemplateTools {
 		return path;
 	}
 	
+	public static List<LinkPage> getLinkPagePath(Long pageId, int translationIndex){
+		ArrayList<LinkPage> path = new ArrayList<LinkPage>();
+		ArrayList<ArboPage> inversePath = new ArrayList<ArboPage>();
+		Objectify ofy = ObjectifyService.begin();
+		Long parentId = pageId;
+		String strPath = "";
+
+		while(parentId != null){
+			ArboPage parent = ofy.get(ArboPage.class, parentId);
+			parentId = parent.getParentId();
+			inversePath.add(parent);
+		}
+		
+		for(int i = inversePath.size()-1 ; i>-1  ; i--){
+			ArboPage parent = inversePath.get(i);
+			TranslationPage translation = ofy.get(
+					parent.getTranslation().get(translationIndex));
+			strPath = strPath + "/" +translation.getUrlName();
+			path.add(new LinkPage(translation.getPageTitle(), strPath));
+		}
+		
+		return path;
+	}
+	
 	public static List<BeanDependentTag> getTag(Long pageId){
 		ArrayList<BeanDependentTag> beans = new ArrayList<BeanDependentTag>();
 		Objectify ofy = ObjectifyService.begin();
@@ -148,6 +181,23 @@ public final class TemplateTools {
 			beans.add(arboPageToBean(child));
 		}
 		return beans;
+	}
+	
+	public static List<LinkPage> getLinkSistersPage(Long pageId, int translationIndex){
+		Objectify ofy = ObjectifyService.begin();
+		ArrayList<LinkPage> linkPage = new ArrayList<LinkPage>();
+		ArboPage page = ofy.get(ArboPage.class, pageId);
+		ArboPage parent = ofy.get(ArboPage.class, page.getParentId());
+		Map<Long,ArboPage> sisters = ofy.get(ArboPage.class, parent.getIdChildArboPage());
+		for(ArboPage sister : sisters.values()){
+			TranslationPage translation = ofy.get(
+					sister.getTranslation().get(translationIndex));
+			linkPage.add(new LinkPage(translation.getPageTitle(), 
+					getPagePath(sister.getId(), translationIndex)));
+					
+		}
+		
+		return linkPage;
 	}
 	
 	private static BeanTranslationPage translationPageToBean(TranslationPage tp) {

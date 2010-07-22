@@ -23,4 +23,8 @@ public class WizardHistoryConverter implements HistoryConverter<WizardConfigEven
 	public void onGoToSecondPage(){}
 	public void onStartWizard(){}
 
+	public boolean isCrawlable() {
+		return false;
+	}
+
 }

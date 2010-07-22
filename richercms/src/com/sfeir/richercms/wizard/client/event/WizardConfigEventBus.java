@@ -19,7 +19,7 @@ import com.sfeir.richercms.wizard.client.view.Page1View;
  * 
  * @author homberg.g
  */
-@Events(startView = Page1View.class, module = WizardModule.class, debug = true)
+@Events(startView = Page1View.class, module = WizardModule.class)
 public interface WizardConfigEventBus extends EventBusWithLookup{
 
 	/**

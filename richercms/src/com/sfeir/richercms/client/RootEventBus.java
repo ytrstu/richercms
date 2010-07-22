@@ -25,7 +25,7 @@ import com.sfeir.richercms.main.MainModule;
  * @author homberg.g
  *
  */
-@Events(startView = RootView.class, debug = true)
+@Events(startView = RootView.class)
 @ChildModules( 
 		{@ChildModule( moduleClass = WizardModule.class, async = true, autoDisplay = false),
 		@ChildModule( moduleClass = MainModule.class, async = true, autoDisplay = false)})

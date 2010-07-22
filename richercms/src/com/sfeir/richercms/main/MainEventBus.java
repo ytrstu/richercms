@@ -11,7 +11,7 @@ import com.sfeir.richercms.main.view.MainView;
 import com.sfeir.richercms.page.client.event.PageModule;
 import com.sfeir.richercms.shared.BeanUser;
 
-@Events(startView = MainView.class, module = MainModule.class, debug = true)
+@Events(startView = MainView.class, module = MainModule.class)
 @ChildModules( 
 		@ChildModule( moduleClass = PageModule.class, async = true, autoDisplay = false))
 public interface MainEventBus extends EventBusWithLookup {

@@ -62,7 +62,9 @@ public class PagePresenter extends LazyPresenter<IdisplayPage, PageEventBus> {
 		
 		view.onChangeSelectedLg().addChangeHandler(new ChangeHandler(){
 			public void onChange(ChangeEvent event) {	
+				view.addLanguageInListBox("paff", "hihi", false);
 				eventBus.changeTranslation(view.getIndexOfCurrentLg());
+				view.addLanguageInListBox("plouff", "hihi", false);
 			}
 	    	});
 		

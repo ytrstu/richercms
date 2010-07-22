@@ -7,21 +7,6 @@
 
 	<!-- Servlets -->
   	<servlet>
-    	<servlet-name>userService</servlet-name>
-    	<servlet-class>com.esial.richercms.server.UserInfoServiceImpl</servlet-class>
-  	</servlet>
-  	
-  	<servlet>
-    	<servlet-name>pageService</servlet-name>
-    	<servlet-class>com.esial.richercms.server.PageServiceImpl</servlet-class>
-  	</servlet>
-  	
-  	<servlet>
-  		<servlet-name>statService</servlet-name>
-    	<servlet-class>com.esial.richercms.server.StatServiceImpl</servlet-class>
-  	</servlet>
-  	
-  	<servlet>
     	<servlet-name>languageServiceServlet</servlet-name>
     	<servlet-class>com.sfeir.richercms.wizard.server.ServiceLangueImpl</servlet-class>
  	</servlet>
@@ -75,22 +60,6 @@
     	<servlet-name>siteServlet</servlet-name>
     	<servlet-class>com.sfeir.richercms.site.ForwarderServlet</servlet-class>
   	</servlet>
-
-  
- 	<servlet-mapping>
-  		<servlet-name>userService</servlet-name>
-  		<url-pattern>/RichercmsEsial/user</url-pattern>
-	</servlet-mapping>
-	
-	<servlet-mapping>
-    	<servlet-name>pageService</servlet-name>
-    	<url-pattern>/RichercmsEsial/pages</url-pattern>
-  	</servlet-mapping>
-  
-	<servlet-mapping>
-    	<servlet-name>statService</servlet-name>
-    	<url-pattern>/RichercmsEsial/stats</url-pattern>
-  	</servlet-mapping>
   
 	<servlet-mapping>
 		<servlet-name>languageServiceServlet</servlet-name>

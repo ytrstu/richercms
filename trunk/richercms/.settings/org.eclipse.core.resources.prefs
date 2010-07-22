@@ -1,9 +1,6 @@
-#Fri Jun 11 11:27:37 CEST 2010
+#Thu Jul 22 14:12:59 CEST 2010
 eclipse.preferences.version=1
 encoding//src/com/esial/richercms/client=UTF-8
-encoding//src/com/esial/richercms/client/RicherConstants.java=UTF-8
-encoding//src/com/esial/richercms/client/RicherConstants_de.properties=UTF-8
-encoding//src/com/esial/richercms/client/RicherConstants_fr.properties=UTF-8
 encoding//src/com/sfeir/richercms/main/client/MainConstants_de.properties=UTF-8
 encoding//src/com/sfeir/richercms/main/client/MainConstants_fr.properties=UTF-8
 encoding//src/com/sfeir/richercms/page/client/PageConstants_de.properties=UTF-8

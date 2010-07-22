@@ -46,7 +46,7 @@ import com.sfeir.richercms.shared.BeanUser;
  * @author homberg.g
  *
  */
-@Events(startView = PageView.class, module = PageModule.class, debug = true)
+@Events(startView = PageView.class, module = PageModule.class)
 public interface PageEventBus extends EventBus {
 
 	/**

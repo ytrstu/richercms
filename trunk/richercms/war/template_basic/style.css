@@ -5,8 +5,13 @@ h1 { padding:0px; text-transform:uppercase; font-size:18px; color:#000; backgrou
 h1 span { background:#616161; padding:0px 10px 0px 0px;}
 p {margin:0; background:#616161;}
 #header {background:url(images/header_bckg.jpg) repeat-x #0287c2; clear:both; width:100%; height:161px;  }
-#left_header { float:left; width:380px; background: url(images/left_header.jpg) no-repeat; height:161px;}
-#right_header { float:right;  width:321px; background: url(images/right_header.jpg) no-repeat; height:161px;}
+
+#language_fr { float:right;  width:20px; background: url(images/fr.png) no-repeat; height:15px;}
+#language_en { float:right;  width:20px; background: url(images/en.png) no-repeat; height:15px;}
+#language_de { float:right;  width:20px; background: url(images/de.png) no-repeat; height:15px;}
+
+#left_header { float:left; width:380px; background: url(images/left_header.png) no-repeat; height:161px;}
+#right_header { float:right;  width:321px; background: url(images/right_header.png) no-repeat; height:161px;}
 
 #logo {position:absolute; text-align:center; width:95%; text-align:center; margin-top:50px; }
 #logo a {text-decoration:none; color:#FFFFFF; font-size:23px; }

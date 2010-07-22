@@ -16,7 +16,6 @@
     	<servlet-class>com.esial.richercms.server.PageServiceImpl</servlet-class>
   	</servlet>
   	
-  	
   	<servlet>
   		<servlet-name>statService</servlet-name>
     	<servlet-class>com.esial.richercms.server.StatServiceImpl</servlet-class>
@@ -153,9 +152,10 @@
     	<url-pattern>/site/*</url-pattern>
   	</servlet-mapping>
   	
-	<servlet>
-		<servlet-name>mainPage</servlet-name>
-		<servlet-class>org.apache.jasper.servlet.JspServlet</servlet-class>
-	</servlet>
+	
+	<!-- Default page to serve -->
+	<welcome-file-list>
+		<welcome-file>RicherCMS.jsp</welcome-file>
+	</welcome-file-list>
 	
 </web-app>

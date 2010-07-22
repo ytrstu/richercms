@@ -17,6 +17,8 @@ public class TemplateBasic {
 	
 	private BeanArboPage page;
 	private int translation;
+	private BeanArboPage root;
+	private List<LinkPage> linkPath;
 	
 	static {
         ObjectifyService.register(ArboPage.class);
@@ -40,21 +42,35 @@ public class TemplateBasic {
 	}
 	
 	public List<LinkPage> getChildArticle(){
-		List<BeanArboPage> childs = TemplateTools.getChildPage(this.page.getId());
-		ArrayList<LinkPage> lnkPage = new ArrayList<LinkPage>();
-
-		for(BeanArboPage child : childs){
-			for(BeanDependentTag tag : TemplateTools.getTag(child.getId())){
-				if(tag.getDependentTag().getTagName().equals("Article")){
-					lnkPage.add(new LinkPage(child.getTranslation().get(this.translation)
-									.getPageTitle(),
-							TemplateTools.getPagePath(child.getId(), this.translation)));
-					break;
-				}
-			}
-		}
-		return lnkPage;
+		return getChildByTag("Article");
 	}
+	
+	public List<LinkPage> getChildCategory(){
+		return getChildByTag("Category");
+	}
+	
+	public LinkPage getRootPage(){
+		
+		if(this.root == null)
+			this.root = TemplateTools.getRootPage();
+		
+		return new LinkPage(this.root.getTranslation().get(this.translation)
+							.getPageTitle(),
+							"/"+this.root.getTranslation().get(this.translation)
+							.getUrlName());
+	}
+	
+	public List<LinkPage> getLinkPagePath(){
+		if(this.linkPath == null)
+			this.linkPath = TemplateTools.getLinkPagePath(this.page.getId(),
+															this.translation);
+		return this.linkPath;
+	}
+	
+	public List<LinkPage> getLinkSistersPage(){
+		return TemplateTools.getLinkSistersPage(this.page.getId(),this.translation);
+	}
+	
 	
 	public String getPath(){
 		return TemplateTools.getPagePath(page.getId(), this.translation);
@@ -80,7 +96,7 @@ public class TemplateBasic {
 	
 	
 	public String getKeyWord() {
-		return page.getTranslation().get(this.translation).getKeyWord();
+		return page.getTranslation().get(this.translation).getKeyWord().replaceAll(" ", ",");
 	}
 	
 	
@@ -123,6 +139,23 @@ public class TemplateBasic {
 					break;
 				}
 			}		
+		}
+		return lnkPage;
+	}
+	
+	private List<LinkPage> getChildByTag(String tagName){
+		List<BeanArboPage> childs = TemplateTools.getChildPage(this.page.getId());
+		ArrayList<LinkPage> lnkPage = new ArrayList<LinkPage>();
+
+		for(BeanArboPage child : childs){
+			for(BeanDependentTag tag : TemplateTools.getTag(child.getId())){
+				if(tag.getDependentTag().getTagName().equals(tagName)){
+					lnkPage.add(new LinkPage(child.getTranslation().get(this.translation)
+									.getPageTitle(),
+							TemplateTools.getPagePath(child.getId(), this.translation)));
+					break;
+				}
+			}
 		}
 		return lnkPage;
 	}

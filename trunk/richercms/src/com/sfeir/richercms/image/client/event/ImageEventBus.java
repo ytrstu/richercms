@@ -14,7 +14,7 @@ import com.sfeir.richercms.image.client.view.ImagePanel;
 import com.sfeir.richercms.page.client.tinyMCE.interfaces.IPopUpTreePanel;
 import com.sfeir.richercms.page.client.tinyMCE.presenter.PopUpTreePanelPresenter;
 
-@Events(startView = ImagePanel.class, module = ImageMobule.class, debug = true)
+@Events(startView = ImagePanel.class, module = ImageMobule.class)
 public interface ImageEventBus extends EventBus {
 
 	/**

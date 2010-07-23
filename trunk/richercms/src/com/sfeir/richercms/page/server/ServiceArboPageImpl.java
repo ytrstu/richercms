@@ -128,7 +128,8 @@ public class ServiceArboPageImpl  extends RemoteServiceServlet implements ArboPa
         	RootArbo root = new RootArbo();
         	ArboPage rootPage = new ArboPage();
         	TranslationPage tp = new TranslationPage();
-        	tp.setPageTitle("index");tp.setUrlName("index");
+        	tp.setPageTitle("index");
+        	rootPage.setUrlName("index");
         	ofy.put(tp);
         	Key<TranslationPage> kTp = new Key<TranslationPage>(TranslationPage.class,tp.getId());
         	rootPage.getTranslation().add(kTp);
@@ -159,11 +160,9 @@ public class ServiceArboPageImpl  extends RemoteServiceServlet implements ArboPa
 		Objectify ofy = ObjectifyService.begin();
 		ArboPage page = ofy.get(ArboPage.class, bean.getId());
 		
-		TranslationPage defaultTrans = ofy.get(page.getTranslation().get(0));
-		
 		//update page only if defaultUrlName are modified
-		if(!defaultTrans.getUrlName().equals(bean.getTranslation().get(0).getUrlName()))
-			updateImagePath(recPath, defaultTrans.getUrlName(), bean.getTranslation().get(0).getUrlName());
+		if(!page.getUrlName().equals(bean.getUrlName()))
+			updateImagePath(recPath, page.getUrlName(), bean.getUrlName());
 		
 		page.getTranslation().clear();
 		
@@ -179,6 +178,7 @@ public class ServiceArboPageImpl  extends RemoteServiceServlet implements ArboPa
 		page.setPublicationFinish(bean.getPublicationFinish());
 		page.setTemplateId(bean.getTemplateId());
 		page.setTagsId(bean.getTagsId());
+		page.setUrlName(bean.getUrlName());
 		
 		ofy.put(page);
 	}
@@ -228,9 +228,8 @@ public class ServiceArboPageImpl  extends RemoteServiceServlet implements ArboPa
 
 		//add new part in the new path
 		ArboPage currentPage = ofy.get(ArboPage.class, pageId);
-		TranslationPage defaultTrans = ofy.get(currentPage.getTranslation().get(0));
-		newPath = newPath.concat(defaultTrans.getUrlName()+"/");
-		altPath = altPath.concat(defaultTrans.getUrlName()+"/");
+		newPath = newPath.concat(currentPage.getUrlName()+"/");
+		altPath = altPath.concat(currentPage.getUrlName()+"/");
 		//take all child of currentPage
 		Map<Long,ArboPage> childs = ofy.get(ArboPage.class, currentPage.getIdChildArboPage());
 		//for all childs, make the same thinks
@@ -294,13 +293,11 @@ public class ServiceArboPageImpl  extends RemoteServiceServlet implements ArboPa
 		Objectify ofy = ObjectifyService.begin();
 		Map<Long,ArboPage> res = ofy.get(ArboPage.class, ids);
 		String path = "";
-		Long translationId;
+		
 		//reverse exploring
 		for(int i = ids.size(); i>0 ; i--) {
-			//get Default Translation
-			translationId = res.get(ids.get(i-1)).getTranslation().get(0).getId();
 			//add the URLName in path
-			path = path+ofy.get(TranslationPage.class, translationId).getUrlName()+"/";
+			path = path+res.get(ids.get(i-1)).getUrlName()+"/";
 		}
 		return path;
 	}
@@ -384,25 +381,20 @@ public class ServiceArboPageImpl  extends RemoteServiceServlet implements ArboPa
 				//on ne test pas les url vide
 				if(!urlName.equals("")){
 					//on récupère tout les URL possédant le même nom
-					Query<TranslationPage> sameUrlNames  = ofy.query(TranslationPage.class).filter("urlName =", urlName);
+					Query<ArboPage> sameUrlNames  = ofy.query(ArboPage.class).filter("urlName =", urlName);
 					//si >0 alors il faut tester si ce nom n'est pas présent au même niveau que le nouveau
 					if(sameUrlNames.countAll()!= 0){
 						//on parcours donc les url identique
-						for(TranslationPage sameUrlName : sameUrlNames){
+						for(ArboPage sameUrlName : sameUrlNames){
 							//pour chaque url identique on parcours toutes les page de même niveau que la courante
 							for(ArboPage child : childs.values()){
-								//enfin pour chaque page on parcours ses traductions
-								for(Key<TranslationPage> transKey : child.getTranslation()) {
-									//si la traduction identique fait partie d'une page de même niveau alors on ne peut pas
-									//sauvegarder cette page
-									if(transKey.getId() == sameUrlName.getId().longValue())
-										return false;
-								}
+								if(child.getId() == sameUrlName.getId().longValue())
+									return false;
+							
 							}
 						}
 					}
 				}
-				
 			}
 		}
 		return true;
@@ -412,6 +404,7 @@ public class ServiceArboPageImpl  extends RemoteServiceServlet implements ArboPa
 	public BeanArboPage arboPageToBean(ArboPage ap){
 		Objectify ofy = ObjectifyService.begin();
 		BeanArboPage bap = new BeanArboPage(ap.getId(),
+											ap.getUrlName(),
 											ap.getPublicationStart(), 
 											ap.getPublicationFinish(),
 											ap.getCreationDate(),
@@ -448,7 +441,6 @@ public class ServiceArboPageImpl  extends RemoteServiceServlet implements ArboPa
 		return new BeanTranslationPage(tp.getId(), 
 				tp.getBrowserTitle(),
 				tp.getPageTitle(), 
-				tp.getUrlName(),
 				tp.getDescription(), 
 				tp.getKeyWord(), 
 				tp.getContent().getValue());
@@ -458,6 +450,7 @@ public class ServiceArboPageImpl  extends RemoteServiceServlet implements ArboPa
 	public ArboPage BeanToArboPage(BeanArboPage bAP){
 		Objectify ofy = ObjectifyService.begin();
 		ArboPage ap = new ArboPage(bAP.getId(),
+								   bAP.getUrlName(),
 								   bAP.getPublicationStart(),
 								   bAP.getPublicationFinish(),
 								   bAP.getCreationDate(),
@@ -484,7 +477,7 @@ public class ServiceArboPageImpl  extends RemoteServiceServlet implements ArboPa
 	}
 	
 	public TranslationPage BeanToTranslationPage(BeanTranslationPage bTp){
-		return new TranslationPage(bTp.getId(), bTp.getBrowserTitle(),bTp.getPageTitle(), bTp.getUrlName(),
+		return new TranslationPage(bTp.getId(), bTp.getBrowserTitle(),bTp.getPageTitle(),
 				bTp.getDescription(), bTp.getKeyWord(), bTp.getContent());
 	}
 	

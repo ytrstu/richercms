@@ -123,7 +123,7 @@ public class UserManagerPresenter extends LazyPresenter<IUserManager, PageEventB
 						
 						if(lokedPage.getIdUserInModif().intValue() == usr.getId().intValue()){
 							//add all locked page in the line + handle event
-							view.addLockedPage(lokedPage.getId(),lokedPage.getTranslation().get(0).getUrlName()).
+							view.addLockedPage(lokedPage.getId(),lokedPage.getUrlName()).
 									addClickHandler(new ClickHandler() {
 										public void onClick(ClickEvent event) {	
 											ImageAndId img = (ImageAndId)event.getSource();

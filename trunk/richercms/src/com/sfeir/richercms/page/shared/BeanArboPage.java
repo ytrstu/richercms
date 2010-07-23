@@ -11,6 +11,7 @@ public class BeanArboPage implements Serializable{
 	
     private Long id;
 	List<BeanTranslationPage> translation;
+	private String urlName;
 	private Date publicationStart;
 	private Date publicationFinish;
 	private Date creationDate; 
@@ -30,6 +31,7 @@ public class BeanArboPage implements Serializable{
 		this.tagsId = new ArrayList<Long>();
 		this.TemplateId = null;
 		this.parentId = null;
+		this.urlName = "";
 	}
 	
 	public BeanArboPage(Long id) {
@@ -43,10 +45,11 @@ public class BeanArboPage implements Serializable{
 		this.tagsId = new ArrayList<Long>();
 		this.TemplateId = null;
 		this.parentId = null;
+		this.urlName = "";
 	}
 	
-	public BeanArboPage(Long id, Date publicationStart, Date publicationFinish, Date creationDate,
-			Long templateId, List<Long> tagList, Long parentId) {
+	public BeanArboPage(Long id, String urlName, Date publicationStart, Date publicationFinish, 
+			Date creationDate, Long templateId, List<Long> tagList, Long parentId) {
 		super();
 		this.id = id;
 		this.translation = new ArrayList<BeanTranslationPage>();
@@ -57,11 +60,12 @@ public class BeanArboPage implements Serializable{
 		this.TemplateId = templateId;
 		this.tagsId = tagList;
 		this.parentId = parentId;
+		this.urlName = urlName;
 	}
 
 	
 	public BeanArboPage(Long id, List<BeanTranslationPage> translation,
-			List<Long> idLinkedImages, Date publicationStart,
+			List<Long> idLinkedImages, String urlName, Date publicationStart,
 			Date publicationFinish, Date creationDate, Long templateId,
 			List<Long> tagsId, Long idUserInModif, Long parentId) {
 		super();
@@ -74,9 +78,10 @@ public class BeanArboPage implements Serializable{
 		this.tagsId = tagsId;
 		this.idUserInModif = idUserInModif;
 		this.parentId = parentId;
+		this.urlName = urlName;
 	}
 	
-	public BeanArboPage(Date publicationStart, Date publicationFinish,
+	public BeanArboPage(String urlName, Date publicationStart, Date publicationFinish,
 			List<BeanTranslationPage> translation) {
 		
 		super();
@@ -89,6 +94,7 @@ public class BeanArboPage implements Serializable{
 		this.tagsId = new ArrayList<Long>();
 		this.TemplateId = null;
 		this.idUserInModif = null;
+		this.urlName = urlName;
 	}
 
 	public Long getId() {
@@ -162,5 +168,12 @@ public class BeanArboPage implements Serializable{
 	public void setParentId(Long parentId) {
 		this.parentId = parentId;
 	}
-	
+
+	public String getUrlName() {
+		return urlName;
+	}
+
+	public void setUrlName(String urlName) {
+		this.urlName = urlName;
+	}
 }

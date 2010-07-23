@@ -118,10 +118,9 @@ public interface IInformationPanel extends LazyView {
 	 * @param description : content of default translation
 	 * @param keyWord : content of default translation
 	 * @param pageTitle : content of default translation
-	 * @param urlName : content of default translation
 	 */
 	void setHelp(String browserTitle, String description, String keyWord, 
-			String pageTitle, String urlName);
+			String pageTitle);
 	
 	/**
 	 * Set the title of the InformationPanel

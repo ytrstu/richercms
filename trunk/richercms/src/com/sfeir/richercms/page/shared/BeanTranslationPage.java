@@ -8,7 +8,6 @@ public class BeanTranslationPage implements Serializable {
     private Long id;
 	private String browserTitle;
 	private String pageTitle;
-	private String urlName;
 	private String description;
 	private String keyWord;
 	private String content;
@@ -18,33 +17,30 @@ public class BeanTranslationPage implements Serializable {
 		this.id = null;
 		this.browserTitle = "";
 		this.pageTitle = "";
-		this.urlName = "";
 		this.description = "";
 		this.keyWord = "";
 		this.content = "";
 	}
 	
 	public BeanTranslationPage(String browserTitle,
-			String pageTitle, String urlName, String description,
+			String pageTitle, String description,
 			String keyWord, String content) {
 		super();
 		this.id = null;
 		this.browserTitle = browserTitle;
 		this.pageTitle = pageTitle;
-		this.urlName = urlName;
 		this.description = description;
 		this.keyWord = keyWord;
 		this.content = content;
 	}
 	
 	public BeanTranslationPage(Long id, String browserTitle,
-			String pageTitle, String urlName, String description,
+			String pageTitle, String description,
 			String keyWord, String content) {
 		super();
 		this.id = id;
 		this.browserTitle = browserTitle;
 		this.pageTitle = pageTitle;
-		this.urlName = urlName;
 		this.description = description;
 		this.keyWord = keyWord;
 		this.content = content;
@@ -72,14 +68,6 @@ public class BeanTranslationPage implements Serializable {
 
 	public void setPageTitle(String pageTitle) {
 		this.pageTitle = pageTitle;
-	}
-
-	public String getUrlName() {
-		return this.urlName;
-	}
-
-	public void setUrlName(String urlName) {
-		this.urlName = urlName;
 	}
 
 	public String getDescription() {

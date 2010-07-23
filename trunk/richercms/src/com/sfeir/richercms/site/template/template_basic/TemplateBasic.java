@@ -56,8 +56,7 @@ public class TemplateBasic {
 		
 		return new LinkPage(this.root.getTranslation().get(this.translation)
 							.getPageTitle(),
-							"/"+this.root.getTranslation().get(this.translation)
-							.getUrlName());
+							"/"+this.root.getUrlName());
 	}
 	
 	public List<LinkPage> getLinkPagePath(){
@@ -86,7 +85,7 @@ public class TemplateBasic {
 	
 	
 	public String getUrlName() {
-		return page.getTranslation().get(this.translation).getUrlName();
+		return page.getUrlName();
 	}
 	
 	
@@ -120,6 +119,16 @@ public class TemplateBasic {
 
 	public void setTranslation(int translation) {
 		this.translation = translation;
+	}
+	
+	/**
+	 * Delete the null value at the end of
+	 * request and add right urlName
+	 * @param path : return by request.getInfoPath()
+	 * @return right url
+	 */
+	public String getRegularPath(String path){
+		return path.replace("null?", this.page.getUrlName()+"?");
 	}
 	
 	private List<LinkPage> getAllPageByTag(String tagName) {

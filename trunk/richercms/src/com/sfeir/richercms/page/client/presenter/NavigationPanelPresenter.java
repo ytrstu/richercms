@@ -215,7 +215,7 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Pa
 			// si certain champs d'un traduction son laissé vide alors icone = warning
 			if(bT.getContent().length() == 0 || bT.getBrowserTitle().length() == 0 ||
 					bT.getDescription().length() == 0 || bT.getPageTitle().length() == 0 || 
-					bT.getUrlName().length() == 0) {
+					bean.getUrlName().length() == 0) {
 				
 					img = new Image("tab_images/pageWarn.png");
 				

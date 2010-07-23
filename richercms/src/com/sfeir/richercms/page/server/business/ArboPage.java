@@ -31,6 +31,9 @@ public class ArboPage {
 	
 	private Date creationDate;
 	
+	@Indexed
+	private String urlName;
+	
 	// One page Use One Template
 	@Indexed 
 	private Long templateId;
@@ -56,10 +59,10 @@ public class ArboPage {
 		this.templateId = new Long(-1);
 		this.tagsId = new ArrayList<Long>();
 		this.parentId = null;
-		
+		this.urlName = "";
 	}
 	
-	public ArboPage(Long id, Date publicationStart,Date publicationFinish,
+	public ArboPage(Long id, String urlName, Date publicationStart,Date publicationFinish,
 			Date creationDate,Long templateId,List<Long> tagsId, Long parentId) {
 		super();
 		this.id = id;
@@ -72,10 +75,11 @@ public class ArboPage {
 		this.templateId = templateId;
 		this.tagsId = tagsId;
 		this.parentId = parentId;
+		this.urlName = urlName;
 	}
 
 	public ArboPage(List<Key<TranslationPage>> translation,
-			List<Long> idChildArboPage, Date publicationStart,
+			List<Long> idChildArboPage, String urlName, Date publicationStart,
 			Date publicationFinish, Date creationDate, Long templateId,
 			List<Long> tagsId, Long idUserInModif, Long parentId) {
 		super();
@@ -88,6 +92,7 @@ public class ArboPage {
 		this.tagsId = tagsId;
 		this.idUserInModif = idUserInModif;
 		this.parentId = parentId;
+		this.urlName = urlName;
 	}
 
 	public Long getId() {
@@ -168,5 +173,13 @@ public class ArboPage {
 
 	public void setParentId(Long parentId) {
 		this.parentId = parentId;
+	}
+
+	public String getUrlName() {
+		return urlName;
+	}
+
+	public void setUrlName(String urlName) {
+		this.urlName = urlName;
 	}
 }

@@ -21,9 +21,9 @@
 	<!-- header -->
     <div id="logo"><a href="<%=siteSufix+template.getPath()%>"><%=template.getPageTitle()%></a></div>
     <div id="language">
-       <div id="language_fr"><a href="<%=request+"?lg=fr" %>"><img src="/tab_images/fr.png" class="photo"/></a></div>
-       <div id="language_en"><a href="<%=request.getPathInfo()+"?lg=en" %>"><img src="/tab_images/en.png" class="photo"/></a></div>
-       <div id="language_de"><a href="<%=request.getPathInfo()+"?lg=de" %>"><img src="/tab_images/de.png" class="photo"/></a></div>
+       <div id="language_fr"><a href="<%=template.getRegularPath(request.getPathInfo()+"?lg=fr") %>"><img src="/tab_images/fr.png" class="photo"/></a></div>
+       <div id="language_en"><a href="<%=template.getRegularPath(request.getPathInfo()+"?lg=en") %>"><img src="/tab_images/en.png" class="photo"/></a></div>
+       <div id="language_de"><a href="<%=template.getRegularPath(request.getPathInfo()+"?lg=de") %>"><img src="/tab_images/de.png" class="photo"/></a></div>
 	</div>
     <div id="header">
     	<div id="left_header"></div>

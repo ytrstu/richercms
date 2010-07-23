@@ -22,9 +22,9 @@
 	<!-- header -->
     <div id="logo"><a href="<%= siteSufix+root.getPath()%>"><%=root.getName()%></a></div>
     <div id="language">
-       <div id="language_fr"><a href="/link"><img src="/tab_images/fr.png" class="photo"/></a></div>
-       <div id="language_en"><a href="/link"><img src="/tab_images/en.png" class="photo"/></a></div>
-       <div id="language_de"><a href="/link"><img src="/tab_images/de.png" class="photo"/></a></div>
+       <div id="language_fr"><a href="<%=request.getPathInfo()+"?lg=fr" %>"><img src="/tab_images/fr.png" class="photo"/></a></div>
+       <div id="language_en"><a href="<%=request.getPathInfo()+"?lg=en" %>"><img src="/tab_images/en.png" class="photo"/></a></div>
+       <div id="language_de"><a href="<%=request.getPathInfo()+"?lg=de" %>"><img src="/tab_images/de.png" class="photo"/></a></div>
 	</div>
     <div id="header">
     	<div id="left_header"></div>

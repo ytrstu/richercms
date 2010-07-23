@@ -45,17 +45,12 @@ public final class TemplateTools {
 		String[] urlPart = path.split("/");
 		String urlName = urlPart[urlPart.length -1];
 		Objectify ofy = ObjectifyService.begin();
-		Query<TranslationPage> sameUrlNames  = ofy.query(TranslationPage.class).filter("urlName =", urlName);
+		Query<ArboPage> sameUrlNames  = ofy.query(ArboPage.class).filter("urlName =", urlName);
 		
-		if(sameUrlNames.countAll() == 1) {
-			Key<TranslationPage> transKey = new Key<TranslationPage>(TranslationPage.class, 
-						sameUrlNames.get().getId());
-			Query<ArboPage> pages = ofy.query(ArboPage.class).filter("translation =", transKey);
-			
-			if(pages != null )
-				return arboPageToBean(pages.get());
+		if(sameUrlNames.countAll() == 1) 
+			return arboPageToBean(sameUrlNames.get());
 
-		}else if((sameUrlNames.countAll() > 1)){
+		else if((sameUrlNames.countAll() > 1)){
 			//get the root page
 			Query<RootArbo> root = ofy.query(RootArbo.class);
 			ArboPage rootPage = ofy.get(ArboPage.class, root.get().getIdOfRootArboPage());
@@ -75,9 +70,11 @@ public final class TemplateTools {
 		}
 		return null;
 	}
+	
 	public static BeanArboPage arboPageToBean(ArboPage ap){
 		Objectify ofy = ObjectifyService.begin();
 		BeanArboPage bap = new BeanArboPage(ap.getId(),
+											ap.getUrlName(),
 											ap.getPublicationStart(), 
 											ap.getPublicationFinish(),
 											ap.getCreationDate(),
@@ -125,9 +122,7 @@ public final class TemplateTools {
 		while(parentId != null){
 			ArboPage parent = ofy.get(ArboPage.class, parentId);
 			parentId = parent.getParentId();
-			TranslationPage translation = ofy.get(
-					parent.getTranslation().get(translationIndex));
-			path = "/"+translation.getUrlName()+path;
+			path = "/"+parent.getUrlName()+path;
 		}
 		
 		return path;
@@ -150,7 +145,7 @@ public final class TemplateTools {
 			ArboPage parent = inversePath.get(i);
 			TranslationPage translation = ofy.get(
 					parent.getTranslation().get(translationIndex));
-			strPath = strPath + "/" +translation.getUrlName();
+			strPath = strPath + "/" +parent.getUrlName();
 			path.add(new LinkPage(translation.getPageTitle(), strPath));
 		}
 		
@@ -222,7 +217,6 @@ public final class TemplateTools {
 		return new BeanTranslationPage(tp.getId(), 
 				tp.getBrowserTitle(),
 				tp.getPageTitle(), 
-				tp.getUrlName(),
 				tp.getDescription(), 
 				tp.getKeyWord(), 
 				tp.getContent().getValue());
@@ -274,13 +268,10 @@ public final class TemplateTools {
 		if(urlPart.length >=2){
 			Map<Long, ArboPage> childs = ofy.get(ArboPage.class, page.getIdChildArboPage());
 			for(ArboPage child : childs.values()){
-				Map<Key<TranslationPage>, TranslationPage> trans = ofy.get(child.getTranslation());
-				for(TranslationPage t : trans.values()){
-					if(t.getUrlName().equals(urlPart[1]) && urlPart.length != 2)
-						return getByPath(child,newPath);
-					else if(urlPart.length == 2)
-						return arboPageToBean(child);
-				}
+				if(child.getUrlName().equals(urlPart[1]) && urlPart.length != 2)
+					return getByPath(child,newPath);
+				else if(child.getUrlName().equals(urlPart[1]) && urlPart.length == 2)
+					return arboPageToBean(child);
 			}
 		}
 		return null;

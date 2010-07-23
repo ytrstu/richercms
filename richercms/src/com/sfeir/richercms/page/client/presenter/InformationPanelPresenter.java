@@ -84,19 +84,13 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 			};
 		});
 		
-		this.view.getFocusOnTB4().addFocusHandler(new FocusHandler(){
-			public void onFocus(FocusEvent event) {
-				view.showOneHelp(4);
-			};
-		});
-		
 		this.view.getTemplateLstSelection().addChangeHandler(new ChangeHandler() {
 			public void onChange(ChangeEvent event) {
 				fetchTagTable();
 			}
 		});
 		
-		for(this.cpt=0; this.cpt<5; this.cpt++){
+		for(this.cpt=0; this.cpt<4; this.cpt++){
 			this.view.getclickBtnCpy(this.cpt).addClickHandler(new ClickHandler(){
 				private final int index = cpt;
 				public void onClick(ClickEvent event) {
@@ -140,10 +134,9 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 		newTranslation.setDescription(view.getDescription());
 		newTranslation.setKeyWord(view.getKeyWord());
 		newTranslation.setPageTitle(view.getPageTitle());
-		newTranslation.setUrlName(view.getUrlName());	
 		
 		lst.set(this.translationIndex, newTranslation);
-		BeanArboPage nBaP = new BeanArboPage(view.getPublicationStart(),
+		BeanArboPage nBaP = new BeanArboPage(view.getUrlName(),view.getPublicationStart(),
 				view.getPublicationFinish(),
 				lst);
 		
@@ -176,7 +169,7 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 			view.setPageTitle(page.getTranslation().get(this.translationIndex).getPageTitle());
 			view.setPublicationFinish(page.getPublicationFinish());
 			view.setPublicationStart(page.getPublicationStart());
-			view.setUrlName(page.getTranslation().get(this.translationIndex).getUrlName());
+			view.setUrlName(page.getUrlName());
 		}
 		else {
 			view.setBrowserTitle("");
@@ -185,7 +178,7 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 			view.setPageTitle("");
 			view.setPublicationFinish(page.getPublicationFinish());
 			view.setPublicationStart(page.getPublicationStart());
-			view.setUrlName("");
+			view.setUrlName(page.getUrlName());
 		}
 		
 		// on active l'aide uniquement sur les traductions et pas sur la langue par defaut
@@ -194,8 +187,7 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 			view.setHelp(page.getTranslation().get(0).getBrowserTitle(),
 					page.getTranslation().get(0).getDescription(), 
 					page.getTranslation().get(0).getKeyWord(), 
-					page.getTranslation().get(0).getPageTitle(), 
-					page.getTranslation().get(0).getUrlName());
+					page.getTranslation().get(0).getPageTitle());
 		}else {
 			view.disableHelp();
 		}
@@ -211,7 +203,7 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 		
 		if((bean.getPageTitle() != null ) && (!bean.getPageTitle().equals(""))) return false;
 		
-		if((bean.getUrlName() != null ) && (!bean.getUrlName().equals(""))) return false;
+		//if((this.currentPage.getUrlName() != null ) && (!bean.getUrlName().equals(""))) return false;
 			
 		return true;
 	}
@@ -305,9 +297,8 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 			
 			//create urlNameList for test
 			ArrayList<String> urlNames = new ArrayList<String>();
-			for(BeanTranslationPage trans : this.currentPage.getTranslation()){
-				urlNames.add(trans.getUrlName());
-			}
+			urlNames.add(this.currentPage.getUrlName());
+			
 			
 			rpcPage.existSameUrl(this.parentPageId, this.currentPage.getId(), urlNames, new AsyncCallback<Boolean>() {
 				public void onFailure(Throwable caught) {}
@@ -423,7 +414,7 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 		//hide all help field
 		this.view.hideAllHelpField();
 		//set title
-		view.setTitle(this.currentPage.getTranslation().get(0).getUrlName());
+		view.setTitle(this.currentPage.getUrlName());
 	}
 	
 	private boolean testField() {

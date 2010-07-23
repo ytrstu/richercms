@@ -142,13 +142,13 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 		this.helpPageTitle.setVisible(false);
 		this.helpPageTitle.addStyleName("requiredField");
 		
-		for(int i=0; i<5; i++) {
+		for(int i=0; i<4; i++) {
 			Button b = new Button();
 			b.setText("<");
 			this.cpyButtonLst.add(b);
 		}
 		
-		for(int i=0; i<5; i++) {
+		for(int i=0; i<4; i++) {
 			this.cpyLabelLst.add(new Label(""));
 		}
 		
@@ -181,7 +181,7 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 		img.setTitle(this.constants.infoMessDescription());
 		this.infoTab.setWidget(2,2,img);
 		p = new HorizontalPanel();
-		p.add(this.cpyButtonLst.get(3));p.add(this.cpyLabelLst.get(3));
+		p.add(this.cpyButtonLst.get(2));p.add(this.cpyLabelLst.get(2));
 		this.infoTab.setWidget(2,3,p);
 		
 		this.infoTab.setWidget(3,0, new Label(constants.KeyWord()));
@@ -190,7 +190,7 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 		img.setTitle(this.constants.infoMessKeyWord());
 		this.infoTab.setWidget(3,2,img);
 		p = new HorizontalPanel();
-		p.add(this.cpyButtonLst.get(4));p.add(this.cpyLabelLst.get(4));
+		p.add(this.cpyButtonLst.get(3));p.add(this.cpyLabelLst.get(3));
 		this.infoTab.setWidget(3,3,p);
 		
 		this.infoTab.setWidget(4,0, new Label(constants.UrlName()));
@@ -199,9 +199,6 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 		img = new Image("/tab_images/infoBulle.png");
 		img.setTitle(this.constants.infoMessUrlName());
 		this.infoTab.setWidget(4,2,img);
-		p = new HorizontalPanel();
-		p.add(this.cpyButtonLst.get(2));p.add(this.cpyLabelLst.get(2));
-		this.infoTab.setWidget(4,4,p);
 		
 		this.infoTab.setWidget(5,0, new Label(constants.PublicationStart()));
 		this.infoTab.setWidget(5,1,this.dPublicationStart);
@@ -465,16 +462,15 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 	}
 	
 	public void setHelp(String browserTitle, String description, String keyWord, 
-			String pageTitle, String urlName) {
+			String pageTitle) {
 		this.cpyLabelLst.get(0).setText(browserTitle);
-		this.cpyLabelLst.get(3).setText(description);
-		this.cpyLabelLst.get(4).setText(keyWord);
+		this.cpyLabelLst.get(2).setText(description);
+		this.cpyLabelLst.get(3).setText(keyWord);
 		this.cpyLabelLst.get(1).setText(pageTitle);
-		this.cpyLabelLst.get(2).setText(urlName);
 	}
 	
 	public void hideAllHelpField() {
-		for(int i = 0 ; i<5 ; i++) {
+		for(int i = 0 ; i<4 ; i++) {
 			this.cpyButtonLst.get(i).setVisible(false);
 			this.cpyLabelLst.get(i).setVisible(false);
 		}

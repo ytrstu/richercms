@@ -5,7 +5,6 @@ import javax.persistence.Id;
 import com.google.appengine.api.datastore.Text;
 import com.googlecode.objectify.annotation.Cached;
 import com.googlecode.objectify.annotation.Entity;
-import com.googlecode.objectify.annotation.Indexed;
 import com.googlecode.objectify.annotation.Unindexed;
 
 @Cached
@@ -19,9 +18,6 @@ public class TranslationPage {
 	private String browserTitle;
 
 	private String pageTitle;
-	
-	@Indexed
-	private String urlName;
 
 	private String description;
 
@@ -34,28 +30,25 @@ public class TranslationPage {
 	{
 		this.browserTitle = new String("");
 		this.pageTitle = new String("");
-		this.urlName = new String("");
 		this.description = new String("");
 		this.keyWord = new String("");
 		this.content = new Text("");
 	}
 	
-	public TranslationPage(String browserTitle, String pageTitle, String urlName,
+	public TranslationPage(String browserTitle, String pageTitle,
 			String description, String keyWord, String content) {
 		this.browserTitle = browserTitle;
 		this.pageTitle = pageTitle;
-		this.urlName = urlName;
 		this.description = description;
 		this.keyWord = keyWord;
 		this.content = new Text(content);
 	}
 	
-	public TranslationPage(Long id, String browserTitle, String pageTitle, String urlName,
+	public TranslationPage(Long id, String browserTitle, String pageTitle,
 			String description, String keyWord, String content) {
 		this.id = id;
 		this.browserTitle = browserTitle;
 		this.pageTitle = pageTitle;
-		this.urlName = urlName;
 		this.description = description;
 		this.keyWord = keyWord;
 		this.content = new Text(content);
@@ -83,14 +76,6 @@ public class TranslationPage {
 
 	public void setPageTitle(String pageTitle) {
 		this.pageTitle = pageTitle;
-	}
-
-	public String getUrlName() {
-		return this.urlName;
-	}
-
-	public void setUrlName(String urlName) {
-		this.urlName = urlName;
 	}
 
 	public String getDescription() {

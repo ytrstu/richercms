@@ -175,33 +175,33 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 		p.add(this.cpyButtonLst.get(1));p.add(this.cpyLabelLst.get(1));
 		this.infoTab.setWidget(1,4,p);
 		
-		this.infoTab.setWidget(2,0, new Label(constants.UrlName()));
-		this.infoTab.setWidget(2,1,this.tUrlName);
-		this.infoTab.setWidget(2,3,this.helpUrlName);
-		img = new Image("/tab_images/infoBulle.png");
-		img.setTitle(this.constants.infoMessUrlName());
-		this.infoTab.setWidget(2,2,img);
-		p = new HorizontalPanel();
-		p.add(this.cpyButtonLst.get(2));p.add(this.cpyLabelLst.get(2));
-		this.infoTab.setWidget(2,4,p);
-		
-		this.infoTab.setWidget(3,0, new Label(constants.Description()));
-		this.infoTab.setWidget(3,1,this.tDescription);
+		this.infoTab.setWidget(2,0, new Label(constants.Description()));
+		this.infoTab.setWidget(2,1,this.tDescription);
 		img = new Image("/tab_images/infoBulle.png");
 		img.setTitle(this.constants.infoMessDescription());
-		this.infoTab.setWidget(3,2,img);
+		this.infoTab.setWidget(2,2,img);
 		p = new HorizontalPanel();
 		p.add(this.cpyButtonLst.get(3));p.add(this.cpyLabelLst.get(3));
-		this.infoTab.setWidget(3,3,p);
+		this.infoTab.setWidget(2,3,p);
 		
-		this.infoTab.setWidget(4,0, new Label(constants.KeyWord()));
-		this.infoTab.setWidget(4,1,this.tKeyWord);
+		this.infoTab.setWidget(3,0, new Label(constants.KeyWord()));
+		this.infoTab.setWidget(3,1,this.tKeyWord);
 		img = new Image("/tab_images/infoBulle.png");
 		img.setTitle(this.constants.infoMessKeyWord());
-		this.infoTab.setWidget(4,2,img);
+		this.infoTab.setWidget(3,2,img);
 		p = new HorizontalPanel();
 		p.add(this.cpyButtonLst.get(4));p.add(this.cpyLabelLst.get(4));
-		this.infoTab.setWidget(4,3,p);
+		this.infoTab.setWidget(3,3,p);
+		
+		this.infoTab.setWidget(4,0, new Label(constants.UrlName()));
+		this.infoTab.setWidget(4,1,this.tUrlName);
+		this.infoTab.setWidget(4,3,this.helpUrlName);
+		img = new Image("/tab_images/infoBulle.png");
+		img.setTitle(this.constants.infoMessUrlName());
+		this.infoTab.setWidget(4,2,img);
+		p = new HorizontalPanel();
+		p.add(this.cpyButtonLst.get(2));p.add(this.cpyLabelLst.get(2));
+		this.infoTab.setWidget(4,4,p);
 		
 		this.infoTab.setWidget(5,0, new Label(constants.PublicationStart()));
 		this.infoTab.setWidget(5,1,this.dPublicationStart);

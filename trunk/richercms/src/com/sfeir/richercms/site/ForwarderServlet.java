@@ -20,9 +20,10 @@ public class ForwarderServlet extends HttpServlet {
 	private BeanArboPage page;
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
 	throws ServletException, IOException {
-		
+		String languageTag = getLanguage(request.getPathInfo(),"fr","&");
 		String nextJSP = selectJsp(request.getPathInfo());
 		request.setAttribute("page", this.page);
+		request.setAttribute("language", TemplateTools.getIndexOfLanguage(languageTag));
 		//forward to the right jsp
 		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(nextJSP);
 		dispatcher.forward(request,response);
@@ -37,6 +38,10 @@ public class ForwarderServlet extends HttpServlet {
 	private String selectJsp(String path) {
 		String jspName = "";
 		String jspFolder = "";
+		//delete param
+		if(path.contains("?"))
+			path = path.split("?")[0];
+			
 		// delete the first "/"
 		path = path.substring(1, path.length());
 		// replace all "%20" to a space char
@@ -64,6 +69,30 @@ public class ForwarderServlet extends HttpServlet {
 		}
 		
 		return "/"+jspFolder+"/"+jspName+".jsp";
+	}
+	
+	private String getLanguage(String path, String defaultLg, String separator){
+		
+		//contain param to get
+		if(path.contains("?")){
+			//split
+			String[] pathAndParam = path.split("?");
+			//Get all param in one string
+			String allParam = pathAndParam[pathAndParam.length -1];
+			
+			//split different param separated by specific separator
+			String[] params = allParam.split(separator);
+			// for all param
+			for(String param : params){
+				// paramName '=' value
+				String[] oneParam = param.split("=");
+				//if language
+				if(oneParam[0].equals("lg"))
+					return oneParam[1];//return
+			}
+		}
+		//default value
+		return defaultLg;
 	}
 	
 }

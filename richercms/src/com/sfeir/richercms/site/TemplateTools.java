@@ -20,6 +20,7 @@ import com.sfeir.richercms.page.shared.BeanTag;
 import com.sfeir.richercms.page.shared.BeanTemplate;
 import com.sfeir.richercms.page.shared.BeanTranslationPage;
 import com.sfeir.richercms.site.template.template_basic.LinkPage;
+import com.sfeir.richercms.wizard.server.business.Language;
 
 public final class TemplateTools {
 	
@@ -32,6 +33,7 @@ public final class TemplateTools {
         ObjectifyService.register(Template.class);
         ObjectifyService.register(Tag.class);
         ObjectifyService.register(DependentTag.class);
+        ObjectifyService.register(Language.class);
 	}
 
 	/**
@@ -198,6 +200,22 @@ public final class TemplateTools {
 		}
 		
 		return linkPage;
+	}
+	
+	/**
+	 * Return the language index to retrieve right translation
+	 * into a specific page
+	 * @param tag : language's tag
+	 * @return languageIndex, -1 either
+	 */
+	public static int getIndexOfLanguage(String tag) {
+		Objectify ofy = ObjectifyService.begin();
+		Query<Language> req = ofy.query(Language.class);
+		for(Language lg : req){
+			if(lg.getTag().equals(tag))
+				return lg.getTranslationID();
+		}
+		return -1;
 	}
 	
 	private static BeanTranslationPage translationPageToBean(TranslationPage tp) {

@@ -24,9 +24,9 @@ public class TemplateBasic {
         ObjectifyService.register(ArboPage.class);
 	}
 	
-	public TemplateBasic(BeanArboPage page){
+	public TemplateBasic(BeanArboPage page, int translationIndex){
 		this.page = page;
-		this.translation = 0;
+		this.translation = translationIndex;
 	}
 	
 	public List<LinkPage> getAllCategory() {

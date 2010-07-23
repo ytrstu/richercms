@@ -7,8 +7,9 @@
 <head>
 	<% // initialize template class
 		String siteSufix = "/site";
+		int languageIndex = (Integer)request.getAttribute("language");
 		BeanArboPage p = (BeanArboPage)request.getAttribute("page");
-		TemplateBasic template = new TemplateBasic(p);
+		TemplateBasic template = new TemplateBasic(p, languageIndex);
 	%>
 	<meta name = "decription" content = "<%=template.getBrowserTitle()%>" />
 	<meta name = "keywords" content = "<%=template.getKeyWord()%>" />
@@ -19,6 +20,11 @@
 <body>
 	<!-- header -->
     <div id="logo"><a href="<%=siteSufix+template.getPath()%>"><%=template.getPageTitle()%></a></div>
+    <div id="language">
+       <div id="language_fr"><a href="<%=request+"?lg=fr" %>"><img src="/tab_images/fr.png" class="photo"/></a></div>
+       <div id="language_en"><a href="<%=request.getPathInfo()+"?lg=en" %>"><img src="/tab_images/en.png" class="photo"/></a></div>
+       <div id="language_de"><a href="<%=request.getPathInfo()+"?lg=de" %>"><img src="/tab_images/de.png" class="photo"/></a></div>
+	</div>
     <div id="header">
     	<div id="left_header"></div>
         <div id="right_header"></div>

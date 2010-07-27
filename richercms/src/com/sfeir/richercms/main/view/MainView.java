@@ -7,6 +7,11 @@ import com.google.gwt.user.client.ui.Widget;
 import com.sfeir.richercms.client.view.PopUpWait;
 import com.sfeir.richercms.main.interfaces.IMainDisplay;
 
+/**
+ * 
+ * @author homberg.g
+ * Main view
+ */
 public class MainView extends ResizeComposite implements IMainDisplay{
 
 	private LayoutPanel body;

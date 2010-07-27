@@ -170,16 +170,30 @@ public class ServiceTagImpl extends RemoteServiceServlet implements TagService {
 	public Boolean updateTag(BeanTag bean){
 		Tag tag = this.beanToTag(bean);
 		Objectify ofy = ObjectifyService.begin();
+		boolean sameName = false;
+		boolean sameShortLib = false;
 		
 		Query<Tag> sameNameTags = ofy.query(Tag.class).filter("tagName ", tag.getTagName());
 		Query<Tag> sameShortLibTags = ofy.query(Tag.class).filter("shortLib ", tag.getShortLib());
 		
+		// tagName and shortLib are modified but no other tag are the same value for both field
 		if(sameNameTags.countAll()==0 && sameShortLibTags.countAll()==0){
 			ofy.put(tag);
 			return true;
-		}//same tag with same tagName and shortLib 
-		else if(sameNameTags.countAll()==1 && sameShortLibTags.countAll()==1 && 
-				sameNameTags.get().getId().equals(bean.getId()) && sameShortLibTags.get().getId().equals(bean.getId())){
+		}
+		
+		//same tag  = no changement for the tagName
+		if(sameNameTags.countAll()==1 && sameNameTags.get().getId().equals(bean.getId()))
+			sameName = true;
+		
+		//same tag  = no changement for the shortLib
+		if(sameShortLibTags.countAll()==1 && sameShortLibTags.get().getId().equals(bean.getId()))
+			sameShortLib = true;
+			
+		if((sameShortLib && sameName) ||  // no changement in the tag
+				(sameName && sameShortLibTags.countAll()==0) || // just tagName are modified
+				(sameShortLib && sameNameTags.countAll()==0))   // just shortLib are modified
+		{
 			ofy.put(tag);
 			return true;
 		}

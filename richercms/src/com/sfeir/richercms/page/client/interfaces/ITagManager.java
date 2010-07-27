@@ -6,6 +6,12 @@ import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.view.LazyView;
 import com.sfeir.richercms.page.client.PageConstants;
 
+/**
+ * Allows the presenter to communicate with the view
+ * TagManager <=> TagManagerPresenter
+ * @author homberg.g
+ *
+ */
 public interface ITagManager extends LazyView {
 	
 	Widget asWidget();

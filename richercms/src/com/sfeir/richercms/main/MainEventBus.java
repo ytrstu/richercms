@@ -23,12 +23,27 @@ public interface MainEventBus extends EventBusWithLookup {
 	@Event( forwardToParent = true )
 	public void changeBody( Widget widget );
 
+	/**
+	 * Display new view in the main view
+	 * use this to display view when you are a child of MainModule
+	 * @param widget
+	 */
 	@Event( handlers = MainPresenter.class)
 	public void changeMain(Widget widget);
 	
+	/**
+	 * Start main Module
+	 * Called by RootPresenter
+	 * @param usr
+	 */
 	@Event( handlers = MainPresenter.class)
 	public void startMain(BeanUser usr);
 	
+	/**
+	 * Start the page module
+	 * Fired by mainModule presenter to display pageModule
+	 * @param usr
+	 */
 	@Event( modulesToLoad = PageModule.class)
 	public void startPage(BeanUser usr);
 }

@@ -16,11 +16,11 @@ import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.sfeir.richercms.client.view.PopUpMessage;
 import com.sfeir.richercms.page.client.ArboPageServiceAsync;
-import com.sfeir.richercms.page.client.PageState;
 import com.sfeir.richercms.page.client.TagServiceAsync;
 import com.sfeir.richercms.page.client.TemplateServiceAsync;
 import com.sfeir.richercms.page.client.event.PageEventBus;
 import com.sfeir.richercms.page.client.interfaces.IInformationPanel;
+import com.sfeir.richercms.page.client.state.PageState;
 import com.sfeir.richercms.page.client.view.InformationPanel;
 import com.sfeir.richercms.page.shared.BeanArboPage;
 import com.sfeir.richercms.page.shared.BeanDependentTag;
@@ -28,7 +28,12 @@ import com.sfeir.richercms.page.shared.BeanTag;
 import com.sfeir.richercms.page.shared.BeanTemplate;
 import com.sfeir.richercms.page.shared.BeanTranslationPage;
 
-
+/**
+ * Presenter of the Information panel view
+ * All interaction with eventBus, datastore and event handling
+ * are coded here
+ * @author homberg.g
+ */
 @Presenter( view = InformationPanel.class)
 public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, PageEventBus>{
 
@@ -193,6 +198,11 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 		}
 	}
 	
+	/**
+	 * test if specific field are empty
+	 * @param bean
+	 * @return
+	 */
 	private boolean isEmpty(BeanTranslationPage bean){
 		
 		if((bean.getBrowserTitle() != null ) && (!bean.getBrowserTitle().equals(""))) return false;
@@ -340,7 +350,11 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 			parseAndSaveTag(new ArrayList<BeanDependentTag>());
 		}
 	}
-		
+	
+	/**
+	 * Parse and save dependentTag
+	 * @param dependentTags : list of dependentTag
+	 */
 	private void parseAndSaveTag(List<BeanDependentTag> dependentTags) {
 		boolean find = false;
 		//on met dabord tout les tag sélectionné dans addedTags
@@ -417,11 +431,19 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 		view.setTitle(this.currentPage.getUrlName());
 	}
 	
+	/**
+	 * test in UI if obligation field are rightly filled
+	 * @return true or false
+	 */
 	private boolean testField() {
 		boolean ret = true;
 		//hide all field and display just the necessary
 		this.view.hideErrorInUrl();
 		this.view.hideRequiredField();
+		
+		//return directly true if page state are display
+		if(this.state == PageState.display)
+			return true;
 		
 		if(this.view.getUrlName().length() == 0){
 			this.view.showRequiredUrl();
@@ -470,6 +492,12 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 			this.view.setlockInfo(userName);
 	}
 	
+	/**
+	 * test if a specific url are right or not
+	 * doesn't 
+	 * @param url
+	 * @return
+	 */
 	private boolean validateURL(String url) {
 		if(url.contains(" "))
 			return false;
@@ -529,8 +557,11 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 		}
 	}
 	
+	/**
+	 * check specific tag
+	 * for selected Page
+	 */
 	private void checkTag() {
-
 		if(this.currentPage.getTemplateId()!= null && 
 			this.currentPage.getTemplateId().equals(new Long(view.getSelectedTemplateId()))){
 			

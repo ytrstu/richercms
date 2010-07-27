@@ -10,6 +10,12 @@ import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.view.LazyView;
 import com.sfeir.richercms.page.client.PageConstants;
 
+/**
+ * Allows the presenter to communicate with the view
+ * TemplateManager <=> TemplateManagerPresenter
+ * @author homberg.g
+ *
+ */
 public interface ITemplateManager  extends LazyView {
 
 	Widget asWidget();
@@ -197,6 +203,12 @@ public interface ITemplateManager  extends LazyView {
 	 * Change selected template's name into the list
 	 */
 	void changeSelectedTagName(String name);
+	
+	/**
+	 * Set the description label of selected template
+	 * @param desc : description
+	 */
+	void setDescription(String desc);
 	
 	PageConstants getConstants();
 }

@@ -10,6 +10,13 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
+/**
+ * 
+ * @author homberg.g
+ *
+ * A PopUp message with a text and one button to hide it
+ * Use this for display warning message
+ */
 public class PopUpMessage extends DialogBox {
 
 	public PopUpMessage(String text) {

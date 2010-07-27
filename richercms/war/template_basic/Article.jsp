@@ -22,9 +22,9 @@
 	<!-- header -->
     <div id="logo"><a href="<%= siteSufix+root.getPath()%>"><%=root.getName()%></a></div>
     <div id="language">
-       <div id="language_fr"><a href="<%=request.getPathInfo()+"?lg=fr" %>"><img src="/tab_images/fr.png" class="photo"/></a></div>
-       <div id="language_en"><a href="<%=request.getPathInfo()+"?lg=en" %>"><img src="/tab_images/en.png" class="photo"/></a></div>
-       <div id="language_de"><a href="<%=request.getPathInfo()+"?lg=de" %>"><img src="/tab_images/de.png" class="photo"/></a></div>
+       <div id="language_fr"><a href="<%=template.getRegularPath(request.getPathInfo()+"?lg=fr") %>"><img src="/tab_images/fr.png" class="photo"/></a></div>
+       <div id="language_en"><a href="<%=template.getRegularPath(request.getPathInfo()+"?lg=en") %>"><img src="/tab_images/en.png" class="photo"/></a></div>
+       <div id="language_de"><a href="<%=template.getRegularPath(request.getPathInfo()+"?lg=de") %>"><img src="/tab_images/de.png" class="photo"/></a></div>
 	</div>
     <div id="header">
     	<div id="left_header"></div>
@@ -83,7 +83,22 @@
                 <div id="text_top_right"></div>
             </div>
             <div id="text_body">
-            	<%=template.getContent() %>
+            	<% if(template.isVisible()) {%>
+            		<%= template.getContent() %>
+            	<%}else{ 
+            		switch(template.getTranslation()) {
+            		case 0 :
+            			%> Contenu non accessible pour l'instant <%
+            			break;
+            		case 1 :
+            			%> DE : Contenu non accessible pour l'instant <%
+            			
+            			break;
+            		case 2 :
+            			%>content not accessible for the momment <%
+            			break;
+            		}
+            	  } %>
               </div>
                 <div id="text_bottom">
                 	<div id="text_bottom_left"></div>

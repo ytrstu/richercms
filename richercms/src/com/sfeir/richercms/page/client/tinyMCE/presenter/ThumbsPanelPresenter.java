@@ -66,6 +66,12 @@ public class ThumbsPanelPresenter extends LazyPresenter<IThumbsPanel,PageEventBu
 		this.eventBus.selectThumbs("");
 	}
 	
+	/**
+	 * Clear thumbnail panel and display all thumbnail.
+	 * If the justLast are set with true, just the last thumb are
+	 * added and the panel are not cleared.
+	 * @param justLast
+	 */
 	private void displayThumbNails(final boolean justLast) {
 		if(!justLast)
 			this.view.clearThumbNails();
@@ -87,6 +93,11 @@ public class ThumbsPanelPresenter extends LazyPresenter<IThumbsPanel,PageEventBu
 		});
 	}
 	
+	/**
+	 * add One thumbNail in view.
+	 * this method use an RPC call
+	 * @param bean
+	 */
 	private void addThumbNail(final BeanFile  bean) {
 		this.view.addThumbnail(bean.getPath()+bean.getFileName())
 			.addClickHandler(new ClickHandler(){
@@ -96,7 +107,7 @@ public class ThumbsPanelPresenter extends LazyPresenter<IThumbsPanel,PageEventBu
 			}});
 	}
 	
-	public void setSelectedImgPath(String path){
+	private void setSelectedImgPath(String path){
 		this.eventBus.selectThumbs(path);
 	}
 	

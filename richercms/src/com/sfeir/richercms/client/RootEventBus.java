@@ -22,6 +22,9 @@ import com.sfeir.richercms.main.MainModule;
 
 /**
  * The main Event bus
+ * handle all root display
+ * Only Wizard module and MainModule are handle 
+ * on this busEvent
  * @author homberg.g
  *
  */
@@ -63,12 +66,16 @@ public interface RootEventBus extends EventBusWithLookup {
 	@Event( handlers = RootPresenter.class )
 	public void wizardFinished();
 	
-	
+	/**
+	 * Can display a view before load the module
+	 */
 	@BeforeLoadChildModule
 	@Event(handlers = RootPresenter.class )
 	public void beforeLoadWizard();
 
-	
+	/**
+	 * Can hide a view displayed before loadin module
+	 */
 	@AfterLoadChildModule
 	@Event(handlers = RootPresenter.class )
 	public void afterLoadWizard();

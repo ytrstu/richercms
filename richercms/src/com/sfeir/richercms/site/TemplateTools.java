@@ -1,6 +1,7 @@
 package com.sfeir.richercms.site;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -275,5 +276,18 @@ public final class TemplateTools {
 			}
 		}
 		return null;
+	}
+	
+	/**
+	 * Test if today are into publication Date start and finish 
+	 * @param page : page who you need test
+	 * @return true if its right, false either
+	 */
+	public static boolean isVisible(BeanArboPage page) {
+		Date now = new Date();
+		if(now.before(page.getPublicationFinish()) &&
+				now.after(page.getPublicationStart()))
+			return true;
+		return false;
 	}
 }

@@ -6,8 +6,6 @@ import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.event.EventBus;
-import com.sfeir.richercms.page.client.LockState;
-import com.sfeir.richercms.page.client.PageState;
 import com.sfeir.richercms.page.client.interfaces.IImageManager;
 import com.sfeir.richercms.page.client.interfaces.IInformationPanel;
 import com.sfeir.richercms.page.client.interfaces.INavigationPanel;
@@ -27,7 +25,9 @@ import com.sfeir.richercms.page.client.presenter.TemplateManagerPresenter;
 import com.sfeir.richercms.page.client.presenter.TinyMCEPanelPresenter;
 import com.sfeir.richercms.page.client.presenter.UserManagerPresenter;
 import com.sfeir.richercms.page.client.presenter.ValidationPanelPresenter;
-import com.sfeir.richercms.page.client.tinyMCE.PopUpState;
+import com.sfeir.richercms.page.client.state.LockState;
+import com.sfeir.richercms.page.client.state.PageState;
+import com.sfeir.richercms.page.client.state.PopUpState;
 import com.sfeir.richercms.page.client.tinyMCE.interfaces.IPopUpTreePanel;
 import com.sfeir.richercms.page.client.tinyMCE.interfaces.IPageViewer;
 import com.sfeir.richercms.page.client.tinyMCE.interfaces.IThumbsPanel;
@@ -493,15 +493,33 @@ public interface PageEventBus extends EventBus {
 	@Event( handlers =  NavigationPanelPresenter.class )
 	public void goInModification();
 	
+	/**
+	 * Fired by the NavigationPanelPresenter to start 
+	 * the tagManagerView
+	 */
 	@Event( handlers =  TagManagerPresenter.class )
 	public void startTagManager();
 	
+	/**
+	 * Fired by the TagManagerPresenter to display 
+	 * tagManager view in the Page container
+	 * @param tagManager : view
+	 */
 	@Event( handlers =  PagePresenter.class )
 	public void displayTagManager(ITagManager tagManager);
 	
+	/**
+	 * Fired by the NavigationPanelPresenter to start 
+	 * the templateManagerView
+	 */
 	@Event( handlers =  TemplateManagerPresenter.class )
 	public void startTemplateManager();
 	
+	/**
+ 	 * Fired by the TemplateManagerPresenter to display 
+	 * templateManager view in the Page container 
+	 * @param templateManager : view
+	 */
 	@Event( handlers =  PagePresenter.class )
 	public void displayTemplateManager(ITemplateManager templateManager);
 }

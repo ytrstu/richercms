@@ -15,7 +15,12 @@ import com.sfeir.richercms.page.client.interfaces.ITagManager;
 import com.sfeir.richercms.page.client.view.TagManager;
 import com.sfeir.richercms.page.shared.BeanTag;
 
-
+/**
+ * Presenter of the tag manager view
+ * All interaction with eventBus, datastore and event handling
+ * are coded here
+ * @author homberg.g
+ */
 @Presenter( view = TagManager.class)
 public class TagManagerPresenter extends LazyPresenter<ITagManager, PageEventBus>{
 
@@ -96,6 +101,9 @@ public class TagManagerPresenter extends LazyPresenter<ITagManager, PageEventBus
 		eventBus.displayTagManager(this.view);
 	}
 	
+	/**
+	 * fill the tag table with all tag
+	 */
 	private void fetchTagTable(){
 		this.view.clearTagTable();
 		this.rpcTag.getAllTags(new AsyncCallback<List<BeanTag>>() {
@@ -109,6 +117,10 @@ public class TagManagerPresenter extends LazyPresenter<ITagManager, PageEventBus
 		});
 	}
 	
+	/**
+	 * Add new tag in table
+	 * @param bean : corresponding new table
+	 */
 	private void addTag(final BeanTag bean) {
 		
 		final int lineNumb = view.addLine(bean.getTagName(),
@@ -131,6 +143,10 @@ public class TagManagerPresenter extends LazyPresenter<ITagManager, PageEventBus
 		});
 	}
 	
+	/**
+	 * Delete a specific tag into datastore
+	 * @param id : tag id
+	 */
 	private void deleteTag(Long id){
 		this.rpcTag.deleteTag(id, new AsyncCallback<Void>() {
 			public void onFailure(Throwable caught) {}

@@ -32,7 +32,7 @@
   <div id="menu">
         	<ul>
         		<% 
-        			List<LinkPage> categs = template.getAllCategory();
+        			List<LinkPage> categs = template.getChildCategory();
 	        	    for (LinkPage categ : categs) {
 	        	        %>
 	        	        <li><a href="<%= siteSufix+categ.getPath()%>"><%= categ.getName()%></a></li>
@@ -83,7 +83,22 @@
                 <div id="text_top_right"></div>
             </div>
             <div id="text_body">
-            	<%=template.getContent() %>
+        	    <% if(template.isVisible()) {%>
+            		<%= template.getContent() %>
+            	<%}else{ 
+            		switch(template.getTranslation()) {
+            		case 0 :
+            			%> Contenu non accessible pour l'instant <%
+            			break;
+            		case 1 :
+            			%> DE : Contenu non accessible pour l'instant <%
+            			
+            			break;
+            		case 2 :
+            			%>content not accessible for the momment <%
+            			break;
+            		}
+            	  } %>
             </div>
                 <div id="text_bottom">
                 	<div id="text_bottom_left"></div>

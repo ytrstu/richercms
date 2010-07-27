@@ -20,6 +20,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.LayoutPanel;
@@ -44,6 +45,7 @@ public class TemplateManager extends ResizeComposite implements ITemplateManager
 	private Image deleteTemplate;
 	private Image modifyTemplate;
 	private FlexTable tagTable;
+	private Label templateDesc;
 	
 	// Scroll tab if table vas too tall
 	private ScrollPanel tagContainer;
@@ -86,6 +88,9 @@ public class TemplateManager extends ResizeComposite implements ITemplateManager
 		this.modifyTemplate = new Image("tab_images/trans.png");
 		this.modifyTemplate.setTitle(this.constants.ModifyTemplate());
 		this.modifyTemplate.addStyleName("modifyStyle");
+		this.templateDesc = new Label(this.constants.TemplateDesc());
+		this.templateDesc.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+		
 		
 		this.templateContainer = new LayoutPanel();
 		this.templateContainer.setWidth(330+"px");
@@ -123,9 +128,11 @@ public class TemplateManager extends ResizeComposite implements ITemplateManager
 		this.contentPanel = new LayoutPanel();
 		this.contentPanel.add(this.templateContainer);
 		this.contentPanel.add(tagtitle);
-		this.contentPanel.setWidgetTopHeight(tagtitle, 70, Unit.PX, 130, Unit.PX);
+		this.contentPanel.add(this.templateDesc);
+		this.contentPanel.setWidgetTopHeight(this.templateDesc, 50, Unit.PX, 100, Unit.PX);
+		this.contentPanel.setWidgetTopHeight(tagtitle, 150, Unit.PX, 50, Unit.PX);
 		this.contentPanel.add(this.tagContainer);
-		this.contentPanel.setWidgetTopBottom(this.tagContainer, 140, Unit.PX, 60, Unit.PX);
+		this.contentPanel.setWidgetTopBottom(this.tagContainer, 210, Unit.PX, 60, Unit.PX);
 		
 		this.mainContainer.add(this.contentPanel);
 		
@@ -325,6 +332,10 @@ public class TemplateManager extends ResizeComposite implements ITemplateManager
 	
 	public HandlerRegistration addKeyPressHandler(KeyPressHandler handler) {
 		return addDomHandler(handler, KeyPressEvent.getType());
+	}
+	
+	public void setDescription(String desc){
+		this.templateDesc.setText(this.constants.TemplateDesc()+desc);
 	}
 	
 	public PageConstants getConstants() {

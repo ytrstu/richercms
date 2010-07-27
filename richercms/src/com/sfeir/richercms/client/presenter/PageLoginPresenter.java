@@ -58,6 +58,10 @@ public class PageLoginPresenter extends LazyPresenter<IdisplayPageLogin, RootEve
 		
 	}
 	
+	/**
+	 * Verify if user are authorized to connect in administration interface
+	 * @param usrInfo : user info
+	 */
 	private void connection(final BeanUserInfo usrInfo) {
 		rpcLoginService.isAutorized(usrInfo, new AsyncCallback<BeanUser>() {
 			public void onFailure(Throwable caught) {
@@ -75,6 +79,11 @@ public class PageLoginPresenter extends LazyPresenter<IdisplayPageLogin, RootEve
 		});
 	}
 	
+	/**
+	 * Start wizard module or main module 
+	 * depend of configuation value
+	 * @param usr : user
+	 */
 	private void startRicherCMS(final BeanUser usr) {
 		
 		//on test pour voir si il faut lancer le wizard ou alord directement le main

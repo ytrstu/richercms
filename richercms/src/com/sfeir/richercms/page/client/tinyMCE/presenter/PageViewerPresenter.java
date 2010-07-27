@@ -12,6 +12,12 @@ import com.sfeir.richercms.page.client.tinyMCE.interfaces.IPageViewer;
 import com.sfeir.richercms.page.client.tinyMCE.view.PageViewer;
 import com.sfeir.richercms.page.shared.BeanTranslationPage;
 
+/**
+ * Presenter of the PageViewer panel
+ * All interaction with eventBus, datastore and event handling
+ * are coded here
+ * @author homberg.g
+ */
 @Presenter( view = PageViewer.class )
 public class PageViewerPresenter extends LazyPresenter<IPageViewer,PageEventBus>{
 

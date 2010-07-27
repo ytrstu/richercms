@@ -16,15 +16,21 @@ import com.mvp4g.client.annotation.InjectService;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.sfeir.richercms.client.view.PopUpMessage;
-import com.sfeir.richercms.page.client.PopUpTemplateState;
 import com.sfeir.richercms.page.client.TagServiceAsync;
 import com.sfeir.richercms.page.client.TemplateServiceAsync;
 import com.sfeir.richercms.page.client.event.PageEventBus;
 import com.sfeir.richercms.page.client.interfaces.ITemplateManager;
+import com.sfeir.richercms.page.client.state.PopUpTemplateState;
 import com.sfeir.richercms.page.client.view.TemplateManager;
 import com.sfeir.richercms.page.shared.BeanTag;
 import com.sfeir.richercms.page.shared.BeanTemplate;
 
+/**
+ * Presenter of the template manager view
+ * All interaction with eventBus, datastore and event handling
+ * are coded here
+ * @author homberg.g
+ */
 @Presenter( view = TemplateManager.class)
 public class TemplateManagerPresenter extends LazyPresenter<ITemplateManager, PageEventBus>{
 
@@ -47,18 +53,18 @@ public class TemplateManagerPresenter extends LazyPresenter<ITemplateManager, Pa
 		this.view.getBtnDelClick().addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				if(view.getSelectedTemplateId() != null) {
-					eventBus.addWaitLinePopUp("Suppression en cours");
+					eventBus.addWaitLinePopUp(view.getConstants().MsgDelInProgress());
 					rpcTemplate.deleteTemplate(view.getSelectedTemplateId(), 
 							new AsyncCallback<Void>() {
 						
 						public void onFailure(Throwable caught) {
-							eventBus.addErrorLinePopUp("Suppression impossible");
+							eventBus.addErrorLinePopUp(view.getConstants().MsgDelTemplateSucess());
 							eventBus.hideInformationPopUp();
 						}
 						public void onSuccess(Void result) {
 							view.deleteSelectedTemplate();
 							fetchTagTable();
-							eventBus.addSuccessPopUp("Suppression réussi");
+							eventBus.addSuccessPopUp(view.getConstants().MsgErrorDelTemplate());
 							eventBus.hideInformationPopUp();
 						}
 					});
@@ -165,6 +171,7 @@ public class TemplateManagerPresenter extends LazyPresenter<ITemplateManager, Pa
 						new AsyncCallback<Boolean>() {
 					public void onSuccess(Boolean result) {
 						if(result == true){
+							view.setDescription(view.getPopUpNewTempDesc());
 							view.changeSelectedTagName(view.getPopUpNewTempName());
 							view.hidePopUpAddTemplate();// hide popUp only if template are modify
 						}else{
@@ -242,6 +249,7 @@ public class TemplateManagerPresenter extends LazyPresenter<ITemplateManager, Pa
 						public void onFailure(Throwable caught) {
 						}
 						public void onSuccess(BeanTemplate result) {
+							view.setDescription(result.getDescription());
 							selectGoodTag(result.getAssociatedTags());
 						}
 			});

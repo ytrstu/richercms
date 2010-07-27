@@ -95,7 +95,7 @@ public class ImageManager extends ResizeComposite implements IImageManager {
 		//form.setWidget(panel);
 		
 		final FileUpload upload = new FileUpload();
-		upload.setTitle("Store only image like png, jpg, tif, ... With a maximum size of 1 MB");
+		upload.setTitle(this.constants.imageTitle());
 		upload.setName("uploadFormElement");
 		
 		submitPanel.add(this.path);

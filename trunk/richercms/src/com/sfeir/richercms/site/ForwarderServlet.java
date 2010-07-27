@@ -51,7 +51,11 @@ public class ForwarderServlet extends HttpServlet {
 		// replace all "%20" to a space char
 		path = path.replaceAll("%20", " ");
 		
-		this.page = TemplateTools.getArboPageWithPath(path);
+		//if any page are selected, root page are take by default
+		if(path.length() == 0)
+			this.page = TemplateTools.getRootPage();
+		else 
+			this.page = TemplateTools.getArboPageWithPath(path);
 		
 		BeanTemplate template = TemplateTools.getTemplate(this.page.getTemplateId());
 		

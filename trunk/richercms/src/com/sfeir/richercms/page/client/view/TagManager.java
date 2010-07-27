@@ -76,11 +76,11 @@ public class TagManager extends ResizeComposite implements ITagManager{
 		this.mainContainer = new DockLayoutPanel(Unit.PX);
 
 		//title
-		Label title = new Label("Gestion des tag");
+		Label title = new Label(this.constants.tagTitle());
 		title.setStyleName("informationTitle");
 		this.mainContainer.addNorth(title, 60);
 		
-		this.addTag = new Button("Ajouter un nouveau tag");
+		this.addTag = new Button(this.constants.AddNewTag());
 		this.addTag.setWidth("170px");
 		this.addTag.setHeight("30px");
 		

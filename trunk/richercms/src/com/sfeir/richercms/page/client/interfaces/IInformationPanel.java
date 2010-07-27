@@ -10,6 +10,12 @@ import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.view.LazyView;
 import com.sfeir.richercms.page.client.PageConstants;
 
+/**
+ * Allows the presenter to communicate with the view
+ * InformationPanel <=> InformationPanelPresenter
+ * @author homberg.g
+ *
+ */
 public interface IInformationPanel extends LazyView {
 	
 	Widget asWidget();
@@ -212,12 +218,6 @@ public interface IInformationPanel extends LazyView {
 	 * @return Event
 	 */
 	HasFocusHandlers getFocusOnTB3();
-	
-	/**
-	 * handle focus event on the 4 of 4 textBox
-	 * @return Event
-	 */
-	HasFocusHandlers getFocusOnTB4();
 	
 	/**
 	 * Enable the Translation help 

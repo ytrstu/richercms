@@ -10,6 +10,12 @@ import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.view.LazyView;
 import com.sfeir.richercms.page.client.PageConstants;
 
+/**
+ * Allows the presenter to communicate with the view
+ * ReorderPagePanel <=> ReorderPagePanelPresenter
+ * @author homberg.g
+ *
+ */
 public interface IReorderPagePanel extends LazyView {
 	
 	public Widget asWidget();

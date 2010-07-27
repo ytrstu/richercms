@@ -18,7 +18,7 @@ import com.mvp4g.client.presenter.LazyPresenter;
 import com.sfeir.richercms.client.view.PopUpMessage;
 import com.sfeir.richercms.page.client.ArboPageServiceAsync;
 import com.sfeir.richercms.page.client.event.PageEventBus;
-import com.sfeir.richercms.page.client.tinyMCE.PopUpState;
+import com.sfeir.richercms.page.client.state.PopUpState;
 import com.sfeir.richercms.page.client.tinyMCE.interfaces.IPopUpTreePanel;
 import com.sfeir.richercms.page.client.tinyMCE.view.PopUpTreePanel;
 import com.sfeir.richercms.page.client.view.custom.HorizontalEventPanel;

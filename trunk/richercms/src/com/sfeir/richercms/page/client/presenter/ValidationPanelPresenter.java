@@ -8,12 +8,17 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.sfeir.richercms.page.client.PageConstants;
-import com.sfeir.richercms.page.client.PageState;
 import com.sfeir.richercms.page.client.event.PageEventBus;
 import com.sfeir.richercms.page.client.interfaces.IValidationPanel;
+import com.sfeir.richercms.page.client.state.PageState;
 import com.sfeir.richercms.page.client.view.ValidationPanel;
 
-
+/**
+ * Presenter of the validation panel view
+ * All interaction with eventBus, datastore and event handling
+ * are coded here
+ * @author homberg.g
+ */
 @Presenter( view = ValidationPanel.class)
 public class ValidationPanelPresenter extends LazyPresenter<IValidationPanel, PageEventBus>{
 

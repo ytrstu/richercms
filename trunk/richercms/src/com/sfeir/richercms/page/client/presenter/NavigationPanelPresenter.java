@@ -25,18 +25,23 @@ import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.sfeir.richercms.client.view.PopUpMessage;
 import com.sfeir.richercms.page.client.ArboPageServiceAsync;
-import com.sfeir.richercms.page.client.LockState;
-import com.sfeir.richercms.page.client.PageState;
 import com.sfeir.richercms.page.client.event.PageEventBus;
 import com.sfeir.richercms.page.client.interfaces.INavigationPanel;
-import com.sfeir.richercms.page.client.tinyMCE.PopUpState;
+import com.sfeir.richercms.page.client.state.LockState;
+import com.sfeir.richercms.page.client.state.PageState;
+import com.sfeir.richercms.page.client.state.PopUpState;
 import com.sfeir.richercms.page.client.view.NavigationPanel;
 import com.sfeir.richercms.page.client.view.custom.ConfirmationBox;
 import com.sfeir.richercms.page.client.view.custom.HorizontalEventPanel;
 import com.sfeir.richercms.page.shared.BeanArboPage;
 import com.sfeir.richercms.page.shared.BeanTranslationPage;
 
-
+/**
+ * Presenter of the Navigation panel view
+ * All interaction with eventBus, datastore and event handling
+ * are coded here
+ * @author homberg.g
+ */
 @Presenter( view = NavigationPanel.class)
 public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, PageEventBus>{
 
@@ -99,7 +104,7 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Pa
 		this.view.getPopUpMenuBar().setDelPageCommand(new Command(){
 			public void execute() {
 				view.getPopUpMenuBar().hide();
-				ConfirmationBox confirmPopUp = new ConfirmationBox("ATTENTION", "Etes-vous sûr de vouloir supprimer cette page et toutes ses sous-pages");
+				ConfirmationBox confirmPopUp = new ConfirmationBox("ATTENTION", view.getConstants().MsgDelPageAndChild());
 				confirmPopUp.getClickOkEvt().addClickHandler(new ClickHandler() {
 					public void onClick(ClickEvent event) {
 						deletePage();
@@ -230,6 +235,10 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Pa
 		return img;
 	}
 	
+	/**
+	 * Up selected page in tree and his child
+	 * (up page but at the same degree in the tree)
+	 */
 	private void upPageInTree() {
 		TreeItem parent = selectedItem.getParentItem();
 		
@@ -280,7 +289,10 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Pa
 		}
 	}
 	
-	
+	/**
+	 * Down selected page in tree and his child
+	 * (up page but at the same degree in the tree)
+	 */
 	private void downPageInTree() {
 		TreeItem parent = selectedItem.getParentItem();
 		
@@ -332,6 +344,10 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Pa
 		}
 	}
 	
+	/**
+	 * Create path with an RPC call
+	 * and sart the imagePanelPresenter
+	 */
 	private void createPath() {
 		//get the id Path : ids[0] = selected Node ... ids[max] : root
 		List<Long> ids = this.getIdPath();

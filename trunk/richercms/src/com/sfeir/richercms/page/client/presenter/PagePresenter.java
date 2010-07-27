@@ -17,8 +17,6 @@ import com.mvp4g.client.presenter.LazyPresenter;
 import com.sfeir.richercms.client.UserInfoServiceAsync;
 import com.sfeir.richercms.client.view.PopUpMessage;
 import com.sfeir.richercms.page.client.ArboPageServiceAsync;
-import com.sfeir.richercms.page.client.LockState;
-import com.sfeir.richercms.page.client.PageState;
 import com.sfeir.richercms.page.client.event.PageEventBus;
 import com.sfeir.richercms.page.client.interfaces.IImageManager;
 import com.sfeir.richercms.page.client.interfaces.IInformationPanel;
@@ -30,6 +28,8 @@ import com.sfeir.richercms.page.client.interfaces.ITinyMCEPanel;
 import com.sfeir.richercms.page.client.interfaces.IUserManager;
 import com.sfeir.richercms.page.client.interfaces.IValidationPanel;
 import com.sfeir.richercms.page.client.interfaces.IdisplayPage;
+import com.sfeir.richercms.page.client.state.LockState;
+import com.sfeir.richercms.page.client.state.PageState;
 import com.sfeir.richercms.page.client.view.PageView;
 import com.sfeir.richercms.page.client.view.custom.ConfirmationBox;
 import com.sfeir.richercms.page.shared.BeanArboPage;
@@ -37,6 +37,12 @@ import com.sfeir.richercms.shared.BeanUser;
 import com.sfeir.richercms.wizard.client.LanguageServiceAsync;
 import com.sfeir.richercms.wizard.shared.BeanLanguageDetails;
 
+/**
+ * Presenter of the page panel view
+ * All interaction with eventBus, datastore and event handling
+ * are coded here
+ * @author homberg.g
+ */
 @Presenter( view = PageView.class)
 public class PagePresenter extends LazyPresenter<IdisplayPage, PageEventBus> {
 	
@@ -116,7 +122,9 @@ public class PagePresenter extends LazyPresenter<IdisplayPage, PageEventBus> {
 		});
 	}
 	
-	
+	/**
+	 * Add current page in datastore
+	 */
 	private void addPage() {
 		// show the popUp to the user
 		this.view.addLineInPopUp(view.getConstants().PopUpTakeInfo(), 1);
@@ -136,6 +144,9 @@ public class PagePresenter extends LazyPresenter<IdisplayPage, PageEventBus> {
 		});
 	}
 	
+	/**
+	 * modify page in datastore
+	 */
 	private void modifyPage() {
 		// show the popUp to the user
 		this.view.addLineInPopUp(view.getConstants().PopUpTakeModif(), 1);
@@ -156,8 +167,11 @@ public class PagePresenter extends LazyPresenter<IdisplayPage, PageEventBus> {
 		});
 	}
 	
+	/**
+	 * Fill the language list in the view
+	 * with language take in datastore
+	 */
 	private void fetchLanguageListBox() {
-		
 		this.rpcLanguage.getLangues( new AsyncCallback<List<BeanLanguageDetails>>() {
 	    	public void onSuccess(List<BeanLanguageDetails> result) {
 	    		for(int i = 0 ; i<result.size(); i++) 
@@ -179,6 +193,9 @@ public class PagePresenter extends LazyPresenter<IdisplayPage, PageEventBus> {
 		});
 	}
 	
+	/**
+	 * Disconnect an user to modify its status in datastore
+	 */
 	private void disconnectUser() {
 		// unlock page if it was in modify mode
 		if(this.state.equals(PageState.modify))
@@ -276,6 +293,12 @@ public class PagePresenter extends LazyPresenter<IdisplayPage, PageEventBus> {
 
 	}
 
+	/**
+	 * Unlock specific page in datastore
+	 * and fired the cancelPage event with good state
+	 * @param idOfPage : page id to unlock
+	 * @param newState : new state
+	 */
 	private void unLockPage(final Long idOfPage, final PageState newState) {
 		// pageId == null if its a new page 
 		if(pageId != null){

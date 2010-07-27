@@ -18,6 +18,12 @@ import com.sfeir.richercms.page.client.interfaces.IReorderPagePanel;
 import com.sfeir.richercms.page.client.view.ReorderPagePanel;
 import com.sfeir.richercms.page.shared.BeanArboPage;
 
+/**
+ * Presenter of the reoderPage panel view
+ * All interaction with eventBus, datastore and event handling
+ * are coded here
+ * @author homberg.g
+ */
 @Presenter( view = ReorderPagePanel.class)
 public class ReorderPagePanelPresenter extends LazyPresenter<IReorderPagePanel, PageEventBus>{
 
@@ -75,7 +81,12 @@ public class ReorderPagePanelPresenter extends LazyPresenter<IReorderPagePanel, 
 	        }});
 	}
 	
-	public void addChildInList(Long parentId) {
+	/**
+	 * add all child of a specific page
+	 * in the list
+	 * @param parentId : parent id
+	 */
+	private void addChildInList(Long parentId) {
 		
 		this.rpcPage.getChildPages(parentId, false,
 				new AsyncCallback<List<BeanArboPage>>() {

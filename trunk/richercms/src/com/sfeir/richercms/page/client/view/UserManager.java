@@ -57,7 +57,7 @@ public class UserManager  extends ResizeComposite implements IUserManager {
 
 		//AddUserPanel
 		LayoutPanel addUserPanel = new LayoutPanel();
-		Label titleAdd = new Label("Ajouter un nouvelle utilisateur");
+		Label titleAdd = new Label(this.constants.addNewUser());
 		titleAdd.setStyleName("informationTitle");
 		Label intitule = new Label("Nouvelle adresse email : ");
 		this.newEmailAdress = new TextBox();

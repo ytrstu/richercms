@@ -5,12 +5,18 @@ import java.util.List;
 
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
-import com.sfeir.richercms.page.client.PageState;
 import com.sfeir.richercms.page.client.event.PageEventBus;
 import com.sfeir.richercms.page.client.interfaces.ITinyMCEPanel;
+import com.sfeir.richercms.page.client.state.PageState;
 import com.sfeir.richercms.page.client.view.TinyMCEPanel;
 import com.sfeir.richercms.page.shared.BeanTranslationPage;
 
+/**
+ * Presenter of the tinyMCE panel view
+ * All interaction with eventBus, datastore and event handling
+ * are coded here
+ * @author homberg.g
+ */
 @Presenter( view = TinyMCEPanel.class)
 public class TinyMCEPanelPresenter extends LazyPresenter<ITinyMCEPanel, PageEventBus>{
 

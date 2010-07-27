@@ -4,6 +4,12 @@ import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.mvp4g.client.view.LazyView;
 import com.sfeir.richercms.page.client.PageConstants;
 
+/**
+ * Allows the presenter to communicate with the view
+ * ValidationPanel <=> ValidationPanelPresenter
+ * @author homberg.g
+ *
+ */
 public interface IValidationPanel extends LazyView {
 
 	/**

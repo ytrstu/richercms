@@ -29,6 +29,8 @@ public class ConfirmationBox extends DialogBox {
 		btnPanel.add(this.btnOk);
 		btnPanel.add(this.btncancel);
 		btnPanel.setSpacing(10);
+		
+		
 
 		VerticalPanel container = new VerticalPanel();
 		container.add(label);
@@ -52,6 +54,7 @@ public class ConfirmationBox extends DialogBox {
 
 		// handle clickEvent => hide the PopUp
 		eventHide();
+		this.btnOk.setFocus(true);
 	}
 
 	private void eventHide() {

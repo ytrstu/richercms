@@ -532,16 +532,13 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 	}
 	
 	public HasFocusHandlers getFocusOnTB2() {
-		return this.tUrlName;
-	}
-	
-	public HasFocusHandlers getFocusOnTB3() {
 		return this.tDescription;
 	}
 	
-	public HasFocusHandlers getFocusOnTB4() {
+	public HasFocusHandlers getFocusOnTB3() {
 		return this.tKeyWord;
 	}
+
 	
 	public HasClickHandlers getclickBtnCpy(int number) {
 		return this.cpyButtonLst.get(number);
@@ -564,12 +561,9 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 			this.tPageTitle.setText(this.cpyLabelLst.get(number).getText());
 			break;
 		case 2 :
-			this.tUrlName.setText(this.cpyLabelLst.get(number).getText());
-			break;
-		case 3 :
 			this.tDescription.setText(this.cpyLabelLst.get(number).getText());
 			break;
-		case 4 :
+		case 3 :
 			this.tKeyWord.setText(this.cpyLabelLst.get(number).getText());
 			break;
 		}

@@ -10,6 +10,12 @@ import com.mvp4g.client.view.LazyView;
 import com.sfeir.richercms.page.client.PageConstants;
 import com.sfeir.richercms.page.client.interfaces.custom.IPopUpMenuBar;
 
+/**
+ * Allows the presenter to communicate with the view
+ * NavigationPanel <=> NavigationPanelPresenter
+ * @author homberg.g
+ *
+ */
 public interface INavigationPanel extends LazyView{
 
 	/**

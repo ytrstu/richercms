@@ -33,6 +33,10 @@ public class TemplateBasic {
 		return getAllPageByTag("Category");
 	}
 	
+	public boolean isVisible(){
+		return TemplateTools.isVisible(this.page);
+	}
+	
 	public List<LinkPage> getAllNews(){
 		return getAllPageByTag("News");
 	}

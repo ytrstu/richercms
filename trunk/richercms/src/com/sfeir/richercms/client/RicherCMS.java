@@ -15,9 +15,10 @@ public class RicherCMS implements EntryPoint {
 	 * This is the entry point method.
 	 */
 	public void onModuleLoad() {
-		// the only way to display layoutPanel
+		//start eventBus
 	    Mvp4gModule module = (Mvp4gModule)GWT.create( Mvp4gModule.class );
 	    module.createAndStartModule();
+	    //can attach layout panel and take the first view
 	    RootLayoutPanel.get().add( (Widget)module.getStartView() );
 	}
 }

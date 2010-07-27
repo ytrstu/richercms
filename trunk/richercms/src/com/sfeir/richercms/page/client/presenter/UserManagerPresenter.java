@@ -21,6 +21,12 @@ import com.sfeir.richercms.page.shared.BeanArboPage;
 import com.sfeir.richercms.shared.BeanUser;
 
 
+/**
+ * Presenter of the user manager view
+ * All interaction with eventBus, datastore and event handling
+ * are coded here
+ * @author homberg.g
+ */
 @Presenter( view = UserManager.class)
 public class UserManagerPresenter extends LazyPresenter<IUserManager, PageEventBus>{
 
@@ -35,20 +41,20 @@ public class UserManagerPresenter extends LazyPresenter<IUserManager, PageEventB
 			public void onClick(ClickEvent event) {
 				eventBus.showInformationPopUp();
 				if(view.getNewEmail().length() == 0){
-					eventBus.addErrorLinePopUp("Attention le champs email est vide");
+					eventBus.addErrorLinePopUp(view.getConstants().MsgWarnMailEmpty());
 					eventBus.hideInformationPopUp();
 				}else {
-					eventBus.addWaitLinePopUp("Ajout de l'utilisateur ...");
+					eventBus.addWaitLinePopUp(view.getConstants().MsgAddUserInProg());
 					rpcUser.addUser(view.getNewEmail(), new AsyncCallback<Long>() {
 						public void onFailure(Throwable caught) {
-							eventBus.addErrorLinePopUp("erreur lié à l'ajout");
+							eventBus.addErrorLinePopUp(view.getConstants().MsgErrorAddUser());
 							eventBus.hideInformationPopUp();
 						}
 						public void onSuccess(Long result) {
 							if(result == null){
-								eventBus.addErrorLinePopUp("l'utilisateur est déjà enregistrer");
+								eventBus.addErrorLinePopUp(view.getConstants().MsgUserAlreadyInDB());
 							}else {
-								eventBus.addSuccessPopUp("Ajout Réussi!");
+								eventBus.addSuccessPopUp(view.getConstants().MsgUserAddSuccess());
 								fetchUserTable();
 								view.clearAddUserTextBox();
 							}
@@ -86,10 +92,10 @@ public class UserManagerPresenter extends LazyPresenter<IUserManager, PageEventB
 				
 				// boucle sur les user
 				for(final BeanUser usr : result){
-					String state = "Offline";
+					String state = view.getConstants().offLine();
 					
 					if(usr.isLoggedIn())
-						state = "OnLine";
+						state = view.getConstants().onLine();
 					
 					//add new line	+ handle deleteEvent
 					view.addLine(usr.getEmailAddress(),usr.getNickname(), state).addClickHandler(new ClickHandler() {

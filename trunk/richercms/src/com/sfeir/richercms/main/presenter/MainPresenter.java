@@ -9,6 +9,11 @@ import com.sfeir.richercms.main.interfaces.IMainDisplay;
 import com.sfeir.richercms.main.view.MainView;
 import com.sfeir.richercms.shared.BeanUser;
 
+/**
+ * 
+ * @author homberg.g
+ * Presenter of the MainView
+ */
 @Presenter( view = MainView.class )
 public class MainPresenter extends LazyPresenter<IMainDisplay, MainEventBus> {
 

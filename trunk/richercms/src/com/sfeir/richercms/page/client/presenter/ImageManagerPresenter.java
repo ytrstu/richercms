@@ -21,6 +21,12 @@ import com.sfeir.richercms.page.client.view.ImageManager;
 import com.sfeir.richercms.page.client.view.custom.ConfirmationBox;
 import com.sfeir.richercms.page.shared.BeanFile;
 
+/**
+ * Presenter of the image manager view
+ * All interaction with eventBus, datastore and event handling
+ * are coded here
+ * @author homberg.g
+ */
 @Presenter( view = ImageManager.class )
 public class ImageManagerPresenter extends LazyPresenter<IImageManager, PageEventBus> {
 
@@ -56,10 +62,10 @@ public class ImageManagerPresenter extends LazyPresenter<IImageManager, PageEven
 				
 				//ERROR 413 : SC_REQUEST_ENTITY_TOO_LARGE
 				if(test.contains("HTTP ERROR 413")){
-					eventBus.addErrorLinePopUp("Image not stored, there is to large, maximum size : 1MO");
+					eventBus.addErrorLinePopUp(view.getConstants().msgErrorImgSize());
 					eventBus.hideInformationPopUp();
 				}else if (test.contains("HTTP ERROR 415")){
-					eventBus.addErrorLinePopUp("Just image can be stored here (png, jpg, tif, ...)");
+					eventBus.addErrorLinePopUp(view.getConstants().msgErrorImgFormat());
 					eventBus.hideInformationPopUp();
 				}else{
 					eventBus.addSuccessPopUp(view.getConstants().MsgImageSaved());
@@ -107,8 +113,10 @@ public class ImageManagerPresenter extends LazyPresenter<IImageManager, PageEven
 		});
 	}
 	
-	
-
+	/**
+	 * Add a thumbnail in the layout and handle click event on it
+	 * @param bean : BeanImage
+	 */
 	private void addThumbNail(final BeanFile  bean) {
 		this.view.addThumbnail(bean.getPath()+bean.getFileName())
 			.addClickHandler(new ClickHandler(){

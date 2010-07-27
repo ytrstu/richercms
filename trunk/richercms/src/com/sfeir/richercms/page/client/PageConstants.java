@@ -1,6 +1,7 @@
 package com.sfeir.richercms.page.client;
 
 import com.google.gwt.i18n.client.Constants;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public interface PageConstants extends Constants {
 
@@ -258,74 +259,99 @@ public interface PageConstants extends Constants {
 	  
 	  @DefaultStringValue("Do not use illegal character ")
 	  String ErrorInUrl();
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  @DefaultStringValue("template existant : ")
+	  @DefaultStringValue("Existing template : ")
 	  String ExistingTemplate();
-	  @DefaultStringValue("Tag possible pour ce template :")
+	  @DefaultStringValue("Possible tag for this template :")
 	  String PossibleTag();
-	  @DefaultStringValue("sélection")
+	  @DefaultStringValue("Selection")
 	  String TagTableSelect();
-	  @DefaultStringValue("Nom du tag")
+	  @DefaultStringValue("tag name")
 	  String TagTableName();
-	  @DefaultStringValue("Libellé court")
+	  @DefaultStringValue("Short text")
 	  String TagTableLibe();
 	  @DefaultStringValue("Description")
 	  String TagTableDesc();
-	  @DefaultStringValue("tag textuel")
+	  @DefaultStringValue("textual tag")
 	  String TagTabelTextual();
 	  @DefaultStringValue("Yes")
 	  String Yes();
 	  @DefaultStringValue("No")
 	  String No();
-	  @DefaultStringValue("en cours de modification par : ")
+	  @DefaultStringValue("Being edited by : ")
 	  String LockMessage();
-	  @DefaultStringValue(" tag textuel")
+	  @DefaultStringValue(" Textual tag")
 	  String TbTextual();
 	  @DefaultStringValue("Action")
 	  String Action();
-	  @DefaultStringValue("Ajouter de nouveau tag")
+	  @DefaultStringValue("Add new tag")
 	  String AddNewTag();
-	  @DefaultStringValue("Nom du tag : ")
+	  @DefaultStringValue("Tag name : ")
 	  String LibTagName();
-	  @DefaultStringValue("Libellé court : ")
+	  @DefaultStringValue("Short text : ")
 	  String LibShrotLib();
 	  @DefaultStringValue("description : ")
 	  String Libdesc();
-	  @DefaultStringValue("ajouter ce tag")
+	  @DefaultStringValue("add this tag")
 	  String addThisTag();
-	  @DefaultStringValue("Gestion des Templates")
+	  @DefaultStringValue("Managing templates")
 	  String TemplatesHandle();
-	  @DefaultStringValue("appliquer les changments")
+	  @DefaultStringValue("apply changments")
 	  String ApplyChange();
-	  @DefaultStringValue("Ajouter un nouveau template")
+	  @DefaultStringValue("Add new Template")
 	  String AddTemplate();
-	  @DefaultStringValue("Supprimer le template sélectioné")
+	  @DefaultStringValue("Delete selected template")
 	  String DeleteTemplate();
-	  @DefaultStringValue("modifier le template sélectioné")
+	  @DefaultStringValue("Modify selected template")
 	  String ModifyTemplate();
-	  @DefaultStringValue("Ajout d'un nouveau template")
+	  @DefaultStringValue("Add new template")
 	  String AddTemplateTitle();
-	  @DefaultStringValue("Ajout d'un nouveau tag")
+	  @DefaultStringValue("Add new tag")
 	  String AddTagTitle();
-	  @DefaultStringValue("Ajout impossible car un tag avec un nom ou un libellé court identique existe déjà")
+	  @DefaultStringValue("Unable to add tag because this name or short text are already used by another tag")
 	  String msgErrorAddTag();
-	  @DefaultStringValue("Modification impossible car un tag avec un nom ou un libellé court identique existe déjà")
+	  @DefaultStringValue("Unable to modify tag because this name or short text are already used by another tag")
 	  String msgErrorModifyTag();
-	  @DefaultStringValue("Un tag doit contenir au minimum un nom et un libellé court")
+	  @DefaultStringValue("A tag must contain at least a name and short text")
 	  String msgErrorEmptyTag();
-	  @DefaultStringValue("Ajout impossible car un template avec un nom ou un libellé court identique existe déjà")
+	  @DefaultStringValue("Unable to add template because this name or short text are already used by another template")
 	  String msgErrorAddTemplate();
-	  @DefaultStringValue("Modification impossible car un template avec un nom ou un libellé court identique existe déjà")
+	  @DefaultStringValue("Unable to modify template because this name or short text are already used by another template")
 	  String msgErrorModifyTemplate();
-	  @DefaultStringValue("Un template doit contenir au minimum un nom et un libellé court")
+	  @DefaultStringValue("A template must contain at least a name and a short text")
 	  String msgErrorEmptyTemplate();
+	  
+	  @DefaultStringValue("Image not stored, there is to large, maximum size : 1MO")
+	  String msgErrorImgSize();
+	  @DefaultStringValue("Just image can be stored here (png, jpg, tif, ...)")
+	  String msgErrorImgFormat();
+	  @DefaultStringValue("Etes-vous sûr de vouloir supprimer cette page et toutes ses sous-pages")
+	  String MsgDelPageAndChild();
+	  @DefaultStringValue("Delete in progress")
+	  String MsgDelInProgress();
+	  @DefaultStringValue("Delete template sucessfuly")
+	  String MsgDelTemplateSucess();
+	  @DefaultStringValue("impossible to delete the template")
+	  String MsgErrorDelTemplate();
+	  @DefaultStringValue("Attention le champs email est vide")
+	  String MsgWarnMailEmpty();
+	  @DefaultStringValue("Ajout de l'utilisateur ...")
+	  String MsgAddUserInProg();
+	  @DefaultStringValue("erreur lié à l'ajout")
+	  String MsgErrorAddUser();
+	  @DefaultStringValue("l'utilisateur est déjà enregistrer")
+	  String MsgUserAlreadyInDB();
+	  @DefaultStringValue("Ajout Réussi!")
+	  String MsgUserAddSuccess();
+	  @DefaultStringValue("Online")
+	  String onLine();
+	  @DefaultStringValue("Offline")
+	  String offLine();
+	  @DefaultStringValue("Store only image like png, jpg, tif, ... With a maximum size of 1 MB")
+	  String imageTitle();
+	  @DefaultStringValue("Tag managment")
+	  String tagTitle();
+	  @DefaultStringValue("Add new user")
+	  String addNewUser();
+	  @DefaultStringValue("Description : ")
+	  String TemplateDesc();
 }

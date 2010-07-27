@@ -3,6 +3,12 @@ package com.sfeir.richercms.page.client.interfaces;
 import com.mvp4g.client.view.LazyView;
 import com.sfeir.richercms.page.client.event.PageEventBus;
 
+/**
+ * Allows the presenter to communicate with the view
+ * TinyMCEPanel <=> TinyMCEPanelPresenter
+ * @author homberg.g
+ *
+ */
 public interface ITinyMCEPanel extends LazyView{
 
 	/**

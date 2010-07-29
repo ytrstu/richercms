@@ -20,6 +20,8 @@ import com.sfeir.richercms.page.shared.BeanFile;
 
 /**
  * Presenter of the ThumbsPanel view
+ * All interaction with eventBus, datastore and event handling
+ * are coded here
  * @author homberg.g
  *
  */

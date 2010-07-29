@@ -1,7 +1,11 @@
 package com.sfeir.richercms.page.client.view.custom.thumb;
 
 import com.google.gwt.user.client.ui.Image;
-
+/**
+ * Thumb is an image with an associate path
+ * @author homberg.g
+ *
+ */
 public class Thumb extends Image{
 
 	private Long id;

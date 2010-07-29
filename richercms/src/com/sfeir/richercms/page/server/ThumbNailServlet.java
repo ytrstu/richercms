@@ -17,6 +17,16 @@ import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.Query;
 import com.sfeir.richercms.page.server.business.MemoryFileItem;
 
+/**
+ * 
+ * @author homberg.g
+ * this servlet display an image with specific size
+ * You need to give  :
+ * the path of the image in the get var named 'path'
+ * the width of the image in the get var named 'width'
+ * the height of the image in the get var named 'height'  
+ * For use this servlet use the corresponding url with a correct path to display image
+ */
 public class ThumbNailServlet extends HttpServlet  {
 
 	/**

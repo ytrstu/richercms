@@ -11,6 +11,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.FocusEvent;
 import com.google.gwt.event.dom.client.FocusHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+
 import com.mvp4g.client.annotation.InjectService;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
@@ -277,6 +278,7 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 		this.view.deasabledWidgets();
 		this.view.disableHelp();
 		this.view.setTitle(this.view.getConstants().DefaultTitleInformation());
+		this.view.clearFields();
 		this.state = newState;
 	}
 	
@@ -294,8 +296,8 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 	}
 	
 	public void onCallInfo() {
-		if(testField()) {
-			
+
+		if(this.testField()) {
 			//need the current state to restore them later
 			PageState currentState = this.state;
 			//modifymode : modify the translation in the current page
@@ -309,10 +311,10 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 			ArrayList<String> urlNames = new ArrayList<String>();
 			urlNames.add(this.currentPage.getUrlName());
 			
-			
 			rpcPage.existSameUrl(this.parentPageId, this.currentPage.getId(), urlNames, new AsyncCallback<Boolean>() {
 				public void onFailure(Throwable caught) {}
 				public void onSuccess(Boolean result) {
+					view.setBrowserTitle("test cccccccccccc");
 					if(result){
 						eventBus.showInformationPopUp();
 						//save dependentTags and call sendInfo (due waiting for an rpc result)
@@ -327,8 +329,7 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 					}
 				}
 			});
-		}
-		
+		}	
 	}
 	
 	/**
@@ -445,16 +446,19 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 		if(this.state == PageState.display)
 			return true;
 		
+		
 		if(this.view.getUrlName().length() == 0){
 			this.view.showRequiredUrl();
 			ret = false;
 	
 		}
+		
 		if(this.view.getPageTitle().length() == 0){
 			this.view.showRequiredTitle();
 			ret = false;
 
 		}
+		
 		if(!validateURL(this.view.getUrlName())){
 			this.view.showErrorInUrl();
 			ret = false;
@@ -464,7 +468,7 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 	}
 	
 	public void onChangeTranslation(int index) {
-		if(testField()){
+		if(this.testField()){
 			if(this.state == PageState.modify){//modifyMode
 				//add the current translation in the page
 				this.currentPage = this.addInformationInPage();
@@ -501,10 +505,11 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 	private boolean validateURL(String url) {
 		if(url.contains(" "))
 			return false;
+
 		if(url.matches(".*[!\"#$%&'()*+,./:;<=>?@[\\\\]^`{|}~].*"))
-				return false;
+			return false;
 		
-		if(url.matches(".*[^\\p{Alpha}\\p{Digit}-_].*"))
+		if(url.matches(".*[^a-zA-Z0-9_-].*"))
 			return false;
 		return true;
 	}

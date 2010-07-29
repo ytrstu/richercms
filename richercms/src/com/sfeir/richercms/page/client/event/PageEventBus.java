@@ -93,7 +93,7 @@ public interface PageEventBus extends EventBus {
 	
 	/**
 	 * Fired by the MainPagePresenter if the user need realy to abort his work
-	 * Don't use this event to erase a cancelEvent. use confirmCancelPage.
+	 * Don't use this event to handle a cancelEvent. use confirmCancelPage.
 	 * @param newState : the state you need to place application
 	 */
 	@Event( handlers = {PagePresenter.class, InformationPanelPresenter.class, ValidationPanelPresenter.class, TinyMCEPanelPresenter.class} )

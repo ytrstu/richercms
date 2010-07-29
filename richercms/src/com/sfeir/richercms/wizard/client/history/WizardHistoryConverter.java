@@ -4,8 +4,9 @@ import com.mvp4g.client.annotation.History;
 import com.mvp4g.client.history.HistoryConverter;
 import com.sfeir.richercms.wizard.client.event.WizardConfigEventBus;
 
-@History
 //public class WizardHistoryConverter implements HistoryConverter<WizardConfigEventBus, Void> {
+
+@History
 public class WizardHistoryConverter implements HistoryConverter<WizardConfigEventBus> {
 
 	public WizardHistoryConverter(){}
@@ -22,9 +23,4 @@ public class WizardHistoryConverter implements HistoryConverter<WizardConfigEven
 	
 	public void onGoToSecondPage(){}
 	public void onStartWizard(){}
-
-	public boolean isCrawlable() {
-		return false;
-	}
-
 }

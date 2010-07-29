@@ -24,6 +24,12 @@ import com.sfeir.richercms.page.client.ImageAndId;
 import com.sfeir.richercms.page.client.PageConstants;
 import com.sfeir.richercms.page.client.interfaces.IUserManager;
 
+/**
+ * UserManager panel in the PageView, access this panel by the menuBar
+ * handle Users view
+ * @author homberg.g
+ *
+ */
 public class UserManager  extends ResizeComposite implements IUserManager {
 	
 	//gestion des langues

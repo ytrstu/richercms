@@ -5,6 +5,11 @@ import org.apache.commons.fileupload.FileItemFactory;
 
 import com.sfeir.richercms.page.server.business.MemoryFileItem;
 
+/**
+ * factory to save many image in the same time
+ * @author homberg.g
+ *
+ */
 public class MemoryFileItemFactory implements FileItemFactory {
 
         private int maxSize;

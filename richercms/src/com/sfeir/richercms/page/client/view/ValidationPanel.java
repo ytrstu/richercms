@@ -10,6 +10,13 @@ import com.google.gwt.user.client.ui.ResizeComposite;
 import com.sfeir.richercms.page.client.PageConstants;
 import com.sfeir.richercms.page.client.interfaces.IValidationPanel;
 
+/**
+ * Validation panel in the PageView
+ * This panel contain button to apply or cancel modification/add information
+ * It was displayed in the bottom of the PageView
+ * @author homberg.g
+ *
+ */
 public class ValidationPanel extends ResizeComposite implements IValidationPanel {
 	
 	//gestion des langues

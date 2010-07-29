@@ -11,7 +11,11 @@ import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.sfeir.richercms.page.client.PageConstants;
 
+/**
 
+ * @author homberg.g
+ * PopUp use to add/modify template
+ */
 public class PopUpAddTemplate extends DialogBox {
 
 	

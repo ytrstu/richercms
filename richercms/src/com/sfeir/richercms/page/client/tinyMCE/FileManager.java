@@ -2,7 +2,12 @@ package com.sfeir.richercms.page.client.tinyMCE;
 
 import com.sfeir.richercms.page.client.event.PageEventBus;
 
-
+/**
+ * 
+ * @author homberg.g
+ * Wrapper for running a gwt popUp into Javascript
+ * link tinyMCe command with a GWT PopUp
+ */
 public class FileManager {
 
 	// PageEventBus, it's necessary to pass it to call the FileBoxManager

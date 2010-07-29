@@ -4,6 +4,11 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.sfeir.richercms.page.client.PageConstants;
 
+/**
+ * A focusable thumb with an image and an associate path
+ * @author homberg.g
+ *
+ */
 public class ThumbFocusable extends FocusPanel{
 
 	//gestion des langues

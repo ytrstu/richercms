@@ -16,6 +16,14 @@ import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyService;
 import com.sfeir.richercms.page.server.business.MemoryFileItem;
 
+/**
+ * 
+ * @author homberg.g
+ * this servlet add an image in datastore
+ * You need to give the path of the image in the post var named 'path'
+ * For use this servlet use the corresponding url with a correct path tu upload image
+ * Image must be in png,jpeg or gif format with a size smaller than 1mo
+ */
 public class FileUploadServlet extends HttpServlet {
 
 	/**

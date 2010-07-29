@@ -6,7 +6,12 @@ import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.sfeir.richercms.page.client.tinyMCE.interfaces.IPageViewer;
 
-
+/**
+ * 
+ * @author homberg.g
+ * Panel witch an HTML viewer
+ * this view are added in FileMbox view
+ */
 public class PageViewer extends ResizeComposite implements IPageViewer {
 
 	private HTMLPanel htmlPanel;

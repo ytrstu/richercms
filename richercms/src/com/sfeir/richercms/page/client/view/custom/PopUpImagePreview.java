@@ -14,6 +14,12 @@ import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.sfeir.richercms.page.client.PageConstants;
 
+/**
+ * 
+ * @author homberg.g
+ *	PopUp where you can display image 
+ *	this image are resized if it was too large
+ */
 public class PopUpImagePreview extends PopupPanel{
 
 	//gestion des langues

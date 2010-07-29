@@ -29,7 +29,7 @@ import com.sfeir.richercms.page.client.PageConstants;
 import com.sfeir.richercms.page.client.interfaces.IInformationPanel;
 
 /**
- * Information panel in the manView, use to create a new page
+ * Information panel in the PageView, use to create a new page
  * @author homberg.g
  *
  */

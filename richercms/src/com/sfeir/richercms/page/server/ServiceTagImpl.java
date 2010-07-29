@@ -200,6 +200,11 @@ public class ServiceTagImpl extends RemoteServiceServlet implements TagService {
 		return false;
 	}
 	
+	/**
+	 * Make a Tag with a BeanTag
+	 * @param bean
+	 * @return corresponding Tag
+	 */
 	private Tag beanToTag(BeanTag bean){
 		return new Tag(bean.getId(),
 				bean.getTagName(),
@@ -208,6 +213,11 @@ public class ServiceTagImpl extends RemoteServiceServlet implements TagService {
 				bean.isTextual());
 	}
 	
+	/**
+	 * Make a BeanTag with a Tag
+	 * @param tag
+	 * @return corresponding BeanTag
+	 */
 	private BeanTag tagToBean(Tag tag){
 		return new BeanTag(tag.getId(),
 				tag.getTagName(),
@@ -216,12 +226,22 @@ public class ServiceTagImpl extends RemoteServiceServlet implements TagService {
 				tag.isTextual());
 	}
 	
+	/**
+	 * Make a DependentTag with a BeanDependentTag
+	 * @param bean
+	 * @return corresponding DependentTag
+	 */
 	private DependentTag beanToDependentTag(BeanDependentTag bean){
 		return new DependentTag(bean.getId(),
 				new Key<Tag>(Tag.class, bean.getDependentTag().getId()),
 				bean.getCustomName());
 	}
 	
+	/**
+	 * Make a BeanDependentTag with a DependentTag
+	 * @param tag
+	 * @return corresponding BeanDependentTag
+	 */
 	private BeanDependentTag DependentTagToBean(DependentTag tag){
 		Objectify ofy = ObjectifyService.begin();
 		

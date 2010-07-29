@@ -21,7 +21,8 @@ import com.sfeir.richercms.page.client.view.custom.thumb.ThumbFocusable;
 /**
  * 
  * @author homberg.g
- *
+ * A Panel which you can display thumbs
+ * this view are added in FileMbox view
  */
 public class ThumbsPanel extends ResizeComposite implements IThumbsPanel{
 

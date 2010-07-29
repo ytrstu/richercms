@@ -5,7 +5,8 @@ import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.view.LazyView;
 
 /**
- * popup containing a tree and an overview of selected page 
+ * Allows the presenter to communicate with the view
+ * PageViewer <=> PageViewer Presenter
  * @author homberg.g
  *
  */

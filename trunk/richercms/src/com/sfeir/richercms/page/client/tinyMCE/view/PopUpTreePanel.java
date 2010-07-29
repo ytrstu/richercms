@@ -8,7 +8,8 @@ import com.sfeir.richercms.page.client.view.custom.TreePanel;
 /**
  * 
  * @author homberg.g
- *
+ * a View which containing a tree panel
+ * this view are added in FileMbox view
  */
 public class PopUpTreePanel extends TreePanel implements IPopUpTreePanel{
 

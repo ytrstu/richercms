@@ -57,9 +57,19 @@ public interface IFileMBox extends LazyView{
 	 */
 	HasClickHandlers onCancelClick();
 	
+	/**
+	 * Set PopUp title
+	 * @param title : new title
+	 */
 	public void setTitle(String title);
 	
+	/**
+	 * Set the default imagePanel name for image handle
+	 */
 	public void setImgDefaultTitle();
 	
+	/**
+	 * set the defaultPanel name for link handle
+	 */
 	public void setLinkDefaultTitle();
 }

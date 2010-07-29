@@ -21,6 +21,12 @@ import com.sfeir.richercms.page.client.PageConstants;
 import com.sfeir.richercms.page.client.interfaces.IReorderPagePanel;
 import com.sfeir.richercms.page.client.view.custom.FlexTableUtil;
 
+/**
+ * ReorderPage panel in the PageView, access this panel by the menuBar
+ * use Dnd lib
+ * @author homberg.g
+ *
+ */
 public class ReorderPagePanel extends ResizeComposite implements IReorderPagePanel {
 
 	//gestion des langues

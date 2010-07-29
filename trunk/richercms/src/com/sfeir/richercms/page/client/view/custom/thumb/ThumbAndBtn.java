@@ -17,6 +17,12 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.LayoutPanel;
 import com.sfeir.richercms.page.client.PageConstants;
 
+/**
+ * It's a thumb with a path and an associate button (delete icon)
+ * You can handle event on this button especialy to delete correponding image
+ * @author homberg.g
+ *
+ */
 public class ThumbAndBtn extends LayoutPanel implements HasMouseOverHandlers, HasMouseOutHandlers{
 
 	//gestion des langues

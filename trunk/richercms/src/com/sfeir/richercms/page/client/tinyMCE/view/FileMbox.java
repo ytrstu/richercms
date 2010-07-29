@@ -26,7 +26,8 @@ import com.sfeir.richercms.page.client.view.custom.TreePanel;
 /**
  * 
  * @author homberg.g
- *
+ * PopUp which contains a tree, 
+ * a area where you can display thumbs or a Html Viewer
  */
 public class FileMbox extends DialogBox implements IFileMBox {
 

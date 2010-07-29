@@ -26,6 +26,8 @@ import com.sfeir.richercms.page.shared.BeanArboPage;
 
 /**
  * Presenter of the PopUpTreePanel view
+ * All interaction with eventBus, datastore and event handling
+ * are coded here
  * @author homberg.g
  *
  */
@@ -205,6 +207,10 @@ public class PopUpTreePanelPresenter  extends LazyPresenter<IPopUpTreePanel,Page
 		l.setStyleName("treeLabelSelected");
 	}
 	
+	/**
+	 * Use selectedItem 
+	 * to create path with an RPC call
+	 */
 	private void createPath() {
 		ArrayList<Long> ids = new ArrayList<Long>();
 		ids.add((Long)this.selectedItem.getUserObject());

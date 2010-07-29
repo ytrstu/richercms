@@ -12,6 +12,10 @@ import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.sfeir.richercms.page.client.PageConstants;
 
+/**
+ * @author homberg.g
+ * PopUp used for add
+ */
 public class PopUpAddTag  extends DialogBox{
 
 	

@@ -11,6 +11,8 @@ import com.sfeir.richercms.page.client.tinyMCE.TinyMCE;
 
 /**
  * @author homberg.g
+ * 
+ * TinyMCEPanel : display a richEditor. It was used in the PageView
  */
 public class TinyMCEPanel extends ResizeComposite implements ITinyMCEPanel {
 

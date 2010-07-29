@@ -18,6 +18,8 @@ import com.sfeir.richercms.page.client.tinyMCE.view.FileMbox;
 
 /**
  * Presenter of the FileMbox view
+ * All interaction with eventBus, datastore and event handling
+ * are coded here
  * @author homberg.g
  *
  */
@@ -115,6 +117,12 @@ public class FileMBoxPresenter extends LazyPresenter<IFileMBox,PageEventBus>{
 		this.selectedPath = "";
 	}
 	
+	/**
+	 * Extract the last element in a path
+	 * You can use this for make title
+	 * @param path : path
+	 * @return last page name in the path
+	 */
 	private String extractTitle(String path){
 		String[] splited = path.split("/");
 		return splited[splited.length-1];

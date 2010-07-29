@@ -4,7 +4,6 @@ import com.google.gwt.user.client.ui.Widget;
 
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
-import com.mvp4g.client.annotation.InitHistory;
 import com.mvp4g.client.annotation.Start;
 import com.mvp4g.client.annotation.module.AfterLoadChildModule;
 import com.mvp4g.client.annotation.module.BeforeLoadChildModule;
@@ -86,7 +85,7 @@ public interface RootEventBus extends EventBusWithLookup {
 	 * 2 presenter are started : RootPresenter and PageLoginPresenter(first view to display)
 	 */
 	@Start
-	@InitHistory
+	//@InitHistory
 	@Event( handlers = {RootPresenter.class, PageLoginPresenter.class})
 	public void login();
 

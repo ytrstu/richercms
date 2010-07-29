@@ -22,7 +22,7 @@ import com.sfeir.richercms.page.client.view.custom.PopUpImagePreview;
 import com.sfeir.richercms.page.client.view.custom.thumb.ThumbAndBtn;
 
 /**
- * ImageManager panel in the manView, use add image using the path of Page
+ * ImageManager panel in the PageView, use add image using the path of Page
  * @author homberg.g
  *
  */

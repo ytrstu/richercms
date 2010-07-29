@@ -15,6 +15,13 @@ import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.Query;
 import com.sfeir.richercms.page.server.business.MemoryFileItem;
 
+/**
+ * 
+ * @author homberg.g
+ * this servlet return an image 
+ * You need to give the path of the image in the get var named 'path'
+ * For use this servlet use the corresponding url with a correct path
+ */
 public class DisplayImageServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;

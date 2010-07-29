@@ -5,6 +5,12 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.sfeir.richercms.wizard.client.view.CenterLayoutPanel;
 
+/**
+ * 
+ * @author homberg.g
+ * Panel display in center of principal view to display state of specific action
+ * like delete/add/modify page
+ */
 public class CenterEventPopUp extends CenterLayoutPanel {
 
 	private FlexTable displayTable = new FlexTable();

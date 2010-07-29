@@ -13,6 +13,13 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.sfeir.richercms.page.client.PageConstants;
 
+/**
+ * 
+ * @author homberg.g
+ *
+ * PopUp with 2 button 'ok' and 'cancel'
+ * You can handle event on this button and display a text into the popUp 
+ */
 public class ConfirmationBox extends DialogBox {
 
 	//gestion des langues

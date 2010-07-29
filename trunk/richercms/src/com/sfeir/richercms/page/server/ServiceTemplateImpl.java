@@ -26,7 +26,7 @@ public class ServiceTemplateImpl extends RemoteServiceServlet implements Templat
 
 	public Long addTemplate(BeanTemplate bean) {
 		Objectify ofy = ObjectifyService.begin();
-		Template template = this.BeanToArboPage(bean);
+		Template template = this.BeanToTemplate(bean);
 		
 		Query<Template> sameNames = ofy.query(Template.class).filter("name ", bean.getName());
 		Query<Template> sameShortLibs = ofy.query(Template.class).filter("shortLib ", bean.getShortLib());
@@ -129,7 +129,12 @@ public class ServiceTemplateImpl extends RemoteServiceServlet implements Templat
 		}
 	}
 	
-	private Template BeanToArboPage(BeanTemplate bTP){
+	/**
+	 * Make a Template with a BeanTemplate
+	 * @param bTP
+	 * @return corresponding Template
+	 */
+	private Template BeanToTemplate(BeanTemplate bTP){
 		Objectify ofy = ObjectifyService.begin();
 		Template TP = new Template();
 		TP.setName(bTP.getName());
@@ -153,6 +158,11 @@ public class ServiceTemplateImpl extends RemoteServiceServlet implements Templat
 		return TP;
 	}
 	
+	/**
+	 * Make a BeanTemplate with a Template
+	 * @param tp
+	 * @return Corresponding BeanTemplate
+	 */
 	private BeanTemplate TemplateToBean(Template tp){
 		Objectify ofy = ObjectifyService.begin();
 		BeanTemplate btp = new BeanTemplate(tp.getId(),tp.getName(), tp.getShortLib(), tp.getDescription());
@@ -166,6 +176,11 @@ public class ServiceTemplateImpl extends RemoteServiceServlet implements Templat
 		return btp;
 	}
 	
+	/**
+	 * Make a Tag with a BeanTag
+	 * @param bean
+	 * @return Corresponding Tag
+	 */
 	private Tag beanToTag(BeanTag bean){
 		return new Tag(bean.getId(),
 				bean.getTagName(),
@@ -174,6 +189,11 @@ public class ServiceTemplateImpl extends RemoteServiceServlet implements Templat
 				bean.isTextual());
 	}
 	
+	/**
+	 * Make a BeanTag with  a Tag
+	 * @param tag
+	 * @return Corresponding BeanTag
+	 */
 	private BeanTag tagToBean(Tag tag){
 		return new BeanTag(tag.getId(),
 				tag.getTagName(),

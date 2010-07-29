@@ -23,6 +23,12 @@ import com.google.gwt.user.client.ui.HTMLTable.CellFormatter;
 import com.sfeir.richercms.page.client.PageConstants;
 import com.sfeir.richercms.page.client.interfaces.ITagManager;
 
+/**
+ * TagManager panel in the PageView, access this panel by the menuBar
+ * handle tags view
+ * @author homberg.g
+ *
+ */
 public class TagManager extends ResizeComposite implements ITagManager{
 
 	//gestion des langues

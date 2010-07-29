@@ -400,8 +400,26 @@ public class ServiceArboPageImpl  extends RemoteServiceServlet implements ArboPa
 		return true;
 	}
 	
+	public BeanTranslationPage getDefaultTranslation(Long pageId){
+		
+		Objectify ofy = ObjectifyService.begin();
+		ArboPage page = ofy.get(ArboPage.class, pageId);
+		
+		if(page != null) {
+			TranslationPage tp = ofy.get(page.getTranslation().get(0));
+			return this.translationPageToBean(tp);
+		}
+		return null;
+	}
 	
-	public BeanArboPage arboPageToBean(ArboPage ap){
+	
+	/**
+	 * make an BeanArboPage with an ArboPage
+	 * with some datastore call to get all translation
+	 * @param bAP
+	 * @return corresponding BeanArboPage
+	 */
+	private BeanArboPage arboPageToBean(ArboPage ap){
 		Objectify ofy = ObjectifyService.begin();
 		BeanArboPage bap = new BeanArboPage(ap.getId(),
 											ap.getUrlName(),
@@ -425,19 +443,12 @@ public class ServiceArboPageImpl  extends RemoteServiceServlet implements ArboPa
 		return bap;
 	}
 	
-	public BeanTranslationPage getDefaultTranslation(Long pageId){
-		
-		Objectify ofy = ObjectifyService.begin();
-		ArboPage page = ofy.get(ArboPage.class, pageId);
-		
-		if(page != null) {
-			TranslationPage tp = ofy.get(page.getTranslation().get(0));
-			return this.translationPageToBean(tp);
-		}
-		return null;
-	}
-	
-	public BeanTranslationPage translationPageToBean(TranslationPage tp) {
+	/**
+	 * make a BeanTranslationPage with an TranslationPage
+	 * @param bAP
+	 * @return corresponding BeanTranslationPage
+	 */
+	private BeanTranslationPage translationPageToBean(TranslationPage tp) {
 		return new BeanTranslationPage(tp.getId(), 
 				tp.getBrowserTitle(),
 				tp.getPageTitle(), 
@@ -446,8 +457,13 @@ public class ServiceArboPageImpl  extends RemoteServiceServlet implements ArboPa
 				tp.getContent().getValue());
 	}
 	
-
-	public ArboPage BeanToArboPage(BeanArboPage bAP){
+	/**
+	 * make an ArboPage with an BeanArboPage
+	 * with some datastore call to save all translation
+	 * @param bAP
+	 * @return corresponding ArboPage
+	 */
+	private ArboPage BeanToArboPage(BeanArboPage bAP){
 		Objectify ofy = ObjectifyService.begin();
 		ArboPage ap = new ArboPage(bAP.getId(),
 								   bAP.getUrlName(),
@@ -476,7 +492,12 @@ public class ServiceArboPageImpl  extends RemoteServiceServlet implements ArboPa
 		return ap;
 	}
 	
-	public TranslationPage BeanToTranslationPage(BeanTranslationPage bTp){
+	/**
+	 * make a TranslationPage with a BeanTranslationPage
+	 * @param bTp
+	 * @return corresponding TranslationPage
+	 */
+	private TranslationPage BeanToTranslationPage(BeanTranslationPage bTp){
 		return new TranslationPage(bTp.getId(), bTp.getBrowserTitle(),bTp.getPageTitle(),
 				bTp.getDescription(), bTp.getKeyWord(), bTp.getContent());
 	}

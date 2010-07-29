@@ -34,6 +34,12 @@ import com.sfeir.richercms.page.client.PageConstants;
 import com.sfeir.richercms.page.client.interfaces.ITemplateManager;
 import com.sfeir.richercms.page.client.view.custom.PopUpAddTemplate;
 
+/**
+ * TemplateManager panel in the PageView, access this panel by the menuBar
+ * handle templates view
+ * @author homberg.g
+ *
+ */
 public class TemplateManager extends ResizeComposite implements ITemplateManager, HasKeyPressHandlers{
 
 	//gestion des langues

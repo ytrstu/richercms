@@ -96,7 +96,7 @@ public interface PageEventBus extends EventBus {
 	 * Don't use this event to handle a cancelEvent. use confirmCancelPage.
 	 * @param newState : the state you need to place application
 	 */
-	@Event( handlers = {PagePresenter.class, InformationPanelPresenter.class, ValidationPanelPresenter.class, TinyMCEPanelPresenter.class} )
+	@Event( handlers = {PagePresenter.class, InformationPanelPresenter.class, ValidationPanelPresenter.class, TinyMCEPanelPresenter.class, NavigationPanelPresenter.class} )
 	public void cancelPage(PageState newState);
 	
 	/**

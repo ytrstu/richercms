@@ -37,6 +37,7 @@ public class ImageManager extends ResizeComposite implements IImageManager {
 	private static final String urlActionUP = GWT.getModuleName() + "/upload"; // up a file
 	private static final String thumbnailUrl = GWT.getModuleName() + 
 						"/thumbnail?width="+thumbsWidth+"&height="+thumbsHeight; // display a thumbnail
+	private FileUpload uploadField = new FileUpload();
 	private FlexTable thumbsPanel = null;
 	private Button btnSend = null;
 	private Hidden path = null;
@@ -94,12 +95,12 @@ public class ImageManager extends ResizeComposite implements IImageManager {
 		// Creation du panel contenant tous les element du formulaire
 		//form.setWidget(panel);
 		
-		final FileUpload upload = new FileUpload();
-		upload.setTitle(this.constants.imageTitle());
-		upload.setName("uploadFormElement");
+		
+		this.uploadField.setTitle(this.constants.imageTitle());
+		this.uploadField.setName("uploadFormElement");
 		
 		submitPanel.add(this.path);
-		submitPanel.add(upload);
+		submitPanel.add(this.uploadField);
 		this.form.setWidget(submitPanel);
 		
 		this.panel.add(form);
@@ -142,7 +143,6 @@ public class ImageManager extends ResizeComposite implements IImageManager {
 	}
 	
 	public void submitForm() {
-		System.out.println("form.toString() : " + form.toString());
 		this.form.submit();
 	}
 	

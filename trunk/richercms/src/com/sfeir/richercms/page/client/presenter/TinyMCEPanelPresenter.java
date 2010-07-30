@@ -42,6 +42,8 @@ public class TinyMCEPanelPresenter extends LazyPresenter<ITinyMCEPanel, PageEven
 		this.TranslationContents = translationContents;
 		this.view.displayViewer(this.TranslationContents.get(this.indexOfTranslation).getContent());
 		this.state = PageState.display;
+		this.eventBus.addSuccessPopUp("Chargement terminé");
+		this.eventBus.hideInformationPopUp();
 	}
 	
 	/**

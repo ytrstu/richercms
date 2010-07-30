@@ -1,7 +1,6 @@
 package com.sfeir.richercms.page.client;
 
 import com.google.gwt.i18n.client.Constants;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public interface PageConstants extends Constants {
 

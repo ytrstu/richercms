@@ -70,10 +70,13 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Pa
 		.addSelectionHandler(new SelectionHandler<TreeItem>(){
 			public void onSelection(SelectionEvent<TreeItem> event) {
 				//évite de recharger les donnée pour rien
-				if(!event.getSelectedItem().equals(selectedItem))
+				if(!event.getSelectedItem().equals(selectedItem)){
 					sameItemSelected = false;
-				else 
+					eventBus.showInformationPopUp();
+					eventBus.addWaitLinePopUp("chargement de la page");
+				}else{
 					sameItemSelected = true;
+				}
 				
 				setSelectedItem(event.getSelectedItem()); // fait des actions spécifique
 				
@@ -541,6 +544,10 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Pa
 			this.setSelectedItem(this.rootItem);
 		
 		this.eventBus.verifyPageLock((Long) selectedItem.getUserObject(), LockState.modify);
+	}
+	
+	public void onCancelPage(PageState newState){
+		eventBus.displayPage((Long) selectedItem.getUserObject());
 	}
 	
 	public void onDisplayCurrentPage(PageState state) {

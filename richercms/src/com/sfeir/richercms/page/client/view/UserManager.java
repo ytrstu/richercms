@@ -135,7 +135,7 @@ public class UserManager  extends ResizeComposite implements IUserManager {
 		int numRow = this.userTable.getRowCount();
 		Label labelState = new Label(state);
 		
-		if(state.equals("OnLine"))
+		if(state.equals("Online"))
 			labelState.addStyleName("onLineText");
 		else
 			labelState.addStyleName("offLineText");

@@ -375,8 +375,7 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 
 	}
 	
-	public void clearFields()
-	{
+	public void clearFields() {
 		this.tBrowserTitle.setText("");
 		this.tDescription.setText("");
 		this.tKeyWord.setText("");
@@ -384,7 +383,9 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 		this.tUrlName.setText("");
 		this.dPublicationFinish.setValue(new Date());
 		this.dPublicationStart.setValue(new Date());
-		
+	}
+	
+	public void clearTags() {
 		for(Widget cb : this.checkORTextBox.values()){
 			if(cb.getClass().getName().contains("CheckBox"))
 				((CheckBox)cb).setValue(false);

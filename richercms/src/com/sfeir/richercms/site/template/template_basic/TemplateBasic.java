@@ -135,7 +135,7 @@ public class TemplateBasic {
 		return path.replace("null?", this.page.getUrlName()+"?");
 	}
 	
-	private List<LinkPage> getAllPageByTag(String tagName) {
+	public List<LinkPage> getAllPageByTag(String tagName) {
 		
 		Objectify ofy = ObjectifyService.begin();
 		ArrayList<LinkPage> lnkPage = new ArrayList<LinkPage>();

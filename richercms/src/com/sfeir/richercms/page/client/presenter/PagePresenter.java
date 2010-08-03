@@ -261,7 +261,7 @@ public class PagePresenter extends LazyPresenter<IdisplayPage, PageEventBus> {
 	public void onCancelPage(PageState newState) {		
 		this.view.enableLanguageBox();
 		this.state = newState;
-		this.changeState(newState);
+		//this.changeState(newState);
 	}
 	
 	public void onConfirmCancelPage(final PageState newState, boolean withMsg) {
@@ -287,7 +287,6 @@ public class PagePresenter extends LazyPresenter<IdisplayPage, PageEventBus> {
 			case manageTag:
 			case manageTemplate:
 			case display:
-			default:
 				eventBus.cancelPage(newState);
 		}
 
@@ -307,7 +306,6 @@ public class PagePresenter extends LazyPresenter<IdisplayPage, PageEventBus> {
 				public void onSuccess(Void result) {
 					// avertit tout les presenter qu'il faut cancel
 					eventBus.cancelPage(newState);
-					eventBus.displayCurrentPage(PageState.display);
 				}
 			});
 		}else {

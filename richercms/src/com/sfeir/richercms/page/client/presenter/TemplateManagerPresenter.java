@@ -53,18 +53,19 @@ public class TemplateManagerPresenter extends LazyPresenter<ITemplateManager, Pa
 		this.view.getBtnDelClick().addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				if(view.getSelectedTemplateId() != null) {
+					eventBus.showInformationPopUp();
 					eventBus.addWaitLinePopUp(view.getConstants().MsgDelInProgress());
 					rpcTemplate.deleteTemplate(view.getSelectedTemplateId(), 
 							new AsyncCallback<Void>() {
 						
 						public void onFailure(Throwable caught) {
-							eventBus.addErrorLinePopUp(view.getConstants().MsgDelTemplateSucess());
+							eventBus.addErrorLinePopUp(view.getConstants().MsgErrorDelTemplate());
 							eventBus.hideInformationPopUp();
 						}
 						public void onSuccess(Void result) {
 							view.deleteSelectedTemplate();
 							fetchTagTable();
-							eventBus.addSuccessPopUp(view.getConstants().MsgErrorDelTemplate());
+							eventBus.addSuccessPopUp(view.getConstants().MsgDelTemplateSucess());
 							eventBus.hideInformationPopUp();
 						}
 					});
@@ -117,6 +118,7 @@ public class TemplateManagerPresenter extends LazyPresenter<ITemplateManager, Pa
 			public void onChange(ChangeEvent event) {
 				view.disableApplyTagBtn();
 				mayApplyChange = false;
+				eventBus.showInformationPopUp();
 				modifySelectedTemplate();
 			}
 		});
@@ -161,7 +163,7 @@ public class TemplateManagerPresenter extends LazyPresenter<ITemplateManager, Pa
 		bTP.setDescription(this.view.getPopUpNewTempDesc());
 		bTP.setShortLib(this.view.getPopUpNewTempLib());
 			
-		if(testTemplate(bTP)) {
+		if(testTemplate(bTP)) {	
 			switch(this.popUpState) {
 			case modify :
 				this.rpcTemplate.updateTemplate(this.view.getSelectedTemplateId(),
@@ -224,6 +226,8 @@ public class TemplateManagerPresenter extends LazyPresenter<ITemplateManager, Pa
 	 */
 	private void fetchTemplateList() {
 		this.view.clearTemplateList();
+		this.eventBus.showInformationPopUp();
+		this.eventBus.addWaitLinePopUp("Load templates");
 		this.rpcTemplate.getAllTemplate(new AsyncCallback<List<BeanTemplate>>() {
 			public void onFailure(Throwable caught) {
 			}
@@ -232,6 +236,7 @@ public class TemplateManagerPresenter extends LazyPresenter<ITemplateManager, Pa
 					view.addTemplateInList(template.getName(), 
 							template.getId().toString());
 				}
+				eventBus.addSuccessPopUp("Templates seccessfully loader");
 				fetchTagTable();
 			}
 		});
@@ -242,6 +247,7 @@ public class TemplateManagerPresenter extends LazyPresenter<ITemplateManager, Pa
 	 * and call selectGoodTag to check good tag
 	 */
 	private void modifySelectedTemplate() {
+		this.eventBus.addWaitLinePopUp("Check good tags");
 		//test if list contain no template yet
 		if(this.view.getSelectedTemplateId() != null)
 			this.rpcTemplate.getTemplate(this.view.getSelectedTemplateId(), 
@@ -251,6 +257,8 @@ public class TemplateManagerPresenter extends LazyPresenter<ITemplateManager, Pa
 						public void onSuccess(BeanTemplate result) {
 							view.setDescription(result.getDescription());
 							selectGoodTag(result.getAssociatedTags());
+							eventBus.addSuccessPopUp("Good tags are Selected");
+							eventBus.hideInformationPopUp();
 						}
 			});
 	}
@@ -272,6 +280,7 @@ public class TemplateManagerPresenter extends LazyPresenter<ITemplateManager, Pa
 	 */
 	private void fetchTagTable(){
 		this.view.clearTagTable();
+		this.eventBus.addWaitLinePopUp("Load tag table");
 		this.rpcTag.getAllTags(new AsyncCallback<List<BeanTag>>() {
 			public void onFailure(Throwable caught) {
 			}
@@ -291,6 +300,7 @@ public class TemplateManagerPresenter extends LazyPresenter<ITemplateManager, Pa
 								}
 							});
 				}
+				eventBus.addSuccessPopUp("Tags successfully loaded");
 				modifySelectedTemplate();//check tag for template selected by default
 			}
 		});

@@ -213,8 +213,6 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 		if((bean.getDescription() != null ) && (!bean.getDescription().equals(""))) return false;
 		
 		if((bean.getPageTitle() != null ) && (!bean.getPageTitle().equals(""))) return false;
-		
-		//if((this.currentPage.getUrlName() != null ) && (!bean.getUrlName().equals(""))) return false;
 			
 		return true;
 	}
@@ -231,7 +229,6 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 				currentPage = result;
 				displayArboPage(result);
 				fetchTemplateList();
-				eventBus.displayContent(result.getTranslation());
 			}
 			public void onFailure(Throwable caught) {
 				PopUpMessage p = new PopUpMessage(view.getConstants().EGetCurPage());
@@ -248,7 +245,6 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 				currentPage = result;
 				displayArboPage(result);
 				fetchTemplateList();
-				eventBus.displayContent(result.getTranslation());
 			}
 			public void onFailure(Throwable caught) {
 				PopUpMessage p = new PopUpMessage(view.getConstants().EGetMainPage());
@@ -263,6 +259,7 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 		this.translationIndex = 0; //on commence toujours par ajouter la langue par défaut
 		this.view.setTitle(this.view.getConstants().AddPageTitleInformation()+this.view.getTitle());
 		this.view.clearFields();
+		this.view.clearTags();
 		this.view.enabledWidgets();
 		this.view.disableHelp();
 		this.state = PageState.add;
@@ -279,6 +276,7 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 		this.view.disableHelp();
 		this.view.setTitle(this.view.getConstants().DefaultTitleInformation());
 		this.view.clearFields();
+		this.view.clearTags();
 		this.state = newState;
 	}
 	
@@ -292,6 +290,7 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 		this.parentPageId = null;
 		view.setTitle(this.view.getConstants().DefaultTitleInformation());
 		view.clearFields();
+		this.view.clearTags();
 		this.state = PageState.display;
 	}
 	
@@ -314,7 +313,6 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 			rpcPage.existSameUrl(this.parentPageId, this.currentPage.getId(), urlNames, new AsyncCallback<Boolean>() {
 				public void onFailure(Throwable caught) {}
 				public void onSuccess(Boolean result) {
-					view.setBrowserTitle("test cccccccccccc");
 					if(result){
 						eventBus.showInformationPopUp();
 						//save dependentTags and call sendInfo (due waiting for an rpc result)
@@ -532,6 +530,7 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 				//select the good template
 				if(currentPage.getTemplateId()!=null)
 					view.selectTemplate(currentPage.getTemplateId().toString());
+				//now template are loader, we can fetch specific tag
 				fetchTagTable();
 			}
 		});
@@ -557,6 +556,9 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 								tag.isTextual());
 					}
 					checkTag(); //check tag if its necessary
+					//at this time all specific things are loaded in page
+					// tag, template and field. andso we can fill content in tinyMCEPanel
+					eventBus.displayContent(currentPage.getTranslation());
 				}
 			});
 		}

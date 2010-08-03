@@ -21,6 +21,7 @@
 <body>
 	<!-- header -->
     <div id="logo"><a href="<%= siteSufix+root.getPath()%>"><%=root.getName()%></a></div>
+    <div id="type">Catégorie : <%=template.getPageTitle()%></div>
     <div id="language">
        <div id="language_fr"><a href="<%=template.getRegularPath(request.getPathInfo()+"?lg=fr") %>"><img src="/tab_images/fr.png" class="photo"/></a></div>
        <div id="language_en"><a href="<%=template.getRegularPath(request.getPathInfo()+"?lg=en") %>"><img src="/tab_images/en.png" class="photo"/></a></div>
@@ -33,7 +34,7 @@
   <div id="menu">
     <ul>
       <% 
-      	List<LinkPage> categs = template.getAllCategory();
+      	List<LinkPage> categs = template.getAllPageByTag("MenuBar");
     	for (LinkPage categ : categs) {
     	    %>
     	     <li><a href="<%= siteSufix+categ.getPath()%>"><%= categ.getName()%></a></li>

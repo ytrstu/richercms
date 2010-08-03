@@ -107,7 +107,7 @@ public class PageView extends ResizeComposite implements IdisplayPage {
 		
 	    
 	    // When it's necessary, this popUp is show
-		this.popUp = new CenterEventPopUp(400, 200,this.constants.PopUpSaveModifInProg());
+		this.popUp = new CenterEventPopUp(400, 200,this.constants.PopUpWait());
 	    this.popUp.setVisible(false);
 
 		

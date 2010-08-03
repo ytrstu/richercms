@@ -72,8 +72,6 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Pa
 				//évite de recharger les donnée pour rien
 				if(!event.getSelectedItem().equals(selectedItem)){
 					sameItemSelected = false;
-					eventBus.showInformationPopUp();
-					eventBus.addWaitLinePopUp("chargement de la page");
 				}else{
 					sameItemSelected = true;
 				}
@@ -547,6 +545,8 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Pa
 	}
 	
 	public void onCancelPage(PageState newState){
+		eventBus.showInformationPopUp();
+		eventBus.addWaitLinePopUp(this.view.getConstants().PageLoading());
 		eventBus.displayPage((Long) selectedItem.getUserObject());
 	}
 	
@@ -556,6 +556,7 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Pa
 		if(this.selectedItem == null)
 			this.setSelectedItem(this.rootItem);
 		dispState = state;
+		
 		switch(state) {
 		case manageImage:
 			this.dispBtnInTree = false;
@@ -572,8 +573,11 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Pa
 			break;
 		case display:
 			this.dispBtnInTree = true;
-			if(!sameItemSelected)
+			if(!sameItemSelected){
+				eventBus.showInformationPopUp();
+				eventBus.addWaitLinePopUp(this.view.getConstants().PageLoading());
 				eventBus.displayPage((Long) selectedItem.getUserObject());
+			}
 
 			break;
 		case modify:

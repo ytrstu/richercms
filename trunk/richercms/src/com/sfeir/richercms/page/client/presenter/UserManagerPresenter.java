@@ -72,7 +72,9 @@ public class UserManagerPresenter extends LazyPresenter<IUserManager, PageEventB
 	}
 	
 	private void fetchUserTable() {
-		view.clearUserTable();
+		this.view.clearUserTable();
+		this.eventBus.showInformationPopUp();
+		this.eventBus.addWaitLinePopUp(this.view.getConstants().MsgLoadUser());
 		this.rpcPage.getAllLockedPages(new AsyncCallback<List<BeanArboPage>>() {
 			public void onFailure(Throwable caught) {}
 			public void onSuccess(List<BeanArboPage> lokedPage) {
@@ -138,8 +140,12 @@ public class UserManagerPresenter extends LazyPresenter<IUserManager, PageEventB
 						}
 					}
 				}
+				eventBus.addSuccessPopUp(view.getConstants().MsgLoadUserSuccess());
+				eventBus.hideInformationPopUp();
 			}
 			public void onFailure(Throwable caught) {
+				eventBus.addErrorLinePopUp(view.getConstants().MsgLoadUserError());
+				eventBus.hideInformationPopUp();
 			}
 		});
 	}
@@ -169,10 +175,7 @@ public class UserManagerPresenter extends LazyPresenter<IUserManager, PageEventB
 	
 	private void unlockPageRPC(Long pageId) {
 		this.rpcPage.unlockThisPage(pageId, new AsyncCallback<Void>() {
-			public void onFailure(Throwable caught) {
-				
-			}
-
+			public void onFailure(Throwable caught) {}
 			public void onSuccess(Void result) {
 				fetchUserTable();
 			}

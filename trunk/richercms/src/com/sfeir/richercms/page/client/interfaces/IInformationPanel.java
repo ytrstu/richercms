@@ -34,6 +34,11 @@ public interface IInformationPanel extends LazyView {
 	 * Clear all field in the display
 	 */
 	void clearFields();
+	
+	/**
+	 * Clear tag in display
+	 */
+	void clearTags();
 
 	/**
 	 * Return the Browser Title of the new webPage

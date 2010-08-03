@@ -8,6 +8,7 @@
 	<% // initialize template class
 		String siteSufix = "/site";
 		int languageIndex = (Integer)request.getAttribute("language");
+		String ParentPageName = "";
 		BeanArboPage p = (BeanArboPage)request.getAttribute("page");
 		TemplateBasic template = new TemplateBasic(p, languageIndex);
 		LinkPage root = template.getRootPage();
@@ -21,6 +22,7 @@
 <body>
 	<!-- header -->
     <div id="logo"><a href="<%= siteSufix+root.getPath()%>"><%=root.getName()%></a></div>
+    <div id="type">Article : <%=template.getPageTitle()%></div>
     <div id="language">
        <div id="language_fr"><a href="<%=template.getRegularPath(request.getPathInfo()+"?lg=fr") %>"><img src="/tab_images/fr.png" class="photo"/></a></div>
        <div id="language_en"><a href="<%=template.getRegularPath(request.getPathInfo()+"?lg=en") %>"><img src="/tab_images/en.png" class="photo"/></a></div>
@@ -33,7 +35,7 @@
   <div id="menu">
     <ul>
       <% 
-      	List<LinkPage> categs = template.getAllCategory();
+      	List<LinkPage> categs = template.getAllPageByTag("MenuBar");
     	for (LinkPage categ : categs) {
     	    %>
     	     <li><a href="<%= siteSufix+categ.getPath()%>"><%= categ.getName()%></a></li>
@@ -45,6 +47,15 @@
   <div id="path">
       <% 
       	List<LinkPage> linkPathes = template.getLinkPagePath();
+      
+      	//take parent Page name for left liste Menu
+      	if(linkPathes.size()>=2){
+    	  	ParentPageName = linkPathes.get(linkPathes.size()-2).getName();
+    	  	//reduce name size if >25
+    	  	if (ParentPageName.length() > 25)
+    		 	 ParentPageName = ParentPageName.substring(0, 25)+" ...";
+      	}
+      	
     	for (LinkPage linkPath : linkPathes) {
     	    %>
     	     <a href="<%= siteSufix+linkPath.getPath()%>"><%= linkPath.getName()%></a> <span style="color: #ffffff;"> > </span> 
@@ -63,14 +74,21 @@
        	  <div id="sidebar">
             <div id="sidebar_top"></div>
             <div id="sidebar_body">
-            <h1>Categories</h1>
+            <h1><%= ParentPageName %></h1>
               <ul>
                 <% 
         			List<LinkPage> sisters = template.getLinkSistersPage();
+                
 	        	    for (LinkPage sister : sisters) {
-	        	        %>
-	        	        <li><a href="<%= siteSufix+sister.getPath()%>"><%= sister.getName()%></a></li>
-	        	        <%
+	        	    	if(sister.getName().equals(template.getPageTitle())){
+	        	    		 %>
+			        	        <li><%= sister.getName()%></li>
+			        	        <%
+	        	    	}else{
+		        	        %>
+		        	        <li><a href="<%= siteSufix+sister.getPath()%>"><%= sister.getName()%></a></li>
+		        	        <%
+	        	    	}
 	        	    }
         		%>
               </ul>

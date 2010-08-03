@@ -118,6 +118,9 @@ public interface PageConstants extends Constants {
 	  @DefaultStringValue("Backup in progress")
 	  String PopUpSaveInProgress();
 	  
+	  @DefaultStringValue("Please Wait")
+	  String PopUpWait();
+	  
 	  @DefaultStringValue("Backup completed with success")
 	  String PopUpSaveFinish();
 	  
@@ -353,4 +356,12 @@ public interface PageConstants extends Constants {
 	  String addNewUser();
 	  @DefaultStringValue("Description : ")
 	  String TemplateDesc();
+	  @DefaultStringValue("chargement de la page")
+	  String PageLoading();
+	  @DefaultStringValue("Load all User")
+	  String MsgLoadUser();
+	  @DefaultStringValue("Users successfully loaded")
+	  String MsgLoadUserSuccess();
+	  @DefaultStringValue("Error during user loading")
+	  String MsgLoadUserError();
 }

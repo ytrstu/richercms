@@ -139,7 +139,7 @@ public class TemplateBasic {
 		
 		Objectify ofy = ObjectifyService.begin();
 		ArrayList<LinkPage> lnkPage = new ArrayList<LinkPage>();
-		BeanTemplate template = TemplateTools.getTemplatebyName("basic");
+		BeanTemplate template = TemplateTools.getTemplatebyName("siteBasic");
 		Query<ArboPage> pages = ofy.query(ArboPage.class).filter("templateId =", template.getId());
 		
 		for(ArboPage page : pages){

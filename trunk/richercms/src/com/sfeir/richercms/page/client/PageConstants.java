@@ -362,6 +362,31 @@ public interface PageConstants extends Constants {
 	  String MsgLoadUser();
 	  @DefaultStringValue("Users successfully loaded")
 	  String MsgLoadUserSuccess();
-	  @DefaultStringValue("Error during user loading")
+	  @DefaultStringValue("Error during users loading")
 	  String MsgLoadUserError();
+	  @DefaultStringValue("Load templates")
+	  String MsgLoadTemplate();
+	  @DefaultStringValue("Templates seccessfully loaded")
+	  String MsgLoadTempSuccess();
+	  @DefaultStringValue("Error during templates loading")
+	  String MsgLoadTempFail();
+	  @DefaultStringValue("Check good tags")
+	  String MsgCheckTag();
+	  @DefaultStringValue("Good tags are Selected")
+	  String MsgGoodTagSelected();
+	  @DefaultStringValue("Load tag table")
+	  String MsgLoadTagTable();
+	  @DefaultStringValue("Tags successfully loaded")
+	  String MsgLoadTagTableSuccess();
+	  @DefaultStringValue("Tag table are filled")
+	  String MsgLoadTagTableOk();
+	  @DefaultStringValue("Error during tag loading")
+	  String MsgLoadTagTableFail();
+	  @DefaultStringValue("Loading all tags")
+	  String MsgLoadTag();
+	  @DefaultStringValue("Tags successfully loaded")
+	  String MsgLoadTagSuccess();
+	  @DefaultStringValue("Error during loading tags")
+	  String MsgLoadTagFail();
+	  
 }

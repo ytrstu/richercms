@@ -227,16 +227,18 @@ public class TemplateManagerPresenter extends LazyPresenter<ITemplateManager, Pa
 	private void fetchTemplateList() {
 		this.view.clearTemplateList();
 		this.eventBus.showInformationPopUp();
-		this.eventBus.addWaitLinePopUp("Load templates");
+		this.eventBus.addWaitLinePopUp(view.getConstants().MsgLoadTemplate());
 		this.rpcTemplate.getAllTemplate(new AsyncCallback<List<BeanTemplate>>() {
 			public void onFailure(Throwable caught) {
+				eventBus.addSuccessPopUp(view.getConstants().MsgLoadTempFail());
+				eventBus.hideInformationPopUp();
 			}
 			public void onSuccess(List<BeanTemplate> result) {
 				for(BeanTemplate template : result){
 					view.addTemplateInList(template.getName(), 
 							template.getId().toString());
 				}
-				eventBus.addSuccessPopUp("Templates seccessfully loader");
+				eventBus.addSuccessPopUp(view.getConstants().MsgLoadTempSuccess());
 				fetchTagTable();
 			}
 		});
@@ -247,7 +249,7 @@ public class TemplateManagerPresenter extends LazyPresenter<ITemplateManager, Pa
 	 * and call selectGoodTag to check good tag
 	 */
 	private void modifySelectedTemplate() {
-		this.eventBus.addWaitLinePopUp("Check good tags");
+		this.eventBus.addWaitLinePopUp(this.view.getConstants().MsgCheckTag());
 		//test if list contain no template yet
 		if(this.view.getSelectedTemplateId() != null)
 			this.rpcTemplate.getTemplate(this.view.getSelectedTemplateId(), 
@@ -257,7 +259,7 @@ public class TemplateManagerPresenter extends LazyPresenter<ITemplateManager, Pa
 						public void onSuccess(BeanTemplate result) {
 							view.setDescription(result.getDescription());
 							selectGoodTag(result.getAssociatedTags());
-							eventBus.addSuccessPopUp("Good tags are Selected");
+							eventBus.addSuccessPopUp(view.getConstants().MsgGoodTagSelected());
 							eventBus.hideInformationPopUp();
 						}
 			});
@@ -280,9 +282,11 @@ public class TemplateManagerPresenter extends LazyPresenter<ITemplateManager, Pa
 	 */
 	private void fetchTagTable(){
 		this.view.clearTagTable();
-		this.eventBus.addWaitLinePopUp("Load tag table");
+		this.eventBus.addWaitLinePopUp(view.getConstants().MsgLoadTagTable());
 		this.rpcTag.getAllTags(new AsyncCallback<List<BeanTag>>() {
 			public void onFailure(Throwable caught) {
+				eventBus.addErrorLinePopUp(view.getConstants().MsgLoadTagTableFail());
+				eventBus.hideInformationPopUp();
 			}
 			public void onSuccess(List<BeanTag> result) {
 				for(BeanTag tag : result) {
@@ -300,7 +304,7 @@ public class TemplateManagerPresenter extends LazyPresenter<ITemplateManager, Pa
 								}
 							});
 				}
-				eventBus.addSuccessPopUp("Tags successfully loaded");
+				eventBus.addSuccessPopUp(view.getConstants().MsgLoadTagTableSuccess());
 				modifySelectedTemplate();//check tag for template selected by default
 			}
 		});

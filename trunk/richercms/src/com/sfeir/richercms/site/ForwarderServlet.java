@@ -62,7 +62,7 @@ public class ForwarderServlet extends HttpServlet {
 				this.page = TemplateTools.getArboPageWithPath(path);
 		
 		}else{//if path are null, take root page are take by default
-			this.page = TemplateTools.getRootPage();;
+			this.page = TemplateTools.getRootPage();
 		}
 		
 		//no root or no page corresponding to path
@@ -77,8 +77,11 @@ public class ForwarderServlet extends HttpServlet {
 		
 		// Here you need to make good call for your template
 		// and add right value in the jspFodler var
-		if(template.getName().equals("basic")){
+		if(template.getName().equals("siteBasic")){
 			jspName = templateBasic();
+			jspFolder = "template_basic";
+		}else if(template.getName().equals("blogBasic")){
+			jspName = blogBasic();
 			jspFolder = "template_basic";
 		}else{
 			// no template corresponding
@@ -93,7 +96,7 @@ public class ForwarderServlet extends HttpServlet {
 	}
 	
 	/**
-	 * Basic template function with all specificity
+	 * Basic site template function with all specificity
 	 * @return right jspName to call
 	 */
 	private String templateBasic() {
@@ -113,9 +116,23 @@ public class ForwarderServlet extends HttpServlet {
 			}else if (tag.getDependentTag().getTagName().equals("Article")){
 				jspName = "Article";
 				break;
+			}else if (tag.getDependentTag().getTagName().equals("Blog")){
+				jspName = "Blog";
+				break;
 			}
 		}
 		
+		return jspName;
+	}
+	
+	/**
+	 * Basic blog template function with all specificity
+	 * @return right jspName to call
+	 */
+	private String blogBasic(){
+		//define this var if you would use your one error page with specific style
+		this.errorTemplatePage = "/template_basic/Denied.jsp";
+		String jspName = null;
 		return jspName;
 	}
 	

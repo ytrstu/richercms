@@ -7,7 +7,6 @@ import java.util.Map;
 
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Objectify;
-import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.Query;
 import com.sfeir.richercms.page.server.business.ArboPage;
 import com.sfeir.richercms.page.server.business.DependentTag;
@@ -26,54 +25,43 @@ import com.sfeir.richercms.wizard.server.business.Language;
 public final class TemplateTools {
 	
 	private TemplateTools(){}
-	
-	static {
-        ObjectifyService.register(ArboPage.class);
-        ObjectifyService.register(TranslationPage.class);
-        ObjectifyService.register(RootArbo.class);
-        ObjectifyService.register(Template.class);
-        ObjectifyService.register(Tag.class);
-        ObjectifyService.register(DependentTag.class);
-        ObjectifyService.register(Language.class);
-	}
+
 
 	/**
 	 * Return a page from it's id
 	 * @param path : path of the page
 	 * @return Corresponding page
 	 */
-	public static BeanArboPage getArboPageWithPath(String path){
+	public static BeanArboPage getArboPageWithPath(Objectify ofy, String path){
 		String[] urlPart = path.split("/");
 		String urlName = urlPart[urlPart.length -1];
-		Objectify ofy = ObjectifyService.begin();
+		
 		Query<ArboPage> sameUrlNames  = ofy.query(ArboPage.class).filter("urlName =", urlName);
 		
 		if(sameUrlNames.countAll() == 1) 
-			return arboPageToBean(sameUrlNames.get());
+			return arboPageToBean(ofy, sameUrlNames.get());
 
 		else if((sameUrlNames.countAll() > 1)){
 			//get the root page
 			Query<RootArbo> root = ofy.query(RootArbo.class);
 			ArboPage rootPage = ofy.get(ArboPage.class, root.get().getIdOfRootArboPage());
 			//run recursive function
-			return getByPath(rootPage, path);
+			return getByPath(ofy, rootPage, path);
 		}
 		
 		return null;
 	}
 	
-	public static BeanArboPage getRootPage(){
-		Objectify ofy = ObjectifyService.begin();
+	public static BeanArboPage getRootPage(Objectify ofy){
 		Query<RootArbo> root = ofy.query(RootArbo.class);
 		ArboPage rootPage = ofy.get(ArboPage.class, root.get().getIdOfRootArboPage());
 		if(rootPage != null){
-			return arboPageToBean(rootPage);
+			return arboPageToBean(ofy, rootPage);
 		}
 		return null;
 	}
 	
-	public static BeanArboPage arboPageToBean(ArboPage ap){
-		Objectify ofy = ObjectifyService.begin();
+	public static BeanArboPage arboPageToBean(Objectify ofy, ArboPage ap){
 		BeanArboPage bap = new BeanArboPage(ap.getId(),
 											ap.getUrlName(),
 											ap.getPublicationStart(), 
@@ -96,28 +84,25 @@ public final class TemplateTools {
 		return bap;
 	}
 	
-	public static BeanTemplate getTemplate(Long TemplateId){
-		Objectify ofy = ObjectifyService.begin();
+	public static BeanTemplate getTemplate(Objectify ofy, Long TemplateId){
     	BeanTemplate bean = null;
 
 		Template template = ofy.get(Template.class, TemplateId);
 		
 		if(template != null)
-			bean = TemplateToBean(template);
+			bean = TemplateToBean(ofy, template);
 	    
 	    return bean;
 	}
 	
-	public static BeanTemplate getTemplatebyName(String  templateName){
-		Objectify ofy = ObjectifyService.begin();
+	public static BeanTemplate getTemplatebyName(Objectify ofy, String  templateName){
     	Query<Template> template = ofy.query(Template.class).filter("name ", templateName);
 		
-		return TemplateToBean(template.get());
+		return TemplateToBean(ofy, template.get());
 	}
 	
-	public static String getPagePath(Long pageId, int translationIndex){
+	public static String getPagePath(Objectify ofy, Long pageId, int translationIndex){
 		String path = "";
-		Objectify ofy = ObjectifyService.begin();
 		Long parentId = pageId;
 
 		while(parentId != null){
@@ -129,10 +114,9 @@ public final class TemplateTools {
 		return path;
 	}
 	
-	public static List<LinkPage> getLinkPagePath(Long pageId, int translationIndex){
+	public static List<LinkPage> getLinkPagePath(Objectify ofy, Long pageId, int translationIndex){
 		ArrayList<LinkPage> path = new ArrayList<LinkPage>();
 		ArrayList<ArboPage> inversePath = new ArrayList<ArboPage>();
-		Objectify ofy = ObjectifyService.begin();
 		Long parentId = pageId;
 		String strPath = "";
 
@@ -153,36 +137,33 @@ public final class TemplateTools {
 		return path;
 	}
 	
-	public static List<BeanDependentTag> getTag(Long pageId){
+	public static List<BeanDependentTag> getTag(Objectify ofy, Long pageId){
 		ArrayList<BeanDependentTag> beans = new ArrayList<BeanDependentTag>();
-		Objectify ofy = ObjectifyService.begin();
 		
 		ArboPage page = ofy.get(ArboPage.class, pageId);
 		
 		if(page != null){
 			Map<Long, DependentTag> dTags = ofy.get(DependentTag.class, page.getTagsId());
 			for(DependentTag dTag : dTags.values()){
-				beans.add(DependentTagToBean(dTag));
+				beans.add(DependentTagToBean(ofy, dTag));
 			}
 		}
 		
 		return beans;
 	}
 	
-	public static List<BeanArboPage> getChildPage(Long pageId){
+	public static List<BeanArboPage> getChildPage(Objectify ofy, Long pageId){
 		ArrayList<BeanArboPage> beans = new ArrayList<BeanArboPage>();
-		Objectify ofy = ObjectifyService.begin();
 		ArboPage page = ofy.get(ArboPage.class, pageId);
 		Map<Long, ArboPage> childs = ofy.get(ArboPage.class, page.getIdChildArboPage());
 		
 		for(ArboPage child : childs.values()){
-			beans.add(arboPageToBean(child));
+			beans.add(arboPageToBean(ofy, child));
 		}
 		return beans;
 	}
 	
-	public static List<LinkPage> getLinkSistersPage(Long pageId, int translationIndex){
-		Objectify ofy = ObjectifyService.begin();
+	public static List<LinkPage> getLinkSistersPage(Objectify ofy, Long pageId, int translationIndex){
 		ArrayList<LinkPage> linkPage = new ArrayList<LinkPage>();
 		ArboPage page = ofy.get(ArboPage.class, pageId);
 		ArboPage parent = ofy.get(ArboPage.class, page.getParentId());
@@ -191,7 +172,7 @@ public final class TemplateTools {
 			TranslationPage translation = ofy.get(
 					sister.getTranslation().get(translationIndex));
 			linkPage.add(new LinkPage(translation.getPageTitle(), 
-					getPagePath(sister.getId(), translationIndex)));
+					getPagePath(ofy, sister.getId(), translationIndex)));
 					
 		}
 		
@@ -204,8 +185,7 @@ public final class TemplateTools {
 	 * @param tag : language's tag
 	 * @return languageIndex, -1 either
 	 */
-	public static int getIndexOfLanguage(String tag) {
-		Objectify ofy = ObjectifyService.begin();
+	public static int getIndexOfLanguage(Objectify ofy, String tag) {
 		Query<Language> req = ofy.query(Language.class);
 		for(Language lg : req){
 			if(lg.getTag().equals(tag))
@@ -223,8 +203,7 @@ public final class TemplateTools {
 				tp.getContent().getValue());
 	}
 	
-	private static BeanTemplate TemplateToBean(Template tp){
-		Objectify ofy = ObjectifyService.begin();
+	private static BeanTemplate TemplateToBean(Objectify ofy, Template tp){
 		BeanTemplate btp = new BeanTemplate(tp.getId(),tp.getName(), tp.getShortLib(), tp.getDescription());
 		
 		ArrayList<BeanTag> lst = new ArrayList<BeanTag>();
@@ -244,8 +223,7 @@ public final class TemplateTools {
 				tag.isTextual());
 	}
 	
-	private static BeanDependentTag DependentTagToBean(DependentTag tag){
-		Objectify ofy = ObjectifyService.begin();
+	private static BeanDependentTag DependentTagToBean(Objectify ofy, DependentTag tag){
 		
 		return new BeanDependentTag(tag.getId(),
 				tagToBean(ofy.get(tag.getDependentTag())),
@@ -259,8 +237,7 @@ public final class TemplateTools {
 	 * @param path : the full path including root
 	 * @return specific page, null if any are find
 	 */
-	private static BeanArboPage getByPath(ArboPage page, String path) {
-		Objectify ofy = ObjectifyService.begin();
+	private static BeanArboPage getByPath(Objectify ofy, ArboPage page, String path) {
 		String newPath = "";
 		String[] urlPart = path.split("/");
 		if(urlPart.length !=0)
@@ -270,9 +247,9 @@ public final class TemplateTools {
 			Map<Long, ArboPage> childs = ofy.get(ArboPage.class, page.getIdChildArboPage());
 			for(ArboPage child : childs.values()){
 				if(child.getUrlName().equals(urlPart[1]) && urlPart.length != 2)
-					return getByPath(child,newPath);
+					return getByPath(ofy, child,newPath);
 				else if(child.getUrlName().equals(urlPart[1]) && urlPart.length == 2)
-					return arboPageToBean(child);
+					return arboPageToBean(ofy, child);
 			}
 		}
 		return null;

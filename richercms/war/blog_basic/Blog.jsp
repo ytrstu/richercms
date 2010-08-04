@@ -9,7 +9,7 @@
 <title>Snowglass by Free Css Templates</title>
 <meta name="keywords" content="" />
 <meta name="description" content="" />
-<link href="/template_basic/blog.css" rel="stylesheet" type="text/css" />
+<link href="/blog_basic/blog.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
 <div id="header">

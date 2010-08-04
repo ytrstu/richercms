@@ -11,6 +11,7 @@ import com.sfeir.richercms.page.server.business.ArboPage;
 import com.sfeir.richercms.page.shared.BeanArboPage;
 import com.sfeir.richercms.page.shared.BeanDependentTag;
 import com.sfeir.richercms.page.shared.BeanTemplate;
+import com.sfeir.richercms.server.business.LogInfo;
 import com.sfeir.richercms.site.TemplateTools;
 
 public class TemplateBasic {
@@ -19,14 +20,14 @@ public class TemplateBasic {
 	private int translation;
 	private BeanArboPage root;
 	private List<LinkPage> linkPath;
+	private Objectify ofy;
+	private List<LogInfo> logs;
 	
-	static {
-        ObjectifyService.register(ArboPage.class);
-	}
-	
-	public TemplateBasic(BeanArboPage page, int translationIndex){
+	public TemplateBasic(Objectify ofy, BeanArboPage page, int translationIndex){
+		this.ofy = ofy;
 		this.page = page;
 		this.translation = translationIndex;
+		this.logs = new ArrayList<LogInfo>();
 	}
 	
 	public List<LinkPage> getAllCategory() {
@@ -56,7 +57,7 @@ public class TemplateBasic {
 	public LinkPage getRootPage(){
 		
 		if(this.root == null)
-			this.root = TemplateTools.getRootPage();
+			this.root = TemplateTools.getRootPage(this.ofy);
 		
 		return new LinkPage(this.root.getTranslation().get(this.translation)
 							.getPageTitle(),
@@ -65,18 +66,18 @@ public class TemplateBasic {
 	
 	public List<LinkPage> getLinkPagePath(){
 		if(this.linkPath == null)
-			this.linkPath = TemplateTools.getLinkPagePath(this.page.getId(),
+			this.linkPath = TemplateTools.getLinkPagePath(this.ofy, this.page.getId(),
 															this.translation);
 		return this.linkPath;
 	}
 	
 	public List<LinkPage> getLinkSistersPage(){
-		return TemplateTools.getLinkSistersPage(this.page.getId(),this.translation);
+		return TemplateTools.getLinkSistersPage(this.ofy, this.page.getId(),this.translation);
 	}
 	
 	
 	public String getPath(){
-		return TemplateTools.getPagePath(page.getId(), this.translation);
+		return TemplateTools.getPagePath(this.ofy, page.getId(), this.translation);
 	}
 	
 	public String getBrowserTitle() {
@@ -136,40 +137,45 @@ public class TemplateBasic {
 	}
 	
 	public List<LinkPage> getAllPageByTag(String tagName) {
-		
-		Objectify ofy = ObjectifyService.begin();
+		Long avant = System.currentTimeMillis();
 		ArrayList<LinkPage> lnkPage = new ArrayList<LinkPage>();
-		BeanTemplate template = TemplateTools.getTemplatebyName("siteBasic");
-		Query<ArboPage> pages = ofy.query(ArboPage.class).filter("templateId =", template.getId());
+		BeanTemplate template = TemplateTools.getTemplatebyName(this.ofy, "siteBasic");
+		Query<ArboPage> pages = this.ofy.query(ArboPage.class).filter("templateId =", template.getId());
 		
 		for(ArboPage page : pages){
 			
-			for(BeanDependentTag tag : TemplateTools.getTag(page.getId())){
+			for(BeanDependentTag tag : TemplateTools.getTag(this.ofy, page.getId())){
 				if(tag.getDependentTag().getTagName().equals(tagName)){
-					lnkPage.add(new LinkPage(ofy.get(page.getTranslation().get(this.translation))
+					lnkPage.add(new LinkPage(this.ofy.get(page.getTranslation().get(this.translation))
 									.getPageTitle(),
-							TemplateTools.getPagePath(page.getId(), this.translation)));
+							TemplateTools.getPagePath(this.ofy, page.getId(), this.translation)));
 					break;
 				}
 			}		
 		}
+		Long apres = System.currentTimeMillis();
+		this.logs.add(new LogInfo("TemplateBasic","getAllPageByTag"," tagName = "+tagName,apres-avant));
 		return lnkPage;
 	}
 	
 	private List<LinkPage> getChildByTag(String tagName){
-		List<BeanArboPage> childs = TemplateTools.getChildPage(this.page.getId());
+		List<BeanArboPage> childs = TemplateTools.getChildPage(this.ofy, this.page.getId());
 		ArrayList<LinkPage> lnkPage = new ArrayList<LinkPage>();
 
 		for(BeanArboPage child : childs){
-			for(BeanDependentTag tag : TemplateTools.getTag(child.getId())){
+			for(BeanDependentTag tag : TemplateTools.getTag(this.ofy, child.getId())){
 				if(tag.getDependentTag().getTagName().equals(tagName)){
 					lnkPage.add(new LinkPage(child.getTranslation().get(this.translation)
 									.getPageTitle(),
-							TemplateTools.getPagePath(child.getId(), this.translation)));
+							TemplateTools.getPagePath(this.ofy, child.getId(), this.translation)));
 					break;
 				}
 			}
 		}
 		return lnkPage;
+	}
+	
+	public void storeLog(){
+		ofy.put(this.logs);
 	}
 }

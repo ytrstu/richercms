@@ -106,13 +106,21 @@ public class TagManagerPresenter extends LazyPresenter<ITagManager, PageEventBus
 	 */
 	private void fetchTagTable(){
 		this.view.clearTagTable();
+		this.eventBus.showInformationPopUp();
+		this.eventBus.addWaitLinePopUp(view.getConstants().MsgLoadTag());
 		this.rpcTag.getAllTags(new AsyncCallback<List<BeanTag>>() {
 			public void onSuccess(List<BeanTag> result) {
+				eventBus.addSuccessPopUp(view.getConstants().MsgLoadTagSuccess());
+				eventBus.addWaitLinePopUp(view.getConstants().MsgLoadTagTable());
 				for(final BeanTag bean : result){
 					addTag(bean);
 				}
+				eventBus.addSuccessPopUp(view.getConstants().MsgLoadTagTableOk());
+				eventBus.hideInformationPopUp();
 			}
 			public void onFailure(Throwable caught) {
+				eventBus.addErrorLinePopUp(view.getConstants().MsgLoadTagFail());
+				eventBus.hideInformationPopUp();
 			}
 		});
 	}

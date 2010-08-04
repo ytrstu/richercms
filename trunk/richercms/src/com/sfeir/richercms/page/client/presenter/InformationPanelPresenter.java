@@ -297,6 +297,8 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 	public void onCallInfo() {
 
 		if(this.testField()) {
+			eventBus.showInformationPopUp();
+			eventBus.addWaitLinePopUp("get information");
 			//need the current state to restore them later
 			PageState currentState = this.state;
 			//modifymode : modify the translation in the current page
@@ -314,7 +316,6 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 				public void onFailure(Throwable caught) {}
 				public void onSuccess(Boolean result) {
 					if(result){
-						eventBus.showInformationPopUp();
 						//save dependentTags and call sendInfo (due waiting for an rpc result)
 						if(view.getSelectedTemplateId() != null)
 							saveDependentTags();
@@ -324,6 +325,8 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 					}
 					else{
 						//error message
+						eventBus.addWaitLinePopUp("same url already exist");
+						eventBus.hideInformationPopUp();
 					}
 				}
 			});

@@ -29,6 +29,9 @@ public class CenterEventPopUp extends CenterLayoutPanel {
 		if (this.previousState == 0) {
 			index--;
 		}
+		
+		if(index == -1)
+			index = 0;
 
 		switch (state) {
 		case 0:

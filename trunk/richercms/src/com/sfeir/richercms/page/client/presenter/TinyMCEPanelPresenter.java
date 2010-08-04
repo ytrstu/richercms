@@ -41,8 +41,10 @@ public class TinyMCEPanelPresenter extends LazyPresenter<ITinyMCEPanel, PageEven
 	public void onDisplayContent(List<BeanTranslationPage>  translationContents) {
 		this.TranslationContents = translationContents;
 		this.view.displayViewer(this.TranslationContents.get(this.indexOfTranslation).getContent());
+		// display this message only if application are in display state
+		if(this.state == PageState.display)
+			this.eventBus.addSuccessPopUp("Chargement terminé");
 		this.state = PageState.display;
-		this.eventBus.addSuccessPopUp("Chargement terminé");
 		this.eventBus.hideInformationPopUp();
 	}
 	

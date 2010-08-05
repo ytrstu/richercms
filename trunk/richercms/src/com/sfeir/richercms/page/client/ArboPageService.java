@@ -40,8 +40,9 @@ public interface ArboPageService extends RemoteService {
 	 * Add a new ArboPage in the dataStore
 	 * @param newPage : add it in dataStore
 	 * @param parentId : ID of the parentPage
+	 * @return The new PageId
 	 */
-	public void addArboPage(BeanArboPage newArboPage, Long parentId);
+	public Long addArboPage(BeanArboPage newArboPage, Long parentId);
 	
 	/**
 	 * Modify this page in the datastore

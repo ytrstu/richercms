@@ -522,4 +522,13 @@ public interface PageEventBus extends EventBus {
 	 */
 	@Event( handlers =  PagePresenter.class )
 	public void displayTemplateManager(ITemplateManager templateManager);
+	
+	/**
+	 * Fired by the PagePresenter when a page
+	 * are save or update. This event allows 
+	 * informationPresenter to save customTag.
+	 * @param pageId : necessary to save/update DependentTag
+	 */
+	@Event( handlers =  InformationPanelPresenter.class )
+	public void saveCustomTag(long pageId);
 }

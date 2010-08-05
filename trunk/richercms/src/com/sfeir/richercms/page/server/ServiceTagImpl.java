@@ -1,7 +1,6 @@
 package com.sfeir.richercms.page.server;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -67,11 +66,10 @@ public class ServiceTagImpl extends RemoteServiceServlet implements TagService {
 		ArrayList<BeanDependentTag> beans = new ArrayList<BeanDependentTag>();
 		Objectify ofy = ObjectifyService.begin();
 		
-		ArboPage page = ofy.get(ArboPage.class, pageId);
+		Query<DependentTag> depTags = ofy.query(DependentTag.class).filter("pageId ", pageId);
 		
-		if(page != null){
-			Map<Long, DependentTag> dTags = ofy.get(DependentTag.class, page.getTagsId());
-			for(DependentTag dTag : dTags.values()){
+		if(depTags.countAll() != 0){
+			for(DependentTag dTag : depTags){
 				beans.add(DependentTagToBean(dTag));
 			}
 		}
@@ -80,21 +78,31 @@ public class ServiceTagImpl extends RemoteServiceServlet implements TagService {
 	}
 	
 	public List<Long> getAssociatedTag(Long pageId){
-		ArrayList<Long> lst = new ArrayList<Long>();
 		Objectify ofy = ObjectifyService.begin();
 		
 		ArboPage page = ofy.get(ArboPage.class, pageId);
 		
-		if(page != null){
-			Map<Long, DependentTag> dTags = ofy.get(DependentTag.class, page.getTagsId());
-			for(DependentTag dTag : dTags.values()){
-				lst.add(dTag.getDependentTag().getId());
-			}
-		}
-		
-		return lst;
+		if(page != null)
+			return page.getTagsId();
+		return null;
 	}
 	
+	public void upDateDependentTag(List<BeanDependentTag> customTags) {
+		Objectify ofy = ObjectifyService.begin();
+		if(customTags.size() != 0){
+			
+			Query<DependentTag> depTags = ofy.query(DependentTag.class)
+											.filter("pageId ", customTags.get(0).getPageId());
+			// delete all dependentTags for a specific page
+			ofy.delete(depTags);
+			// add new dependentTag
+			for(BeanDependentTag bean: customTags){
+				ofy.put(beanToDependentTag(bean));
+			}
+		}
+	}
+	
+	/*
 	public List<Long> upDateDependentTag(List<BeanDependentTag> updateDTags, List<Long> addedTagsId,
 			List<Long> deletedTags, HashMap<Long,String> customTag) {
 		
@@ -126,7 +134,7 @@ public class ServiceTagImpl extends RemoteServiceServlet implements TagService {
 		}
 		
 		return lst;
-	}
+	}*/
 	
 	public void deleteTag(Long id) {
 		Objectify ofy = ObjectifyService.begin();
@@ -140,14 +148,13 @@ public class ServiceTagImpl extends RemoteServiceServlet implements TagService {
 				ofy.put(template);
 			}
 			
-			//delete tag in all arboPage who associate this tag
-			Query<DependentTag> dTags = ofy.query(DependentTag.class).filter("dependentTag ", new Key<Tag>(Tag.class, id));
-			for(DependentTag dTag : dTags){
-				Query<ArboPage> pages = ofy.query(ArboPage.class).filter("tagsId ", dTag.getId());
-				pages.get().getTagsId().remove(dTag.getId());
-				ofy.put(pages.get());
+			Query<ArboPage> pages = ofy.query(ArboPage.class).filter("tagsId", id);
+			for(ArboPage page : pages){
+				page.getTagsId().remove(id);
+				ofy.put(page);
 			}
-			//delete all dependentTag
+			//delete tag in all arboPage who associate this tag
+			Query<DependentTag> dTags = ofy.query(DependentTag.class).filter("correspTagId ", id);
 			ofy.delete(dTags);
 			//finally delete the tag
 			ofy.delete(tag);
@@ -233,7 +240,8 @@ public class ServiceTagImpl extends RemoteServiceServlet implements TagService {
 	 */
 	private DependentTag beanToDependentTag(BeanDependentTag bean){
 		return new DependentTag(bean.getId(),
-				new Key<Tag>(Tag.class, bean.getDependentTag().getId()),
+				bean.getPageId(),
+				bean.getDependentTagId(),
 				bean.getCustomName());
 	}
 	
@@ -243,10 +251,9 @@ public class ServiceTagImpl extends RemoteServiceServlet implements TagService {
 	 * @return corresponding BeanDependentTag
 	 */
 	private BeanDependentTag DependentTagToBean(DependentTag tag){
-		Objectify ofy = ObjectifyService.begin();
-		
 		return new BeanDependentTag(tag.getId(),
-				tagToBean(ofy.get(tag.getDependentTag())),
-				tag.getCustomName());
+				tag.getCorrespTagId(),
+				tag.getCustomName(),
+				tag.getPageId());
 	}
 }

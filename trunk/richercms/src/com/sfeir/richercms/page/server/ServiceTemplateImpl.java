@@ -12,6 +12,7 @@ import com.sfeir.richercms.page.client.TemplateService;
 import com.sfeir.richercms.page.server.business.ArboPage;
 import com.sfeir.richercms.page.server.business.Tag;
 import com.sfeir.richercms.page.server.business.Template;
+import com.sfeir.richercms.page.server.business.TranslationPage;
 import com.sfeir.richercms.page.shared.BeanTag;
 import com.sfeir.richercms.page.shared.BeanTemplate;
 
@@ -22,6 +23,7 @@ public class ServiceTemplateImpl extends RemoteServiceServlet implements Templat
         ObjectifyService.register(Template.class);
         ObjectifyService.register(Tag.class);
         ObjectifyService.register(ArboPage.class);
+        ObjectifyService.register(TranslationPage.class);
 	}
 
 	public Long addTemplate(BeanTemplate bean) {
@@ -64,19 +66,45 @@ public class ServiceTemplateImpl extends RemoteServiceServlet implements Templat
 	
 	public void upDateTagsTemplate(Long templateId, List<Long> tagIds) {
 		ArrayList<Key<Tag>> lst = new ArrayList<Key<Tag>>();
+		ArrayList<Long> altIdToDelete = new ArrayList<Long>();
 		Objectify ofy = ObjectifyService.begin();
 
 		Template template = ofy.get(Template.class, templateId);
 		
-		if(template != null)
+		if(template != null){
+			//take all old tag associate to this template
+			List<Key<Tag>> altTags = template.getAssociatedTags();
+			for(Key<Tag> altTag : altTags){
+				// test if in old tag we need to delete tags
+				if(!tagIds.contains(altTag.getId())){
+					//add all tag we need to delete in a list
+					altIdToDelete.add(altTag.getId());
+				}
+			}
+			
+			for(Long altTagId : altIdToDelete){
+				//take all pages with specific template and contain any old tag to delete
+				Query<ArboPage> pages = ofy.query(ArboPage.class)
+										.filter("templateId", templateId)
+										.filter("tagsId", altTagId);
+				//for all pages delete id in her tag list
+				for(ArboPage page : pages){
+					page.getTagsId().remove(altTagId);
+					//save all changes
+					ofy.put(page);
+				}
+
+			}
+			
+			// now save new tag in template
 			for(Long tagId : tagIds) {
 				Key<Tag> kTag = new Key<Tag>(Tag.class, tagId);
 				lst.add(kTag);
 			}
-		
-		template.setAssociatedTags(lst);
-		
-		ofy.put(template);
+			
+			template.setAssociatedTags(lst);
+			ofy.put(template);
+		}
 	}
 	
 	public boolean updateTemplate(Long id, String name, String shortLib, String description) {

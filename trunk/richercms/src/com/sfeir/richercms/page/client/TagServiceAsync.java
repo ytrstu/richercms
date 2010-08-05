@@ -15,8 +15,7 @@ public interface TagServiceAsync {
 	void deleteTag(Long id, AsyncCallback<Void> callback);
 	void addTag(BeanTag bean, AsyncCallback<Long> callback);
 	void updateTag(BeanTag bean, AsyncCallback<Boolean> callback);
-	void upDateDependentTag(List<BeanDependentTag> updateDTags, List<Long> addedTags, 
-			List<Long> deletedTags, HashMap<Long,String> customTag, AsyncCallback<List<Long>> callback);
+	void upDateDependentTag(List<BeanDependentTag> customTags, AsyncCallback<Void> callback);
 	void getAllDependentTag(Long pageId, AsyncCallback<List<BeanDependentTag>> callback);
 	void getAssociatedTag(Long pageId, AsyncCallback<List<Long>> callback);
 }

@@ -130,12 +130,14 @@ public class PagePresenter extends LazyPresenter<IdisplayPage, PageEventBus> {
 		this.view.addLineInPopUp(view.getConstants().PopUpTakeInfo(), 1);
 		this.view.addLineInPopUp(view.getConstants().PopUpSaveInProgress(), 0);
 		this.editingPage.setParentId(this.parentPageId);
-		this.rpcPage.addArboPage(this.editingPage, this.parentPageId, new AsyncCallback<Void>() {
-			public void onSuccess(Void result) {
+		this.rpcPage.addArboPage(this.editingPage, this.parentPageId, new AsyncCallback<Long>() {
+			public void onSuccess(Long result) {
 				eventBus.AddNewChildInTree(); //reload the new tree
 				view.addLineInPopUp(view.getConstants().PopUpSaveFinish(), 1);
 				//on redonne la possibilité de changer de traduction
 				view.enableLanguageBox();
+				//allows informationPresenter to save customTag with right pageId
+				eventBus.saveCustomTag(result);
 				//this event is send if all information entered by user are right
 				eventBus.rightInformation();
 			}
@@ -158,6 +160,8 @@ public class PagePresenter extends LazyPresenter<IdisplayPage, PageEventBus> {
 				//reload the current treeNode
 				eventBus.reloadCurrentPageInTree(editingPage);
 				view.hideWaitPopUp();
+				//allows informationPresenter to save customTag with right pageId
+				eventBus.saveCustomTag(editingPage.getId());
 				//this event is send if all information entered by user are right
 				eventBus.rightInformation();
 			}

@@ -34,7 +34,7 @@ public class ServiceArboPageImpl  extends RemoteServiceServlet implements ArboPa
 	
 	public ServiceArboPageImpl(){super();}
 	
-	public void addArboPage(BeanArboPage newArboPage, Long parentId) {
+	public Long addArboPage(BeanArboPage newArboPage, Long parentId) {
 		
 		Objectify ofy = ObjectifyService.begin();
 		ArboPage nAP = this.BeanToArboPage(newArboPage);
@@ -42,7 +42,8 @@ public class ServiceArboPageImpl  extends RemoteServiceServlet implements ArboPa
 			
 		ArboPage parentPage = ofy.get(ArboPage.class, parentId);
 		parentPage.getIdChildArboPage().add(nAP.getId());
-		ofy.put(parentPage);	
+		ofy.put(parentPage);
+		return nAP.getId();
 	}
 
 	public boolean deleteArboPage(Long id, Long parentId) {

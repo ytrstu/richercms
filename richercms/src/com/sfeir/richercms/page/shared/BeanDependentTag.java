@@ -6,26 +6,29 @@ import java.io.Serializable;
 public class BeanDependentTag implements Serializable{
 
     private Long id;
-    private BeanTag dependentTag;
+    private Long pageId;
+    private Long dependentTagId;
     private String customName;
     
 	public BeanDependentTag() {
 		super();
-		this.dependentTag = null;
+		this.dependentTagId = null;
 		this.customName = "";
 	}
 	
-	public BeanDependentTag(BeanTag dependentTag, String customName) {
+	public BeanDependentTag(Long dependentTagId, String customName, Long pageId) {
 		super();
-		this.dependentTag = dependentTag;
+		this.dependentTagId = dependentTagId;
 		this.customName = customName;
+		this.pageId = pageId;
 	}
     
-	public BeanDependentTag(Long id, BeanTag dependentTag, String customName) {
+	public BeanDependentTag(Long id, Long dependentTagId, String customName, Long pageId) {
 		super();
 		this.id = id;
-		this.dependentTag = dependentTag;
+		this.dependentTagId = dependentTagId;
 		this.customName = customName;
+		this.pageId = pageId;
 	}
 
 	public Long getId() {
@@ -36,12 +39,12 @@ public class BeanDependentTag implements Serializable{
 		this.id = id;
 	}
 
-	public BeanTag getDependentTag() {
-		return dependentTag;
+	public Long getDependentTagId() {
+		return dependentTagId;
 	}
 
-	public void setDependentTag(BeanTag dependentTag) {
-		this.dependentTag = dependentTag;
+	public void setDependentTagId(Long dependentTagId) {
+		this.dependentTagId = dependentTagId;
 	}
 
 	public String getCustomName() {
@@ -50,5 +53,13 @@ public class BeanDependentTag implements Serializable{
 
 	public void setCustomName(String customName) {
 		this.customName = customName;
+	}
+
+	public Long getPageId() {
+		return pageId;
+	}
+
+	public void setPageId(Long pageId) {
+		this.pageId = pageId;
 	}
 }

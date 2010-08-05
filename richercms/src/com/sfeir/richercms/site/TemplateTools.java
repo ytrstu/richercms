@@ -9,13 +9,11 @@ import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.Query;
 import com.sfeir.richercms.page.server.business.ArboPage;
-import com.sfeir.richercms.page.server.business.DependentTag;
 import com.sfeir.richercms.page.server.business.RootArbo;
 import com.sfeir.richercms.page.server.business.Tag;
 import com.sfeir.richercms.page.server.business.Template;
 import com.sfeir.richercms.page.server.business.TranslationPage;
 import com.sfeir.richercms.page.shared.BeanArboPage;
-import com.sfeir.richercms.page.shared.BeanDependentTag;
 import com.sfeir.richercms.page.shared.BeanTag;
 import com.sfeir.richercms.page.shared.BeanTemplate;
 import com.sfeir.richercms.page.shared.BeanTranslationPage;
@@ -137,15 +135,15 @@ public final class TemplateTools {
 		return path;
 	}
 	
-	public static List<BeanDependentTag> getTag(Objectify ofy, Long pageId){
-		ArrayList<BeanDependentTag> beans = new ArrayList<BeanDependentTag>();
+	public static List<BeanTag> getTag(Objectify ofy, Long pageId){
+		ArrayList<BeanTag> beans = new ArrayList<BeanTag>();
 		
 		ArboPage page = ofy.get(ArboPage.class, pageId);
 		
 		if(page != null){
-			Map<Long, DependentTag> dTags = ofy.get(DependentTag.class, page.getTagsId());
-			for(DependentTag dTag : dTags.values()){
-				beans.add(DependentTagToBean(ofy, dTag));
+			Map<Long, Tag> dTags = ofy.get(Tag.class, page.getTagsId());
+			for(Tag tag : dTags.values()){
+				beans.add(tagToBean(tag));
 			}
 		}
 		
@@ -221,13 +219,6 @@ public final class TemplateTools {
 				tag.getShortLib(),
 				tag.getDescription(),
 				tag.isTextual());
-	}
-	
-	private static BeanDependentTag DependentTagToBean(Objectify ofy, DependentTag tag){
-		
-		return new BeanDependentTag(tag.getId(),
-				tagToBean(ofy.get(tag.getDependentTag())),
-				tag.getCustomName());
 	}
 	
 	/**

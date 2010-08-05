@@ -2,7 +2,6 @@ package com.sfeir.richercms.page.server.business;
 
 import javax.persistence.Id;
 
-import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Cached;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Indexed;
@@ -16,26 +15,31 @@ public class DependentTag {
     @Id
     private Long id;
     @Indexed
-    private Key<Tag> dependentTag;
+    private Long pageId;
+    @Indexed
+    private Long correspTagId;
     private String customName;
     
 	public DependentTag() {
 		super();
-		this.dependentTag = null;
+		this.correspTagId = null;
 		this.customName = "";
+		this.pageId = null;
 	}
 	
-	public DependentTag(Key<Tag> dependentTag, String customName) {
+	public DependentTag(Long pageId, Long tagId, String customName) {
 		super();
-		this.dependentTag = dependentTag;
+		this.correspTagId = tagId;
 		this.customName = customName;
+		this.pageId = pageId;
 	}
     
-	public DependentTag(Long id, Key<Tag> dependentTag, String customName) {
+	public DependentTag(Long id, Long pageId, Long tagId, String customName) {
 		super();
 		this.id = id;
-		this.dependentTag = dependentTag;
+		this.correspTagId = tagId;
 		this.customName = customName;
+		this.pageId = pageId;
 	}
 
 	public Long getId() {
@@ -46,12 +50,12 @@ public class DependentTag {
 		this.id = id;
 	}
 
-	public Key<Tag> getDependentTag() {
-		return dependentTag;
+	public Long getCorrespTagId() {
+		return this.correspTagId;
 	}
 
-	public void setDependentTag(Key<Tag> dependentTag) {
-		this.dependentTag = dependentTag;
+	public void setCorrespTagId(Long tagId) {
+		this.correspTagId = tagId;
 	}
 
 	public String getCustomName() {
@@ -60,5 +64,13 @@ public class DependentTag {
 
 	public void setCustomName(String customName) {
 		this.customName = customName;
+	}
+
+	public Long getPageId() {
+		return pageId;
+	}
+
+	public void setPageId(Long pageId) {
+		this.pageId = pageId;
 	}
 }

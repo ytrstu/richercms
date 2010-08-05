@@ -1,7 +1,6 @@
 package com.sfeir.richercms.page.client.presenter;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import com.google.gwt.event.dom.client.ChangeEvent;
@@ -316,12 +315,9 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 				public void onFailure(Throwable caught) {}
 				public void onSuccess(Boolean result) {
 					if(result){
-						//save dependentTags and call sendInfo (due waiting for an rpc result)
-						if(view.getSelectedTemplateId() != null)
-							saveDependentTags();
-						else
-							//send directly information if any 
-							sendInfo(null);
+
+						//send directly information if any 
+						sendInfo();
 					}
 					else{
 						//error message
@@ -338,7 +334,7 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 	 * All dependentTag are save only if its was explicitly ask.
 	 * the only call of this methos was in onCallInfo
 	 */
-	private void saveDependentTags() {
+	/*private void saveDependentTags() {
 		if(this.state.equals(PageState.modify)){
 			this.rpcTag.getAllDependentTag(currentPage.getId(), 
 					new AsyncCallback<List<BeanDependentTag>>() {
@@ -351,13 +347,33 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 		}else{//when you add a new page, any tag depend of this page
 			parseAndSaveTag(new ArrayList<BeanDependentTag>());
 		}
+	}*/
+	
+	public void onSaveCustomTag(long pageId){
+		String val;
+		//on met dabord tout les tag sélectionné dans addedTags
+		List<Long> tagsId = view.getSelectedTagsId();
+		ArrayList<BeanDependentTag> customTag = new ArrayList<BeanDependentTag>();
+		
+		for(Long tagId : tagsId){
+			val = view.getCustomValue(tagId);
+			if(val != null){
+				customTag.add(new BeanDependentTag(tagId, val, pageId) );
+			}
+		}
+		rpcTag.upDateDependentTag(customTag, new AsyncCallback<Void>() {
+					public void onFailure(Throwable caught) {}
+					public void onSuccess(Void result) {
+						sendInfo();
+					}
+		});
 	}
 	
 	/**
 	 * Parse and save dependentTag
 	 * @param dependentTags : list of dependentTag
 	 */
-	private void parseAndSaveTag(List<BeanDependentTag> dependentTags) {
+	/*private void parseAndSaveTag(List<BeanDependentTag> dependentTags) {
 		boolean find = false;
 		//on met dabord tout les tag sélectionné dans addedTags
 		List<Long> addedTags = view.getSelectedTagsId();
@@ -410,7 +426,7 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 						sendInfo(result);
 					}
 		});
-	}
+	}*/
 	
 	/**
 	 * This methods was called in saveDependentTags.
@@ -420,8 +436,8 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 	 * @param newTagsIdList : new TagsId list of the currentPage, if null any 
 	 * modification on tagIdList are maked
 	 */
-	private void sendInfo(List<Long> newTagsIdList) {
-		
+	private void sendInfo() {
+		List<Long> newTagsIdList = view.getSelectedTagsId();
 		//add the rpc result in currentPage
 		if(newTagsIdList != null)
 			this.currentPage.setTagsId(newTagsIdList);
@@ -575,17 +591,17 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 		if(this.currentPage.getTemplateId()!= null && 
 			this.currentPage.getTemplateId().equals(new Long(view.getSelectedTemplateId()))){
 			
+			//check right normal tag
+			for (Long tagId : this.currentPage.getTagsId()){
+					view.checktag(tagId);
+			}
+			//fill
 			this.rpcTag.getAllDependentTag(this.currentPage.getId(), new AsyncCallback<List<BeanDependentTag>>() {
 				public void onFailure(Throwable caught) {}
-
 				public void onSuccess(List<BeanDependentTag> result) {
-					
 					for (BeanDependentTag dTag : result){
-						if(dTag.getDependentTag().isTextual())
-							view.setCustom(dTag.getDependentTag().getId(),dTag.getCustomName());
-						else
-							view.checktag(dTag.getDependentTag().getId());
-					}	
+						view.setCustom(dTag.getDependentTagId(),dTag.getCustomName());
+					}
 				}
 			});
 		}else // if new template selected, uncheck all

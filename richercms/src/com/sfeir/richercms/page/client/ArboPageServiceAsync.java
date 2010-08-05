@@ -19,7 +19,7 @@ public interface ArboPageServiceAsync {
 
 	public void getArboPage(Long id, AsyncCallback<BeanArboPage> callback);
 
-	public void addArboPage(BeanArboPage newArboPage, Long parentId, AsyncCallback<Void> callback);
+	public void addArboPage(BeanArboPage newArboPage, Long parentId, AsyncCallback<Long> callback);
 
 	public void updateArboPage(BeanArboPage p, List<Long> recPath, AsyncCallback<Void> callback);
 

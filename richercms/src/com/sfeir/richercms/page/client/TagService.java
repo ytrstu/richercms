@@ -1,6 +1,6 @@
 package com.sfeir.richercms.page.client;
 
-import java.util.HashMap;
+
 import java.util.List;
 
 import com.google.gwt.user.client.rpc.RemoteService;
@@ -64,14 +64,9 @@ public interface TagService extends RemoteService {
 	
 	/**
 	 * Update list of dependentTag
-	 * @param updateDTags : List of DependentTag who need modification
-	 * @param addedTags : List of new DependentTag to save in datastore
-	 * @param deletedTags : List of DependentTag who need to delete
-	 * @param customTag : Map tagId (include in addedTags) and a string custom value.
-	 * @return the new id list after fusion of Add/Delete/Update result.
+	 * @param customTags : List of custom tag to save/update
 	 */
-	List<Long> upDateDependentTag(List<BeanDependentTag> updateDTags, List<Long> addedTags,
-			List<Long> deletedTags, HashMap<Long,String> customTag);
+	void upDateDependentTag(List<BeanDependentTag> customTags);
 	
 	/**
 	 * Return an Ids list who containing all associated tag to a specific page

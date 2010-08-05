@@ -332,7 +332,9 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 	}
 	
 	public void checktag(Long tagId) {
-		((CheckBox)this.checkORTextBox.get(tagId)).setValue(true);
+		Widget widget = this.checkORTextBox.get(tagId);
+		if(widget.getClass().getName().contains("CheckBox"))
+			((CheckBox)widget).setValue(true);
 	}
 	
 	public void enabledWidgets() {

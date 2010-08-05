@@ -18,7 +18,7 @@ import com.sfeir.richercms.page.server.business.Tag;
 import com.sfeir.richercms.page.server.business.Template;
 import com.sfeir.richercms.page.server.business.TranslationPage;
 import com.sfeir.richercms.page.shared.BeanArboPage;
-import com.sfeir.richercms.page.shared.BeanDependentTag;
+import com.sfeir.richercms.page.shared.BeanTag;
 import com.sfeir.richercms.page.shared.BeanTemplate;
 import com.sfeir.richercms.server.business.LogInfo;
 import com.sfeir.richercms.wizard.server.business.Language;
@@ -137,19 +137,19 @@ public class ForwarderServlet extends HttpServlet {
 	 */
 	private String templateBasic() {
 		
-		List<BeanDependentTag> tags = TemplateTools.getTag(this.ofy, this.page.getId());
+		List<BeanTag> tags = TemplateTools.getTag(this.ofy, this.page.getId());
 		//define this var if you would use your one error page with specific style
 		this.errorTemplatePage = "/site_basic/Denied.jsp";
 		String jspName = null;
 		
-		for(BeanDependentTag tag : tags){
-			if(tag.getDependentTag().getTagName().equals("MainPage")){
+		for(BeanTag tag : tags){
+			if(tag.getTagName().equals("MainPage")){
 				jspName = "MainPage";
 				break;
-			}else if (tag.getDependentTag().getTagName().equals("Category")){
+			}else if (tag.getTagName().equals("Category")){
 				jspName = "Category";
 				break;
-			}else if (tag.getDependentTag().getTagName().equals("Article")){
+			}else if (tag.getTagName().equals("Article")){
 				jspName = "Article";
 				break;
 			}
@@ -163,13 +163,13 @@ public class ForwarderServlet extends HttpServlet {
 	 * @return right jspName to call
 	 */
 	private String blogBasic(){
-		List<BeanDependentTag> tags = TemplateTools.getTag(this.ofy, this.page.getId());
+		List<BeanTag> tags = TemplateTools.getTag(this.ofy, this.page.getId());
 		//define this var if you would use your one error page with specific style
 		this.errorTemplatePage = "/site_basic/Denied.jsp";
 		String jspName = null;
 		
-		for(BeanDependentTag tag : tags){
-			if (tag.getDependentTag().getTagName().equals("Blog")){
+		for(BeanTag tag : tags){
+			if (tag.getTagName().equals("Blog")){
 				jspName = "Blog";
 				break;
 			}

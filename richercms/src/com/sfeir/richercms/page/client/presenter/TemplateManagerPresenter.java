@@ -251,7 +251,7 @@ public class TemplateManagerPresenter extends LazyPresenter<ITemplateManager, Pa
 	private void modifySelectedTemplate() {
 		this.eventBus.addWaitLinePopUp(this.view.getConstants().MsgCheckTag());
 		//test if list contain no template yet
-		if(this.view.getSelectedTemplateId() != null)
+		if(this.view.getSelectedTemplateId() != null){
 			this.rpcTemplate.getTemplate(this.view.getSelectedTemplateId(), 
 					new AsyncCallback<BeanTemplate>() {
 						public void onFailure(Throwable caught) {
@@ -263,6 +263,11 @@ public class TemplateManagerPresenter extends LazyPresenter<ITemplateManager, Pa
 							eventBus.hideInformationPopUp();
 						}
 			});
+			
+		}else{
+			eventBus.addSuccessPopUp(view.getConstants().MsgGoodTagSelected());
+			eventBus.hideInformationPopUp();
+		}
 	}
 	
 	/**

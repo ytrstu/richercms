@@ -5,11 +5,10 @@ import java.util.Date;
 import java.util.List;
 
 import com.googlecode.objectify.Objectify;
-import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.Query;
 import com.sfeir.richercms.page.server.business.ArboPage;
+import com.sfeir.richercms.page.server.business.Tag;
 import com.sfeir.richercms.page.shared.BeanArboPage;
-import com.sfeir.richercms.page.shared.BeanDependentTag;
 import com.sfeir.richercms.page.shared.BeanTemplate;
 import com.sfeir.richercms.server.business.LogInfo;
 import com.sfeir.richercms.site.TemplateTools;
@@ -140,6 +139,21 @@ public class TemplateBasic {
 		Long avant = System.currentTimeMillis();
 		ArrayList<LinkPage> lnkPage = new ArrayList<LinkPage>();
 		BeanTemplate template = TemplateTools.getTemplatebyName(this.ofy, "siteBasic");
+		Query<Tag> tags = this.ofy.query(Tag.class).filter("tagName =",tagName);
+		if(tags.countAll() != 0){
+			Query<ArboPage> pages = this.ofy.query(ArboPage.class)
+				.filter("templateId =", template.getId())
+				.filter("tagsId =", tags.get().getId());
+			
+			for(ArboPage page : pages){
+				lnkPage.add(new LinkPage(this.ofy.get(page.getTranslation().get(this.translation))
+						.getPageTitle(),
+				TemplateTools.getPagePath(this.ofy, page.getId(), this.translation)));
+			}
+		}
+		
+		/*
+		BeanTemplate template = TemplateTools.getTemplatebyName(this.ofy, "siteBasic");
 		Query<ArboPage> pages = this.ofy.query(ArboPage.class).filter("templateId =", template.getId());
 		
 		for(ArboPage page : pages){
@@ -152,7 +166,8 @@ public class TemplateBasic {
 					break;
 				}
 			}		
-		}
+		}*/
+		
 		Long apres = System.currentTimeMillis();
 		this.logs.add(new LogInfo("TemplateBasic","getAllPageByTag"," tagName = "+tagName,apres-avant));
 		return lnkPage;
@@ -161,15 +176,14 @@ public class TemplateBasic {
 	private List<LinkPage> getChildByTag(String tagName){
 		List<BeanArboPage> childs = TemplateTools.getChildPage(this.ofy, this.page.getId());
 		ArrayList<LinkPage> lnkPage = new ArrayList<LinkPage>();
-
-		for(BeanArboPage child : childs){
-			for(BeanDependentTag tag : TemplateTools.getTag(this.ofy, child.getId())){
-				if(tag.getDependentTag().getTagName().equals(tagName)){
-					lnkPage.add(new LinkPage(child.getTranslation().get(this.translation)
-									.getPageTitle(),
-							TemplateTools.getPagePath(this.ofy, child.getId(), this.translation)));
-					break;
-				}
+		
+		Query<Tag> tags = this.ofy.query(Tag.class).filter("tagName =",tagName);
+		if(tags.countAll() != 0){
+			for(BeanArboPage child : childs){
+				if(child.getTagsId().contains(tags.get().getId()))
+						lnkPage.add(new LinkPage(child.getTranslation().get(this.translation)
+										.getPageTitle(),
+								TemplateTools.getPagePath(this.ofy, child.getId(), this.translation)));
 			}
 		}
 		return lnkPage;

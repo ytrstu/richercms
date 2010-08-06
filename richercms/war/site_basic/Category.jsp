@@ -1,17 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@ page import = "com.sfeir.richercms.site.template.template_basic.*" %>
-<%@ page import = "com.sfeir.richercms.page.shared.*, java.util.List" %>
-<%@ page import = "com.googlecode.objectify.Objectify" %>
+<%@ page import = "com.sfeir.richercms.page.server.business.*, java.util.List" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<% // initialize template class
 		String siteSufix = "/site";
 		int languageIndex = (Integer)request.getAttribute("language");
-		BeanArboPage p = (BeanArboPage)request.getAttribute("page");
-		Objectify ofy = (Objectify)request.getAttribute("ofy");
-		TemplateBasic template = new TemplateBasic(ofy, p, languageIndex);
+		ArboPage p = (ArboPage)request.getAttribute("page");
+		TemplateBasic template = new TemplateBasic(p, languageIndex);
 		LinkPage root = template.getRootPage();
 	%>
 	<meta name = "decription" content = "<%=template.getBrowserTitle()%>" />
@@ -27,7 +25,6 @@
     <div id="language">
        <div id="language_fr"><a href="<%=template.getRegularPath(request.getPathInfo()+"?lg=fr") %>"><img src="/tab_images/fr.png" class="photo"/></a></div>
        <div id="language_en"><a href="<%=template.getRegularPath(request.getPathInfo()+"?lg=en") %>"><img src="/tab_images/en.png" class="photo"/></a></div>
-       <div id="language_de"><a href="<%=template.getRegularPath(request.getPathInfo()+"?lg=de") %>"><img src="/tab_images/de.png" class="photo"/></a></div>
 	</div>
     <div id="header">
     	<div id="left_header"></div>

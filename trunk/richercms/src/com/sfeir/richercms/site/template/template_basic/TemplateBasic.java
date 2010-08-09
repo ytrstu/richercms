@@ -21,16 +21,18 @@ public class TemplateBasic {
 	private BeanArboPage root;
 	private List<LinkPage> linkPath;
 	private List<LogInfo> logs;
+	private Objectify ofy;
 	
 	static {
         ObjectifyService.register(ArboPage.class);
         ObjectifyService.register(LogInfo.class);
 	}
 	
-	public TemplateBasic(ArboPage page, int translationIndex){
-		this.page = TemplateTools.arboPageToBean(page);
+	public TemplateBasic(Objectify ofy, ArboPage page, int translationIndex){
 		this.translation = translationIndex;
 		this.logs = new ArrayList<LogInfo>();
+		this.ofy = ofy;
+		this.page = TemplateTools.arboPageToBean(this.ofy, page);
 	}
 	
 	public List<LinkPage> getAllCategory() {
@@ -38,7 +40,8 @@ public class TemplateBasic {
 	}
 	
 	public boolean isVisible(){
-		return TemplateTools.isVisible(this.page);
+		return TemplateTools.isVisible(this.page.getPublicationStart(), 
+				this.page.getPublicationFinish());
 	}
 	
 	public List<LinkPage> getAllNews(){
@@ -60,7 +63,7 @@ public class TemplateBasic {
 	public LinkPage getRootPage(){
 		
 		if(this.root == null)
-			this.root = TemplateTools.arboPageToBean(TemplateTools.getRootPage());
+			this.root = TemplateTools.arboPageToBean(this.ofy, TemplateTools.getRootPage(this.ofy));
 		
 		return new LinkPage(this.root.getTranslation().get(this.translation)
 							.getPageTitle(),
@@ -69,18 +72,18 @@ public class TemplateBasic {
 	
 	public List<LinkPage> getLinkPagePath(){
 		if(this.linkPath == null)
-			this.linkPath = TemplateTools.getLinkPagePath(this.page.getId(),
+			this.linkPath = TemplateTools.getLinkPagePath(this.ofy, this.page.getId(),
 															this.translation);
 		return this.linkPath;
 	}
 	
 	public List<LinkPage> getLinkSistersPage(){
-		return TemplateTools.getLinkSistersPage(this.page.getId(),this.translation);
+		return TemplateTools.getLinkSistersPage(this.ofy, this.page.getId(),this.translation);
 	}
 	
 	
 	public String getPath(){
-		return TemplateTools.getPagePath(page.getId(), this.translation);
+		return TemplateTools.getPagePath(this.ofy, page.getId(), this.translation);
 	}
 	
 	public String getBrowserTitle() {
@@ -143,7 +146,7 @@ public class TemplateBasic {
 		Objectify ofy = ObjectifyService.begin();
 		Long avant = System.currentTimeMillis();
 		ArrayList<LinkPage> lnkPage = new ArrayList<LinkPage>();
-		Template template = TemplateTools.getTemplatebyName("siteBasic");
+		Template template = TemplateTools.getTemplatebyName(this.ofy, "siteBasic");
 		Query<Tag> tags = ofy.query(Tag.class).filter("tagName =",tagName);
 		if(tags.countAll() != 0){
 			Query<ArboPage> pages = ofy.query(ArboPage.class)
@@ -151,27 +154,15 @@ public class TemplateBasic {
 				.filter("tagsId =", tags.get().getId());
 			
 			for(ArboPage page : pages){
-				lnkPage.add(new LinkPage(ofy.get(page.getTranslation().get(this.translation))
-						.getPageTitle(),
-				TemplateTools.getPagePath(page.getId(), this.translation)));
+				if(TemplateTools.isVisible(page.getPublicationStart(), 
+						page.getPublicationFinish())){
+					lnkPage.add(new LinkPage(ofy.get(
+							page.getTranslation().get(this.translation)).getPageTitle(),
+							TemplateTools.getPagePath(this.ofy, page.getId(), 
+							this.translation)));
+				}
 			}
 		}
-		
-		/*
-		BeanTemplate template = TemplateTools.getTemplatebyName(this.ofy, "siteBasic");
-		Query<ArboPage> pages = this.ofy.query(ArboPage.class).filter("templateId =", template.getId());
-		
-		for(ArboPage page : pages){
-			
-			for(BeanDependentTag tag : TemplateTools.getTag(this.ofy, page.getId())){
-				if(tag.getDependentTag().getTagName().equals(tagName)){
-					lnkPage.add(new LinkPage(this.ofy.get(page.getTranslation().get(this.translation))
-									.getPageTitle(),
-							TemplateTools.getPagePath(this.ofy, page.getId(), this.translation)));
-					break;
-				}
-			}		
-		}*/
 		
 		Long apres = System.currentTimeMillis();
 		this.logs.add(new LogInfo("TemplateBasic","getAllPageByTag"," tagName = "+tagName,apres-avant));
@@ -179,24 +170,60 @@ public class TemplateBasic {
 	}
 	
 	private List<LinkPage> getChildByTag(String tagName){
+		Long avant = System.currentTimeMillis();
 		Objectify ofy = ObjectifyService.begin();
-		List<BeanArboPage> childs = TemplateTools.getChildPage(this.page.getId());
+		List<BeanArboPage> childs = TemplateTools.getChildPage(this.ofy, this.page.getId());
 		ArrayList<LinkPage> lnkPage = new ArrayList<LinkPage>();
 		
 		Query<Tag> tags = ofy.query(Tag.class).filter("tagName =",tagName);
 		if(tags.countAll() != 0){
 			for(BeanArboPage child : childs){
-				if(child.getTagsId().contains(tags.get().getId()))
+				//if this child are tagged and if it was visible
+				if(child.getTagsId().contains(tags.get().getId()) &&
+					TemplateTools.isVisible(child.getPublicationStart(), 
+							child.getPublicationFinish()))
 						lnkPage.add(new LinkPage(child.getTranslation().get(this.translation)
 										.getPageTitle(),
-								TemplateTools.getPagePath(child.getId(), this.translation)));
+								TemplateTools.getPagePath(this.ofy, child.getId(), this.translation)));
 			}
 		}
+		Long apres = System.currentTimeMillis();
+		this.logs.add(new LogInfo("TemplateBasic","getChildByTag"," tagName = "+tagName,apres-avant));
 		return lnkPage;
 	}
 	
 	public void storeLog(){
 		Objectify ofy = ObjectifyService.begin();
 		ofy.put(this.logs);
+	}
+	
+	
+	public List<LinkPage> getRootChildByTag(String tagName){
+		Long avant = System.currentTimeMillis();
+		ArrayList<LinkPage> lnkPage = new ArrayList<LinkPage>();
+		Objectify ofy = ObjectifyService.begin();
+		if(this.root == null)
+			this.root = TemplateTools.arboPageToBean(this.ofy, TemplateTools.getRootPage(this.ofy));
+
+		Query<Tag> tags = ofy.query(Tag.class).filter("tagName =",tagName);
+		if(tags.countAll() != 0){
+			Query<ArboPage> pages = ofy.query(ArboPage.class)
+									.filter("parentId =", this.root.getId())
+									.filter("tagsId =",tags.get().getId());
+			
+			for(ArboPage page : pages){
+				if(TemplateTools.isVisible(page.getPublicationStart(), 
+						page.getPublicationFinish())){
+					lnkPage.add(new LinkPage(ofy.get(
+							page.getTranslation().get(this.translation)).getPageTitle(),
+							TemplateTools.getPagePath(this.ofy, page.getId(),
+							this.translation)));
+				}
+			}
+		}
+		
+		Long apres = System.currentTimeMillis();
+		this.logs.add(new LogInfo("TemplateBasic","getChildByTag"," tagName = "+tagName,apres-avant));
+		return lnkPage;
 	}
 }

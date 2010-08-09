@@ -10,30 +10,45 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.googlecode.objectify.Objectify;
+import com.googlecode.objectify.ObjectifyOpts;
 import com.googlecode.objectify.ObjectifyService;
 import com.sfeir.richercms.page.server.business.ArboPage;
+import com.sfeir.richercms.page.server.business.DependentTag;
+import com.sfeir.richercms.page.server.business.RootArbo;
 import com.sfeir.richercms.page.server.business.Tag;
+import com.sfeir.richercms.page.server.business.Template;
+import com.sfeir.richercms.page.server.business.TranslationPage;
 import com.sfeir.richercms.server.business.LogInfo;
+import com.sfeir.richercms.wizard.server.business.Language;
 
 public class ForwarderServlet extends HttpServlet {
 
 	private static final long serialVersionUID = -6965673584834316768L;
 	private ArboPage page;
+	private Objectify ofy;
 	private static final String defaultLanguage = "fr";
 	private static final String defaultErrorPage = "/site_basic/Denied.jsp"; // default error page
 	private String errorTemplatePage = defaultErrorPage; // modify this function in your template function
 	
 	static {
+        ObjectifyService.register(ArboPage.class);
+        ObjectifyService.register(TranslationPage.class);
+        ObjectifyService.register(RootArbo.class);
+        ObjectifyService.register(Template.class);
+        ObjectifyService.register(Tag.class);
+        ObjectifyService.register(DependentTag.class);
+        ObjectifyService.register(Language.class);
         ObjectifyService.register(LogInfo.class);
 	}
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
 	throws ServletException, IOException {
+		ObjectifyOpts opts = new ObjectifyOpts().setSessionCache(true);
+	    this.ofy = ObjectifyService.begin(opts);
 		//log => begin
 		Long avant = System.currentTimeMillis();
 		Long apres = System.currentTimeMillis();
-		Objectify ofy = ObjectifyService.begin();
-		ofy.put(new LogInfo("ForwarderServlet", "doGet", "exec du begin", apres-avant));
+		this.ofy.put(new LogInfo("ForwarderServlet", "doGet", "exec du begin", apres-avant));
 		
 		String languageTag = request.getParameter("lg");
 		
@@ -44,10 +59,11 @@ public class ForwarderServlet extends HttpServlet {
 		avant = System.currentTimeMillis();
 		String nextJSP = selectJsp(request.getPathInfo());
 		apres = System.currentTimeMillis();
-		ofy.put(new LogInfo("ForwarderServlet", "doGet -> selectJsp", "selection de la bonne servlet", apres-avant));
+		this.ofy.put(new LogInfo("ForwarderServlet", "doGet -> selectJsp", "selection de la bonne servlet", apres-avant));
 		
 		request.setAttribute("page", this.page);
-		request.setAttribute("language", TemplateTools.getIndexOfLanguage(languageTag));
+		request.setAttribute("ofy", this.ofy);
+		request.setAttribute("language", TemplateTools.getIndexOfLanguage(this.ofy, languageTag));
 		//forward to the right jsp
 		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(nextJSP);
 		dispatcher.forward(request,response);
@@ -75,23 +91,26 @@ public class ForwarderServlet extends HttpServlet {
 			
 			//if any page are selected, root page are take by default
 			if(path.length() == 0)
-				this.page = TemplateTools.getRootPage();
+				this.page = TemplateTools.getRootPage(this.ofy);
 			else 
-				this.page = TemplateTools.getArboPageWithPath(path);
+				this.page = TemplateTools.getArboPageWithPath(this.ofy, path);
 		
 		}else{//if path are null, take root page are take by default
-			this.page = TemplateTools.getRootPage();
+			this.page = TemplateTools.getRootPage(this.ofy);
 		}
 		
 		//no root or no page corresponding to path
 		if(this.page == null)
-			return defaultErrorPage;
+			return defaultErrorPage+"?msg= No page corresponding with this path";
+
+		this.ofy.put(new LogInfo("test","test", "Passage du : no root or no page corresponding to path"));
 		
-		String templateName = TemplateTools.getTemplateName(this.page.getTemplateId());
+		String templateName = TemplateTools.getTemplateName(this.ofy, this.page.getTemplateId());
 		
 		//no template selected for this page
 		if(templateName == null)
-			return defaultErrorPage;
+			return defaultErrorPage+"?msg= Template call doesn't exist";
+		this.ofy.put(new LogInfo("test",templateName, "Passage du : no template selected for this page"));
 		
 		// Here you need to make good call for your template
 		// and add right value in the jspFodler var
@@ -103,12 +122,14 @@ public class ForwarderServlet extends HttpServlet {
 			jspFolder = "blog_basic";
 		}else{
 			// no template corresponding
-			return defaultErrorPage;
+			return defaultErrorPage+"?msg= This template are not handle yet";
 		}
+		this.ofy.put(new LogInfo("test","test", "Passage du : if else if"));
 		
 		//no tag corresponding for this template
 		if(jspName == null)
 			return this.errorTemplatePage;
+		this.ofy.put(new LogInfo("test","/"+jspFolder+"/"+jspName+".jsp", "dernier"));
 		
 		return "/"+jspFolder+"/"+jspName+".jsp";
 	}
@@ -119,12 +140,12 @@ public class ForwarderServlet extends HttpServlet {
 	 */
 	private String templateBasic() {
 		
-		List<Tag> tags = TemplateTools.getTag(this.page.getId());
+		List<Tag> tags = TemplateTools.getTag(this.ofy, this.page.getId());
 		//define this var if you would use your one error page with specific style
 		this.errorTemplatePage = "/site_basic/Denied.jsp";
 		String jspName = null;
 		
-		if(this.page.getId() == TemplateTools.getRootPage().getId())
+		if(this.page.getId().equals(TemplateTools.getRootPage(this.ofy).getId()))
 			return "MainPage";
 		
 		for(Tag tag : tags){
@@ -145,7 +166,7 @@ public class ForwarderServlet extends HttpServlet {
 	 * @return right jspName to call
 	 */
 	private String blogBasic(){
-		List<Tag> tags = TemplateTools.getTag(this.page.getId());
+		List<Tag> tags = TemplateTools.getTag(this.ofy, this.page.getId());
 		//define this var if you would use your one error page with specific style
 		this.errorTemplatePage = "/site_basic/Denied.jsp";
 		String jspName = null;

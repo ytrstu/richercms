@@ -46,6 +46,7 @@ public class ArboPage {
 	@Indexed 
 	private Long idUserInModif;
 	
+	@Indexed
 	private Long parentId; // Parent id
 	
 	public ArboPage() {

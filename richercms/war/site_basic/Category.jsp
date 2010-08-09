@@ -2,6 +2,7 @@
     pageEncoding="ISO-8859-1"%>
 <%@ page import = "com.sfeir.richercms.site.template.template_basic.*" %>
 <%@ page import = "com.sfeir.richercms.page.server.business.*, java.util.List" %>
+<%@ page import = "com.googlecode.objectify.Objectify" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -9,7 +10,8 @@
 		String siteSufix = "/site";
 		int languageIndex = (Integer)request.getAttribute("language");
 		ArboPage p = (ArboPage)request.getAttribute("page");
-		TemplateBasic template = new TemplateBasic(p, languageIndex);
+		Objectify ofy = (Objectify)request.getAttribute("ofy");
+		TemplateBasic template = new TemplateBasic(ofy, p, languageIndex);
 		LinkPage root = template.getRootPage();
 	%>
 	<meta name = "decription" content = "<%=template.getBrowserTitle()%>" />
@@ -33,7 +35,7 @@
   <div id="menu">
     <ul>
       <% 
-      	List<LinkPage> categs = template.getAllPageByTag("MenuBar");
+      	List<LinkPage> categs = template.getRootChildByTag("Category");
     	for (LinkPage categ : categs) {
     	    %>
     	     <li><a href="<%= siteSufix+categ.getPath()%>"><%= categ.getName()%></a></li>
@@ -134,4 +136,5 @@ Sponsored by <a href="http://www.sfeir.com/" title="Sfeir"> SFEIR Benelux</a>
     </div>
     <!-- end footer -->
 </body>
+<%template.storeLog(); %>
 </html>

@@ -8,6 +8,9 @@ which means you can use it in any way you want provided you keep the link to the
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<% // initialize template class
+		String msg = request.getParameter("msg");
+	%>
 <title></title>
 <link href="/site_basic/style.css" rel="stylesheet" type="text/css" />
 <body>
@@ -43,7 +46,8 @@ which means you can use it in any way you want provided you keep the link to the
               <h1><span>RicherCMS</span></h1>
 			  The page you requested is unavailable at this time.
 			  Check the address entered in the address bar of your  web browser
-                
+			  <br/>
+              Reason : <%=msg%>
               <div id="foot_text">Contact webMaster if problem perssist</div>
             </div>
                 <div id="text_bottom">

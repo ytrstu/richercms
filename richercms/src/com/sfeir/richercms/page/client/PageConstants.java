@@ -321,12 +321,11 @@ public interface PageConstants extends Constants {
 	  String msgErrorModifyTemplate();
 	  @DefaultStringValue("A template must contain at least a name and a short text")
 	  String msgErrorEmptyTemplate();
-	  
 	  @DefaultStringValue("Image not stored, there is to large, maximum size : 1MO")
 	  String msgErrorImgSize();
 	  @DefaultStringValue("Just image can be stored here (png, jpg, tif, ...)")
 	  String msgErrorImgFormat();
-	  @DefaultStringValue("Etes-vous sûr de vouloir supprimer cette page et toutes ses sous-pages")
+	  @DefaultStringValue("Are you sure you want to delete this page and all its sub-pages")
 	  String MsgDelPageAndChild();
 	  @DefaultStringValue("Delete in progress")
 	  String MsgDelInProgress();
@@ -334,15 +333,15 @@ public interface PageConstants extends Constants {
 	  String MsgDelTemplateSucess();
 	  @DefaultStringValue("impossible to delete the template")
 	  String MsgErrorDelTemplate();
-	  @DefaultStringValue("Attention le champs email est vide")
+	  @DefaultStringValue("Warning email field is empty")
 	  String MsgWarnMailEmpty();
-	  @DefaultStringValue("Ajout de l'utilisateur ...")
+	  @DefaultStringValue("Adding user ...")
 	  String MsgAddUserInProg();
-	  @DefaultStringValue("erreur lié à l'ajout")
+	  @DefaultStringValue("Warning, unable to add")
 	  String MsgErrorAddUser();
-	  @DefaultStringValue("l'utilisateur est déjà enregistrer")
+	  @DefaultStringValue("User are already added")
 	  String MsgUserAlreadyInDB();
-	  @DefaultStringValue("Ajout Réussi!")
+	  @DefaultStringValue("User are added successfuly")
 	  String MsgUserAddSuccess();
 	  @DefaultStringValue("Online")
 	  String onLine();
@@ -356,7 +355,7 @@ public interface PageConstants extends Constants {
 	  String addNewUser();
 	  @DefaultStringValue("Description : ")
 	  String TemplateDesc();
-	  @DefaultStringValue("chargement de la page")
+	  @DefaultStringValue("Page loading")
 	  String PageLoading();
 	  @DefaultStringValue("Load all User")
 	  String MsgLoadUser();

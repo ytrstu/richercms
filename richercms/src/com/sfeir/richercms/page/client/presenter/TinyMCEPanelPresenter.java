@@ -83,7 +83,7 @@ public class TinyMCEPanelPresenter extends LazyPresenter<ITinyMCEPanel, PageEven
 	public void onCallContent() {
 		ArrayList<String> contents = new ArrayList<String>();
 		// get the last content and add it in the right Translation
-		this.TranslationContents.get(this.indexOfTranslation).setContent(this.view.getContent());
+		this.TranslationContents.get(this.indexOfTranslation).setContent(this.modifyImgTag(this.view.getContent()));
 		
 		for(BeanTranslationPage trans : this.TranslationContents) {
 			contents.add(trans.getContent());
@@ -97,12 +97,21 @@ public class TinyMCEPanelPresenter extends LazyPresenter<ITinyMCEPanel, PageEven
 			this.view.displayViewer(this.TranslationContents.get(index).getContent());
 		}else {
 			// get the current content and add it in the current Translation
-			this.TranslationContents.get(this.indexOfTranslation).setContent(this.view.getContent());
+			this.TranslationContents.get(this.indexOfTranslation).setContent(this.modifyImgTag(this.view.getContent()));
 			//display the another content
 			this.view.displayEditor(this.TranslationContents.get(index).getContent());
 		}
 		//modify the current index
 		this.indexOfTranslation = index;
+	}
+	
+	/**
+	 * add one '/' in the tag img : src="image..."  => src="/image..."
+	 * @param content : tinyCME editor content.
+	 * @return the content with modification
+	 */
+	private String modifyImgTag(String content) {
+		return content.replace("src=\"image", "src=\"/image");
 	}
 	
 }

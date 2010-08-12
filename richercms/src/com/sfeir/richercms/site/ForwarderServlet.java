@@ -46,9 +46,9 @@ public class ForwarderServlet extends HttpServlet {
 		ObjectifyOpts opts = new ObjectifyOpts().setSessionCache(true);
 	    this.ofy = ObjectifyService.begin(opts);
 		//log => begin
-		Long avant = System.currentTimeMillis();
-		Long apres = System.currentTimeMillis();
-		this.ofy.put(new LogInfo("ForwarderServlet", "doGet", "exec du begin", apres-avant));
+		//Long avant = System.currentTimeMillis();
+		//Long apres = System.currentTimeMillis();
+		//this.ofy.put(new LogInfo("ForwarderServlet", "doGet", "exec du begin", apres-avant));
 		
 		String languageTag = request.getParameter("lg");
 		
@@ -56,10 +56,10 @@ public class ForwarderServlet extends HttpServlet {
 			languageTag = defaultLanguage;
 		
 		// log => selection de la bonne servlet
-		avant = System.currentTimeMillis();
+		//avant = System.currentTimeMillis();
 		String nextJSP = selectJsp(request.getPathInfo());
-		apres = System.currentTimeMillis();
-		this.ofy.put(new LogInfo("ForwarderServlet", "doGet -> selectJsp", "selection de la bonne servlet", apres-avant));
+		//apres = System.currentTimeMillis();
+		//this.ofy.put(new LogInfo("ForwarderServlet", "doGet -> selectJsp", "selection de la bonne servlet", apres-avant));
 		
 		request.setAttribute("page", this.page);
 		request.setAttribute("ofy", this.ofy);
@@ -103,14 +103,14 @@ public class ForwarderServlet extends HttpServlet {
 		if(this.page == null)
 			return defaultErrorPage+"?msg= No page corresponding with this path";
 
-		this.ofy.put(new LogInfo("test","test", "Passage du : no root or no page corresponding to path"));
+		//this.ofy.put(new LogInfo("test","test", "Passage du : no root or no page corresponding to path"));
 		
 		String templateName = TemplateTools.getTemplateName(this.ofy, this.page.getTemplateId());
 		
 		//no template selected for this page
 		if(templateName == null)
 			return defaultErrorPage+"?msg= Template call doesn't exist";
-		this.ofy.put(new LogInfo("test",templateName, "Passage du : no template selected for this page"));
+		//this.ofy.put(new LogInfo("test",templateName, "Passage du : no template selected for this page"));
 		
 		// Here you need to make good call for your template
 		// and add right value in the jspFodler var
@@ -124,12 +124,12 @@ public class ForwarderServlet extends HttpServlet {
 			// no template corresponding
 			return defaultErrorPage+"?msg= This template are not handle yet";
 		}
-		this.ofy.put(new LogInfo("test","test", "Passage du : if else if"));
+		//this.ofy.put(new LogInfo("test","test", "Passage du : if else if"));
 		
 		//no tag corresponding for this template
 		if(jspName == null)
 			return this.errorTemplatePage;
-		this.ofy.put(new LogInfo("test","/"+jspFolder+"/"+jspName+".jsp", "dernier"));
+		//this.ofy.put(new LogInfo("test","/"+jspFolder+"/"+jspName+".jsp", "dernier"));
 		
 		return "/"+jspFolder+"/"+jspName+".jsp";
 	}

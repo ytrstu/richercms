@@ -20,7 +20,7 @@ public class TemplateBasic {
 	private int translation;
 	private BeanArboPage root;
 	private List<LinkPage> linkPath;
-	private List<LogInfo> logs;
+	//private List<LogInfo> logs;
 	private Objectify ofy;
 	
 	static {
@@ -30,7 +30,7 @@ public class TemplateBasic {
 	
 	public TemplateBasic(Objectify ofy, ArboPage page, int translationIndex){
 		this.translation = translationIndex;
-		this.logs = new ArrayList<LogInfo>();
+		//this.logs = new ArrayList<LogInfo>();
 		this.ofy = ofy;
 		this.page = TemplateTools.arboPageToBean(this.ofy, page);
 	}
@@ -143,8 +143,7 @@ public class TemplateBasic {
 	}
 	
 	public List<LinkPage> getAllPageByTag(String tagName) {
-		Objectify ofy = ObjectifyService.begin();
-		Long avant = System.currentTimeMillis();
+		//Long avant = System.currentTimeMillis();
 		ArrayList<LinkPage> lnkPage = new ArrayList<LinkPage>();
 		Template template = TemplateTools.getTemplatebyName(this.ofy, "siteBasic");
 		Query<Tag> tags = ofy.query(Tag.class).filter("tagName =",tagName);
@@ -164,14 +163,13 @@ public class TemplateBasic {
 			}
 		}
 		
-		Long apres = System.currentTimeMillis();
-		this.logs.add(new LogInfo("TemplateBasic","getAllPageByTag"," tagName = "+tagName,apres-avant));
+		//Long apres = System.currentTimeMillis();
+		//this.logs.add(new LogInfo("TemplateBasic","getAllPageByTag"," tagName = "+tagName,apres-avant));
 		return lnkPage;
 	}
 	
 	private List<LinkPage> getChildByTag(String tagName){
-		Long avant = System.currentTimeMillis();
-		Objectify ofy = ObjectifyService.begin();
+		//Long avant = System.currentTimeMillis();
 		List<BeanArboPage> childs = TemplateTools.getChildPage(this.ofy, this.page.getId());
 		ArrayList<LinkPage> lnkPage = new ArrayList<LinkPage>();
 		
@@ -187,25 +185,24 @@ public class TemplateBasic {
 								TemplateTools.getPagePath(this.ofy, child.getId(), this.translation)));
 			}
 		}
-		Long apres = System.currentTimeMillis();
-		this.logs.add(new LogInfo("TemplateBasic","getChildByTag"," tagName = "+tagName,apres-avant));
+		//Long apres = System.currentTimeMillis();
+		//this.logs.add(new LogInfo("TemplateBasic","getChildByTag"," tagName = "+tagName,apres-avant));
 		return lnkPage;
 	}
 	
 	public void storeLog(){
-		Objectify ofy = ObjectifyService.begin();
-		ofy.put(this.logs);
+		//Objectify ofy = ObjectifyService.begin();
+		//ofy.put(this.logs);
 	}
 	
 	
 	public List<LinkPage> getRootChildByTag(String tagName){
-		Long avant = System.currentTimeMillis();
+		//Long avant = System.currentTimeMillis();
 		ArrayList<LinkPage> lnkPage = new ArrayList<LinkPage>();
-		Objectify ofy = ObjectifyService.begin();
 		if(this.root == null)
 			this.root = TemplateTools.arboPageToBean(this.ofy, TemplateTools.getRootPage(this.ofy));
 
-		Query<Tag> tags = ofy.query(Tag.class).filter("tagName =",tagName);
+		Query<Tag> tags = this.ofy.query(Tag.class).filter("tagName =",tagName);
 		if(tags.countAll() != 0){
 			Query<ArboPage> pages = ofy.query(ArboPage.class)
 									.filter("parentId =", this.root.getId())
@@ -222,8 +219,8 @@ public class TemplateBasic {
 			}
 		}
 		
-		Long apres = System.currentTimeMillis();
-		this.logs.add(new LogInfo("TemplateBasic","getChildByTag"," tagName = "+tagName,apres-avant));
+		//Long apres = System.currentTimeMillis();
+		//this.logs.add(new LogInfo("TemplateBasic","getChildByTag"," tagName = "+tagName,apres-avant));
 		return lnkPage;
 	}
 }

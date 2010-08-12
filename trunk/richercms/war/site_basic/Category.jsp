@@ -136,5 +136,5 @@ Sponsored by <a href="http://www.sfeir.com/" title="Sfeir"> SFEIR Benelux</a>
     </div>
     <!-- end footer -->
 </body>
-<%template.storeLog(); %>
+<%//template.storeLog(); %>
 </html>

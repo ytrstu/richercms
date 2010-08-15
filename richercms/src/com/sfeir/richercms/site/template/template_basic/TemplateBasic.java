@@ -138,8 +138,13 @@ public class TemplateBasic {
 	 * @param path : return by request.getInfoPath()
 	 * @return right url
 	 */
-	public String getRegularPath(String path){
-		return path.replace("null?", this.page.getUrlName()+"?");
+	public String getRegularPath(String path) {
+		String res = path.replace("null?", this.page.getUrlName()+"?");
+		if (!res.startsWith("site/")) {
+			return "/site/" + res;
+		} else {
+			return res;
+		}
 	}
 	
 	public List<LinkPage> getAllPageByTag(String tagName) {

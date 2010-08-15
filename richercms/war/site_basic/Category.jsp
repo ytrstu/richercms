@@ -23,7 +23,15 @@
 <body>
 	<!-- header -->
     <div id="logo"><a href="<%= siteSufix+root.getPath()%>"><%=root.getName()%></a></div>
-    <div id="type">Catégorie : <%=template.getPageTitle()%></div>
+    <div id="type"><%
+    switch(template.getTranslation()) {
+	case 0 :
+		%>Catégorie <%
+		break;
+	default :
+		%>Category <%
+		break;
+	}    %> : <%=template.getPageTitle()%></div>
     <div id="language">
        <div id="language_fr"><a href="<%=template.getRegularPath(request.getPathInfo()+"?lg=fr") %>"><img src="/tab_images/fr.png" class="photo"/></a></div>
        <div id="language_en"><a href="<%=template.getRegularPath(request.getPathInfo()+"?lg=en") %>"><img src="/tab_images/en.png" class="photo"/></a></div>
@@ -103,12 +111,8 @@
             		case 0 :
             			%> Contenu non accessible pour l'instant <%
             			break;
-            		case 1 :
-            			%> DE : Contenu non accessible pour l'instant <%
-            			
-            			break;
-            		case 2 :
-            			%>content not accessible for the momment <%
+            		default :
+            			%> Content not accessible for the momment <%
             			break;
             		}
             	  } %>

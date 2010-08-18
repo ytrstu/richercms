@@ -296,10 +296,6 @@ td.datePickerMonth {
 	background-color: #D0E4F6;
 }
 
-.tinyMceContainer, .tinyMceContainer > div, .tinyMceContainer > div > div, .tinyMceContainer > div > div > div, .tinyMceContainer > div > div > div > div {
-	overflow: visible !important;
-}
-
 .informationPanel-Vertical-margin{
 	margin:10px;
 }
@@ -373,6 +369,3 @@ h1 {
 	background: #D0E4F6;
 }
 
-.tinyMceContainer, .tinyMceContainer > div, .tinyMceContainer > div > div, .tinyMceContainer > div > div > div, .tinyMceContainer > div > div > div > div {
-	overflow: visible !important;
-}

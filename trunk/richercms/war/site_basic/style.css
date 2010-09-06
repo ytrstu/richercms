@@ -27,13 +27,17 @@ photo { width:20px; height:15px;}
 #menu a { padding:15px; display:block; float:left; font-size:12px; text-transform:uppercase; text-decoration:none; color:#FFFFFF; text-decoration:none; font-weight:bold }
 #menu a:hover {color:#68d3ed;}
 
-#content {clear:both; background-color:#252525; width:100%;}
-#content_top { height:20px;}
-#content_top_left {float:left; width:20px; height:20px; background: url(images/left_top_round.gif) no-repeat;}
-#content_top_right {float:right; width:20px; height:20px; background: url(images/right_top_round.gif) no-repeat;}
-#content_bottom { clear:both;height:16px;}
-#content_bottom_left {float:left; width:20px; height:16px; background: url(images/left_bottom_round.gif) no-repeat;}
-#content_bottom_right {float:right; width:20px; height:16px; background: url(images/right_bottom_round.gif) no-repeat;}
+#content {
+	clear:both; 
+	background-color:#252525; 
+	width:100%;
+	-moz-border-radius : 20px;
+	border-radius : 20px;
+	-webkit-border-radius : 20px;
+	-khtml-border-radius : 20px;
+	padding-top: 20px;
+	padding-bottom : 35px;
+}
 
 #sidebar {float:left; width:231px; padding-left:10px;}
 #sidebar p {background-color:#fff; padding:0 20px;}

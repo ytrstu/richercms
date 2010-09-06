@@ -44,9 +44,12 @@
        <div id="language_en"><a href="<%=template.getRegularPath(request.getPathInfo()+"?lg=en") %>"><img src="/tab_images/en.png" class="photo"/></a></div>
 	</div>
     <div id="header">
-    	<div id="left_header"></div>
-      	<div id="right_header"></div>
-  </div> 
+    	&nbsp;
+		<!--[if lte IE 8]> 
+	    	<div id="left_header"></div>
+	      	<div id="right_header"></div>
+		<![endif]-->
+  	</div> 
   <div id="menu">
     <ul>
       <% 

@@ -18,6 +18,13 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title><%=template.getBrowserTitle()%></title>
 	<link href="/site_basic/style.css" rel="stylesheet" type="text/css" />
+	<!--[if lte IE 8]> 
+	<script type="text/javascript" src="/site_basic/DD_roundies_0.0.2a-min.js"> 
+	</script>
+	<script>
+		 DD_roundies.addRule('#content', '20px');
+	</script>
+	<![endif]-->
 </head>
 <body>
 	<!-- header -->
@@ -54,10 +61,6 @@
     <!--end header -->
     <!-- main -->
     <div id="content">
-    	<div id="content_top">
-        	<div id="content_top_left"></div>
-            <div id="content_top_right"></div>
-        </div>
       <div id="content_body">
        	  <div id="sidebar">
             <div id="sidebar_top"></div>
@@ -112,10 +115,6 @@
                 </div>
           </div>
       </div>
-        <div id="content_bottom">
-        	<div id="content_bottom_left"></div>
-            <div id="content_bottom_right"></div>
-        </div>
     </div>
     <!-- end main -->
     <!-- footer -->

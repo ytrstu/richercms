@@ -30,11 +30,11 @@
 </head>
 <body>
 	<!-- header -->
-    <div id="logo"><a href="<%= siteSufix+root.getPath()%>"><%=root.getName()%></a></div>
+    <div id="logo"><a href="<%= siteSufix%>"><%=root.getName()%></a></div>
     <div id="type">Article : <%=template.getPageTitle()%></div>
     <div id="language">
-       <div id="language_fr"><a href="<%=template.getRegularPath(request.getPathInfo()+"?lg=fr") %>"><img src="/tab_images/fr.png" class="photo"/></a></div>
-       <div id="language_en"><a href="<%=template.getRegularPath(request.getPathInfo()+"?lg=en") %>"><img src="/tab_images/en.png" class="photo"/></a></div>
+       <div id="language_fr"><a href="<%=template.getRegularPath("fr") %>"><img src="/tab_images/fr.png" class="photo"/></a></div>
+       <div id="language_en"><a href="<%=template.getRegularPath("en") %>"><img src="/tab_images/en.png" class="photo"/></a></div>
 	</div>
     <div id="header">
     	&nbsp;

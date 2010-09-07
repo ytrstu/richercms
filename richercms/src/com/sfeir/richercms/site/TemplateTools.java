@@ -114,7 +114,9 @@ public final class TemplateTools {
 		while(parentId != null){
 			ArboPage parent = ofy.get(ArboPage.class, parentId);
 			parentId = parent.getParentId();
-			path = "/"+parent.getUrlName()+path;
+			if (parentId!=null) {
+				path = "/"+parent.getUrlName()+path;
+			}
 		}
 		
 		return path;
@@ -132,11 +134,16 @@ public final class TemplateTools {
 			inversePath.add(parent);
 		}
 		
+		boolean isFirst = true;
 		for(int i = inversePath.size()-1 ; i>-1  ; i--){
 			ArboPage parent = inversePath.get(i);
 			TranslationPage translation = ofy.get(
 					parent.getTranslation().get(translationIndex));
-			strPath = strPath + "/" +parent.getUrlName();
+			if (isFirst) {
+				isFirst = false;
+			} else {
+				strPath = strPath + "/" +parent.getUrlName();
+			}
 			path.add(new LinkPage(translation.getPageTitle(), strPath));
 		}
 		

@@ -270,6 +270,7 @@ public class PageView extends ResizeComposite implements IdisplayPage {
 	}
 	
 	private void addUpDownBtn() {
+		/* // TODO : Don't work very well
 		//remove btn to replace it in front
 		if(this.topPanel.getWidgetIndex(this.btnSpliterPanel) != -1)
 			this.topPanel.remove(this.btnSpliterPanel);
@@ -278,6 +279,7 @@ public class PageView extends ResizeComposite implements IdisplayPage {
 		this.topPanel.add(this.btnSpliterPanel);
 	    this.topPanel.setWidgetRightWidth(this.btnSpliterPanel, 10, Unit.PX, 65, Unit.PX);
 	    this.topPanel.setWidgetBottomHeight(this.btnSpliterPanel, 0, Unit.PX, 30, Unit.PX);
+	    */
 	}
 	
 	public void displayReorderPanel(IReorderPagePanel reorderPanel) {

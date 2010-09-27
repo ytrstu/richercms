@@ -34,16 +34,6 @@ public interface ITinyMCEPanel extends LazyView{
 	void setContent(String content);
 	
 	/**
-	 * Enable the tinyEditor
-	 */
-	void enableEditor();
-	
-	/**
-	 * Disable the tinyEditor
-	 */
-	void disableEditor();
-	
-	/**
 	 * display the tinyEditor in the panel
 	 * @param html : the html String to display
 	 */

@@ -16,7 +16,7 @@ import com.sfeir.richercms.page.client.tinyMCE.TinyMCE;
  */
 public class TinyMCEPanel extends ResizeComposite implements ITinyMCEPanel {
 
-	private TinyMCE tmce = null;
+	private TinyMCE tmce = new TinyMCE();
 	private ScrollPanel  displayPanel = null;
 	private LayoutPanel main = null;
 	/**
@@ -25,6 +25,7 @@ public class TinyMCEPanel extends ResizeComposite implements ITinyMCEPanel {
 	 */
 	public TinyMCEPanel() {
 		super();
+		//System.out.println("TinyMCEPanel création");
 	}
 	
 	/**
@@ -35,13 +36,15 @@ public class TinyMCEPanel extends ResizeComposite implements ITinyMCEPanel {
 		this.main.setStyleName("tinyMceContainer");
 		this.displayEditor(""); // first initialization
 		this.initWidget(main);
+		//System.out.println("TinyMCEPanel createView");
 	}
 	
 
 	public void onResize() {
+		//System.out.println("TinyMCEPanel onResize");
 		Widget parent = getParent();
 		if (parent!=null) {
-			System.out.println("TinyMCEPanel : " + parent.getOffsetHeight() + " -> " + getOffsetHeight());
+			//System.out.println("TinyMCEPanel : " + parent.getOffsetHeight() + " -> " + getOffsetHeight());
 			if (tmce!=null) {
 				tmce.onResize();
 			}
@@ -49,18 +52,22 @@ public class TinyMCEPanel extends ResizeComposite implements ITinyMCEPanel {
 	}
 
 	public void ShowEditor() {
-		this.tmce.enable();
+		//System.out.println("TinyMCEPanel ShowEditor");
+		this.tmce.show();
 	}
 	
 	public void HideEditor() {
-		this.tmce.disable();
+		//System.out.println("TinyMCEPanel HideEditor");
+		this.tmce.hide();
 	}
 	
 	public void clear() {
+		//System.out.println("TinyMCEPanel clear");
 		this.tmce.setVisible(true);
 	}
 	
 	public String getContent() {
+		//System.out.println("TinyMCEPanel getContent");
 		if(this.main.getWidget(0).equals(this.displayPanel))
 			return this.clearDiv(this.displayPanel.getWidget().toString());
 		else
@@ -68,28 +75,21 @@ public class TinyMCEPanel extends ResizeComposite implements ITinyMCEPanel {
 	}
 	
 	public void setContent(String content) {
+		//System.out.println("TinyMCEPanel setContent");
 		this.tmce.setText(content);
 	}
 	
-	public void enableEditor() {
-		this.tmce.enable();
-	}
-	
-	public void disableEditor() {
-		this.tmce.disable();
-	}
-	
-
-	
 	public void displayEditor(String html) {
+		//System.out.println("TinyMCEPanel displayEditor" + html);
 		this.main.clear();
-		this.tmce = new TinyMCE();
 		this.main.add(tmce);
 		this.setContent(html);
-		onResize();
 	}
 	
 	public void displayViewer(String html) {
+		//System.out.println("TinyMCEPanel displayViewer");
+		this.tmce.hide();
+		this.tmce.setInitialized(false);
 		this.main.clear();
 		this.displayPanel = new ScrollPanel();
 		HTMLPanel HTMLP = new HTMLPanel(html);
@@ -103,12 +103,14 @@ public class TinyMCEPanel extends ResizeComposite implements ITinyMCEPanel {
 	 * @return the same content without unnecessary div
 	 */
 	private String clearDiv(String content) {
+		//System.out.println("TinyMCEPanel clearDiv");
 		String newContent = content.replaceAll("^<div[^<]*>", "");
 		String newContent2 = newContent.replaceAll("</div>$", "");
 		return newContent2;
 	}
 	
 	public void addEventBusInTiny(PageEventBus eventBus) {
+		//System.out.println("TinyMCEPanel addEventBusInTiny");
 		this.tmce.setEventBus(eventBus);
 	}
 }

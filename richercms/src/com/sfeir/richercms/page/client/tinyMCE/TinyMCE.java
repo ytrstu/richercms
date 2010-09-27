@@ -44,18 +44,22 @@ import com.sfeir.richercms.page.client.event.PageEventBus;
  */
 public class TinyMCE extends ResizeComposite {
 
+	private boolean initialized = false; 
+	
     private TextArea ta;
     private String id;
+    private String text = "";
 
     public TinyMCE() {
         super();
-
+        //System.out.println("TinyMCE create");
         LayoutPanel panel = new LayoutPanel();
 
         id = HTMLPanel.createUniqueId();
         ta = new TextArea();
         DOM.setElementAttribute(ta.getElement(), "id", id);
         DOM.setStyleAttribute(ta.getElement(), "width", "100%");
+        ta.setStyleName("tinymce");
         panel.add(ta);
 
         initWidget(panel);
@@ -64,12 +68,78 @@ public class TinyMCE extends ResizeComposite {
 	@Override
 	public void onResize() {
 		Widget parent = getParent();
-		ta.setHeight((parent.getOffsetHeight()-14)+"px");
-		System.out.println("TinyMCE 1 : " + parent.getOffsetHeight());
-		unload();
-		initTinyMCE();
+		if (parent!=null && ta !=null) {
+			ta.setHeight((parent.getOffsetHeight()-14)+"px");
+			//System.out.println("TinyMCE 1 : " + parent.getOffsetHeight());
+	        if (!initialized) {
+	        	initialized = true;
+	        	init(getID());
+	        } else {
+	        	text = getText(getID());
+				hide();
+				init(getID());
+			}
+			
+	        DeferredCommand.addCommand(new Command() {
+				
+				@Override
+				public void execute() {
+					setText(getID(), text);
+					FileManager.init();
+				}
+			});
+	        
+		}
 	}
-    
+	
+	public native void init(String id)/*-{
+	    $wnd.$(function() {
+	    	$wnd.$('textarea.tinymce').tinymce({
+	    	// Location of TinyMCE script
+		    	script_url : 'tiny_mce_jquery_3.3.9.1/tiny_mce.js',
+		    	
+		        mode : "textareas",
+		        theme : "advanced",
+		        plugins : "table,advhr,advimage,advlink,emotions,insertdatetime,preview,searchreplace,"+
+		                  "print,contextmenu,inlinepopups,fullscreen",
+		        file_browser_callback : "window.parent.tinyMCE_org_richercms_call.loadFileName",
+		        theme_advanced_buttons1 : "save,newdocument,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,styleselect,formatselect,fontselect,fontsizeselect",
+		        theme_advanced_buttons2 : "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,image,cleanup,help,code,|,insertdate,inserttime,preview,|,forecolor,backcolor",
+		        theme_advanced_buttons3 : "tablecontrols,|,hr,removeformat,visualaid,|,sub,sup,|,charmap,emotions,iespell,media,advhr,|,print,|,fullscreen",
+		        theme_advanced_toolbar_location : "top",
+		        theme_advanced_toolbar_align : "left",
+		        theme_advanced_path_location : "bottom",
+		        theme_advanced_resizing : false,
+		        content_css : "/RicherCMS.css",
+		        plugin_insertdate_dateFormat : "%Y/%m/%d",
+		        plugin_insertdate_timeFormat : "%H:%M:%S",
+		        extended_valid_elements : "a[name|href|target|title|onclick],img[class|style|src|border=0|alt|title|hspace"+
+		                                  "|vspace|width|height|align|onmouseover|onmouseout|name],hr[class|width|size|"+
+		                                  "noshade],font[face|size|color|style],span[class|align|style]",
+		        fullscreen_new_window : false,
+		        fullscreen_settings : {
+		        	theme_advanced_path_location : "top"
+		        }
+	    	});
+	   	});
+    }-*/;
+	
+	public native void show(String id)/*-{
+	$wnd.$('#'+id).tinymce().show();
+    }-*/;
+
+	public native void hide(String id)/*-{
+	$wnd.$('#'+id).tinymce().hide();
+	}-*/;
+	 
+	public native String getText(String id)/*-{
+	return $wnd.$('#'+id).html();
+	}-*/;
+	
+	public native void setText(String id, String content)/*-{
+	$wnd.$('#'+id).html(content);
+	}-*/;
+	
     /**
      * getID() -
      *
@@ -86,32 +156,21 @@ public class TinyMCE extends ResizeComposite {
      * @param text
      */
     public void setText(String text) {
-    	this.removeMCE(id);
-        ta.setText(text);
-        this.setTextAreaToTinyMCE(id);
+    	this.text = text;
     }
 
     public String getText() {
-        getTextData();
-        return ta.getText();
+       return getText(getID());
     }
     
-    public void disable() {
-    	this.removeMCE(id);
-    	ta.setEnabled(false);
-    	this.setTextAreaToTinyMCE(id);
+    public void show() {
+    	show(getID());
     }
     
-    public void enable() {
-    	this.removeMCE(id);
-    	ta.setEnabled(true);
-    	this.setTextAreaToTinyMCE(id);
+    public void hide() {
+    	hide(getID());
     }
     
-    public void setReadOnly(boolean readOnly) {
-    	ta.setReadOnly(readOnly);
-    }
-
     /**
      * @see com.google.gwt.user.client.ui.Widget#onLoad()
      */
@@ -119,112 +178,24 @@ public class TinyMCE extends ResizeComposite {
         super.onLoad();
 
         DeferredCommand.addCommand(new Command() {
-            public void execute() {
+			
+			@Override
+			public void execute() {
             	onResize();	
-            }
-        });
+			}
+		});
     }
     
-    public void initTinyMCE() {
-        setTextAreaToTinyMCE(id);
-        //focusMCE(id);
-		FileManager.init();
-    }
-    
-   @SuppressWarnings("static-access")
 	public void setEventBus(PageEventBus eventBus){
-    	FileManager fm = new FileManager();
-    	fm.evtBus = eventBus;
+    	FileManager.evtBus = eventBus;
     }
 
-    /**
-     * focusMCE() -
-     *
-     * Use this to set the focus to the MCE area
-     * @param id - the element's ID
-     */
-    protected native void focusMCE(String id) /*-{
-        $wnd.tinyMCE.execCommand('mceFocus', true, id);
-    }-*/;
+	public boolean isInitialized() {
+		return initialized;
+	}
 
-    /**
-     * resetMCE() -
-     *
-     * Use this if reusing the same MCE element, but losing focus
-     */
-    protected native void resetMCE() /*-{
-        $wnd.tinyMCE.execCommand('mceResetDesignMode', true);
-    }-*/;
+	public void setInitialized(boolean initialized) {
+		this.initialized = initialized;
+	}
 
-    /**
-     * unload() -
-     *
-     * Unload this MCE editor instance from active memory.
-     * I use this in the onHide function of the containing widget. This helps
-     * to avoid problems, especially when using tabs.
-     */
-    public void unload() {
-        unloadMCE(id);
-    }
-
-    /**
-     * unloadMCE() -
-     *
-     * @param id - The element's ID
-     * JSNI method to implement unloading the MCE editor instance from memory
-     */
-    protected native void unloadMCE(String id) /*-{
-        $wnd.tinyMCE.execCommand('mceRemoveControl', false, id);
-    }-*/;
-
-    /**
-     * updateContent() -
-     *
-     * Update the internal referenced content. Use this if you programatically change
-     * the original text area's content (eg. do a clear)
-     * @param id - the ID of the text area that contains the content you wish to copy
-     */
-    protected native void updateContent(String id) /*-{
-        $wnd.tinyMCE.selectedInstance = $wnd.tinyMCE.getInstanceById(id);
-        $wnd.tinyMCE.setContent($wnd.document.getElementById(id).value);
-    }-*/;
-
-    /**
-     * getTextArea() -
-     *
-     */
-    protected native void getTextData() /*-{
-        $wnd.tinyMCE.triggerSave();
-    }-*/;
-
-    /**
-     * encodeURIComponent() -
-     *
-     * Wrapper for the native URL encoding methods
-     * @param text - the text to encode
-     * @return the encoded text
-     */
-    protected native String encodeURIComponent(String text) /*-{
-        return encodeURIComponent(text);
-    }-*/;
-
-    /**
-     * setTextAreaToTinyMCE() -
-     *
-     * Change a text area to a tiny MCE editing field
-     * @param id - the text area's ID
-     */
-    protected native void setTextAreaToTinyMCE(String id) /*-{
-        $wnd.tinyMCE.execCommand('mceAddControl', true, id);
-    }-*/;
-
-    /**
-     * removeMCE() -
-     *
-     * Remove a tiny MCE editing field from a text area
-     * @param id - the text area's ID
-     */
-    protected native void removeMCE(String id) /*-{
-        $wnd.tinyMCE.execCommand('mceRemoveControl', true, id);
-    }-*/;
 }

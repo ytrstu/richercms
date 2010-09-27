@@ -29,14 +29,14 @@ public class FileManager {
 	 * Mise en place du Javascript permettant d'ouvrir le FileManager GWT
 	 */
 	public static native void init() /*-{
-		$wnd.tinyMCE.org_richercms_call = {};
-	    $wnd.tinyMCE.org_richercms_call.loadFileName = function(field_name, url, type, win) {
+		$wnd.tinyMCE_org_richercms_call = {};
+	    $wnd.tinyMCE_org_richercms_call.loadFileName = function(field_name, url, type, win) {
 	    	//alert('Dans GWT');
-	    	$wnd.tinyMCE.org_richercms_call.win = win;
-	    	$wnd.tinyMCE.org_richercms_call.field_name = field_name;
+	    	$wnd.tinyMCE_org_richercms_call.win = win;
+	    	$wnd.tinyMCE_org_richercms_call.field_name = field_name;
 	    	win.document.forms[0].elements[field_name].value = @com.sfeir.richercms.page.client.tinyMCE.FileManager::loadFileName(Ljava/lang/String;)(type);
 	    }
-	    $wnd.tinyMCE.org_richercms_call.setFileName = function(url) {
+	    $wnd.tinyMCE_org_richercms_call.setFileName = function(url) {
 		}
 	}-*/;
 
@@ -45,7 +45,7 @@ public class FileManager {
 	 * @param url : adresse de l'image
 	 */
 	public static native void setTinyMceUrl(String url) /*-{
-		var fieldName = $wnd.tinyMCE.org_richercms_call.field_name;
-		$wnd.tinyMCE.org_richercms_call.win.document.forms[0].elements[fieldName].value = url;
+		var fieldName = $wnd.tinyMCE_org_richercms_call.field_name;
+		$wnd.tinyMCE_org_richercms_call.win.document.forms[0].elements[fieldName].value = url;
 	}-*/;
 }

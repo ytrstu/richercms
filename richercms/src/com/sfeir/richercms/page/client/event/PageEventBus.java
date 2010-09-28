@@ -127,7 +127,7 @@ public interface PageEventBus extends EventBus {
 	public void savePage();
 	
 	/**
-	 * Fired by the InformationPanelPresenter if all fields are filled properly 
+	 * Fired by the PagePresenter if all fields are filled properly 
 	 */
 	@Event( handlers =  ValidationPanelPresenter.class )
 	public void rightInformation();

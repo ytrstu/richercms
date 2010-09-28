@@ -364,7 +364,7 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 		rpcTag.upDateDependentTag(customTag, new AsyncCallback<Void>() {
 					public void onFailure(Throwable caught) {}
 					public void onSuccess(Void result) {
-						sendInfo();
+						//sendInfo();
 					}
 		});
 	}

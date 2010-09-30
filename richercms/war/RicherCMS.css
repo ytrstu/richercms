@@ -18,9 +18,13 @@
 	z-index : 99;
 }
 
-.tab-content {
+.tab-content, tab-content-left {
 	border-bottom: 1px solid #aaaaaa; 
     background-color: #FFFFFF;
+}
+
+.tab-content-left {
+	margin-top:60px;
 }
 
 .disposition-panel {
@@ -202,6 +206,7 @@ td.datePickerMonth {
 	background: url("tab_images/hborder.png") repeat-x scroll 0 -2003px #E3E8F3;
 	border-right: 1px solid #BBBBBB;
 	border-bottom: 10px solid #E8ECF5;
+	border-left: 1px solid #BBBBBB;
 	padding-top: 1px;
 	cursor: default;
 }

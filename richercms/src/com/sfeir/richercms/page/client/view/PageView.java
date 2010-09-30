@@ -18,7 +18,9 @@ import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
+import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.ResizeComposite;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.SplitLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.sfeir.richercms.page.client.PageConstants;
@@ -129,7 +131,8 @@ public class PageView extends ResizeComposite implements IdisplayPage {
 	    
 	    // the left and the right content of the main Spliter ( leftRightSpliter )
 	    this.leftPanel = new LayoutPanel();
-	    this.leftPanel.setStyleName("tab-content");
+	    this.leftPanel.setStyleName("tab-content-left");
+	    
 	    this.rightPanel = new DockLayoutPanel(Unit.PX);
 	    this.rightPanel.setStyleName("tab-content");
 	    
@@ -141,21 +144,35 @@ public class PageView extends ResizeComposite implements IdisplayPage {
 	    this.rightPanel.add(this.rightNorthPanel);
 	    
 	    // connects the two panels to the leftRightSpliter
-	    this.leftRightSpliter.addWest(this.leftPanel, 168);
+	    this.leftRightSpliter.addWest(this.leftPanel, 200);
 	    this.leftRightSpliter.add(this.rightPanel);
+	    this.leftRightSpliter.setWidgetMinSize(this.leftPanel, 150);
 	    
 
 	    //add panel containing the current tool
 	    this.dispositionPanel.add(this.leftRightSpliter);
-	    
 	    
 	    // FINAL : PopUp + dispositionPanel (=> all widget)
 	    this.finalContainer = new LayoutPanel();
 	    this.finalContainer.add(this.popUp);
 	    this.finalContainer.add(this.dispositionPanel);
 	    
+	    // Add the main logo
+	    Panel logoPanel = new SimplePanel();
+	    logoPanel.setSize("150px","82px");
+	    logoPanel.setStyleName("logostyle");
+	    Image mainLogoImg = new Image("/tab_images/mainlogo.png");
+	    logoPanel.add(mainLogoImg);
+	    LayoutPanel mainPanel = new LayoutPanel();
+	    mainPanel.add(finalContainer);
+	    mainPanel.add(mainLogoImg);
+	    mainPanel.setWidgetTopHeight(mainLogoImg, 0, Unit.PX, 82, Unit.PX);
+	    mainPanel.setWidgetLeftWidth(mainLogoImg, 0, Unit.PX, 150, Unit.PX);
+	    mainPanel.setWidgetTopBottom(finalContainer, 0, Unit.PX, 0, Unit.PX);
+
+	    
 	    // wrap the finalContainer into the resizeComposite
-	    this.initWidget(this.finalContainer);
+	    this.initWidget(mainPanel);
 	}
 	
 	/**
@@ -177,44 +194,39 @@ public class PageView extends ResizeComposite implements IdisplayPage {
 	    this.mainmenu = new MenuBar();
 	    this.mainmenu.setStyleName("mainMenuBar");
 	    this.mainmenu.setAutoOpen(true);
-	    this.mainmenu.setWidth("300px");
+	    this.mainmenu.setWidth("200px");
 	    this.mainmenu.setHeight("20px");
 	    this.mainmenu.setAnimationEnabled(true);
-	    
-	    // Create the editing menu
-	    MenuBar edition = new MenuBar(true);
-	    edition.setAnimationEnabled(true);
-	    edition.addItem("Save", new Command(){public void execute(){}});
-	    edition.addItem("Clear", new Command(){public void execute(){}});
-	    edition.addItem("...", new Command(){public void execute(){}});
-	    this.mainmenu.addItem(new MenuItem("Edition", edition));
 	    
 	    //Create the tool menu
 	    MenuBar tools = new MenuBar(true);
 	    tools.setAnimationEnabled(true);
-	    this.pageTool = new MenuItem("Page ...", new Command(){public void execute(){}});
-	    this.imageTool = new MenuItem("Image ...", new Command(){public void execute(){}});
+	    this.pageTool = new MenuItem(constants.menuToolsPage(), new Command(){public void execute(){}});
+	    this.imageTool = new MenuItem(constants.menuToolsImage(), new Command(){public void execute(){}});
 	    tools.addItem(this.pageTool);
 	    tools.addItem(this.imageTool);
-	    this.mainmenu.addItem(new MenuItem("Tools", tools));
+	    this.mainmenu.addItem(new MenuItem(constants.menuTools(), tools));
 	    
 	    // Create the setting menu
 	    MenuBar setting = new MenuBar(true);
 	    setting.setAnimationEnabled(true);
-	    this.userSettings = new MenuItem("User", new Command(){public void execute(){}});
+	    this.userSettings = new MenuItem(constants.menuSettingsUser(), new Command(){public void execute(){}});
 	    setting.addItem(this.userSettings);
-	    this.tagSettings = new MenuItem("Tag", new Command(){public void execute(){}});
+	    this.tagSettings = new MenuItem(constants.menuSettingsTag(), new Command(){public void execute(){}});
 	    setting.addItem(this.tagSettings);
-	    this.templateSettings = new MenuItem("Template", new Command(){public void execute(){}});
+	    this.templateSettings = new MenuItem(constants.menuSettingsTemplate(), new Command(){public void execute(){}});
 	    setting.addItem(this.templateSettings);
-	    this.mainmenu.addItem(new MenuItem("Setting", setting));
+	    this.mainmenu.addItem(new MenuItem(constants.menuSettings(), setting));
 	    
 	    // Create the help menu
 	    MenuBar help = new MenuBar(true);
 	    help.setAnimationEnabled(true);
-	    help.addItem("?", new Command(){public void execute(){}});
-	    help.addItem("about richerCMS", new Command(){public void execute(){}});
-	    this.mainmenu.addItem(new MenuItem("Help", help));
+	    help.addItem(constants.menuHelpAbout(), new Command(){
+	    		public void execute(){
+	    			Window.open("http://richer-cms.appspot.com/site", "_blank", "");
+	    		}
+	    	});
+	    this.mainmenu.addItem(new MenuItem(constants.menuHelp(), help));
 
 	    // Create Language Panel
 	    LayoutPanel mainLanguagesPanel = new LayoutPanel();
@@ -229,13 +241,12 @@ public class PageView extends ResizeComposite implements IdisplayPage {
 	    userPanel.setWidgetRightWidth(this.pseudo, 32, Unit.PCT, 70, Unit.PCT);
 	    userPanel.setWidgetRightWidth(this.logOut, 5, Unit.PX, 30, Unit.PCT);
 	    
-	   
 	    // Add Menu + LanguagePanel
 	    lgAndMenuPanel.setStyleName("tab-content");
 	    lgAndMenuPanel.add(this.mainmenu);
 	    lgAndMenuPanel.add(userPanel);
 	    lgAndMenuPanel.add(mainLanguagesPanel);
-	    lgAndMenuPanel.setWidgetLeftWidth(this.mainmenu, 0, Unit.PX, 350, Unit.PX);
+	    lgAndMenuPanel.setWidgetLeftWidth(this.mainmenu, 151, Unit.PX, 501, Unit.PX);
 	    lgAndMenuPanel.setWidgetRightWidth(userPanel, 0, Unit.PX, 300, Unit.PX);
 	    lgAndMenuPanel.setWidgetTopBottom(userPanel, 1, Unit.PX, 1, Unit.PX);
 	    lgAndMenuPanel.setWidgetRightWidth(mainLanguagesPanel, 300, Unit.PX, 360, Unit.PX);

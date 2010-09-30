@@ -388,4 +388,23 @@ public interface PageConstants extends Constants {
 	  @DefaultStringValue("Error during loading tags")
 	  String MsgLoadTagFail();
 	  
+	  @DefaultStringValue("Tools")
+	  String menuTools();
+	  @DefaultStringValue("Page")
+	  String menuToolsPage();
+	  @DefaultStringValue("Image")
+	  String menuToolsImage();
+	  @DefaultStringValue("Settings")
+	  String menuSettings();
+	  @DefaultStringValue("User")
+	  String menuSettingsUser();
+	  @DefaultStringValue("Tag")
+	  String menuSettingsTag();
+	  @DefaultStringValue("Template")
+	  String menuSettingsTemplate();
+	  @DefaultStringValue("Help")
+	  String menuHelp();
+	  @DefaultStringValue("About richerCMS...")
+	  String menuHelpAbout();
+	  
 }

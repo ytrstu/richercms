@@ -52,6 +52,7 @@ public class PageView extends ResizeComposite implements IdisplayPage {
 	private SplitLayoutPanel leftRightSpliter; //tiny + information
 	private SplitLayoutPanel topBottomSpliter;
 	private MenuBar mainmenu;
+	private MenuItem settingsItem;
 	private DockLayoutPanel dispositionPanel;
 	private ListBox languages;
     private Label pseudo;
@@ -68,6 +69,8 @@ public class PageView extends ResizeComposite implements IdisplayPage {
 	private Image downSpliter = null;
 	private Image upSpliter = null;
 	private HorizontalPanel btnSpliterPanel =null;
+	
+	private boolean adminMenu;
 	
 	private MenuItem imageTool;
 	private MenuItem pageTool;
@@ -216,7 +219,8 @@ public class PageView extends ResizeComposite implements IdisplayPage {
 	    setting.addItem(this.tagSettings);
 	    this.templateSettings = new MenuItem(constants.menuSettingsTemplate(), new Command(){public void execute(){}});
 	    setting.addItem(this.templateSettings);
-	    this.mainmenu.addItem(new MenuItem(constants.menuSettings(), setting));
+	    settingsItem = new MenuItem(constants.menuSettings(), setting);
+	    this.mainmenu.addItem(settingsItem);
 	    
 	    // Create the help menu
 	    MenuBar help = new MenuBar(true);
@@ -469,6 +473,14 @@ public class PageView extends ResizeComposite implements IdisplayPage {
 		this.topBottomSpliter.remove(bottomPanel);
 		this.topBottomSpliter.addNorth(topPanel, this.topPanelHeight);
 		this.topBottomSpliter.add(bottomPanel);
+	}
+
+	public void initAdminMenu(boolean adminMenu) {
+		this.adminMenu = adminMenu;
+		if (!this.adminMenu) {
+			mainmenu.removeItem(settingsItem);
+			mainmenu.setWidth("110px");
+		}
 	}
 
 }

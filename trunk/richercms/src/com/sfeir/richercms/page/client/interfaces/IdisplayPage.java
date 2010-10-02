@@ -245,4 +245,9 @@ public interface IdisplayPage extends LazyView {
 	 */
 	public void upRightSpliter();
 	
+	/**
+	 * Display the admin menu
+	 * @param adminMenu
+	 */
+	public void initAdminMenu(boolean adminMenu);
 }

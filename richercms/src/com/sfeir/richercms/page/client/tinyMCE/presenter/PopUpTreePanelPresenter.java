@@ -250,7 +250,11 @@ public class PopUpTreePanelPresenter  extends LazyPresenter<IPopUpTreePanel,Page
 		this.rpcPage.getPath(ids, new AsyncCallback<String>() {
 			public void onFailure(Throwable caught) {}
 			public void onSuccess(String result) {
-				eventBus.sendLinkPath(result);
+				String res = result.substring(result.indexOf('/'));
+				if ("/".equals(res)) {
+					res = result;
+				}
+				eventBus.sendLinkPath(res);
 			}
 		});
 	}

@@ -92,9 +92,34 @@ public class TinyMCEPanel extends ResizeComposite implements ITinyMCEPanel {
 		this.tmce.setInitialized(false);
 		this.main.clear();
 		this.displayPanel = new ScrollPanel();
-		HTMLPanel HTMLP = new HTMLPanel(html);
+		HTMLPanel HTMLP = new HTMLPanel(changeUrl(html));
 		this.displayPanel.add(HTMLP);
 		this.main.add(this.displayPanel);
+	}
+	
+	private String changeUrl(String html) {
+		if (html==null) {
+			return null;
+		}
+		
+		StringBuilder res = new StringBuilder();
+		
+		int longueurHref = "<a href=\"".length();
+		int curPos = 0;
+		int posHref = html.indexOf("<a href=\"", curPos);
+		while (posHref>-1) {
+			int posHrefHttp = html.indexOf("<a href=\"http", curPos);
+			
+			res.append(html.substring(curPos, posHref+longueurHref));
+			if (posHref!=posHrefHttp) {
+				res.append("/site/");
+			}
+			
+			curPos = posHref + longueurHref;
+			posHref = html.indexOf("<a href=\"", curPos);
+		}
+		
+		return res.append(html.substring(curPos)).toString();
 	}
 	
 	/**

@@ -358,7 +358,8 @@ public class PagePresenter extends LazyPresenter<IdisplayPage, PageEventBus> {
 		//initialize state
 		this.state = PageState.display;
 		this.usr = usr;
-		// we d'ont display de right part of the adress mail (only if the user does not fil the nickName field)
+		this.view.initAdminMenu(usr.isAdmin());
+		// we don't display the right part of the address mail (only if the user does not fill the nickName field)
 		if(this.usr.getNickname().contains("@"))
 			this.view.setPseudo(this.usr.getNickname().split("@")[0]);
 		else

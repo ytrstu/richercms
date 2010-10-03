@@ -19,6 +19,7 @@ public class TinyMCEPanel extends ResizeComposite implements ITinyMCEPanel {
 	private TinyMCE tmce = new TinyMCE();
 	private ScrollPanel  displayPanel = null;
 	private LayoutPanel main = null;
+	private boolean isViewer = true;
 	/**
 	 * Constructor
 	 * @param height of the tinyEditor in pixels
@@ -81,8 +82,13 @@ public class TinyMCEPanel extends ResizeComposite implements ITinyMCEPanel {
 	
 	public void displayEditor(String html) {
 		//System.out.println("TinyMCEPanel displayEditor" + html);
+		if (!isViewer) {
+			this.tmce.hide();
+			this.tmce.setInitialized(false);
+		}
 		this.main.clear();
 		this.main.add(tmce);
+		isViewer = false;
 		this.setContent(html);
 	}
 	
@@ -95,6 +101,7 @@ public class TinyMCEPanel extends ResizeComposite implements ITinyMCEPanel {
 		HTMLPanel HTMLP = new HTMLPanel(changeUrl(html));
 		this.displayPanel.add(HTMLP);
 		this.main.add(this.displayPanel);
+		isViewer = true;
 	}
 	
 	private String changeUrl(String html) {

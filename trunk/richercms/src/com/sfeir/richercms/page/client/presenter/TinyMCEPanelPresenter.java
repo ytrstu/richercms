@@ -72,7 +72,6 @@ public class TinyMCEPanelPresenter extends LazyPresenter<ITinyMCEPanel, PageEven
 	
 	public void onCancelPage(PageState newState) {
 		this.view.displayViewer(this.view.getContent());
-		this.indexOfTranslation = 0;
 		this.state = newState;
 	}
 	

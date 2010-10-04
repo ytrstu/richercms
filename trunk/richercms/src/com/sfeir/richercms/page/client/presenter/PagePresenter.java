@@ -237,11 +237,33 @@ public class PagePresenter extends LazyPresenter<IdisplayPage, PageEventBus> {
 		case manageUser:
 		case manageImage:
 		case manageTemplate:
-			view.disableLanguageBox();
 		case display :
+			this.langageBoxState(newState);
 			this.state = newState;
 			view.displayNormalPanel();
-			eventBus.displayCurrentPage(state);	
+			eventBus.displayCurrentPage(state);
+		}
+	}
+	
+	/**
+	 * Enable or disable language list
+	 * according page state
+	 * @param newState : page state
+	 */
+	private void langageBoxState(PageState newState){
+		
+		switch(newState) {
+		case manageTag:
+		case manageUser:
+		case manageImage:
+		case manageTemplate:
+			this.view.disableLanguageBox();
+			break;
+		case modify :
+		case add :
+		case display :
+			this.view.enableLanguageBox();
+			break;
 		}
 	}
 	
@@ -259,11 +281,10 @@ public class PagePresenter extends LazyPresenter<IdisplayPage, PageEventBus> {
 		this.recPath = path;
 		this.pageId = id;
 		this.parentPageId = parentpageId;
-		this.view.enableLanguageBox();
+		langageBoxState(this.state);
 	}
 	
 	public void onCancelPage(PageState newState) {		
-		this.view.enableLanguageBox();
 		this.state = newState;
 		//this.changeState(newState);
 	}
@@ -350,7 +371,7 @@ public class PagePresenter extends LazyPresenter<IdisplayPage, PageEventBus> {
 	public void onDisplayImageManager(IImageManager p) {
 		this.view.displayImagePanel(p);
 		this.state = PageState.manageImage;
-		this.view.disableLanguageBox();
+		this.langageBoxState(this.state);
 		this.eventBus.enableReturnBtn(); // enable the return button of the ValidationPanel
 	}
 	

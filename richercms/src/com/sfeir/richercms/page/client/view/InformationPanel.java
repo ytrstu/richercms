@@ -384,7 +384,7 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 		this.tPageTitle.setText("");
 		this.tUrlName.setText("");
 		this.dPublicationFinish.setValue(null);
-		this.dPublicationStart.setValue(new Date());
+		this.dPublicationStart.setValue(null);
 	}
 	
 	public void clearTags() {

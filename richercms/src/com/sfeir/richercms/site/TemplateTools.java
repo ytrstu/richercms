@@ -268,9 +268,7 @@ public final class TemplateTools {
 	 */
 	public static boolean isVisible(Date publicationStart,Date publicationFinish) {
 		Date now = new Date();
-		if(now.before(publicationFinish) &&
-				now.after(publicationStart))
-			return true;
-		return false;
+		return (publicationFinish==null || now.before(publicationFinish)) &&
+				publicationStart!= null && now.after(publicationStart);
 	}
 }

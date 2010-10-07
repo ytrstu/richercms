@@ -383,7 +383,7 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 		this.tKeyWord.setText("");
 		this.tPageTitle.setText("");
 		this.tUrlName.setText("");
-		this.dPublicationFinish.setValue(new Date());
+		this.dPublicationFinish.setValue(null);
 		this.dPublicationStart.setValue(new Date());
 	}
 	

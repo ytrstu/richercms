@@ -351,7 +351,7 @@ public interface PageEventBus extends EventBus {
 	 * the id of the selectedPage
 	 */
 	@Event( handlers =  NavigationPanelPresenter.class )
-	public void loadLinkManager();
+	public void loadLinkManager(String url);
 	
 	/**
 	 * Fired by the NavigationPanelPresenter with the id of the selected page

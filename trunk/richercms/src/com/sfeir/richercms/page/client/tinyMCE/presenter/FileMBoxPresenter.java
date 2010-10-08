@@ -111,7 +111,11 @@ public class FileMBoxPresenter extends LazyPresenter<IFileMBox,PageEventBus>{
 			FileManager.setTinyMceUrl(imageUrl+selectedPath);
 			break;
 		case linkManager :
-			FileManager.setTinyMceUrl(selectedPath);
+			String linkPath = selectedPath;
+			if (selectedPath!=null && selectedPath.startsWith("/")) {
+				linkPath = selectedPath.substring(1);
+			}
+			FileManager.setTinyMceUrl(linkPath);
 			break;
 		}
 		this.selectedPath = "";

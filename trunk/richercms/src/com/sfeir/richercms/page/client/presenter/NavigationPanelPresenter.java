@@ -604,8 +604,25 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Pa
 		this.eventBus.startTinyPopUp(this.getIdPath(),PopUpState.imageManager);
 	}
 	
-	public void onLoadLinkManager() {
-		this.eventBus.startTinyPopUp(this.getIdPath(),PopUpState.linkManager);
+	public void onLoadLinkManager(String url) {
+		this.rpcPage.loadPathIdFromRealPath(url, new AsyncCallback<List<Long>>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				PopUpMessage p = new PopUpMessage(view.getConstants().ECreateTree());
+				p.show();
+			}
+
+			@Override
+			public void onSuccess(List<Long> result) {
+				startTynyPopUp(result);
+			}
+		});
+		
+	}
+	
+	private void startTynyPopUp(List<Long> pathList) {
+		this.eventBus.startTinyPopUp(pathList,PopUpState.linkManager);
 	}
 		
 	/**

@@ -138,7 +138,7 @@ public class TinyMCEPanel extends ResizeComposite implements ITinyMCEPanel {
 		//System.out.println("TinyMCEPanel clearDiv");
 		String newContent = content.replaceAll("^<div[^<]*>", "");
 		String newContent2 = newContent.replaceAll("</div>$", "");
-		return newContent2;
+		return newContent2.replaceAll("<a href=\"/site/", "<a href=\"/");
 	}
 	
 	public void addEventBusInTiny(PageEventBus eventBus) {

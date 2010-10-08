@@ -46,5 +46,7 @@ public interface ArboPageServiceAsync {
 	public void unlockAllUserPage(Long idUser, AsyncCallback<Void> callback);
 	
 	public void existSameUrl(Long parentId, Long pageId, List<String> urlNames, AsyncCallback<Boolean> callback);
+
+	void loadPathIdFromRealPath(String path, AsyncCallback<List<Long>> callback);
 }
  

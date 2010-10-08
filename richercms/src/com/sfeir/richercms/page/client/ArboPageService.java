@@ -141,4 +141,11 @@ public interface ArboPageService extends RemoteService {
 	 * @return true if path does not exist, false either
 	 */
 	public boolean existSameUrl(Long parentId, Long pageId, List<String> urlNames);
+	
+	/**
+	 * Return a path list id of the current page
+	 * @param path : path of the page
+	 * @return the last element of the list is the root
+	 */
+	public List<Long> loadPathIdFromRealPath(String path);
 }

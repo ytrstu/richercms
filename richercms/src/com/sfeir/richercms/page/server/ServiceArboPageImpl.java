@@ -1,6 +1,7 @@
 package com.sfeir.richercms.page.server;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -516,4 +517,42 @@ public class ServiceArboPageImpl  extends RemoteServiceServlet implements ArboPa
 
 	}
 
+	/**
+	 * Return a path list id of the current page
+	 * @param path : path of the page
+	 * @return the last element of the list is the root
+	 */
+	public List<Long> loadPathIdFromRealPath(String path) {
+		LinkedList<Long> res = new LinkedList<Long>();
+		
+		Objectify ofy = ObjectifyService.begin();
+		BeanArboPage root = getMainArboPage();
+		res.add(root.getId());
+		
+		if (path==null) {
+			return res; 
+		} else {
+			long parent = root.getId();
+			boolean isFirst = true;
+			for(String pathPart : path.split("/")) {
+				if (!(isFirst && pathPart.equals(root.getUrlName())) && !"".equals(pathPart)) {
+					Key<ArboPage> childKey = ofy.query(ArboPage.class)
+					.filter("parentId = ", parent)
+					.filter("urlName = ", pathPart)
+					.getKey();
+					
+					if (childKey!=null) {
+						long child = childKey.getId();
+						res.addFirst(child);
+						parent = child;
+					}
+				}
+				
+				isFirst = false;
+			}
+		
+			return res;
+		}		
+	}
+	
 }

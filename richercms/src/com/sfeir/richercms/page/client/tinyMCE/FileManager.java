@@ -17,11 +17,11 @@ public class FileManager {
 	 * Méthode statique d'ouverture de la popup
 	 * @return Pour les tests retourne une chaine affiché dans le champ url de TinyMCE
 	 */
-	public static String loadFileName(final String type) {
+	public static String loadFileName(final String fieldName, final String url, final String type) {
 		if(type.compareTo("image") == 0)
 			FileManager.evtBus.loadFileManager();
 		else if(type.compareTo("file") == 0)
-			FileManager.evtBus.loadLinkManager();
+			FileManager.evtBus.loadLinkManager(url);
 		return "";
 	}
 
@@ -34,7 +34,7 @@ public class FileManager {
 	    	//alert('Dans GWT');
 	    	$wnd.tinyMCE_org_richercms_call.win = win;
 	    	$wnd.tinyMCE_org_richercms_call.field_name = field_name;
-	    	win.document.forms[0].elements[field_name].value = @com.sfeir.richercms.page.client.tinyMCE.FileManager::loadFileName(Ljava/lang/String;)(type);
+	    	win.document.forms[0].elements[field_name].value = @com.sfeir.richercms.page.client.tinyMCE.FileManager::loadFileName(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)(field_name, url, type);
 	    }
 	    $wnd.tinyMCE_org_richercms_call.setFileName = function(url) {
 		}

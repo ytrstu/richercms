@@ -124,7 +124,7 @@
 	
 	<!-- Default page to serve -->
 	<welcome-file-list>
-		<welcome-file>RicherCMS.jsp</welcome-file>
+		<welcome-file>site</welcome-file>
 	</welcome-file-list>
 	
 	<!-- webStat -->

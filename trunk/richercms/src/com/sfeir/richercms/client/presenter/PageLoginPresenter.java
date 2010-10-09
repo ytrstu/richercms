@@ -36,7 +36,7 @@ public class PageLoginPresenter extends LazyPresenter<IdisplayPageLogin, RootEve
 	
 	public void onLogin() {
 		this.view.showPopUpWait();
-		this.rpcLoginService.login(GWT.getHostPageBaseURL(), new AsyncCallback<BeanUserInfo>() {
+		this.rpcLoginService.login(GWT.getHostPageBaseURL()+"RicherCMS.jsp", new AsyncCallback<BeanUserInfo>() {
 			public void onFailure(Throwable error) {
 				PopUpMessage p = new PopUpMessage("Connection for login failed");
 				p.show();

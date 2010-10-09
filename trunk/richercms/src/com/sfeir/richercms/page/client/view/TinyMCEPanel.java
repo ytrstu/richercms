@@ -5,6 +5,7 @@ import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.ResizeComposite;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.sfeir.richercms.client.tools.HtmlTools;
 import com.sfeir.richercms.page.client.event.PageEventBus;
 import com.sfeir.richercms.page.client.interfaces.ITinyMCEPanel;
 import com.sfeir.richercms.page.client.tinyMCE.TinyMCE;
@@ -98,36 +99,12 @@ public class TinyMCEPanel extends ResizeComposite implements ITinyMCEPanel {
 		this.tmce.setInitialized(false);
 		this.main.clear();
 		this.displayPanel = new ScrollPanel();
-		HTMLPanel HTMLP = new HTMLPanel(changeUrl(html));
+		HTMLPanel HTMLP = new HTMLPanel(HtmlTools.changeUrl(html));
 		this.displayPanel.add(HTMLP);
 		this.main.add(this.displayPanel);
 		isViewer = true;
 	}
 	
-	private String changeUrl(String html) {
-		if (html==null) {
-			return null;
-		}
-		
-		StringBuilder res = new StringBuilder();
-		
-		int longueurHref = "<a href=\"".length();
-		int curPos = 0;
-		int posHref = html.indexOf("<a href=\"", curPos);
-		while (posHref>-1) {
-			int posHrefHttp = html.indexOf("<a href=\"http", curPos);
-			
-			res.append(html.substring(curPos, posHref+longueurHref));
-			if (posHref!=posHrefHttp) {
-				res.append("/site/");
-			}
-			
-			curPos = posHref + longueurHref;
-			posHref = html.indexOf("<a href=\"", curPos);
-		}
-		
-		return res.append(html.substring(curPos)).toString();
-	}
 	
 	/**
 	 * Remove the div that includes the content after a displaying in the HTMLPanel

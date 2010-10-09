@@ -7,6 +7,7 @@ import java.util.List;
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.Query;
+import com.sfeir.richercms.client.tools.HtmlTools;
 import com.sfeir.richercms.page.server.business.ArboPage;
 import com.sfeir.richercms.page.server.business.Tag;
 import com.sfeir.richercms.page.server.business.Template;
@@ -121,7 +122,7 @@ public class TemplateBasic {
 
 	
 	public String getContent() {
-		return page.getTranslation().get(this.translation).getContent();
+		return HtmlTools.changeUrl(page.getTranslation().get(this.translation).getContent());
 	}
 
 	public int getTranslation() {

@@ -38,4 +38,12 @@
   <extend-property name='locale' values='de'/>
   <extend-property name='locale' values='en'/>
   
+  <replace-with class="com.sfeir.richercms.main.presenter.MainPresenterOldIE">
+    <when-type-is class="com.sfeir.richercms.main.presenter.MainPresenter" />
+    <any>
+      <when-property-is name="user.agent" value="ie6"/>
+      <when-property-is name="user.agent" value="ie7" />
+      <when-property-is name="user.agent" value="ie8" />
+    </any>
+  </replace-with>
 </module>

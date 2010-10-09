@@ -197,7 +197,7 @@ public class PageView extends ResizeComposite implements IdisplayPage {
 	    this.mainmenu = new MenuBar();
 	    this.mainmenu.setStyleName("mainMenuBar");
 	    this.mainmenu.setAutoOpen(true);
-	    this.mainmenu.setWidth("200px");
+	    this.mainmenu.setWidth("220px");
 	    this.mainmenu.setHeight("20px");
 	    this.mainmenu.setAnimationEnabled(true);
 	    

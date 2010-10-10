@@ -164,7 +164,7 @@ public class PageView extends ResizeComposite implements IdisplayPage {
 	    Panel logoPanel = new SimplePanel();
 	    logoPanel.setSize("150px","82px");
 	    logoPanel.setStyleName("logostyle");
-	    Image mainLogoImg = new Image("/tab_images/mainlogo.png");
+	    Image mainLogoImg = new Image("/tab_images/mainlogoMenu.png");
 	    logoPanel.add(mainLogoImg);
 	    LayoutPanel mainPanel = new LayoutPanel();
 	    mainPanel.add(finalContainer);
@@ -197,7 +197,7 @@ public class PageView extends ResizeComposite implements IdisplayPage {
 	    this.mainmenu = new MenuBar();
 	    this.mainmenu.setStyleName("mainMenuBar");
 	    this.mainmenu.setAutoOpen(true);
-	    this.mainmenu.setWidth("220px");
+	    this.mainmenu.setWidth("100%");
 	    this.mainmenu.setHeight("20px");
 	    this.mainmenu.setAnimationEnabled(true);
 	    
@@ -250,7 +250,7 @@ public class PageView extends ResizeComposite implements IdisplayPage {
 	    lgAndMenuPanel.add(this.mainmenu);
 	    lgAndMenuPanel.add(userPanel);
 	    lgAndMenuPanel.add(mainLanguagesPanel);
-	    lgAndMenuPanel.setWidgetLeftWidth(this.mainmenu, 151, Unit.PX, 501, Unit.PX);
+	    lgAndMenuPanel.setWidgetLeftRight(this.mainmenu, 150, Unit.PX, 0, Unit.PX);
 	    lgAndMenuPanel.setWidgetRightWidth(userPanel, 0, Unit.PX, 300, Unit.PX);
 	    lgAndMenuPanel.setWidgetTopBottom(userPanel, 1, Unit.PX, 1, Unit.PX);
 	    lgAndMenuPanel.setWidgetRightWidth(mainLanguagesPanel, 300, Unit.PX, 360, Unit.PX);

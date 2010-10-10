@@ -204,9 +204,9 @@ td.datePickerMonth {
 
 .mainMenuBar {
 	background: url("tab_images/hborder.png") repeat-x scroll 0 -2003px #E3E8F3;
-	border-right: 1px solid #BBBBBB;
+	border-right: 0px;
 	border-bottom: 10px solid #E8ECF5;
-	border-left: 1px solid #BBBBBB;
+	border-left: 0px;
 	padding-top: 1px;
 	cursor: default;
 }

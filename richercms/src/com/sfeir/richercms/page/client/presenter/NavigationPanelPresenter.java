@@ -113,6 +113,14 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Pa
 					}		
 				});	
 			}});
+		
+		// commande pour l'ajout d'une sous-page
+		this.view.getPopUpMenuBar().setRefreshCommand(new Command(){
+			public void execute() {
+				NavigationPanelPresenter.this.refreshChild();
+				view.getPopUpMenuBar().hide();
+			}});
+		
 		// commande pour l'ajout d'une sous-page
 		this.view.getPopUpMenuBar().setAddPageCommand(new Command(){
 			public void execute() {
@@ -414,6 +422,13 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Pa
 			eventBus.displayNewPageInTree();
 		}
 	}
+	
+	private void refreshChild(){
+		//delete all child of current node
+		this.selectedItem.removeItems();
+		// add all child in selected node
+		this.AddChildInTree();
+	}
 
 	/**
 	 * Take all child node of the expandedNode and add them in the tree
@@ -465,7 +480,7 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Pa
 	 */
 	private TreeItem makeTreeNode(BeanArboPage bean){
 		TreeItem node = new TreeItem();
-		Button b = new Button(">");
+		Image b = new Image("tab_images/leftBtn.png");
 		Image img = this.chooseTheGoodImage(bean);
 		HorizontalEventPanel p = new HorizontalEventPanel();
 		p.setSpacing(0);
@@ -495,7 +510,7 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Pa
 		
 		b.addClickHandler(new ClickHandler() { // open the popUpMenu
 			public void onClick(ClickEvent event) {
-				Button b = (Button)event.getSource();
+				Image b = (Image)event.getSource();
 				view.getPopUpMenuBar().setPopupPosition(b.getAbsoluteLeft() + b.getOffsetWidth(),
 														b.getAbsoluteTop() + b.getOffsetHeight());
 				view.getPopUpMenuBar().show();
@@ -504,7 +519,7 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Pa
 		p.addMouseOverHandler(new MouseOverHandler() {
 			public void onMouseOver(MouseOverEvent event) {
 				HorizontalEventPanel p = (HorizontalEventPanel)event.getSource();
-				Button b = (Button)p.getWidget(2); // img in 0, the label in 0, and the button in 1
+				Image b = (Image)p.getWidget(2); // img in 0, the label in 0, and the button in 1
 				if(dispBtnInTree)
 					b.setVisible(true);
 			}
@@ -513,7 +528,7 @@ public class NavigationPanelPresenter extends LazyPresenter<INavigationPanel, Pa
 		p.addMouseOutHandler(new MouseOutHandler () {
 			public void onMouseOut(MouseOutEvent event) {
 				HorizontalEventPanel p = (HorizontalEventPanel)event.getSource();
-				Button b = (Button)p.getWidget(2); // img in 0, the label in 0, and the button in 1
+				Image b = (Image)p.getWidget(2); // img in 0, the label in 0, and the button in 1
 				b.setVisible(false);
 			}
 		});

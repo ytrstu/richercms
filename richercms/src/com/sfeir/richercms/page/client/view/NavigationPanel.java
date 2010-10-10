@@ -4,6 +4,7 @@ package com.sfeir.richercms.page.client.view;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TreeItem;
 import com.sfeir.richercms.page.client.interfaces.INavigationPanel;
@@ -36,7 +37,7 @@ public class NavigationPanel extends TreePanel implements INavigationPanel{
 	
 	public HasClickHandlers addPageInTree(String name, String key)
 	{
-		Button b = new Button(">");
+		Image b = new Image("tab_images/leftBtn.png");
 		HorizontalPanel p = new HorizontalPanel();
 		p.add(new Label(name));
 		p.add(b);

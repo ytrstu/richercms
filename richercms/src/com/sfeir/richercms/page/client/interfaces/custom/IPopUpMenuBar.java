@@ -67,4 +67,10 @@ public interface IPopUpMenuBar {
 	 * hide the popUp
 	 */
 	void hide();
+	
+	/**
+	 * Refresh all node child
+	 * @param command
+	 */
+	void setRefreshCommand(Command command);
 }

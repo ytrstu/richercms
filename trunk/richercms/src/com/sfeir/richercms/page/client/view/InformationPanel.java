@@ -12,6 +12,7 @@ import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.dom.client.HasFocusHandlers;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
+import com.google.gwt.user.client.ui.DisclosurePanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
@@ -47,6 +48,9 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 	private LayoutPanel root;
 	// infoTab contain : information fields and tags
 	private FlexTable infoTab = null;
+	private FlexTable noLgeInfoTab = null;
+    private DisclosurePanel advancedDisclosure = null;
+
 	
 	private Label Title = null;
 	private Label lock = null;
@@ -60,7 +64,7 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 	private DateBox dPublicationStart = null;
 	private DateBox dPublicationFinish = null;
 	private final static String textBoxWidth = "250px";
-	private final int firstTagInTable = 10;
+	private final int firstTagInTable = 6;
 	//parse this to know what tag are selected
 	
 	private HashMap<Long,Widget> checkORTextBox; // idTag, associated CheckBox or textBox
@@ -154,7 +158,14 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 		
 		HorizontalPanel p;
 		
+		// info in several language
 		this.infoTab = new FlexTable();
+		// same info for all language
+		this.noLgeInfoTab = new FlexTable();
+		this.advancedDisclosure = new DisclosurePanel(this.constants.disclosureTitle());
+		this.advancedDisclosure.setAnimationEnabled(true);
+		this.advancedDisclosure.setContent(this.noLgeInfoTab);
+
 		
 		this.infoTab.setWidget(0,0, new Label(constants.BrowserTitle()));
 		this.infoTab.setWidget(0,1,this.tBrowserTitle);
@@ -193,43 +204,50 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 		p.add(this.cpyButtonLst.get(3));p.add(this.cpyLabelLst.get(3));
 		this.infoTab.setWidget(3,3,p);
 		
-		this.infoTab.setWidget(4,0, new Label(constants.UrlName()));
-		this.infoTab.setWidget(4,1,this.tUrlName);
-		this.infoTab.setWidget(4,3,this.helpUrlName);
+		this.noLgeInfoTab.setWidget(0,0, new Label(constants.UrlName()));
+		this.noLgeInfoTab.setWidget(0,1,this.tUrlName);
+		this.noLgeInfoTab.setWidget(0,3,this.helpUrlName);
 		img = new Image("/tab_images/infoBulle.png");
 		img.setTitle(this.constants.infoMessUrlName());
-		this.infoTab.setWidget(4,2,img);
+		this.noLgeInfoTab.setWidget(0,2,img);
 		
-		this.infoTab.setWidget(5,0, new Label(constants.PublicationStart()));
-		this.infoTab.setWidget(5,1,this.dPublicationStart);
+		this.noLgeInfoTab.setWidget(1,0, new Label(constants.PublicationStart()));
+		this.noLgeInfoTab.setWidget(1,1,this.dPublicationStart);
 		img = new Image("/tab_images/infoBulle.png");
 		img.setTitle(this.constants.infoMessDateStart());
-		this.infoTab.setWidget(5,2,img);
+		this.noLgeInfoTab.setWidget(1,2,img);
 		
-		this.infoTab.setWidget(6,0, new Label(constants.PublicationFinish()));
-		this.infoTab.setWidget(6,1,this.dPublicationFinish);
+		this.noLgeInfoTab.setWidget(2,0, new Label(constants.PublicationFinish()));
+		this.noLgeInfoTab.setWidget(2,1,this.dPublicationFinish);
 		img = new Image("/tab_images/infoBulle.png");
 		img.setTitle(this.constants.infoMessDateStop());
-		this.infoTab.setWidget(6,2,img);
+		this.noLgeInfoTab.setWidget(2,2,img);
 		
 		//template selection
 		this.listTemplate = new ListBox();
-		this.infoTab.setText(7,0,this.constants.ExistingTemplate());
-		this.infoTab.setWidget(7,1,this.listTemplate);	
+		this.noLgeInfoTab.setText(3,0,this.constants.ExistingTemplate());
+		this.noLgeInfoTab.setWidget(3,1,this.listTemplate);	
 		
 		//obligation
-		this.infoTab.setText(8, 0, this.constants.Obligation());
+		this.noLgeInfoTab.setText(4, 0, this.constants.Obligation());
 		//tag title
-		this.infoTab.setText(9, 0, this.constants.PossibleTag());
+		this.noLgeInfoTab.setText(5, 0, this.constants.PossibleTag());
 		
 		SimplePanel spTitle = new SimplePanel();
 		SimplePanel spTable = new SimplePanel();
+		SimplePanel spTable2 = new SimplePanel();
 		spTitle.setWidget(this.Title);
 		spTitle.addStyleName("informationPanel-Vertical-margin");
+		// add in a simple panel for the scrollBar
 		spTable.setWidget(this.infoTab);
 		spTable.addStyleName("informationPanel-Vertical-margin");
+		// add in a simple panel for the scrollBar
+		spTable2.setWidget(this.advancedDisclosure);
+		spTable2.addStyleName("informationPanel-Vertical-margin");
+		
 		this.verticalContainer.add(spTitle);
 		this.verticalContainer.add(spTable);
+		this.verticalContainer.add(spTable2);
 		
 	}
 	
@@ -243,7 +261,7 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 			String shortLib, String description, boolean textualTag ) {
 		
 		//tag are added in infoTab
-		int numRow = this.infoTab.getRowCount();
+		int numRow = this.noLgeInfoTab.getRowCount();
 		HorizontalPanel checkOrTextAndHelp = new HorizontalPanel();
 		checkOrTextAndHelp.setSpacing(10);
 		
@@ -251,8 +269,8 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 		img.setTitle(description);
 		
 		
-		this.infoTab.setText(numRow, 0, shortLib);
-		this.infoTab.setWidget(numRow, 1, checkOrTextAndHelp);
+		this.noLgeInfoTab.setText(numRow, 0, shortLib);
+		this.noLgeInfoTab.setWidget(numRow, 1, checkOrTextAndHelp);
 		
 		if(textualTag){
 			TextBox tb = new TextBox(); 
@@ -295,8 +313,8 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 	public void clearTagTable() {
 		//tag and information are included in same table
 		//we remove just tag
-		for(int i = (this.infoTab.getRowCount()-1); i> (this.firstTagInTable-1) ; i--){
-			this.infoTab.removeRow(i);
+		for(int i = (this.noLgeInfoTab.getRowCount()-1); i> (this.firstTagInTable-1) ; i--){
+			this.noLgeInfoTab.removeRow(i);
 		}
 		this.checkORTextBox.clear();
 	}
@@ -501,6 +519,7 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 	public void showRequiredUrl() {
 		this.helpUrlName.setText(this.constants.ObligationMsg());
 		this.helpUrlName.setVisible(true);
+		this.advancedDisclosure.setOpen(true);
 	}
 	
 	public void hideRequiredField(){
@@ -585,5 +604,13 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 				break;
 			}
 		}
+	}
+	
+	public void openEnclosurePanel(){
+		this.advancedDisclosure.setOpen(true);
+	}
+	
+	public void closeEnclosurePanel(){
+		this.advancedDisclosure.setOpen(false);
 	}
 }

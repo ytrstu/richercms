@@ -330,4 +330,16 @@ public interface IInformationPanel extends LazyView {
 	 * @param id : template's id
 	 */
 	void addTemplateInList(String name, String id);
+	
+	/**
+	 * open the enclosurePanel who contains 
+	 * information with no link with language
+	 */
+	void openEnclosurePanel();
+	
+	/**
+	 * close the enclosurePanel who contains 
+	 * information with no link with language
+	 */
+	void closeEnclosurePanel();
 }

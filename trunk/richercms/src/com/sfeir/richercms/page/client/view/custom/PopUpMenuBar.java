@@ -17,6 +17,7 @@ public class PopUpMenuBar extends PopupPanel implements IPopUpMenuBar {
 
 	private MenuBar popupMenuBar = new MenuBar(true);
 	private MenuItem modifyPage = null;
+	private MenuItem refresh = null;
 	private MenuItem addPage = null;
 	private MenuItem delPage = null;
 	private MenuItem upPage = null;
@@ -28,6 +29,11 @@ public class PopUpMenuBar extends PopupPanel implements IPopUpMenuBar {
 		super(true);
 
 		// instantiate with empty command
+		this.refresh = new MenuItem("Refresh", true, new Command() {
+			public void execute() {
+				;
+			}
+		});
 		this.modifyPage = new MenuItem("modify page", true, new Command() {
 			public void execute() {
 				;
@@ -64,6 +70,7 @@ public class PopUpMenuBar extends PopupPanel implements IPopUpMenuBar {
 			}
 		});
 
+		this.popupMenuBar.addItem(this.refresh);
 		this.popupMenuBar.addItem(this.modifyPage);
 		this.popupMenuBar.addItem(this.addPage);
 		this.popupMenuBar.addItem(this.delPage);
@@ -108,6 +115,11 @@ public class PopUpMenuBar extends PopupPanel implements IPopUpMenuBar {
 	
 	public void setManageImagesCommand(Command cmd) {
 		this.manageImages.setCommand(cmd);
+	}
+
+	@Override
+	public void setRefreshCommand(Command cmd) {
+		this.refresh.setCommand(cmd);	
 	}
 
 }

@@ -1,0 +1,488 @@
+<?xml version="1.0"?>
+<TranslationPages>
+ <TranslationPage>
+  <pageTitle>RicherCMS : CMS openSource</pageTitle>
+  <publicationStart></publicationStart>
+  <browserTitle>RicherCMS : CMS openSource</browserTitle>
+  <keyWord>RicherCMS CMS openSource</keyWord>
+  <content>&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+&lt;h1&gt;&lt;span style="font-size: x-large; font-family: verdana,geneva;"&gt;RicherCMS : CMS nouvel g&amp;eacute;n&amp;eacute;ration&lt;/span&gt;&lt;/h1&gt;
+&lt;!--[if gte mso 10]&gt; &lt;mce:style&gt;&lt;!   /* Style Definitions */  table.MsoNormalTable 	{mso-style-name:"Tableau Normal"; 	mso-tstyle-rowband-size:0; 	mso-tstyle-colband-size:0; 	mso-style-noshow:yes; 	mso-style-priority:99; 	mso-style-qformat:yes; 	mso-style-parent:""; 	mso-padding-alt:0cm 5.4pt 0cm 5.4pt; 	mso-para-margin-top:0cm; 	mso-para-margin-right:0cm; 	mso-para-margin-bottom:10.0pt; 	mso-para-margin-left:0cm; 	line-height:115%; 	mso-pagination:widow-orphan; 	font-size:11.0pt; 	font-family:"Calibri","sans-serif"; 	mso-ascii-font-family:Calibri; 	mso-ascii-theme-font:minor-latin; 	mso-hansi-font-family:Calibri; 	mso-hansi-theme-font:minor-latin;} --&gt; &lt;!--[endif]--&gt;
+&lt;p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal; text-align: justify;"&gt;&amp;nbsp;&lt;/p&gt;
+&lt;p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal; text-align: justify;"&gt;&lt;strong&gt;&lt;span style="font-family: verdana,geneva; font-size: large; color: #000000;"&gt;RicherCMS est un &lt;em&gt;syst&amp;egrave;me de gestion de contenu &lt;/em&gt;((en) Content Management Systems ou CMS). Ce genre d&amp;rsquo;outil est d&amp;eacute;j&amp;agrave; tr&amp;egrave;s pr&amp;eacute;sent sur le web mais la technologie qui pr&amp;eacute;domine reste le PHP d&amp;ucirc; &amp;agrave; son h&amp;eacute;bergement simplifi&amp;eacute; (h&amp;eacute;bergeur gratuit&amp;nbsp;: free, Yahoo, &amp;hellip;). De plus ces CMS poss&amp;egrave;dent tr&amp;egrave;s souvent de lourdes contraintes pour ce qu&amp;rsquo;il en est de l&amp;rsquo;interface cliente. RicherCMS a donc pour vocation d&amp;rsquo;offrir une architecture souple et extensible dans un langage de plus haut niveau tout en conservant les points forts des CMS classiques. &amp;nbsp;&lt;/span&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"&gt;&lt;strong&gt;&lt;span style="color: #000000; font-family: verdana,geneva; font-size: large;"&gt;&amp;nbsp;&lt;/span&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"&gt;&lt;strong&gt;&lt;span style="color: #000000; font-family: verdana,geneva; font-size: large;"&gt;Voici Les principaux point fort mis en avant&amp;nbsp;:&lt;/span&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;!--[if !supportLists]--&gt;&lt;strong&gt;&lt;span style="font-family: verdana,geneva; color: #000000; font-size: large;"&gt;Interface d&amp;rsquo;administration d&amp;eacute;velopp&amp;eacute;e sous GWT (google web ToolKit) en Java/J2EE.&lt;/span&gt;&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;span style="font-family: verdana,geneva; color: #000000; font-size: large;"&gt;D&amp;eacute;ploiement gratuit sur AppEngine (google).&lt;/span&gt;&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;span style="font-family: verdana,geneva; color: #000000; font-size: large;"&gt;Interface cliente customisable (java/J2EE, GWT, &amp;hellip;).&lt;/span&gt;&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;!--[if !supportLists]--&gt;&lt;strong&gt;&lt;span style="font-family: verdana,geneva; color: #000000;"&gt;&lt;span style="font-size: large;"&gt;Administration accessible &amp;agrave; un non d&amp;eacute;veloppeur.&lt;/span&gt;&lt;/span&gt;&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;span style="font-family: verdana,geneva; color: #000000;"&gt;&lt;span style="font-size: large;"&gt;Cr&amp;eacute;ation de site Internationalis&amp;eacute;&amp;nbsp;: int&amp;egrave;gre une gestion des langues&lt;/span&gt;. &lt;/span&gt;&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+&lt;h1&gt;&lt;span style="font-size: x-large; font-family: verdana,geneva;"&gt;Un CMS pour d&amp;eacute;veloppeur ?&lt;/span&gt;&lt;/h1&gt;
+&lt;!--[if !supportLists]--&gt;&lt;!--[endif]--&gt;
+&lt;p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal; text-align: justify;"&gt;&amp;nbsp;&lt;/p&gt;
+&lt;p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal; text-align: justify;"&gt;&lt;strong&gt;&lt;span style="font-family: verdana,geneva;"&gt;&lt;span style="color: black;"&gt;&lt;span style="font-size: large;"&gt;Au vu de la communaut&amp;eacute; java grandissante, le d&amp;eacute;veloppement d&amp;rsquo;un CMS utilisant comme language de java semble de plus en plus important. Le but est donc offrir un outils de gestion compr&amp;eacute;hensible pour un non-informaticien tout en laissant le champs libre au d&amp;eacute;veloppeur pour cr&amp;eacute;er son interface cliente et ajouter de nouvelle fonctionnalit&amp;eacute; s&amp;rsquo;il en a le besion.&lt;/span&gt;&lt;/span&gt;&lt;span style="color: black; font-size: large;"&gt;&amp;nbsp;&lt;/span&gt;&lt;/span&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal; text-align: justify;"&gt;&amp;nbsp;&lt;/p&gt;
+&lt;p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal; text-align: justify;"&gt;&lt;span style="color: black; font-size: large; font-family: verdana,geneva;"&gt;&lt;br /&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;h1&gt;&lt;span style="font-size: x-large; font-family: verdana,geneva;"&gt;Pourquoi google ?&lt;/span&gt;&lt;/h1&gt;
+&lt;p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal; text-align: justify;"&gt;&amp;nbsp;&lt;/p&gt;
+&lt;p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal; text-align: justify;"&gt;&lt;strong&gt;&lt;span style="font-family: verdana,geneva;"&gt;&lt;span style="color: black; font-size: large;"&gt;Le Cloud Computing et SaaS (Software as a Service) tendent &amp;agrave; devenir des technologies incontournables, Google en est le parfait exemple. Google cherche &amp;agrave; offrir &amp;agrave; ses clients des outils qui vont devenir des r&amp;eacute;f&amp;eacute;rences en terme de d&amp;eacute;veloppement et de gestion de projets : plate forme de&lt;/span&gt;&lt;span style="color: black;"&gt;&lt;span style="font-size: large;"&gt; documents en ligne, gestion de calendriers, serveurs mails&amp;hellip; Avec une nouvelle technologie de d&amp;eacute;veloppement plus s&amp;eacute;curis&amp;eacute;e et alliant une compatibilit&amp;eacute; parfaite avec les autres outils Google, se lier et conna&amp;icirc;tre les outils avec le g&amp;eacute;ant du web semble une chose indispensable au d&amp;eacute;veloppement des entreprises actuelles.&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/strong&gt;&lt;/p&gt;</content>
+  <translation_INTEGER_IDX></translation_INTEGER_IDX>
+  <key>359004</key>
+  <urlName></urlName>
+  <publicationFinish></publicationFinish>
+  <description>RicherCMS : CMS openSource</description>
+ </TranslationPage>
+ <TranslationPage>
+  <pageTitle>RicherCMS : CMS openSource</pageTitle>
+  <publicationStart></publicationStart>
+  <browserTitle>RicherCMS : CMS openSource</browserTitle>
+  <keyWord>RicherCMS CMS open Source</keyWord>
+  <content>&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+&lt;h1&gt;&lt;span style="font-size: x-large; font-family: verdana,geneva;"&gt;RicherCMS : CMS nouvelle g&amp;eacute;n&amp;eacute;ration&lt;/span&gt;&lt;/h1&gt;
+&lt;!--[if gte mso 10]&gt; &lt;mce:style&gt;&lt;!   /* Style Definitions */  table.MsoNormalTable 	{mso-style-name:"Tableau Normal"; 	mso-tstyle-rowband-size:0; 	mso-tstyle-colband-size:0; 	mso-style-noshow:yes; 	mso-style-priority:99; 	mso-style-qformat:yes; 	mso-style-parent:""; 	mso-padding-alt:0cm 5.4pt 0cm 5.4pt; 	mso-para-margin-top:0cm; 	mso-para-margin-right:0cm; 	mso-para-margin-bottom:10.0pt; 	mso-para-margin-left:0cm; 	line-height:115%; 	mso-pagination:widow-orphan; 	font-size:11.0pt; 	font-family:"Calibri","sans-serif"; 	mso-ascii-font-family:Calibri; 	mso-ascii-theme-font:minor-latin; 	mso-hansi-font-family:Calibri; 	mso-hansi-theme-font:minor-latin;} --&gt; &lt;!--[endif]--&gt;
+&lt;p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal; text-align: justify;"&gt;&amp;nbsp;&lt;/p&gt;
+&lt;p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal; text-align: justify;"&gt;&lt;strong&gt;&lt;span style="font-family: verdana,geneva; font-size: large; color: #000000;"&gt;RicherCMS est un &lt;em&gt;syst&amp;egrave;me de gestion de contenu &lt;/em&gt;((en) Content Management Systems ou CMS). Ce genre d&amp;rsquo;outil est d&amp;eacute;j&amp;agrave; tr&amp;egrave;s pr&amp;eacute;sent sur le web mais la technologie qui pr&amp;eacute;domine reste le PHP d&amp;ucirc; &amp;agrave; son h&amp;eacute;bergement simplifi&amp;eacute; (h&amp;eacute;bergeur gratuit&amp;nbsp;: free, Yahoo, &amp;hellip;). De plus ces CMS poss&amp;egrave;dent tr&amp;egrave;s souvent de lourdes contraintes pour ce qu&amp;rsquo;il en est de l&amp;rsquo;interface cliente. RicherCMS a donc pour vocation d&amp;rsquo;offrir une architecture souple et extensible dans un langage de plus haut niveau tout en conservant les points forts des CMS classiques. &amp;nbsp;&lt;/span&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"&gt;&lt;strong&gt;&lt;span style="color: #000000; font-family: verdana,geneva; font-size: large;"&gt;&amp;nbsp;&lt;/span&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;"&gt;&lt;strong&gt;&lt;span style="color: #000000; font-family: verdana,geneva; font-size: large;"&gt;Voici Les principaux point fort mis en avant&amp;nbsp;:&lt;/span&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;!--[if !supportLists]--&gt;&lt;strong&gt;&lt;span style="font-family: verdana,geneva; color: #000000; font-size: large;"&gt;Interface d&amp;rsquo;administration d&amp;eacute;velopp&amp;eacute;e sous GWT (google web ToolKit) en Java.&lt;/span&gt;&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;span style="font-family: verdana,geneva; color: #000000; font-size: large;"&gt;D&amp;eacute;ploiement gratuit sur AppEngine (google).&lt;/span&gt;&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;span style="font-family: verdana,geneva; color: #000000; font-size: large;"&gt;Interface cliente customisable (GWT, HTML, Javascript&amp;hellip;).&lt;/span&gt;&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;!--[if !supportLists]--&gt;&lt;strong&gt;&lt;span style="font-family: verdana,geneva; color: #000000;"&gt;&lt;span style="font-size: large;"&gt;Administration accessible &amp;agrave; un non d&amp;eacute;veloppeur.&lt;/span&gt;&lt;/span&gt;&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;span style="font-family: verdana,geneva; color: #000000;"&gt;&lt;span style="font-size: large;"&gt;Cr&amp;eacute;ation de site Internationalis&amp;eacute;&amp;nbsp;: int&amp;egrave;gre une gestion des langues&lt;/span&gt;. &lt;/span&gt;&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+&lt;h1&gt;&lt;span style="font-size: x-large; font-family: verdana,geneva;"&gt;Un CMS pour d&amp;eacute;veloppeur ?&lt;/span&gt;&lt;/h1&gt;
+&lt;!--[if !supportLists]--&gt;&lt;!--[endif]--&gt;
+&lt;p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal; text-align: justify;"&gt;&amp;nbsp;&lt;/p&gt;
+&lt;p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal; text-align: justify;"&gt;&lt;strong&gt;&lt;span style="font-family: verdana,geneva;"&gt;&lt;span style="color: black;"&gt;&lt;span style="font-size: large;"&gt;Au vu de la communaut&amp;eacute; java grandissante, le d&amp;eacute;veloppement d&amp;rsquo;un CMS utilisant comme language de java semble de plus en plus important. Le but est donc offrir un outils de gestion compr&amp;eacute;hensible pour un non-informaticien tout en laissant le champs libre au d&amp;eacute;veloppeur pour cr&amp;eacute;er son interface cliente et ajouter de nouvelle fonctionnalit&amp;eacute; s&amp;rsquo;il en a le besion.&lt;/span&gt;&lt;/span&gt;&lt;span style="color: black; font-size: large;"&gt;&amp;nbsp;&lt;/span&gt;&lt;/span&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal; text-align: justify;"&gt;&amp;nbsp;&lt;/p&gt;
+&lt;p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal; text-align: justify;"&gt;&lt;span style="color: black; font-size: large; font-family: verdana,geneva;"&gt;&lt;br /&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;h1&gt;&lt;span style="font-size: x-large; font-family: verdana,geneva;"&gt;Pourquoi google ?&lt;/span&gt;&lt;/h1&gt;
+&lt;p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal; text-align: justify;"&gt;&amp;nbsp;&lt;/p&gt;
+&lt;p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal; text-align: justify;"&gt;&lt;strong&gt;&lt;span style="font-family: verdana,geneva;"&gt;&lt;span style="color: black; font-size: large;"&gt;Le Cloud Computing et SaaS (Software as a Service) tendent &amp;agrave; devenir des technologies incontournables, Google en est le parfait exemple. Google cherche &amp;agrave; offrir &amp;agrave; ses clients des outils qui vont devenir des r&amp;eacute;f&amp;eacute;rences en terme de d&amp;eacute;veloppement et de gestion de projets : plate forme de&lt;/span&gt;&lt;span style="color: black;"&gt;&lt;span style="font-size: large;"&gt; documents en ligne, gestion de calendriers, serveurs mails&amp;hellip; Avec une nouvelle technologie de d&amp;eacute;veloppement plus s&amp;eacute;curis&amp;eacute;e et alliant une compatibilit&amp;eacute; parfaite avec les autres outils Google, se lier et conna&amp;icirc;tre les outils avec le g&amp;eacute;ant du web semble une chose indispensable au d&amp;eacute;veloppement des entreprises actuelles.&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/strong&gt;&lt;/p&gt;</content>
+  <translation_INTEGER_IDX></translation_INTEGER_IDX>
+  <key>393004</key>
+  <urlName></urlName>
+  <publicationFinish></publicationFinish>
+  <description>RicherCMS : CMS openSource</description>
+ </TranslationPage>
+ <TranslationPage>
+  <pageTitle></pageTitle>
+  <publicationStart></publicationStart>
+  <browserTitle></browserTitle>
+  <keyWord></keyWord>
+  <content></content>
+  <translation_INTEGER_IDX></translation_INTEGER_IDX>
+  <key>433008</key>
+  <urlName></urlName>
+  <publicationFinish></publicationFinish>
+  <description></description>
+ </TranslationPage>
+ <TranslationPage>
+  <pageTitle>Architecture des modules</pageTitle>
+  <publicationStart></publicationStart>
+  <browserTitle>Architecture des modules</browserTitle>
+  <keyWord>Architecture des modules</keyWord>
+  <content>&lt;p&gt;&lt;img style="display: block; margin-left: auto; margin-right: auto;" src="/image/accueil/doc/Diagrams/Modules/ArchiModules/ArchiModules.png" border="0" width="1158" height="873" /&gt;&lt;/p&gt;</content>
+  <translation_INTEGER_IDX></translation_INTEGER_IDX>
+  <key>434010</key>
+  <urlName></urlName>
+  <publicationFinish></publicationFinish>
+  <description>Architecture des modules</description>
+ </TranslationPage>
+ <TranslationPage>
+  <pageTitle>Modules</pageTitle>
+  <publicationStart></publicationStart>
+  <browserTitle>Modules</browserTitle>
+  <keyWord>Modules</keyWord>
+  <content>&lt;p&gt;Vous pouvez retrouver ici les diff&amp;eacute;rents diagrammes rerp&amp;eacute;sentant les modules de RicherCMS :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="doc/Diagrams/Modules/root/"&gt;Module Root&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="doc/Diagrams/Modules/main/"&gt;Module Main&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="doc/Diagrams/Modules/wizard/"&gt;Module Wizard&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="doc/Diagrams/Modules/page/"&gt;Module Page&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="accueil/doc/Diagrams/Modules/ArchiModules/"&gt;Architecture des modules&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</content>
+  <translation_INTEGER_IDX></translation_INTEGER_IDX>
+  <key>435012</key>
+  <urlName></urlName>
+  <publicationFinish></publicationFinish>
+  <description>Modules</description>
+ </TranslationPage>
+ <TranslationPage>
+  <pageTitle></pageTitle>
+  <publicationStart></publicationStart>
+  <browserTitle></browserTitle>
+  <keyWord></keyWord>
+  <content></content>
+  <translation_INTEGER_IDX></translation_INTEGER_IDX>
+  <key>436008</key>
+  <urlName></urlName>
+  <publicationFinish></publicationFinish>
+  <description></description>
+ </TranslationPage>
+ <TranslationPage>
+  <pageTitle></pageTitle>
+  <publicationStart></publicationStart>
+  <browserTitle></browserTitle>
+  <keyWord></keyWord>
+  <content></content>
+  <translation_INTEGER_IDX></translation_INTEGER_IDX>
+  <key>437007</key>
+  <urlName></urlName>
+  <publicationFinish></publicationFinish>
+  <description></description>
+ </TranslationPage>
+ <TranslationPage>
+  <pageTitle>Documentation</pageTitle>
+  <publicationStart></publicationStart>
+  <browserTitle>Documentation</browserTitle>
+  <keyWord>Documentation</keyWord>
+  <content></content>
+  <translation_INTEGER_IDX></translation_INTEGER_IDX>
+  <key>438003</key>
+  <urlName></urlName>
+  <publicationFinish></publicationFinish>
+  <description>Contient la documentation développeur du projet</description>
+ </TranslationPage>
+ <TranslationPage>
+  <pageTitle></pageTitle>
+  <publicationStart></publicationStart>
+  <browserTitle></browserTitle>
+  <keyWord></keyWord>
+  <content></content>
+  <translation_INTEGER_IDX></translation_INTEGER_IDX>
+  <key>438004</key>
+  <urlName></urlName>
+  <publicationFinish></publicationFinish>
+  <description></description>
+ </TranslationPage>
+ <TranslationPage>
+  <pageTitle></pageTitle>
+  <publicationStart></publicationStart>
+  <browserTitle></browserTitle>
+  <keyWord></keyWord>
+  <content></content>
+  <translation_INTEGER_IDX></translation_INTEGER_IDX>
+  <key>439007</key>
+  <urlName></urlName>
+  <publicationFinish></publicationFinish>
+  <description></description>
+ </TranslationPage>
+ <TranslationPage>
+  <pageTitle></pageTitle>
+  <publicationStart></publicationStart>
+  <browserTitle></browserTitle>
+  <keyWord></keyWord>
+  <content></content>
+  <translation_INTEGER_IDX></translation_INTEGER_IDX>
+  <key>440006</key>
+  <urlName></urlName>
+  <publicationFinish></publicationFinish>
+  <description></description>
+ </TranslationPage>
+ <TranslationPage>
+  <pageTitle>Diagramme de Package</pageTitle>
+  <publicationStart></publicationStart>
+  <browserTitle>Diagramme de Package</browserTitle>
+  <keyWord>Diagramme de Package</keyWord>
+  <content>&lt;p&gt;&lt;img style="display: block; margin-left: auto; margin-right: auto;" src="/image/accueil/doc/Diagrams/package/Package.png" border="0" width="1200" /&gt;&lt;/p&gt;</content>
+  <translation_INTEGER_IDX></translation_INTEGER_IDX>
+  <key>441007</key>
+  <urlName></urlName>
+  <publicationFinish></publicationFinish>
+  <description>Diagramme de Package</description>
+ </TranslationPage>
+ <TranslationPage>
+  <pageTitle></pageTitle>
+  <publicationStart></publicationStart>
+  <browserTitle></browserTitle>
+  <keyWord></keyWord>
+  <content></content>
+  <translation_INTEGER_IDX></translation_INTEGER_IDX>
+  <key>446010</key>
+  <urlName></urlName>
+  <publicationFinish></publicationFinish>
+  <description></description>
+ </TranslationPage>
+ <TranslationPage>
+  <pageTitle></pageTitle>
+  <publicationStart></publicationStart>
+  <browserTitle></browserTitle>
+  <keyWord></keyWord>
+  <content></content>
+  <translation_INTEGER_IDX></translation_INTEGER_IDX>
+  <key>452006</key>
+  <urlName></urlName>
+  <publicationFinish></publicationFinish>
+  <description></description>
+ </TranslationPage>
+ <TranslationPage>
+  <pageTitle>Module supplémentaire</pageTitle>
+  <publicationStart></publicationStart>
+  <browserTitle>Module supplémentaire</browserTitle>
+  <keyWord>Module supplémentaire</keyWord>
+  <content>&lt;p&gt;Des modules compl&amp;eacute;mentaires pourraient &amp;ecirc;tre d&amp;eacute;velopp&amp;eacute;s :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Blog&lt;/li&gt;
+&lt;li&gt;Forum&lt;/li&gt;
+&lt;li&gt;....&lt;/li&gt;
+&lt;/ul&gt;</content>
+  <translation_INTEGER_IDX></translation_INTEGER_IDX>
+  <key>458007</key>
+  <urlName></urlName>
+  <publicationFinish></publicationFinish>
+  <description>Module supplémentaire</description>
+ </TranslationPage>
+ <TranslationPage>
+  <pageTitle></pageTitle>
+  <publicationStart></publicationStart>
+  <browserTitle></browserTitle>
+  <keyWord></keyWord>
+  <content></content>
+  <translation_INTEGER_IDX></translation_INTEGER_IDX>
+  <key>464007</key>
+  <urlName></urlName>
+  <publicationFinish></publicationFinish>
+  <description></description>
+ </TranslationPage>
+ <TranslationPage>
+  <pageTitle>Cadre du projet</pageTitle>
+  <publicationStart></publicationStart>
+  <browserTitle>Cadre du projet</browserTitle>
+  <keyWord>Cadre du projet</keyWord>
+  <content></content>
+  <translation_INTEGER_IDX></translation_INTEGER_IDX>
+  <key>465011</key>
+  <urlName></urlName>
+  <publicationFinish></publicationFinish>
+  <description>Cadre du projet</description>
+ </TranslationPage>
+ <TranslationPage>
+  <pageTitle></pageTitle>
+  <publicationStart></publicationStart>
+  <browserTitle></browserTitle>
+  <keyWord></keyWord>
+  <content></content>
+  <translation_INTEGER_IDX></translation_INTEGER_IDX>
+  <key>465012</key>
+  <urlName></urlName>
+  <publicationFinish></publicationFinish>
+  <description></description>
+ </TranslationPage>
+ <TranslationPage>
+  <pageTitle></pageTitle>
+  <publicationStart></publicationStart>
+  <browserTitle></browserTitle>
+  <keyWord></keyWord>
+  <content></content>
+  <translation_INTEGER_IDX></translation_INTEGER_IDX>
+  <key>466006</key>
+  <urlName></urlName>
+  <publicationFinish></publicationFinish>
+  <description></description>
+ </TranslationPage>
+ <TranslationPage>
+  <pageTitle>Liens utiles</pageTitle>
+  <publicationStart></publicationStart>
+  <browserTitle>Liens utiles</browserTitle>
+  <keyWord>Liens utiles</keyWord>
+  <content>&lt;p&gt;&lt;span class="Apple-style-span" style="border-collapse: separate; color: #000000; font-family: 'Times New Roman'; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; font-size: medium;"&gt;&lt;span class="Apple-style-span" style="font-family: 'Arial Unicode MS',Arial,sans-serif; font-size: small;"&gt;
+&lt;p&gt;Google Web Toolkit :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://code.google.com/intl/fr/webtoolkit/overview.html"&gt;Site Officiel&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://google-web-toolkit.googlecode.com/svn/javadoc/2.0/index.html?overview-summary.html"&gt;Documentation&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://gwt.google.com/samples/Showcase/Showcase.html"&gt;Tester les widgets&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://code.google.com/intl/fr/webtoolkit/download.html"&gt;Google Plugin, SDK, Speed Tracer&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+&lt;p&gt;AppEngine :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://code.google.com/intl/fr/appengine/"&gt;Site Officiel&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://code.google.com/intl/fr/appengine/downloads.html"&gt;T&amp;eacute;l&amp;eacute;chargement&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://code.google.com/intl/fr/appengine/docs/quotas.html#Resources"&gt;Quotas&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+&lt;p&gt;T&amp;eacute;l&amp;eacute;charger la derni&amp;egrave;re version de RicherCMS&amp;nbsp;&lt;span class="Apple-converted-space"&gt; &lt;/span&gt;&lt;a href="http://code.google.com/p/richercms/"&gt;cliquer ici&lt;/a&gt;.&lt;/p&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/p&gt;</content>
+  <translation_INTEGER_IDX></translation_INTEGER_IDX>
+  <key>469004</key>
+  <urlName></urlName>
+  <publicationFinish></publicationFinish>
+  <description>Liens utiles</description>
+ </TranslationPage>
+ <TranslationPage>
+  <pageTitle></pageTitle>
+  <publicationStart></publicationStart>
+  <browserTitle></browserTitle>
+  <keyWord></keyWord>
+  <content></content>
+  <translation_INTEGER_IDX></translation_INTEGER_IDX>
+  <key>469005</key>
+  <urlName></urlName>
+  <publicationFinish></publicationFinish>
+  <description></description>
+ </TranslationPage>
+ <TranslationPage>
+  <pageTitle>Module Main</pageTitle>
+  <publicationStart></publicationStart>
+  <browserTitle>Module Main</browserTitle>
+  <keyWord>Module Main</keyWord>
+  <content>&lt;p&gt;&lt;img src="/image/accueil/doc/Diagrams/Modules/main/MainModule.png" border="0" /&gt;&lt;/p&gt;</content>
+  <translation_INTEGER_IDX></translation_INTEGER_IDX>
+  <key>472009</key>
+  <urlName></urlName>
+  <publicationFinish></publicationFinish>
+  <description>Module Main</description>
+ </TranslationPage>
+ <TranslationPage>
+  <pageTitle></pageTitle>
+  <publicationStart></publicationStart>
+  <browserTitle></browserTitle>
+  <keyWord></keyWord>
+  <content></content>
+  <translation_INTEGER_IDX></translation_INTEGER_IDX>
+  <key>474007</key>
+  <urlName></urlName>
+  <publicationFinish></publicationFinish>
+  <description></description>
+ </TranslationPage>
+ <TranslationPage>
+  <pageTitle>Links</pageTitle>
+  <publicationStart></publicationStart>
+  <browserTitle></browserTitle>
+  <keyWord></keyWord>
+  <content>&lt;p&gt;Google Web Toolkit :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://code.google.com/intl/fr/webtoolkit/overview.html"&gt;Site Officiel&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://google-web-toolkit.googlecode.com/svn/javadoc/2.0/index.html?overview-summary.html"&gt;Documentation&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://gwt.google.com/samples/Showcase/Showcase.html"&gt;Tester les widgets&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://code.google.com/intl/fr/webtoolkit/download.html"&gt;Google Plugin, SDK, Speed Tracer&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+&lt;p&gt;AppEngine :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://code.google.com/intl/fr/appengine/"&gt;Site Officiel&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://code.google.com/intl/fr/appengine/downloads.html"&gt;T&amp;eacute;l&amp;eacute;chargement&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://code.google.com/intl/fr/appengine/docs/quotas.html#Resources"&gt;Quotas&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+&lt;p&gt;Download lastest version of RicherCMS&amp;nbsp; &lt;a href="http://code.google.com/p/richercms/"&gt;cliquer ici&lt;/a&gt;&lt;/p&gt;</content>
+  <translation_INTEGER_IDX></translation_INTEGER_IDX>
+  <key>476004</key>
+  <urlName></urlName>
+  <publicationFinish></publicationFinish>
+  <description></description>
+ </TranslationPage>
+ <TranslationPage>
+  <pageTitle>Technologie</pageTitle>
+  <publicationStart></publicationStart>
+  <browserTitle>Technologie</browserTitle>
+  <keyWord>RicherCMS GWT AppEngine MVP4G Objectify</keyWord>
+  <content>&lt;p&gt;Dans cette partie vous retrouvez toute les informations ayant attrait aux cot&amp;eacute;s technique de RicherCMS&lt;/p&gt;
+&lt;p&gt;Comme :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Choix technologiques&lt;/li&gt;
+&lt;li&gt;FrameWork utilis&amp;eacute;s&lt;/li&gt;
+&lt;/ul&gt;</content>
+  <translation_INTEGER_IDX></translation_INTEGER_IDX>
+  <key>487008</key>
+  <urlName></urlName>
+  <publicationFinish></publicationFinish>
+  <description>Contient les différent article ayant attrait au choix technologique fait lors du développement</description>
+ </TranslationPage>
+ <TranslationPage>
+  <pageTitle>Diagramme de séquence</pageTitle>
+  <publicationStart></publicationStart>
+  <browserTitle>Diagramme de séquence</browserTitle>
+  <keyWord>Diagramme de séquence</keyWord>
+  <content></content>
+  <translation_INTEGER_IDX></translation_INTEGER_IDX>
+  <key>490006</key>
+  <urlName></urlName>
+  <publicationFinish></publicationFinish>
+  <description>Diagramme de séquence</description>
+ </TranslationPage>
+ <TranslationPage>
+  <pageTitle>Sfeir Benelux</pageTitle>
+  <publicationStart></publicationStart>
+  <browserTitle>Sfeir Benelux</browserTitle>
+  <keyWord>Sfeir Benelux</keyWord>
+  <content></content>
+  <translation_INTEGER_IDX></translation_INTEGER_IDX>
+  <key>494006</key>
+  <urlName></urlName>
+  <publicationFinish></publicationFinish>
+  <description>Sfeir Benelux</description>
+ </TranslationPage>
+ <TranslationPage>
+  <pageTitle>Module page</pageTitle>
+  <publicationStart></publicationStart>
+  <browserTitle>Module page</browserTitle>
+  <keyWord>Module page</keyWord>
+  <content>&lt;p&gt;&lt;img src="/image/accueil/doc/Diagrams/Modules/page/PageModule.png" border="0" width="1347" height="2199" /&gt;&lt;/p&gt;</content>
+  <translation_INTEGER_IDX></translation_INTEGER_IDX>
+  <key>499002</key>
+  <urlName></urlName>
+  <publicationFinish></publicationFinish>
+  <description>Module page</description>
+ </TranslationPage>
+ <TranslationPage>
+  <pageTitle>Diagrammes</pageTitle>
+  <publicationStart></publicationStart>
+  <browserTitle>Diagrammes</browserTitle>
+  <keyWord>Diagrammes</keyWord>
+  <content>&lt;p&gt;Cette cat&amp;eacute;gorie contient tout les diagramme et sh&amp;eacute;mas permettant de bien comprendre l'architecture de RicherCMS&lt;/p&gt;</content>
+  <translation_INTEGER_IDX></translation_INTEGER_IDX>
+  <key>501001</key>
+  <urlName></urlName>
+  <publicationFinish></publicationFinish>
+  <description>Diagrammes</description>
+ </TranslationPage>
+ <TranslationPage>
+  <pageTitle>Module root</pageTitle>
+  <publicationStart></publicationStart>
+  <browserTitle>Module root</browserTitle>
+  <keyWord>Module root</keyWord>
+  <content>&lt;p&gt;&lt;img src="/image/accueil/doc/Diagrams/Modules/root/RootModule.png" border="0" /&gt;&lt;/p&gt;</content>
+  <translation_INTEGER_IDX></translation_INTEGER_IDX>
+  <key>502001</key>
+  <urlName></urlName>
+  <publicationFinish></publicationFinish>
+  <description>Module root</description>
+ </TranslationPage>
+ <TranslationPage>
+  <pageTitle></pageTitle>
+  <publicationStart></publicationStart>
+  <browserTitle></browserTitle>
+  <keyWord></keyWord>
+  <content></content>
+  <translation_INTEGER_IDX></translation_INTEGER_IDX>
+  <key>503002</key>
+  <urlName></urlName>
+  <publicationFinish></publicationFinish>
+  <description></description>
+ </TranslationPage>
+ <TranslationPage>
+  <pageTitle>Module wizard</pageTitle>
+  <publicationStart></publicationStart>
+  <browserTitle>Module wizard</browserTitle>
+  <keyWord>Module wizard</keyWord>
+  <content>&lt;p&gt;&lt;img src="/image/accueil/doc/Diagrams/Modules/wizard/WizardModule.png" border="0" /&gt;&lt;/p&gt;</content>
+  <translation_INTEGER_IDX></translation_INTEGER_IDX>
+  <key>504001</key>
+  <urlName></urlName>
+  <publicationFinish></publicationFinish>
+  <description>Module wizard</description>
+ </TranslationPage>
+</TranslationPages>

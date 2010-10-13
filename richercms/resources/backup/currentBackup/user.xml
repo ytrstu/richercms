@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<Users>
+ <User>
+  <nickname>fensminger</nickname>
+  <isAdmin>True</isAdmin>
+  <loggedIn>False</loggedIn>
+  <emailAddress>fensminger@gmail.com</emailAddress>
+  <key>408003</key>
+ </User>
+ <User>
+  <nickname>guillaume.homberg</nickname>
+  <isAdmin>True</isAdmin>
+  <loggedIn>True</loggedIn>
+  <emailAddress>guillaume.homberg@gmail.com</emailAddress>
+  <key>419001</key>
+ </User>
+ <User>
+  <nickname>olivier101</nickname>
+  <isAdmin>True</isAdmin>
+  <loggedIn>False</loggedIn>
+  <emailAddress>olivier101@gmail.com</emailAddress>
+  <key>508001</key>
+ </User>
+</Users>

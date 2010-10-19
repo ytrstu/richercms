@@ -35,7 +35,7 @@ def property_from_list(index):
 
 # SimpleXML list Helpers
 
-def list_from_child_node(xpath, suppress_blank=False):
+def list_from_child_node(xpath):
   """Return a list property from child nodes of the current xml node.
 
   This applies only the simplexml helper, as it assumes __node__, the current
@@ -67,13 +67,13 @@ def list_from_child_node(xpath, suppress_blank=False):
     for node in bulkload_state.current_dictionary['__node__'].findall(xpath):
       if node.text:
         result.append(long(node.text))
-      elif not suppress_blank:
-        result.append('')
+    if len(result)==0:
+      return None
     return result
 
   return list_from_child_node_lambda
 
-def key_list_from_child_node(xpath, kind, suppress_blank=False):
+def key_list_from_child_node(xpath, kind):
   """Return a list property from child nodes of the current xml node.
 
   This applies only the simplexml helper, as it assumes __node__, the current
@@ -104,9 +104,7 @@ def key_list_from_child_node(xpath, kind, suppress_blank=False):
     result = []
     for node in bulkload_state.current_dictionary['__node__'].findall(xpath):
       if node.text:
-        result.append(transform.create_foreign_key(kind, node.text))
-      elif not suppress_blank:
-        result.append('')
+        result.append(datastore.Key.from_path(kind, long(node.text)))
     return result
 
   return key_list_from_child_node_lambda

@@ -34,6 +34,7 @@ transformers:
     - property: __key__
       external_name: key
       export_transform: transform.key_id_or_name_as_string
+      import_transform: transform.create_foreign_key('ArboPage', key_is_id=True) 
 
     - property: creationDate
       external_name: creationDate
@@ -44,7 +45,8 @@ transformers:
     - property: idChildArboPage
       external_name: ArboPagesId
       # Type: Integer Stats: 15 properties of this type in this kind.
-      import_transform: transform.none_if_empty(int)
+      # transform.none_if_empty(int)
+      import_transform: transformhelper.list_from_child_node('ArboPagesId/ArboPageId')
       export_transform: transformhelper.child_node_from_list('ArboPageId')
 
     - property: idUserInModif
@@ -72,7 +74,7 @@ transformers:
     - property: tagsId
       external_name: TagsId
       # Type: Integer Stats: 18 properties of this type in this kind.
-      import_transform: transform.none_if_empty(int)
+      import_transform: transformhelper.list_from_child_node('TagsId/Tag')
       export_transform: transformhelper.child_node_from_list('Tag')
 
     - property: templateId
@@ -83,7 +85,7 @@ transformers:
     - property: translation
       external_name: TranslationPages
       # Type: Key Stats: 32 properties of this type in this kind.
-      #import_transform: transform.create_foreign_key('TranslationPage')
+      #import_transform: transformhelper.key_list_from_child_node('TranslationPages/TranslationPage', 'TranslationPage')
       export_transform: transformhelper.child_node_from_list_key('TranslationPage')
 
     - property: urlName
@@ -100,6 +102,7 @@ transformers:
     - property: __key__
       external_name: key
       export_transform: transform.key_id_or_name_as_string
+      import_transform: transform.create_foreign_key('Configuration', key_is_id=True) 
 
     - property: isConfigured
       external_name: isConfigured
@@ -116,6 +119,7 @@ transformers:
     - property: __key__
       external_name: key
       export_transform: transform.key_id_or_name_as_string
+      import_transform: transform.create_foreign_key('DependentTag', key_is_id=True) 
 
     - property: customName
       external_name: customName
@@ -136,6 +140,7 @@ transformers:
     - property: __key__
       external_name: key
       export_transform: transform.key_id_or_name_as_string
+      import_transform: transform.create_foreign_key('Language', key_is_id=True) 
 
     - property: langue
       external_name: langue
@@ -169,6 +174,7 @@ transformers:
     - property: __key__
       external_name: key
       export_transform: transform.key_id_or_name_as_string
+      import_transform: transform.create_foreign_key('Langue', key_is_id=True) 
 
     - property: langue
       external_name: langue
@@ -189,6 +195,7 @@ transformers:
     - property: __key__
       external_name: key
       export_transform: transform.key_id_or_name_as_string
+      import_transform: transform.create_foreign_key('LogInfo', key_is_id=True) 
 
     - property: className
       external_name: className
@@ -217,6 +224,7 @@ transformers:
     - property: __key__
       external_name: key
       export_transform: transform.key_id_or_name_as_string
+      import_transform: transform.create_foreign_key('MemoryFileItem', key_is_id=True) 
 
     - property: contentType
       external_name: contentType
@@ -225,8 +233,8 @@ transformers:
     - property: content
       external_name: content
       # Type: Blob Stats: 11 properties of this type in this kind.
-      import_transform: transform.blobproperty_from_base64
-      export_transform: base64.b64encode
+      import_transform: transformhelper.file_to_blob()
+      export_transform: transformhelper.blob_to_file('fileName', 'images')
 
     - property: date_created
       external_name: date_created
@@ -256,6 +264,7 @@ transformers:
     - property: __key__
       external_name: key
       export_transform: transform.key_id_or_name_as_string
+      import_transform: transform.create_foreign_key('Page', key_is_id=True) 
 
     - property: browserTitle
       external_name: browserTitle
@@ -331,6 +340,7 @@ transformers:
     - property: __key__
       external_name: key
       export_transform: transform.key_id_or_name_as_string
+      import_transform: transform.create_foreign_key('RootArbo', key_is_id=True) 
 
     - property: idChildArboPage
       external_name: idChildArboPage
@@ -355,6 +365,7 @@ transformers:
     - property: __key__
       external_name: key
       export_transform: transform.key_id_or_name_as_string
+      import_transform: transform.create_foreign_key('Tag', key_is_id=True) 
 
     - property: description
       external_name: description
@@ -383,11 +394,12 @@ transformers:
     - property: __key__
       external_name: key
       export_transform: transform.key_id_or_name_as_string
+      import_transform: transform.create_foreign_key('Template', key_is_id=True) 
 
     - property: associatedTags
       external_name: AssociatedTags
       # Type: Key Stats: 6 properties of this type in this kind.
-#      import_transform: transformhelper.list_from_child_node('AssociatedTags/Tag')
+      import_transform: transformhelper.key_list_from_child_node('AssociatedTags/Tag', 'Tag')
       export_transform: transformhelper.child_node_from_list_key('Tag')
 
     - property: description
@@ -412,6 +424,7 @@ transformers:
     - property: __key__
       external_name: key
       export_transform: transform.key_id_or_name_as_string
+      import_transform: transform.create_foreign_key('TranslationPage', key_is_id=True) 
 
     - property: browserTitle
       external_name: browserTitle
@@ -461,6 +474,7 @@ transformers:
     - property: __key__
       external_name: key
       export_transform: transform.key_id_or_name_as_string
+      import_transform: transform.create_foreign_key('UnlinkedFile', key_is_id=True) 
 
     - property: idUnlinkedImg
       external_name: idUnlinkedImg
@@ -477,6 +491,7 @@ transformers:
     - property: __key__
       external_name: key
       export_transform: transform.key_id_or_name_as_string
+      import_transform: transform.create_foreign_key('User', key_is_id=True) 
 
     - property: emailAddress
       external_name: emailAddress

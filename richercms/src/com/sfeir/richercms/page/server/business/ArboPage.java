@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Id;
+import javax.persistence.PostLoad;
+
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Cached;
 import com.googlecode.objectify.annotation.Entity;
@@ -96,6 +98,17 @@ public class ArboPage {
 		this.urlName = urlName;
 	}
 
+	@PostLoad
+	public void trackPostLoad() { 
+		if (this.idChildArboPage == null) {
+			this.idChildArboPage = new ArrayList<Long>();
+		}
+		if (this.tagsId==null) {
+			this.tagsId = new ArrayList<Long>();
+		}
+	}
+
+	
 	public Long getId() {
 		return this.id;
 	}

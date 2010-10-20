@@ -219,6 +219,27 @@ def file_to_blob():
   return transform_function
 
 
+def empty_if_none():
+  """A wrapper for a value to return '' if it's None. Useful on export.
+
+  Can be used in config files (e.g. "transform.empty_if_none(unicode)" or
+  as a decorator.
+
+  Args:
+    fn: Single argument transform function.
+
+  Returns:
+    Wrapped function.
+  """
+
+  def wrapper(value):
+    if value is None:
+      return ''
+    return value
+
+  return wrapper
+
+
 # Hierarchical key helpers.
 
 def extract_deep_key(index):

@@ -85,7 +85,7 @@ transformers:
     - property: translation
       external_name: TranslationPages
       # Type: Key Stats: 32 properties of this type in this kind.
-      #import_transform: transformhelper.key_list_from_child_node('TranslationPages/TranslationPage', 'TranslationPage')
+      import_transform: transformhelper.key_list_from_child_node('TranslationPages/TranslationPage', 'TranslationPage')
       export_transform: transformhelper.child_node_from_list_key('TranslationPage')
 
     - property: urlName
@@ -342,19 +342,10 @@ transformers:
       export_transform: transform.key_id_or_name_as_string
       import_transform: transform.create_foreign_key('RootArbo', key_is_id=True) 
 
-    - property: idChildArboPage
-      external_name: idChildArboPage
-      # Type: String Stats: 9 properties of this type in this kind.
-
     - property: idOfRootArboPage
       external_name: idOfRootArboPage
       # Type: Integer Stats: 1 properties of this type in this kind.
       import_transform: transform.none_if_empty(int)
-
-    - property: keyOfRootArboPage
-      external_name: keyOfRootArboPage
-      # Type: String Stats: 1 properties of this type in this kind.
-
 
 - kind: Tag
   connector: simplexml 
@@ -429,6 +420,7 @@ transformers:
     - property: browserTitle
       external_name: browserTitle
       # Type: String Stats: 32 properties of this type in this kind.
+      import_transform: transformhelper.empty_if_none()
 
     - property: content
       external_name: content
@@ -438,32 +430,17 @@ transformers:
     - property: description
       external_name: description
       # Type: String Stats: 32 properties of this type in this kind.
+      import_transform: transformhelper.empty_if_none()
 
     - property: keyWord
       external_name: keyWord
       # Type: String Stats: 32 properties of this type in this kind.
+      import_transform: transformhelper.empty_if_none()
 
     - property: pageTitle
       external_name: pageTitle
       # Type: String Stats: 32 properties of this type in this kind.
-
-    - property: publicationFinish
-      external_name: publicationFinish
-      # Type: String Stats: 9 properties of this type in this kind.
-
-    - property: publicationStart
-      external_name: publicationStart
-      # Type: String Stats: 9 properties of this type in this kind.
-
-    - property: translation_INTEGER_IDX
-      external_name: translation_INTEGER_IDX
-      # Type: Integer Stats: 20 properties of this type in this kind.
-      import_transform: transform.none_if_empty(int)
-
-    - property: urlName
-      external_name: urlName
-      # Type: String Stats: 3 properties of this type in this kind.
-
+      import_transform: transformhelper.empty_if_none()
 
 - kind: UnlinkedFile
   connector: simplexml 

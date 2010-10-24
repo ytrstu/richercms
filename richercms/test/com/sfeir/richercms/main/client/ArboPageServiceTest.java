@@ -14,7 +14,7 @@ import com.sfeir.richercms.page.client.ArboPageService;
 import com.sfeir.richercms.page.client.ArboPageServiceAsync;
 import com.sfeir.richercms.page.shared.BeanArboPage;
 
-public class ArboPageServiceTest  extends GWTTestCase {
+public class ArboPageServiceTest extends GWTTestCase {
 	
 	private ArboPageServiceAsync rpcArboPage = null;
 	

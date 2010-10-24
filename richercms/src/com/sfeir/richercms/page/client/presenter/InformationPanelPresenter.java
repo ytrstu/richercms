@@ -580,6 +580,8 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 					eventBus.displayContent(currentPage.getTranslation());
 				}
 			});
+		} else {
+			eventBus.displayContent(currentPage.getTranslation());
 		}
 	}
 	

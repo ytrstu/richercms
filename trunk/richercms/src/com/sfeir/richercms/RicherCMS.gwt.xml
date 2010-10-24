@@ -18,6 +18,7 @@
   <!-- Inherit Objectify : appEngine framework                    -->
   <inherits name="com.googlecode.objectify.Objectify" />
   
+  <inherits name="com.google.gwt.junit.JUnit"/>
   
   <!-- Specify the app entry point class.                         -->
   <entry-point class='com.sfeir.richercms.client.RicherCMS'/>

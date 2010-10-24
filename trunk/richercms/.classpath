@@ -14,8 +14,8 @@
 	<classpathentry kind="lib" path="testLib/mockito-all-1.8.4.jar"/>
 	<classpathentry kind="lib" path="gwtLib/mvp4g-1.2.0-SNAPSHOT.jar"/>
 	<classpathentry kind="lib" path="gwtLib/commons-lang-2.5.jar"/>
-	<classpathentry kind="con" path="com.google.appengine.eclipse.core.GAE_CONTAINER/App Engine"/>
 	<classpathentry kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER/GWT"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jre6"/>
+	<classpathentry kind="con" path="com.google.appengine.eclipse.core.GAE_CONTAINER/App Engine (1)"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

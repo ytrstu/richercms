@@ -19,6 +19,7 @@ public class BeanArboPage implements Serializable{
 	private List<Long> tagsId;
 	private Long idUserInModif;
 	private Long parentId; // Parent id
+	private List<Long> idChildArboPage;
 	
 	public BeanArboPage() {
 		super();
@@ -32,6 +33,7 @@ public class BeanArboPage implements Serializable{
 		this.TemplateId = null;
 		this.parentId = null;
 		this.urlName = "";
+		this.idChildArboPage = new ArrayList<Long>();
 	}
 	
 	public BeanArboPage(Long id) {
@@ -46,6 +48,7 @@ public class BeanArboPage implements Serializable{
 		this.TemplateId = null;
 		this.parentId = null;
 		this.urlName = "";
+		this.idChildArboPage = new ArrayList<Long>();
 	}
 	
 	public BeanArboPage(Long id, String urlName, Date publicationStart, Date publicationFinish, 
@@ -61,6 +64,23 @@ public class BeanArboPage implements Serializable{
 		this.tagsId = tagList;
 		this.parentId = parentId;
 		this.urlName = urlName;
+	}
+
+	public BeanArboPage(Long id, String urlName, Date publicationStart, Date publicationFinish, 
+			Date creationDate, Long templateId, List<Long> tagList, Long parentId,
+			List<Long> idChildArboPage) {
+		super();
+		this.id = id;
+		this.translation = new ArrayList<BeanTranslationPage>();
+		this.publicationFinish = publicationFinish;
+		this.publicationStart = publicationStart;
+		this.creationDate = creationDate;
+		this.idUserInModif = null;
+		this.TemplateId = templateId;
+		this.tagsId = tagList;
+		this.parentId = parentId;
+		this.urlName = urlName;
+		this.idChildArboPage = idChildArboPage;
 	}
 
 	
@@ -176,4 +196,13 @@ public class BeanArboPage implements Serializable{
 	public void setUrlName(String urlName) {
 		this.urlName = urlName;
 	}
+
+	public List<Long> getIdChildArboPage() {
+		return idChildArboPage;
+	}
+
+	public void setIdChildArboPage(List<Long> idChildArboPage) {
+		this.idChildArboPage = idChildArboPage;
+	}
+	
 }

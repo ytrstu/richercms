@@ -3,6 +3,7 @@ package com.sfeir.richercms.site.template.template_basic;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyService;
@@ -207,13 +208,11 @@ public class TemplateBasic {
 
 		Query<Tag> tags = this.ofy.query(Tag.class).filter("tagName =",tagName);
 		if(tags.countAll() != 0){
-			Query<ArboPage> pages = ofy.query(ArboPage.class)
-									.filter("parentId =", this.root.getId())
-									.filter("tagsId =",tags.get().getId());
-			
-			for(ArboPage page : pages){
-				if(TemplateTools.isVisible(page.getPublicationStart(), 
-						page.getPublicationFinish())){
+			Map<Long, ArboPage> menuMap = ofy.get(ArboPage.class, this.root.getIdChildArboPage());
+			for(Long idRootChild : this.root.getIdChildArboPage()) {
+				ArboPage page = menuMap.get(idRootChild);
+				if (page.getTagsId().contains(tags.get().getId()) &&
+						TemplateTools.isVisible(page.getPublicationStart(),	page.getPublicationFinish())) {
 					lnkPage.add(new LinkPage(ofy.get(
 							page.getTranslation().get(this.translation)).getPageTitle(),
 							TemplateTools.getPagePath(this.ofy, page.getId(),

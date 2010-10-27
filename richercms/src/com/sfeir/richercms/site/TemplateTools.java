@@ -66,7 +66,8 @@ public final class TemplateTools {
 											ap.getCreationDate(),
 											ap.getTemplateId(),
 											ap.getTagsId(),
-											ap.getParentId());
+											ap.getParentId(),
+											ap.getIdChildArboPage());
 		
 		//if IdUserInModif == -1 we return null
 		if(ap.getIdUserInModif().intValue() != -1)

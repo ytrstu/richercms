@@ -9,6 +9,6 @@ import com.sfeir.richercms.main.MainModule;
  *
  */
 public interface PageModule extends Mvp4gModule {
-	public void setParentModule( MainModule parentModule );
+	//public void setParentModule( MainModule parentModule );
 	//public void setParentModule( Mvp4gModule module );
 }

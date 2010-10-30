@@ -117,7 +117,7 @@ public interface PageEventBus extends EventBus {
 	 * @param parentId : id of parentPage
 	 * @param path : path in a recursive order
 	 */
-	@Event( handlers = {PagePresenter.class, InformationPanelPresenter.class, ValidationPanelPresenter.class, TinyMCEPanelPresenter.class} )
+	@Event( handlers = {PagePresenter.class, InformationPanelPresenter.class, ValidationPanelPresenter.class} )
 	public void modifyPage(Long pageId, Long parentId, List<Long> path);
 	
 	/**
@@ -151,6 +151,10 @@ public interface PageEventBus extends EventBus {
 	 */
 	@Event( handlers = {TinyMCEPanelPresenter.class} )
 	public void displayContent(List<BeanTranslationPage>  translationContents);
+
+	@Event( handlers = {TinyMCEPanelPresenter.class} )
+	public void displayEditor(List<BeanTranslationPage>  translationContents);
+	
 	
 	/**
 	 * Fired by the ValidationPresenter when the add buton is clicked

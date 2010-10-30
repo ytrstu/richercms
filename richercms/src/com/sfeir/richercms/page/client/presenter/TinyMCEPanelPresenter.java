@@ -48,6 +48,12 @@ public class TinyMCEPanelPresenter extends LazyPresenter<ITinyMCEPanel, PageEven
 		this.eventBus.hideInformationPopUp();
 	}
 	
+	public void onDisplayEditor(List<BeanTranslationPage>  translationContents) {
+		this.TranslationContents = translationContents;
+		view.displayEditor(this.TranslationContents.get(this.indexOfTranslation).getContent());
+		this.state = PageState.modify;
+	}
+	
 	/**
 	 * Fired when the main do start
 	 * @param navPanel 

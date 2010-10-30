@@ -280,9 +280,21 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 	}
 	
 	public void onModifyPage(Long id, Long parentId, List<Long> path) {
+		this.view.clearTagTable();
 		this.parentPageId = parentId;
-		view.enabledWidgets();
 		this.state = PageState.modify;
+		this.rpcPage.getArboPage(id, new AsyncCallback<BeanArboPage>() {
+			public void onSuccess(BeanArboPage result) {
+				view.enabledWidgets();
+				currentPage = result;
+				displayArboPage(result);
+				fetchTemplateList();
+			}
+			public void onFailure(Throwable caught) {
+				PopUpMessage p = new PopUpMessage(view.getConstants().EGetCurPage());
+				p.show();}
+		});
+		
 	}
 	
 	public void onDeletePage() {
@@ -577,9 +589,17 @@ public class InformationPanelPresenter extends LazyPresenter<IInformationPanel, 
 					checkTag(); //check tag if its necessary
 					//at this time all specific things are loaded in page
 					// tag, template and field. andso we can fill content in tinyMCEPanel
-					eventBus.displayContent(currentPage.getTranslation());
+					displayContentEditor();
 				}
 			});
+		} else {
+			displayContentEditor();
+		}
+	}
+	
+	private void displayContentEditor() {
+		if (state == PageState.modify) {
+			eventBus.displayEditor(currentPage.getTranslation());
 		} else {
 			eventBus.displayContent(currentPage.getTranslation());
 		}

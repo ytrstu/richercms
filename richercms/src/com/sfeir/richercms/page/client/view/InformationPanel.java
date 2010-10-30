@@ -165,6 +165,7 @@ public class InformationPanel extends ResizeComposite implements IInformationPan
 		this.advancedDisclosure = new DisclosurePanel(this.constants.disclosureTitle());
 		this.advancedDisclosure.setAnimationEnabled(true);
 		this.advancedDisclosure.setContent(this.noLgeInfoTab);
+		this.advancedDisclosure.setOpen(true);
 
 		
 		this.infoTab.setWidget(0,0, new Label(constants.BrowserTitle()));

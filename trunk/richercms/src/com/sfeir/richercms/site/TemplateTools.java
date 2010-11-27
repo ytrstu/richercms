@@ -33,12 +33,14 @@ public final class TemplateTools {
 		String[] urlPart = path.split("/");
 		String urlName = urlPart[urlPart.length -1];
 		
-		Query<ArboPage> sameUrlNames  = ofy.query(ArboPage.class).filter("urlName =", urlName);
+		 List<Key<ArboPage>> sameUrlKeyNames = ofy.query(ArboPage.class)
+										.filter("urlName =", urlName)
+										.limit(2).listKeys();
 		
-		if(sameUrlNames.countAll() == 1) 
-			return sameUrlNames.get();
+		if(sameUrlKeyNames.size() == 1) {
+			return ofy.get(ArboPage.class, sameUrlKeyNames.get(0).getId());
 
-		else if((sameUrlNames.countAll() > 1)){
+		} else if((sameUrlKeyNames.size() > 1)){
 			//get the root page
 			Query<RootArbo> root = ofy.query(RootArbo.class);
 			ArboPage rootPage = ofy.get(ArboPage.class, root.get().getIdOfRootArboPage());
@@ -91,9 +93,9 @@ public final class TemplateTools {
 	}
 	
 	public static Template getTemplatebyName(Objectify ofy, String  templateName){
-    	Query<Template> templates = ofy.query(Template.class).filter("name ", templateName);
-		if(templates.countAll() > 0)
-			return templates.get();
+    	List<Key<Template>> templateKeys = ofy.query(Template.class).filter("name ", templateName).limit(2).listKeys();
+		if(templateKeys.size() > 0)
+			return ofy.get(Template.class, templateKeys.get(0).getId());
 		return null;
 	}
 	

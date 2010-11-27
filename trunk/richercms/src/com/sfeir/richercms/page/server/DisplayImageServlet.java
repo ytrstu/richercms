@@ -70,7 +70,7 @@ public class DisplayImageServlet extends HttpServlet {
 		Objectify ofy = ObjectifyService.begin();
 		Query<MemoryFileItem> files  = ofy.query(MemoryFileItem.class).filter("path =", PagePath);
 		
-		if(files.countAll() != 0) {
+		if (files != null) {
 			for(MemoryFileItem file : files){
 				if(file.getFileName().equals(fileName))
 					return file;
